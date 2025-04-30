@@ -1,7 +1,7 @@
 <template>
     <div>
-        <RouterLink to="/">Go to Home</RouterLink>
-        <RouterLink to="/login">Go to Login</RouterLink>
+        <RouterLink to="/">Go to Login</RouterLink>
+        <RouterLink to="/home">Go to Home</RouterLink>
     </div>
 </template>
 

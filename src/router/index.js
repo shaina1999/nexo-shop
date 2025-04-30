@@ -1,4 +1,4 @@
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter } from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
@@ -6,12 +6,12 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 
 const routes = [
-  { path: '/', component: HomeView },
-  { path: '/login', component: LoginView },
+  { path: '/', component: LoginView },
+  { path: '/home', component: HomeView },
 ]
 
 const router = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHistory(),
   routes,
 })
 
