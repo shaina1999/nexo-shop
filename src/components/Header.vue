@@ -1,8 +1,4 @@
 <template>
-    <div>
-        <RouterLink to="/">Go to Login</RouterLink>
-        <RouterLink to="/home">Go to Home</RouterLink>
-    </div>
 </template>
 
 <script setup>
