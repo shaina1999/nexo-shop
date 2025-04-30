@@ -4,10 +4,12 @@ import 'nprogress/nprogress.css'
 
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
+import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
 const routes = [
   { path: '/', component: LoginView },
   { path: '/home', component: HomeView },
+  { path: '/:pathMatch(.*)', component: NotFoundComponent }
 ]
 
 const router = createRouter({
