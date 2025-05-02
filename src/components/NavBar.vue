@@ -1,7 +1,7 @@
 <template>
     <div class="border-b-black border-b-[0.5px]">
         <nav 
-            class="px-6 md:px-8 lg:px-16 xl:px-34 mx-auto w-full max-w-7xl grid grid-cols-2 gap-y-4 lg:flex lg:items-center lg:justify-between pt-4 lg:pt-10 pb-4"
+            class="px-4 md:px-8 lg:px-16 xl:px-34 mx-auto w-full max-w-7xl grid grid-cols-2 gap-y-4 lg:flex lg:items-center lg:justify-between pt-4 lg:pt-10 pb-4"
         >
             <RouterLink to="/">
                 <span class="text-2xl font-bold">NexoShop</span>
