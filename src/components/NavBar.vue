@@ -24,7 +24,10 @@
             <!-- Desktop Nav -->
             <div class="flex items-center gap-3 lg:gap-6 col-span-2 lg:col-span-0">
                 <div class="py-2 px-4 bg-gray-200 flex gap-4 item-center rounded-sm w-full lg:w-max relative">
-                    <BaseSearchInput searchPlaceholder="What are you looking for?" />
+                    <input 
+                        placeholder="What are you looking for?"
+                        class="outline-none :focus-visible:outline-none focus-within:outline-none w-full lg:w-max text-sm lg:text-base"
+                    >
                     <BaseButtonIcon>
                         <template v-slot:icon>
                             <PhMagnifyingGlass :size="22" />
@@ -67,7 +70,6 @@ import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 const route = useRoute() // Use this to access the current route
 
-import BaseSearchInput from '@/components/BaseSearchInput.vue'
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
 import NavLinks from '@/components/NavLinks.vue'
 
