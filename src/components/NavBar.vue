@@ -55,8 +55,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useMobileNavStore } from '@/stores/mobileNavStore'
+import { useRoute, useRouter } from 'vue-router'
+const router = useRouter() // Use this to access the router instance
+const route = useRoute() // Use this to access the current route
 
 import BaseSearchInput from '@/components/BaseSearchInput.vue'
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
@@ -64,6 +67,10 @@ import NavLinks from '@/components/NavLinks.vue'
 
 const searchPlaceholder = "What are you looking for?"
 const mobileNavStore = useMobileNavStore()
+
+watch(route, () => {
+    mobileNavStore.updateState(false)
+})
 </script>
 
 <style scoped></style>
