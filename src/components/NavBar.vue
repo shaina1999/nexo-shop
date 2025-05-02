@@ -14,7 +14,7 @@
             <!-- Hamburger Button -->
             <BaseButtonIcon
                 class="flex lg:hidden justify-end"
-                @click="isMobileNavOpen = !isMobileNavOpen"
+                @click="mobileNavStore.updateState(!mobileNavStore.isOpen)"
             >
                 <template v-slot:icon>
                     <PhList :size="32" />
@@ -38,10 +38,10 @@
 
             <!-- Mobile Nav -->
             <Teleport to="body">
-                <div v-if="isMobileNavOpen" class="fixed top-0 right-0 w-[100vw] bg-white h-screen px-4 shadow-md">
+                <div v-if="mobileNavStore.isOpen" class="fixed top-0 right-0 w-[100vw] bg-white h-screen px-4 shadow-md">
                     <BaseButtonIcon
                         class="flex justify-end ml-auto mt-4"
-                        @click="isMobileNavOpen = false"
+                        @click="mobileNavStore.updateState(!mobileNavStore.isOpen)"
                     >
                         <template v-slot:icon>
                            <PhX :size="22" />
@@ -56,12 +56,14 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useMobileNavStore } from '@/stores/mobileNavStore'
+
 import BaseSearchInput from '@/components/BaseSearchInput.vue'
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
 import NavLinks from '@/components/NavLinks.vue'
 
 const searchPlaceholder = "What are you looking for?"
-const isMobileNavOpen = ref(false)
+const mobileNavStore = useMobileNavStore()
 </script>
 
 <style scoped></style>
