@@ -14,6 +14,7 @@
                     <BaseButtonIcon>
                         <template v-slot:icon>
                             <PhMagnifyingGlass :size="22" />
+                            <PhX :size="22" class="hidden" />
                         </template>
                     </BaseButtonIcon>
                 </div>
