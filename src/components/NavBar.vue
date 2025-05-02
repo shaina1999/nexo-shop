@@ -43,7 +43,7 @@ const navLinks = ref([
     { label: 'Home', to: '/' },
     { label: 'Contact', to: '/contact' },
     { label: 'About', to: '/about' },
-    { label: 'Sign Up', to: '/signup' }
+    { label: 'Log In', to: '/login' }
 ])
 
 const searchPlaceholder = "What are you looking for?"
