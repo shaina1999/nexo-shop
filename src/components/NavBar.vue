@@ -10,13 +10,17 @@
             </li>
         </ul>
         <div>
-            <!-- BaseSearchInput Here -->
+            <BaseSearchInput :searchPlaceholder="searchPlaceholder" />
             <!-- BaseButtonIcon Here -->
             <!-- BaseButtonIcon Here -->
         </div>
     </nav>
 </template>
 
-<script setup></script>
+<script setup>
+import BaseSearchInput from '@/components/BaseSearchInput.vue'
+
+const searchPlaceholder = "What are you looking for?"
+</script>
 
 <style scoped></style>
