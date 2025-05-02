@@ -9,7 +9,7 @@
                 <span>Sign Up</span>
             </li>
         </ul>
-        <div class="p-2">
+        <div class="py-2 px-3 bg-gray-200 flex gap-4 item-center max-w-[243px]">
             <BaseSearchInput :searchPlaceholder="searchPlaceholder" />
             <BaseButtonIcon>
                 <template v-slot:icon>
@@ -17,6 +17,16 @@
                 </template>
             </BaseButtonIcon>
         </div>
+        <BaseButtonIcon>
+            <template v-slot:icon>
+                <font-awesome-icon :icon="['far', 'heart']" />
+            </template>
+        </BaseButtonIcon>
+        <BaseButtonIcon>
+            <template v-slot:icon>
+                <font-awesome-icon :icon="['far', 'cart-shopping']" />  
+            </template>
+        </BaseButtonIcon>
     </nav>
 </template>
 

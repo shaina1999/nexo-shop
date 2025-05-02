@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+/* 
+  @theme - is used to define custom design system variables
+
+  For example, you can add a new color to your project by defining a theme variable like --color-mint-500:
+
+  Now you can use utility classes like bg-mint-500, text-mint-500, or fill-mint-500 in your HTML:
+
+  <div class="bg-mint-500">div with bg mint</div>
+*/
+@theme {
+  --color-gray-200: #F5F5F5;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
 }
