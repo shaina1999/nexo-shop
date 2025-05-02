@@ -27,15 +27,26 @@
                     <input 
                         placeholder="What are you looking for?"
                         class="outline-none :focus-visible:outline-none focus-within:outline-none w-full lg:w-max text-sm lg:text-base"
+                        v-model="searchTerm"
                     >
-                    <BaseButtonIcon>
+                    <BaseButtonIcon 
+                        :class="{ 'hidden' : isSearching, 'block' : !isSearching }"
+                    >
                         <template v-slot:icon>
                             <PhMagnifyingGlass :size="22" />
-                            <PhX :size="22" class="hidden" />
+                        </template>
+                    </BaseButtonIcon>
+                    <BaseButtonIcon 
+                        :class="{ 'hidden' : !isSearching, 'block' : isSearching }"
+                        @click="searchTerm = ''"
+                    >
+                        <template v-slot:icon>
+                            <PhX :size="22" />
                         </template>
                     </BaseButtonIcon>
                     <ul 
-                        class="absolute w-full h-max top-[42px] bg-white right-0 py-2 px-4 border-t-[1px] border-t-white shadow-md flex flex-col gap-3 cursor-pointer hidden"
+                        class="absolute w-full h-max top-[42px] bg-white right-0 py-2 px-4 border-t-[1px] border-t-white shadow-md flex-col gap-3 cursor-pointer"
+                        :class="{ 'flex' : isSearching, 'hidden' : !isSearching }"
                     >
                         <li class="hover:text-primary-500">test</li>
                         <li class="hover:text-primary-500">test</li>
@@ -66,14 +77,16 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 const route = useRoute() // Use this to access the current route
 
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
 import NavLinks from '@/components/NavLinks.vue'
 
 const isMobileNavOpen = ref(false)
+const searchTerm = ref('')
+const isSearching = computed(() => searchTerm.value ? true : false)
 
 const toggleMobileNav = () => {
     isMobileNavOpen.value = !isMobileNavOpen.value
