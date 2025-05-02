@@ -14,7 +14,7 @@
             <!-- Hamburger Button -->
             <BaseButtonIcon
                 class="flex lg:hidden justify-end"
-                @click="mobileNavStore.updateState(!mobileNavStore.isOpen)"
+                @click="toggleMobileNav"
             >
                 <template v-slot:icon>
                     <PhList :size="32" />
@@ -24,7 +24,7 @@
             <!-- Desktop Nav -->
             <div class="flex items-center gap-3 lg:gap-6 col-span-2 lg:col-span-0">
                 <div class="py-2 px-4 bg-gray-200 flex gap-4 item-center rounded-sm w-full lg:w-max">
-                    <BaseSearchInput :searchPlaceholder="searchPlaceholder" />
+                    <BaseSearchInput searchPlaceholder="What are you looking for?" />
                     <BaseButtonIcon>
                         <template v-slot:icon>
                             <PhMagnifyingGlass :size="22" />
@@ -38,10 +38,10 @@
 
             <!-- Mobile Nav -->
             <Teleport to="body">
-                <div v-if="mobileNavStore.isOpen" class="fixed top-0 right-0 w-[100vw] bg-white h-screen px-4 shadow-md">
+                <div v-if="isMobileNavOpen" class="fixed top-0 right-0 w-[100vw] bg-white h-screen px-4 shadow-md">
                     <BaseButtonIcon
                         class="flex justify-end ml-auto mt-4"
-                        @click="mobileNavStore.updateState(!mobileNavStore.isOpen)"
+                        @click="toggleMobileNav"
                     >
                         <template v-slot:icon>
                            <PhX :size="22" />
@@ -56,20 +56,23 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import { useMobileNavStore } from '@/stores/mobileNavStore'
 import { useRoute, useRouter } from 'vue-router'
-const router = useRouter() // Use this to access the router instance
 const route = useRoute() // Use this to access the current route
 
 import BaseSearchInput from '@/components/BaseSearchInput.vue'
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
 import NavLinks from '@/components/NavLinks.vue'
 
-const searchPlaceholder = "What are you looking for?"
-const mobileNavStore = useMobileNavStore()
+const isMobileNavOpen = ref(false)
+
+const toggleMobileNav = () => {
+    isMobileNavOpen.value = !isMobileNavOpen.value
+}
 
 watch(route, () => {
-    mobileNavStore.updateState(false)
+    if (isMobileNavOpen.value) {
+        isMobileNavOpen.value = false
+    }
 })
 </script>
 
