@@ -26,16 +26,8 @@
                         </template>
                     </BaseButtonIcon>
                 </div>
-                <BaseButtonIcon>
-                    <template v-slot:icon>
-                        <PhHeart :size="26" />
-                    </template>
-                </BaseButtonIcon>
-                <BaseButtonIcon>
-                    <template v-slot:icon>
-                        <PhShoppingCart :size="26" />
-                    </template>
-                </BaseButtonIcon>
+                <RouterLink to="/wishlist"><PhHeart :size="26" /></RouterLink>
+                <RouterLink to="/cart"> <PhShoppingCart :size="26" /></RouterLink>
             </div>
         </nav>
     </div>
