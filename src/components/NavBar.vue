@@ -13,18 +13,18 @@
             <BaseSearchInput :searchPlaceholder="searchPlaceholder" />
             <BaseButtonIcon>
                 <template v-slot:icon>
-                    <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
+                    <PhMagnifyingGlass :size="26" />
                 </template>
             </BaseButtonIcon>
         </div>
         <BaseButtonIcon>
             <template v-slot:icon>
-                <font-awesome-icon :icon="['far', 'heart']" />
+                <PhHeart :size="26" />
             </template>
         </BaseButtonIcon>
         <BaseButtonIcon>
             <template v-slot:icon>
-                <font-awesome-icon :icon="['far', 'cart-shopping']" />  
+                <PhShoppingCart :size="26" />
             </template>
         </BaseButtonIcon>
     </nav>
