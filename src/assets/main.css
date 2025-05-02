@@ -11,8 +11,13 @@
 */
 @theme {
   --color-gray-200: #F5F5F5;
+  --color-primary-500: #DB4444;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
+}
+
+#nprogress .bar{
+  background-color: var(--color-primary-500) !important;
 }
