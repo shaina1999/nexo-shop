@@ -23,7 +23,7 @@
 
             <!-- Desktop Nav -->
             <div class="flex items-center gap-3 lg:gap-6 col-span-2 lg:col-span-0">
-                <div class="py-2 px-4 bg-gray-200 flex gap-4 item-center rounded-sm w-full lg:w-max">
+                <div class="py-2 px-4 bg-gray-200 flex gap-4 item-center rounded-sm w-full lg:w-max relative">
                     <BaseSearchInput searchPlaceholder="What are you looking for?" />
                     <BaseButtonIcon>
                         <template v-slot:icon>
@@ -31,6 +31,14 @@
                             <PhX :size="22" class="hidden" />
                         </template>
                     </BaseButtonIcon>
+                    <ul 
+                        class="absolute w-full h-max top-[42px] bg-white right-0 py-2 px-4 border-t-[1px] border-t-white shadow-md flex flex-col gap-3 cursor-pointer hidden"
+                    >
+                        <li class="hover:text-primary-500">test</li>
+                        <li class="hover:text-primary-500">test</li>
+                        <li class="hover:text-primary-500">test</li>
+                        <li class="hover:text-primary-500">test</li>
+                    </ul>
                 </div>
                 <RouterLink to="/wishlist"><PhHeart :size="26" /></RouterLink>
                 <RouterLink to="/cart"> <PhShoppingCart :size="26" /></RouterLink>
