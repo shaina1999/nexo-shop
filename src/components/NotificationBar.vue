@@ -4,7 +4,7 @@
             <div class="hidden md:block"></div>
             <div class="text-xs sm:text-sm">
                 <span class="inline-block mr-0 md:mr-3">Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!</span>
-                <span class="font-medium underline">ShopNow</span>
+                <RouterLink to="/products"><span class="font-medium underline">ShopNow</span></RouterLink>
             </div>
             <div class="relative">
                 <button 
