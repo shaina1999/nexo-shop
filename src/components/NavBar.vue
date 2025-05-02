@@ -16,7 +16,7 @@
                     <PhList :size="32" />
                 </template>
             </BaseButtonIcon>
-            <div class="flex items-center gap-6 col-span-2 lg:col-span-0">
+            <div class="flex items-center gap-3 lg:gap-6 col-span-2 lg:col-span-0">
                 <div class="py-2 px-4 bg-gray-200 flex gap-4 item-center rounded-sm w-full lg:w-max">
                     <BaseSearchInput :searchPlaceholder="searchPlaceholder" />
                     <BaseButtonIcon>

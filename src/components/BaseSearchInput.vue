@@ -2,7 +2,7 @@
     <input 
         :placeholder="searchPlaceholder"
         v-model="search"
-        class="outline-none :focus-visible:outline-none focus-within:outline-none w-full lg:w-max"
+        class="outline-none :focus-visible:outline-none focus-within:outline-none w-full lg:w-max text-sm lg:text-base"
     >
 </template>
 
