@@ -1,9 +1,9 @@
 <template>
-    <div class="flex">
-        <input 
-            :placeholder="searchPlaceholder" v-model="search" class="outline-none :focus-visible:outline-none focus-within:outline-none"
-        >
-    </div>
+    <input 
+        :placeholder="searchPlaceholder"
+        v-model="search"
+        class="outline-none :focus-visible:outline-none focus-within:outline-none w-full lg:w-max"
+    >
 </template>
 
 <script setup>
