@@ -11,7 +11,7 @@
                     <RouterLink :to="link.to" activeClass="border-b-[1px] border-black"><span>{{ link.label }}</span></RouterLink>
                 </li>
             </ul>
-            <BaseButtonIcon class="block lg:hidden self-end">
+            <BaseButtonIcon class="flex lg:hidden justify-end">
                 <template v-slot:icon>
                     <PhList :size="32" />
                 </template>
