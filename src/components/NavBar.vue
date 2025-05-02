@@ -1,5 +1,5 @@
 <template>
-    <nav>
+    <nav class="px-6 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl mx-auto flex">
         <div class="logo">NexoShop</div>
         <ul>
             <li>
