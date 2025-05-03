@@ -28,7 +28,6 @@
                         placeholder="What are you looking for?"
                         class="outline-none :focus-visible:outline-none focus-within:outline-none w-full lg:w-max text-sm lg:text-base"
                         v-model="searchTerm"
-                        @keyup="searchProduct"
                     >
                     <BaseButtonIcon 
                         :class="{ 'hidden' : isSearching, 'block' : !isSearching }"
@@ -49,8 +48,8 @@
                         class="absolute w-full h-max top-[42px] bg-white right-0 py-2 px-4 border-t-[1px] border-t-white shadow-md flex-col gap-4 cursor-pointer max-h-[300px] md:max-h-[500px] overflow-y-scroll"
                         :class="{ 'flex' : isSearching, 'hidden' : !isSearching }"
                     >
-                        <div class="pt-2 font-semibold">Search for: {{ searchTerm }}</div>
-                        <li class="hover:text-primary-500" v-for="(item, index) in filteredSuggestions" :key="index">{{ item }}</li>
+                        <div class="pt-2 font-semibold" @click="searchProduct(searchTerm)">Search for: {{ searchTerm }}</div>
+                        <li class="hover:text-primary-500" v-for="(item, index) in filteredSuggestions" :key="index" @click="searchProduct(item)">{{ item }}</li>
                     </ul>
                 </div>
                 <RouterLink to="/wishlist"><PhHeart :size="26" /></RouterLink>
@@ -93,6 +92,10 @@ const filteredSuggestions = computed(() => {
 
 const toggleMobileNav = () => {
     isMobileNavOpen.value = !isMobileNavOpen.value
+}
+
+const searchProduct = (item) => {
+    alert(item)
 }
 
 watch(route, () => {
