@@ -16,7 +16,7 @@
                     <PhCaretDown :size="20" />
                 </button>
                 <ul 
-                    class="text-sm bg-black absolute py-3 px-4 flex flex-col gap-y-3 rounded-sm text-white top-10 right-0"
+                    class="text-sm bg-black absolute py-3 px-4 flex flex-col gap-y-3 rounded-sm text-white top-10 right-0 z-10"
                     :class="{ 'hidden': !showDropdown, 'block' : showDropdown }"
                 >
                     <li 
