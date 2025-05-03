@@ -98,7 +98,7 @@ const toggleMobileNav = () => {
 }
 
 const searchProduct = (q) => {
-    searchStore.setSearchTerm(q)
+    searchStore.setSearchQuery(q)
     router.push('/products')
 }
 
