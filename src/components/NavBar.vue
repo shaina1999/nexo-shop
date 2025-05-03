@@ -46,13 +46,11 @@
                         </template>
                     </BaseButtonIcon>
                     <ul 
-                        class="absolute w-full h-max top-[42px] bg-white right-0 py-2 px-4 border-t-[1px] border-t-white shadow-md flex-col gap-3 cursor-pointer"
+                        class="absolute w-full h-max top-[42px] bg-white right-0 py-2 px-4 border-t-[1px] border-t-white shadow-md flex-col gap-4 cursor-pointer max-h-[300px] md:max-h-[500px] overflow-y-scroll"
                         :class="{ 'flex' : isSearching, 'hidden' : !isSearching }"
                     >
-                        <li class="hover:text-primary-500">test</li>
-                        <li class="hover:text-primary-500">test</li>
-                        <li class="hover:text-primary-500">test</li>
-                        <li class="hover:text-primary-500">test</li>
+                        <div class="pt-2 font-semibold">Search for: {{ searchTerm }}</div>
+                        <li class="hover:text-primary-500" v-for="(item, index) in filteredSuggestions" :key="index">{{ item }}</li>
                     </ul>
                 </div>
                 <RouterLink to="/wishlist"><PhHeart :size="26" /></RouterLink>
@@ -80,6 +78,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import searchSuggestions from '@/assets/searchSuggestions'
 
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
 import NavLinks from '@/components/NavLinks.vue'
@@ -88,6 +87,9 @@ const route = useRoute() // Use this to access the current route
 const isMobileNavOpen = ref(false)
 const searchTerm = ref('')
 const isSearching = computed(() => searchTerm.value ? true : false)
+const filteredSuggestions = computed(() => {
+    return searchSuggestions.filter((suggestion) => suggestion.includes(searchTerm.value.toLowerCase()))
+})
 
 const toggleMobileNav = () => {
     isMobileNavOpen.value = !isMobileNavOpen.value
