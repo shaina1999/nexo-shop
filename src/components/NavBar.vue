@@ -81,6 +81,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useFetch } from '@/composables/fetch'
+import { debounce } from 'lodash'
 
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
 import NavLinks from '@/components/NavLinks.vue'
@@ -96,11 +97,11 @@ const toggleMobileNav = () => {
     isMobileNavOpen.value = !isMobileNavOpen.value
 }
 
-const searchProduct = async () => {
-    if (!searchTerm.value.trim()) return
-    await fetchNow()
-    console.log('Search results:', data.value)
-}
+const searchProduct = debounce(async (query) => {
+  if (!searchTerm.value.trim()) return
+  await fetchNow()
+  console.log('Search results:', data.value)
+}, 200)
 
 watch(route, () => {
     if (isMobileNavOpen.value) {
