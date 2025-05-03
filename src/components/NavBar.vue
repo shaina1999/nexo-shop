@@ -28,6 +28,7 @@
                         placeholder="What are you looking for?"
                         class="outline-none :focus-visible:outline-none focus-within:outline-none w-full lg:w-max text-sm lg:text-base"
                         v-model="searchTerm"
+                        @keyup="searchProduct"
                     >
                     <BaseButtonIcon 
                         :class="{ 'hidden' : isSearching, 'block' : !isSearching }"
@@ -79,17 +80,26 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-const route = useRoute() // Use this to access the current route
+import { useFetch } from '@/composables/fetch'
 
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
 import NavLinks from '@/components/NavLinks.vue'
 
+const route = useRoute() // Use this to access the current route
 const isMobileNavOpen = ref(false)
 const searchTerm = ref('')
 const isSearching = computed(() => searchTerm.value ? true : false)
+const searchProductUrl = computed(() => `/products/search?q=${searchTerm.value}`)
+const { data, error, isLoading, fetchNow } = useFetch(searchProductUrl)
 
 const toggleMobileNav = () => {
     isMobileNavOpen.value = !isMobileNavOpen.value
+}
+
+const searchProduct = async () => {
+    if (!searchTerm.value.trim()) return
+    await fetchNow()
+    console.log('Search results:', data.value)
 }
 
 watch(route, () => {
