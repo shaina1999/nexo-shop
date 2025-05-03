@@ -1,6 +1,5 @@
 import './assets/css/main.css'
 import '@fontsource/poppins';
-import 'nprogress/nprogress.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

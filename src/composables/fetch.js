@@ -1,6 +1,5 @@
 import { ref } from 'vue'
 import { API_BASE_URL } from '@/config'
-import NProgress from 'nprogress'
 
 export function useFetch() {
     const data = ref([])
