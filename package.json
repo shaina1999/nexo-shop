@@ -14,7 +14,6 @@
     "@tailwindcss/vite": "^4.1.4",
     "@vueuse/components": "^13.1.0",
     "@vueuse/core": "^13.1.0",
-    "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
     "pinia": "^3.0.2",
     "tailwindcss": "^4.1.4",
