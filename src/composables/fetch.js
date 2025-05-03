@@ -6,24 +6,26 @@ export function useFetch(url) {
   const error = ref(null)
   const isLoading = ref(false)
 
-  const fetchData = () => {
+  const fetchData = async () => {
     const fullUrl = API_BASE_URL + toValue(url)
     
     data.value = null
     error.value = null
     isLoading.value = true
-    
-    fetch(fullUrl)
-      .then((res) => res.json())
-      .then((json) => {
-        data.value = json
-      })
-      .catch((err) => {
-        error.value = err
-      })
-      .finally(() => {
-        isLoading.value = false
-      })
+
+    try {
+      const response = await fetch(fullUrl);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      const json = await response.json();
+      data.value = json
+    } catch (error) {
+      error.value = error
+    } finally {
+      isLoading.value = false
+    }
   }
 
   watchEffect(() => {
