@@ -1,6 +1,9 @@
 <template>
-    <ul>
-        <li v-for="product in searchResult" :key="product.id">{{ product.title }}</li>
+    <ul class="grid grid-cols-4 gap-4">
+        <li v-for="product in searchResult" :key="product.id">
+            <img :src="product.thumbnail" class="w-25">
+            <span>{{ product.title }}</span>
+        </li>
     </ul>
 </template>
 
