@@ -47,6 +47,7 @@
                     <ul 
                         class="absolute w-full h-max top-[42px] bg-white right-0 py-2 px-4 border-t-[1px] border-t-white shadow-md flex-col gap-4 cursor-pointer max-h-[300px] md:max-h-[500px] overflow-y-scroll"
                         :class="{ 'flex' : isSearching, 'hidden' : !isSearching }"
+                        ref="searchResultsContainerRef"
                     >
                         <div class="pt-2 font-semibold" @click="searchProduct(searchTerm)">Search for: {{ searchTerm }}</div>
                         <li class="hover:text-primary-500" v-for="(item, index) in filteredSuggestions" :key="index" @click="searchProduct(item.category)">{{ item.value }}</li>
@@ -75,11 +76,11 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, useTemplateRef } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import searchSuggestions from '@/assets/js/searchSuggestions'
 import { useSearchStore } from '@/stores/searchStore'
-
+import { onClickOutside } from '@vueuse/core'
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
 import NavLinks from '@/components/NavLinks.vue'
 
@@ -87,11 +88,13 @@ const router = useRouter()
 const route = useRoute()
 const isMobileNavOpen = ref(false)
 const searchTerm = ref('')
-const isSearching = computed(() => searchTerm.value ? true : false)
+const isSearching = ref(false)
+const searchStore = useSearchStore()
+const searchResultsContainerRef = useTemplateRef('searchResultsContainerRef')
+
 const filteredSuggestions = computed(() => {
     return searchSuggestions.filter((suggestion) => suggestion.value.includes(searchTerm.value.toLowerCase()) || suggestion.category.includes(searchTerm.value.toLowerCase()))
 })
-const searchStore = useSearchStore()
 
 const toggleMobileNav = () => {
     isMobileNavOpen.value = !isMobileNavOpen.value
@@ -103,10 +106,18 @@ const searchProduct = (q) => {
 }
 
 watch(route, () => {
-    if (isMobileNavOpen.value) {
-        isMobileNavOpen.value = false
+    isMobileNavOpen.value = false
+})
+
+watch(searchTerm, () => {
+    if (searchTerm.value) {
+        isSearching.value = true
+    } else {
+        isSearching.value = false
     }
 })
+
+onClickOutside(searchResultsContainerRef, event => isSearching.value = false)
 </script>
 
 <style scoped></style>
