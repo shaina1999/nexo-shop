@@ -78,7 +78,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import searchSuggestions from '@/assets/searchSuggestions'
+import searchSuggestions from '@/assets/js/searchSuggestions'
 
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
 import NavLinks from '@/components/NavLinks.vue'

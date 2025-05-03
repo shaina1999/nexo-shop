@@ -1,4 +1,4 @@
-import './assets/main.css'
+import './assets/css/main.css'
 import '@fontsource/poppins';
 
 import { createApp } from 'vue'
