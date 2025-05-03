@@ -49,7 +49,7 @@
                         :class="{ 'flex' : isSearching, 'hidden' : !isSearching }"
                     >
                         <div class="pt-2 font-semibold" @click="searchProduct(searchTerm)">Search for: {{ searchTerm }}</div>
-                        <li class="hover:text-primary-500" v-for="(item, index) in filteredSuggestions" :key="index" @click="searchProduct(item)">{{ item }}</li>
+                        <li class="hover:text-primary-500" v-for="(item, index) in filteredSuggestions" :key="index" @click="searchProduct(item)">{{ item.value }}</li>
                     </ul>
                 </div>
                 <RouterLink to="/wishlist"><PhHeart :size="26" /></RouterLink>
@@ -87,7 +87,7 @@ const isMobileNavOpen = ref(false)
 const searchTerm = ref('')
 const isSearching = computed(() => searchTerm.value ? true : false)
 const filteredSuggestions = computed(() => {
-    return searchSuggestions.filter((suggestion) => suggestion.includes(searchTerm.value.toLowerCase()))
+    return searchSuggestions.filter((suggestion) => suggestion.value.includes(searchTerm.value.toLowerCase()) || suggestion.category.includes(searchTerm.value.toLowerCase()))
 })
 
 const toggleMobileNav = () => {
