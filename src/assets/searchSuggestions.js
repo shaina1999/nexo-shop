@@ -70,3 +70,5 @@ const searchSuggestions = [
   "Hand blenders and electric mixers",
   "Kitchen sieves and strainers"
 ];
+
+export default searchSuggestions;
