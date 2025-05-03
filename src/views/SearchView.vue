@@ -1,20 +1,29 @@
 <template>
-    <div>Search</div>
+    <ul>
+        <li v-for="(product, index) in searchResult" :key="product.id">{{ product.title }}</li>
+    </ul>
 </template>
 
 <script setup>
-import { watch, onMounted } from 'vue';
+import { watch, watchEffect, computed, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
+import { useFetch } from '@/composables/fetch'
 
 const router = useRouter()
 const route = useRoute()
+const { data, error, isLoading, fetchNow } = useFetch()
+const searchResult = ref([])
 
-watch(route, () => {
-  console.log(route.query)
+const searchQuery = computed(() => {
+  return route.query?.q || ''
 })
 
-onMounted(() => {
-  console.log(route.query)
+watch(data, (newVal) => {
+  searchResult.value = newVal?.products || []
+})
+
+watchEffect(() => {
+  fetchNow(`/products/search?q=${searchQuery.value}`)
 })
 </script>
 
