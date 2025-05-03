@@ -1,6 +1,6 @@
 <template>
     <ul>
-        <li v-for="(product, index) in searchResult" :key="product.id">{{ product.title }}</li>
+        <li v-for="product in searchResult" :key="product.id">{{ product.title }}</li>
     </ul>
 </template>
 
