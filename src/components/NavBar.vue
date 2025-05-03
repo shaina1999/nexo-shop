@@ -79,7 +79,6 @@
 import { computed, ref, watch, useTemplateRef } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import searchSuggestions from '@/assets/js/searchSuggestions'
-import { useSearchStore } from '@/stores/searchStore'
 import { onClickOutside } from '@vueuse/core'
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
 import NavLinks from '@/components/NavLinks.vue'
@@ -89,7 +88,6 @@ const route = useRoute()
 const isMobileNavOpen = ref(false)
 const searchTerm = ref('')
 const isSearching = ref(false)
-const searchStore = useSearchStore()
 const searchResultsContainerRef = useTemplateRef('searchResultsContainerRef')
 
 const filteredSuggestions = computed(() => {
@@ -101,7 +99,7 @@ const toggleMobileNav = () => {
 }
 
 const searchProduct = (q) => {
-    searchStore.setSearchQuery(q)
+    isSearching.value = false
     router.push('/products')
 }
 
