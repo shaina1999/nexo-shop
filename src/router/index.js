@@ -4,13 +4,13 @@ import 'nprogress/nprogress.css'
 
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
-import ProductsView from '@/views/ProductsView.vue'
+import SearchView from '@/views/SearchView.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
 const routes = [
-  { path: '/', component: LoginView },
-  { path: '/home', component: HomeView },
-  { path: '/products', component: ProductsView },
+  { path: '/', name:'home', component: LoginView },
+  { path: '/home', name:'home', component: HomeView },
+  { path: '/search', name:'search', component: SearchView },
   { path: '/:pathMatch(.*)', component: NotFoundComponent }
 ]
 

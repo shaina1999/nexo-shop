@@ -50,7 +50,7 @@
                         ref="searchResultsContainerRef"
                     >
                         <div class="pt-2 font-semibold" @click="searchProduct(searchTerm)">Search for: {{ searchTerm }}</div>
-                        <li class="hover:text-primary-500" v-for="(item, index) in filteredSuggestions" :key="index" @click="searchProduct(item.category)">{{ item.value }}</li>
+                        <li class="hover:text-primary-500" v-for="(item, index) in filteredSuggestions" :key="index" @click="searchProduct(item)">{{ item.value }}</li>
                     </ul>
                 </div>
                 <RouterLink to="/wishlist"><PhHeart :size="26" /></RouterLink>
@@ -98,9 +98,9 @@ const toggleMobileNav = () => {
     isMobileNavOpen.value = !isMobileNavOpen.value
 }
 
-const searchProduct = (q) => {
+const searchProduct = (item) => {
     isSearching.value = false
-    router.push('/products')
+    router.push({ path: '/search', query: { q: item.value, key: item.category } })
 }
 
 watch(route, () => {
