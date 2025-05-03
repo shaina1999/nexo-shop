@@ -28,6 +28,7 @@
                         placeholder="What are you looking for?"
                         class="outline-none :focus-visible:outline-none focus-within:outline-none w-full lg:w-max text-sm lg:text-base"
                         v-model="searchTerm"
+                        @keyup.enter="searchProduct(null, searchTerm)"
                     >
                     <BaseButtonIcon 
                         :class="{ 'hidden' : isSearching, 'block' : !isSearching }"
