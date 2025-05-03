@@ -22,3 +22,15 @@ body {
   background-color: var(--color-primary-500) !important;
   height: 3px !important;
 }
+
+.skeleton-loader {
+  background-color: #f0f0f0;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+  border-radius: 4px;
+}
+
+@keyframes skeleton-loading {
+  0% { background-color: #f0f0f0; }
+  50% { background-color: #e0e0e0; }
+  100% { background-color: #f0f0f0; }
+}
