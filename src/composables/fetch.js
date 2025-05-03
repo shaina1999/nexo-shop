@@ -1,36 +1,34 @@
-import { ref, watchEffect, toValue } from 'vue'
-import { API_BASE_URL } from '@/config';
+import { ref, toValue } from 'vue'
+import { API_BASE_URL } from '@/config'
 
 export function useFetch(url) {
   const data = ref(null)
   const error = ref(null)
   const isLoading = ref(false)
 
-  const fetchData = async () => {
-    const fullUrl = API_BASE_URL + toValue(url)
-    
+  const fetchNow = async () => {
+    const resolvedUrl = toValue(url)
+    if (!resolvedUrl) return
+
+    const fullUrl = API_BASE_URL + resolvedUrl
+
     data.value = null
     error.value = null
     isLoading.value = true
 
     try {
-      const response = await fetch(fullUrl);
+      const response = await fetch(fullUrl)
       if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
+        throw new Error(`Request failed with status ${response.status}`)
       }
-
-      const json = await response.json();
+      const json = await response.json()
       data.value = json
-    } catch (error) {
-      error.value = error
+    } catch (err) {
+      error.value = err
     } finally {
       isLoading.value = false
     }
   }
 
-  watchEffect(() => {
-    fetchData()
-  })
-
-  return { data, error, isLoading }
+  return { data, error, isLoading, fetchNow }
 }
