@@ -49,7 +49,7 @@
                         :class="{ 'flex' : isSearching, 'hidden' : !isSearching }"
                     >
                         <div class="pt-2 font-semibold" @click="searchProduct(searchTerm)">Search for: {{ searchTerm }}</div>
-                        <li class="hover:text-primary-500" v-for="(item, index) in filteredSuggestions" :key="index" @click="searchProduct(item)">{{ item.value }}</li>
+                        <li class="hover:text-primary-500" v-for="(item, index) in filteredSuggestions" :key="index" @click="searchProduct(item.category)">{{ item.value }}</li>
                     </ul>
                 </div>
                 <RouterLink to="/wishlist"><PhHeart :size="26" /></RouterLink>
@@ -76,26 +76,30 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import searchSuggestions from '@/assets/js/searchSuggestions'
+import { useSearchStore } from '@/stores/searchStore'
 
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
 import NavLinks from '@/components/NavLinks.vue'
 
-const route = useRoute() // Use this to access the current route
+const router = useRouter()
+const route = useRoute()
 const isMobileNavOpen = ref(false)
 const searchTerm = ref('')
 const isSearching = computed(() => searchTerm.value ? true : false)
 const filteredSuggestions = computed(() => {
     return searchSuggestions.filter((suggestion) => suggestion.value.includes(searchTerm.value.toLowerCase()) || suggestion.category.includes(searchTerm.value.toLowerCase()))
 })
+const searchStore = useSearchStore()
 
 const toggleMobileNav = () => {
     isMobileNavOpen.value = !isMobileNavOpen.value
 }
 
-const searchProduct = (item) => {
-    alert(item)
+const searchProduct = (q) => {
+    searchStore.setSearchTerm(q)
+    router.push('/products')
 }
 
 watch(route, () => {
