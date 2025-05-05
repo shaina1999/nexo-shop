@@ -101,6 +101,7 @@ const toggleMobileNav = () => {
 
 const searchProduct = (item, q) => {
     isSearching.value = false;
+    filteredSuggestions.value = [] // Reset filtered search suggestions
 
     const query = item?.value
         ? { q: item.value, key: item.category ?? '' }
@@ -134,6 +135,9 @@ const showSuggestions = () => {
 
 watch(route, () => {
     isMobileNavOpen.value = false
+
+    // Update the searchTerm based on the query parameter from the route
+    searchTerm.value = route.query?.q || ''
 })
 
 watch(searchTerm, () => {
