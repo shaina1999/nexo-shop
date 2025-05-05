@@ -15,28 +15,20 @@
                     <span class="inline-block">{{ selectedLanguageStr }}</span>
                     <PhCaretDown :size="20" />
                 </button>
-                <ul 
+                <div 
                     class="text-sm bg-black absolute py-3 px-4 flex flex-col gap-y-3 rounded-sm text-white top-10 right-0 z-10"
                     :class="{ 'hidden': !showDropdown, 'block' : showDropdown }"
                 >
-                    <li 
-                        tabindex="0" 
+                    <button 
                         class="relative flex items-center gap-2 hover:underline"
-                        :class="{ 'font-bold' : languageOption.active }"
+                        :class="{  'font-semibold' : languageOption.active}"
                         v-for="(languageOption, index) in languageOptions" :key="index"
+                        @click="updateLanguage(languageOption.value)" 
                     >
                         <span>{{ languageOption.label }}</span>
                         <PhCheck :size="20" :class="{ 'hidden' : !languageOption.active }" />
-                        <input 
-                            tabindex="-1" 
-                            type="radio"
-                            :value="languageOption.value"
-                            @change="updateLanguage(languageOption.value)" 
-                            name="language" 
-                            class="opacity-0 absolute top-0 left-0 right-0 bottom-0 cursor-pointer"
-                        >
-                    </li>
-                </ul>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -57,6 +49,7 @@ const dropdownButtonRef = useTemplateRef('dropdown-button')
 const showDropdown = ref(false)
 
 const updateLanguage = (newLanguage) => {
+    console.log(newLanguage)
     selectedLanguage.value = newLanguage
 
     languageOptions.value.forEach(option => {
