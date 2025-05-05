@@ -12,7 +12,10 @@
                     @click="showDropdown = !showDropdown"
                     ref="dropdown-button"
                 >
-                    <span class="inline-block">{{ selectedLanguageStr }}</span>
+                    <div class="flex items-center">
+                        <span class="mr-1.5 inline-bloc">{{ selectedLanguageStr }}</span>
+                        <img :src="flag" :alt="flagAltTezt" class="size-5">
+                    </div>
                     <PhCaretDown :size="20" />
                 </button>
                 <div 
@@ -40,12 +43,14 @@ import { onClickOutside } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 
 const languageOptions = ref([
-    {id: 1, value: 'en', label: 'EN', active: true},
-    {id: 2, value: 'fil', label: 'FIL', active: false}
+    {id: 1, value: 'en', flag: '/src/assets/img/united-states.png', flagAltText: 'Flag of the United States',  label: 'EN', active: true},
+    {id: 2, value: 'fil', flag: '/src/assets/img/philippines.png', flagAltText: 'Flag of the Philippines',  label: 'FIL', active: false}
 ])
 
 const selectedLanguage = ref(languageOptions.value.find(opt => opt.active)?.value || null)
-const selectedLanguageStr = ref("EN")
+const selectedLanguageStr = ref('EN')
+const flag = ref('/src/assets/img/united-states.png')
+const flagAltTezt = ref('Flag of the United States')
 const dropdownButtonRef = useTemplateRef('dropdown-button')
 const showDropdown = ref(false)
 const { t, locale } = useI18n()
@@ -59,6 +64,8 @@ const updateLanguage = (newLanguage) => {
 
         if (option.active) {
             selectedLanguageStr.value = option.label
+            flag.value = option.flag
+            flagAltTezt.value = option.flagAltText
         }
     })
 }
