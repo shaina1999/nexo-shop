@@ -20,6 +20,7 @@
                     :class="{ 'hidden': !showDropdown, 'block' : showDropdown }"
                 >
                     <li 
+                        tabindex="0" 
                         class="relative flex items-center gap-2 hover:underline"
                         :class="{ 'font-bold' : languageOption.active }"
                         v-for="(languageOption, index) in languageOptions" :key="index"
@@ -27,6 +28,7 @@
                         <span>{{ languageOption.label }}</span>
                         <PhCheck :size="20" :class="{ 'hidden' : !languageOption.active }" />
                         <input 
+                            tabindex="-1" 
                             type="radio"
                             :value="languageOption.value"
                             @change="updateLanguage(languageOption.value)" 

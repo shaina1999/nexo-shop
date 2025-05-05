@@ -46,7 +46,7 @@
                         <li 
                             ref="focusableItemRef"
                             class="hover:text-primary-500 focus-within:outline-none focus-visible:outline-none focus-within:text-primary-500 focus-visible:text-primary-500" 
-                            tabindex="1" 
+                            tabindex="0" 
                             v-for="(item, index) in filteredSuggestions" 
                             :key="index" @keyup.enter="searchProduct(item, null)" 
                             @click="searchProduct(item, null)"
