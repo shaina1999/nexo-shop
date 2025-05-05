@@ -37,6 +37,7 @@
                         </template>
                     </BaseButtonIcon>
                     <ul 
+                        v-if="filteredSuggestions.length"
                         class="absolute w-full h-max top-[42px] bg-white right-0 py-2 px-4 border-t-[1px] border-t-white shadow-md flex-col gap-4 cursor-pointer max-h-[300px] md:max-h-[500px] overflow-y-scroll"
                         :class="{ 'flex' : isSearching, 'hidden' : !isSearching }"
                         ref="searchResultsContainerRef"
@@ -93,7 +94,7 @@ const searchResultsContainerRef = useTemplateRef('searchResultsContainerRef')
 const focusableItemsRef = useTemplateRef('focusableItemRef')
 
 const filteredSuggestions = computed(() => {
-    return searchSuggestions.filter((suggestion) => suggestion.value.includes(searchTerm.value.toLowerCase()) || suggestion.category.includes(searchTerm.value.toLowerCase()))
+    return searchSuggestions.filter((suggestion) => suggestion.value.includes(searchTerm.value.split(" ") || suggestion.category.includes(searchTerm.value.toLowerCase()))
 })
 
 const toggleMobileNav = () => {
