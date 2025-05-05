@@ -30,6 +30,7 @@
                         v-model="searchTerm"
                         @keyup.enter="searchProduct(null, searchTerm)"
                         @keydown="handleArrowKey(0, $event)"
+                        @input="showSuggestions"
                     >
                     <BaseButtonIcon @click="searchProduct(null, searchTerm)">
                         <template v-slot:icon>
@@ -92,17 +93,7 @@ const searchTerm = ref('')
 const isSearching = ref(false)
 const searchResultsContainerRef = useTemplateRef('searchResultsContainerRef')
 const focusableItemsRef = useTemplateRef('focusableItemRef')
-
-const filteredSuggestions = computed(() => {
-    const term = searchTerm.value.trim()
-    if (!term) return []
-
-    const regex = new RegExp(`^${term}`, 'i')
-
-    return searchSuggestions.filter((suggestion) =>
-        regex.test(suggestion.value) || regex.test(suggestion.category)
-    ).slice(0, 10)
-})
+const filteredSuggestions = ref([])
 
 const toggleMobileNav = () => {
     isMobileNavOpen.value = !isMobileNavOpen.value
@@ -128,6 +119,17 @@ const handleArrowKey = (index, event) => {
         const prev = focusableItemsRef.value[index - 1]
         if (prev) prev.focus()
     }
+}
+
+const showSuggestions = () => {
+    const term = searchTerm.value.trim()
+    if (!term) return []
+
+    const regex = new RegExp(`^${term}`, 'i')
+
+    filteredSuggestions.value = searchSuggestions.filter((suggestion) =>
+        regex.test(suggestion.value) || regex.test(suggestion.category)
+    ).slice(0, 10)
 }
 
 watch(route, () => {
