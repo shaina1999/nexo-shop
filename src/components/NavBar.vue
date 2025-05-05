@@ -29,20 +29,11 @@
                         class="outline-none :focus-visible:outline-none focus-within:outline-none w-full lg:w-max text-sm lg:text-base"
                         v-model="searchTerm"
                         @keyup.enter="searchProduct(null, searchTerm)"
+                        @keydown="handleArrowKey(0, $event)"
                     >
-                    <BaseButtonIcon 
-                        :class="{ 'hidden' : isSearching, 'block' : !isSearching }"
-                    >
+                    <BaseButtonIcon @click="searchProduct(null, searchTerm)">
                         <template v-slot:icon>
                             <PhMagnifyingGlass :size="22" />
-                        </template>
-                    </BaseButtonIcon>
-                    <BaseButtonIcon 
-                        :class="{ 'hidden' : !isSearching, 'block' : isSearching }"
-                        @click="searchTerm = ''"
-                    >
-                        <template v-slot:icon>
-                            <PhX :size="22" />
                         </template>
                     </BaseButtonIcon>
                     <ul 
@@ -50,13 +41,14 @@
                         :class="{ 'flex' : isSearching, 'hidden' : !isSearching }"
                         ref="searchResultsContainerRef"
                     >
-                        <div class="pt-2 font-semibold" tabindex="0" @click="searchProduct(null, searchTerm)">Search for: {{ searchTerm }}</div>
                         <li 
-                            class="hover:text-primary-500" 
-                            tabindex="0" 
+                            ref="focusableItemRef"
+                            class="hover:text-primary-500 focus-within:outline-none focus-visible:outline-none focus-within:text-primary-500 focus-visible:text-primary-500" 
+                            tabindex="1" 
                             v-for="(item, index) in filteredSuggestions" 
                             :key="index" @keyup.enter="searchProduct(item, null)" 
                             @click="searchProduct(item, null)"
+                            @keydown="handleArrowKey($event.key === 'ArrowDown' ? index + 1 : index, $event)"
                         >
                             {{ item.value }}
                         </li>
@@ -98,6 +90,7 @@ const isMobileNavOpen = ref(false)
 const searchTerm = ref('')
 const isSearching = ref(false)
 const searchResultsContainerRef = useTemplateRef('searchResultsContainerRef')
+const focusableItemsRef = useTemplateRef('focusableItemRef')
 
 const filteredSuggestions = computed(() => {
     return searchSuggestions.filter((suggestion) => suggestion.value.includes(searchTerm.value.toLowerCase()) || suggestion.category.includes(searchTerm.value.toLowerCase()))
@@ -116,6 +109,18 @@ const searchProduct = (item, q) => {
 
     router.push({ path: '/search', query });
 };
+
+const handleArrowKey = (index, event) => {
+    if (event.key === 'ArrowDown') {
+        const next = focusableItemsRef.value[index]
+        if (next) next.focus()
+    }
+
+    if (event.key === 'ArrowUp') {
+        const prev = focusableItemsRef.value[index - 1]
+        if (prev) prev.focus()
+    }
+}
 
 watch(route, () => {
     isMobileNavOpen.value = false
