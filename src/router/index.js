@@ -8,9 +8,10 @@ import SearchView from '@/views/SearchView.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
 const routes = [
-  { path: '/', name:'home', component: LoginView },
+  { path: '/', name:'home', component: HomeView },
   { path: '/home', name:'home', component: HomeView },
   { path: '/search', name:'search', component: SearchView },
+  { path: '/login', name:'login', component: LoginView },
   { path: '/:pathMatch(.*)', component: NotFoundComponent }
 ]
 
