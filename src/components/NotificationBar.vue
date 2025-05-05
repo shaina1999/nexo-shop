@@ -3,8 +3,8 @@
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl mx-auto text-white min-h-12 flex items-center justify-between gap-4 md:gap-6 py-2 md:py-0">
             <div class="hidden md:block"></div>
             <div class="text-sm">
-                <span class="inline-block mr-0 md:mr-3">Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!</span>
-                <RouterLink to="/products"><span class="font-medium underline">ShopNow</span></RouterLink>
+                <span class="inline-block mr-0 md:mr-3">{{ t('notificationBarText') }}</span>
+                <RouterLink to="/products"><span class="font-medium underline">{{ t('shopNowText') }}</span></RouterLink>
             </div>
             <div class="relative">
                 <button 
@@ -37,20 +37,22 @@
 <script setup>
 import { computed, ref, watch, useTemplateRef} from 'vue'
 import { onClickOutside } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 
 const languageOptions = ref([
-    {id: 1, value: 'english', label: 'English', active: true},
-    {id: 2, value: 'filipino', label: 'Filipino', active: false}
+    {id: 1, value: 'en', label: 'EN', active: true},
+    {id: 2, value: 'fil', label: 'FIL', active: false}
 ])
 
 const selectedLanguage = ref(languageOptions.value.find(opt => opt.active)?.value || null)
-const selectedLanguageStr = ref("English")
+const selectedLanguageStr = ref("EN")
 const dropdownButtonRef = useTemplateRef('dropdown-button')
 const showDropdown = ref(false)
+const { t, locale } = useI18n()
 
 const updateLanguage = (newLanguage) => {
-    console.log(newLanguage)
     selectedLanguage.value = newLanguage
+    locale.value = newLanguage
 
     languageOptions.value.forEach(option => {
         option.active = option.value === newLanguage
