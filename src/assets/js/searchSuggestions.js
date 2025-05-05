@@ -124,7 +124,7 @@ const searchSuggestions = [
   { "category": "skin-care", "value": "Vaseline Men Body and Face Lotion" },
   { "category": "smartphones", "value": "Mobile Phone" },
   { "category": "smartphones", "value": "Android Phone" },
-  { "category": "smartphones", "value": "Appple" },
+  { "category": "smartphones", "value": "Apple" },
   { "category": "smartphones", "value": "iPhone" },
   { "category": "smartphones", "value": "Cellphone" },
   { "category": "smartphones", "value": "Phone" },
