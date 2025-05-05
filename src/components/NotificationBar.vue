@@ -23,7 +23,7 @@
                     :class="{ 'hidden': !showDropdown, 'block' : showDropdown }"
                 >
                     <button 
-                        class="relative flex items-center gap-2 hover:underline"
+                        class="relative flex items-center gap-2 hover:underline cursor-pointer"
                         :class="{  'font-semibold' : languageOption.active}"
                         v-for="(languageOption, index) in languageOptions" :key="index"
                         @click="updateLanguage(languageOption.value)" 
