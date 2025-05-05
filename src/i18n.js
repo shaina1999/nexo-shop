@@ -1,4 +1,5 @@
 import { createI18n } from 'vue-i18n'
+const currentLang = localStorage.getItem('lang')
 
 const messages = {
   en: {
@@ -27,7 +28,7 @@ const messages = {
 
 const i18n = createI18n({
   legacy: false, // REQUIRED for Composition API support
-  locale: 'en',
+  locale: currentLang ? currentLang : 'en',
   fallbackLocale: 'en',
   messages,
 })

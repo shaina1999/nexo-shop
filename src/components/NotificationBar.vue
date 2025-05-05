@@ -6,17 +6,17 @@
                 <span class="inline-block mr-0 md:mr-3">{{ t('notificationBarText') }}</span>
                 <RouterLink to="/products"><span class="font-medium underline">{{ t('shopNowText') }}</span></RouterLink>
             </div>
-            <div class="relative">
+            <div class="relative shrink-0">
                 <button 
                     class="text-sm flex item-center gap-1 sm:gap-2 cursor-pointer"
                     @click="showDropdown = !showDropdown"
                     ref="dropdown-button"
                 >
-                    <div class="flex items-center">
+                    <div class="flex items-center shrink-0">
                         <span class="mr-1.5 inline-bloc">{{ selectedLanguageStr }}</span>
-                        <img :src="flag" :alt="flagAltTezt" class="size-5">
+                        <img :src="flag" :alt="flagAltTezt" class="size-4.5">
                     </div>
-                    <PhCaretDown :size="20" />
+                    <PhCaretDown :size="20" class="shrink-0" />
                 </button>
                 <div 
                     class="text-sm bg-black absolute py-3 px-4 flex flex-col gap-y-3 rounded-sm text-white top-10 right-0 z-10"
@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, useTemplateRef} from 'vue'
+import { computed, ref, watch, useTemplateRef, onMounted} from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 
@@ -47,7 +47,7 @@ const languageOptions = ref([
     {id: 2, value: 'fil', flag: '/src/assets/img/philippines.png', flagAltText: 'Flag of the Philippines',  label: 'FIL', active: false}
 ])
 
-const selectedLanguage = ref(languageOptions.value.find(opt => opt.active)?.value || null)
+const selectedLanguage = ref('en')
 const selectedLanguageStr = ref('EN')
 const flag = ref('/src/assets/img/united-states.png')
 const flagAltTezt = ref('Flag of the United States')
@@ -58,6 +58,7 @@ const { t, locale } = useI18n()
 const updateLanguage = (newLanguage) => {
     selectedLanguage.value = newLanguage
     locale.value = newLanguage
+    localStorage.setItem('lang', newLanguage)
 
     languageOptions.value.forEach(option => {
         option.active = option.value === newLanguage
@@ -71,6 +72,10 @@ const updateLanguage = (newLanguage) => {
 }
 
 onClickOutside(dropdownButtonRef, event => showDropdown.value = false)
+
+onMounted(() => {
+    updateLanguage(localStorage.getItem('lang') ? localStorage.getItem('lang') : 'en')
+})
 </script>
 
 <style scoped></style>
