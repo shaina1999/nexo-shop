@@ -1,7 +1,7 @@
 <template>
     <ul>
         <li v-for="(link, index) in navLinks" :key="index">
-            <RouterLink :to="link.to" activeClass="border-b-[1px] border-black"><span>{{ t(link.label) }}</span></RouterLink>
+            <RouterLink :to="link.to" activeClass="border-b-[1px] border-black" class="hover:border-primary-500 hover:text-primary-500 transition-all duration-300 ease-in-out"><span>{{ t(link.label) }}</span></RouterLink>
         </li>
     </ul>
 </template>

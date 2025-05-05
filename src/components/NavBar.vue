@@ -32,7 +32,7 @@
                         @keydown="handleArrowKey(0, $event)"
                         @input="showSuggestions"
                     >
-                    <BaseButtonIcon @click="searchProduct(null, searchTerm)">
+                    <BaseButtonIcon @click="searchProduct(null, searchTerm)" class="hover:text-primary-500 transition-all duration-300 ease-in-out">
                         <template v-slot:icon>
                             <PhMagnifyingGlass :size="22" />
                         </template>
@@ -56,8 +56,8 @@
                         </li>
                     </ul>
                 </div>
-                <RouterLink to="/wishlist"><PhHeart :size="26" /></RouterLink>
-                <RouterLink to="/cart"> <PhShoppingCart :size="26" /></RouterLink>
+                <RouterLink to="/wishlist" class="hover:text-primary-500 transition-all duration-300 ease-in-out"><PhHeart :size="26" /></RouterLink>
+                <RouterLink to="/cart" class="hover:text-primary-500 transition-all duration-300 ease-in-out"> <PhShoppingCart :size="26" /></RouterLink>
             </div>
 
             <!-- Mobile Nav -->
