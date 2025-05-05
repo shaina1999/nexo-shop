@@ -41,6 +41,8 @@
 import { computed, ref, watch, useTemplateRef, onMounted} from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
+import NProgress from 'nprogress'
+import { useRouter } from 'vue-router'
 
 const languageOptions = ref([
     {id: 1, value: 'en', flag: '/src/assets/img/united-states.png', flagAltText: 'Flag of the United States',  label: 'EN', active: true},
@@ -54,8 +56,10 @@ const flagAltTezt = ref('Flag of the United States')
 const dropdownButtonRef = useTemplateRef('dropdown-button')
 const showDropdown = ref(false)
 const { t, locale } = useI18n()
+const router = useRouter()
 
 const updateLanguage = (newLanguage) => {
+    NProgress.start()
     selectedLanguage.value = newLanguage
     locale.value = newLanguage
     localStorage.setItem('lang', newLanguage)
@@ -68,6 +72,7 @@ const updateLanguage = (newLanguage) => {
             flag.value = option.flag
             flagAltTezt.value = option.flagAltText
         }
+        NProgress.done()
     })
 }
 
