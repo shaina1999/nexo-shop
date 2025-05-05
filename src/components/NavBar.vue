@@ -94,7 +94,7 @@ const searchResultsContainerRef = useTemplateRef('searchResultsContainerRef')
 const focusableItemsRef = useTemplateRef('focusableItemRef')
 
 const filteredSuggestions = computed(() => {
-    return searchSuggestions.filter((suggestion) => suggestion.value.includes(searchTerm.value.split(" ") || suggestion.category.includes(searchTerm.value.toLowerCase()))
+    return searchSuggestions.filter((suggestion) => suggestion.value.includes(searchTerm.value.toLowerCase()) || suggestion.category.includes(searchTerm.value.toLowerCase()))
 })
 
 const toggleMobileNav = () => {
