@@ -50,8 +50,16 @@
                         :class="{ 'flex' : isSearching, 'hidden' : !isSearching }"
                         ref="searchResultsContainerRef"
                     >
-                        <div class="pt-2 font-semibold" @click="searchProduct(null, searchTerm)">Search for: {{ searchTerm }}</div>
-                        <li class="hover:text-primary-500" v-for="(item, index) in filteredSuggestions" :key="index" @click="searchProduct(item, null)">{{ item.value }}</li>
+                        <div class="pt-2 font-semibold" tabindex="0" @click="searchProduct(null, searchTerm)">Search for: {{ searchTerm }}</div>
+                        <li 
+                            class="hover:text-primary-500" 
+                            tabindex="0" 
+                            v-for="(item, index) in filteredSuggestions" 
+                            :key="index" @keyup.enter="searchProduct(item, null)" 
+                            @click="searchProduct(item, null)"
+                        >
+                            {{ item.value }}
+                        </li>
                     </ul>
                 </div>
                 <RouterLink to="/wishlist"><PhHeart :size="26" /></RouterLink>
