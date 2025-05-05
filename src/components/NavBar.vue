@@ -100,14 +100,16 @@ const toggleMobileNav = () => {
 }
 
 const searchProduct = (item, q) => {
-    isSearching.value = false;
-    filteredSuggestions.value = [] // Reset filtered search suggestions
+    if (searchTerm.value) {
+         isSearching.value = false;
+        filteredSuggestions.value = [] // Reset filtered search suggestions
 
-    const query = item?.value
-        ? { q: item.value, key: item.category ?? '' }
-        : { q: q ?? '' };
+        const query = item?.value
+            ? { q: item.value, key: item.category ?? '' }
+            : { q: q ?? '' };
 
-    router.push({ path: '/search', query });
+        router.push({ path: '/search', query });   
+    }
 };
 
 const handleArrowKey = (index, event) => {
