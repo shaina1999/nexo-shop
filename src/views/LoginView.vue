@@ -29,13 +29,22 @@
                     {{ passwordErrorMsg }}
                 </span>
             </div>
-            <div class="w-full flex items-center justify-between flex-col lg:flex-row gap-y-6">
+            <div class="w-full flex items-center justify-between flex-col lg:flex-row gap-y-6 mb-10">
                 <BaseButton class="w-full lg:w-max">Log In</BaseButton>
                 <RouterLink 
                     to="/forgot-password" 
                     class="text-secondary-500 text-base hover:underline transition-colors duration-300 ease-in-out underline-offset-6"
                 >
                     Forgot Password?
+                </RouterLink>
+            </div>
+            <div class="text-center lg:text-left">
+                Don't have an account?
+                <RouterLink 
+                    to="/sign-up" 
+                    class="text-black text-base underline underline-offset-6"
+                >
+                    Create one
                 </RouterLink>
             </div>
         </form>
