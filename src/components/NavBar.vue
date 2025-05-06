@@ -62,7 +62,7 @@
 
             <!-- Mobile Nav -->
             <Teleport to="body">
-                <div v-if="isMobileNavOpen" class="fixed top-0 right-0 w-[100vw] bg-white h-screen px-4 shadow-md">
+                <div v-if="isMobileNavOpen" class="fixed top-0 right-0 w-[100vw] bg-white h-screen px-4 shadow-md z-10">
                     <BaseButtonIcon
                         class="flex justify-end ml-auto mt-4"
                         @click="toggleMobileNav"
