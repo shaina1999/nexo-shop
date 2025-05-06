@@ -15,7 +15,7 @@
                         <BaseButton>Log In</BaseButton>
                         <RouterLink 
                             to="/forgot-password" 
-                            class="text-secondary-800 text-base hover:underline hover:text-secondary-500 transition-colors duration-300 ease-in-out underline-offset-6"
+                            class="text-secondary-500 text-base hover:underline transition-colors duration-300 ease-in-out underline-offset-6"
                         >
                             Forget Password?
                         </RouterLink>
