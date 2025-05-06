@@ -73,7 +73,7 @@ const login = () => {
     hasError.value = false
 
     if (!email.value) {
-        emailErrorMsg.value = 'This field is required.'
+        emailErrorMsg.value = 'Email or Phone Number is required.'
         hasError.value = true
     } else if (isEmail.value && !emailRegex.test(email.value)) {
         emailErrorMsg.value = 'Please enter a valid email address.'
