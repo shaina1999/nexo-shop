@@ -1,7 +1,7 @@
 <template>
     <AuthLayout :title="'Log in'" :subTitle="'Enter your details below'">
         <form @submit.prevent="login">
-            <div class="mb-10">
+            <div class="mb-6 md:mb-10">
                 <BaseAuthInput 
                     :type="'text'" 
                     :placeholder="'Email Address'" 
@@ -15,7 +15,7 @@
                     {{ emailErrorMsg }}
                 </span>
             </div>
-            <div class="mb-10">
+            <div class="mb-6 md:mb-10">
                 <BaseAuthInput 
                     :type="'password'" 
                     :placeholder="'Password'" 
@@ -29,7 +29,7 @@
                     {{ passwordErrorMsg }}
                 </span>
             </div>
-            <div class="w-full flex items-center justify-between flex-col lg:flex-row gap-y-6 mb-10">
+            <div class="w-full flex items-center justify-between flex-col lg:flex-row gap-y-6 mb-6 md:mb-10">
                 <BaseButton class="w-full lg:w-max">Log In</BaseButton>
                 <RouterLink 
                     to="/forgot-password" 

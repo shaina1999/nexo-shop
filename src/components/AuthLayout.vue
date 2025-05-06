@@ -5,10 +5,10 @@
                 <img :src="authRightImage" alt="Ecommerce illustration" class="w-full h-full object-cover login-image">
             </div>
             <div class="h-[706px] hidden lg:flex"></div>
-            <div class="w-[320px] md:w-[50%] lg:w-full mx-auto lg:mx-0 flex justify-center flex-col">
+            <div class="w-[320px] sm:w-[60%] lg:w-full mx-auto lg:mx-0 flex justify-center flex-col">
                 <div class="text-center lg:text-left">
-                    <div class="text-4xl font-medium mb-6">{{ title }}</div>
-                    <div class="text-base mb-12">{{ subTitle }}</div>
+                    <div class="text-2xl md:text-4xl font-medium mb-2.5 md:mb-6">{{ title }}</div>
+                    <div class="text-base mb-4 md:mb-12">{{ subTitle }}</div>
                 </div>
                 <slot></slot>
             </div>

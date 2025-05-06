@@ -1,7 +1,7 @@
 <template>
-    <AuthLayout :title="'Create an account'" :subTitle="'Enter your details to get started with your new account.'">
+    <AuthLayout :title="'Create account'" :subTitle="'Start by creating your account.'">
         <form @submit.prevent="login">
-             <div class="mb-10">
+             <div class="mb-6 md:mb-10">
                 <BaseAuthInput 
                     :type="'text'" 
                     :placeholder="'Name'" 
@@ -15,7 +15,7 @@
                     {{ nameErrorMsg }}
                 </span>
             </div>
-            <div class="mb-10">
+            <div class="mb-6 md:mb-10">
                 <BaseAuthInput 
                     :type="'text'" 
                     :placeholder="'Email Address'" 
@@ -29,7 +29,7 @@
                     {{ emailErrorMsg }}
                 </span>
             </div>
-            <div class="mb-10">
+            <div class="mb-6 md:mb-10">
                 <BaseAuthInput 
                     :type="'password'" 
                     :placeholder="'Password'" 
@@ -43,13 +43,13 @@
                     {{ passwordErrorMsg }}
                 </span>
             </div>
-            <div class="w-full flex items-center justify-between flex-col gap-y-4 mb-10">
+            <div class="w-full flex items-center justify-between flex-col gap-y-3 mb-6 md:mb-10">
                 <BaseButton class="w-full">Create Account</BaseButton>
                 <button 
                     @click.prevent="console.log('sign up with google')"
-                    class="w-full cursor-pointer flex items-center justify-center rounded-sm gap-x-4 border-1 border-gray-300 px-10 py-3 lg:py-4 hover:bg-gray-100 transition-colors duration-300 ease-in-out"
+                    class="w-full cursor-pointer flex items-center justify-center rounded-sm gap-x-4 border-1 border-gray-300 px-10 py-2.5 lg:py-4 hover:bg-gray-100 transition-colors duration-300 ease-in-out"
                 >
-                    <img :src="googleIcon" alt="Google Logo" class="size-6">
+                    <img :src="googleIcon" alt="Google Logo" class="size-5 md:size-6">
                     <span class="text-black">Sign up with Google</span>
                 </button>
             </div>
