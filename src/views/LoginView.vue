@@ -11,16 +11,32 @@
                     <div class="text-base mb-12">Enter your details below</div>
                 </div>
                 <form @submit.prevent="login">
-                    <BaseAuthInput 
-                        :type="'text'" 
-                        :placeholder="'Email or Phone Number'" 
-                        v-model="email"
-                    />
-                    <BaseAuthInput 
-                        :type="'password'" 
-                        :placeholder="'Password'" 
-                        v-model="password"
-                    />
+                    <div class="mb-10">
+                        <BaseAuthInput 
+                            :type="'text'" 
+                            :placeholder="'Email or Phone Number'" 
+                            v-model="email"
+                        />
+                        <span 
+                            class="text-red-500 flex" 
+                            :class="{ 'mt-1' : emailErrorMsg.length, 'mt-0' : !emailErrorMsg.length }"
+                        >
+                            {{ emailErrorMsg }}
+                        </span>
+                    </div>
+                    <div class="mb-10">
+                        <BaseAuthInput 
+                            :type="'password'" 
+                            :placeholder="'Password'" 
+                            v-model="password"
+                        />
+                        <span 
+                            class="text-red-500 flex" 
+                            :class="{ 'mt-1' : passwordErrorMsg.length, 'mt-0' : !passwordErrorMsg.length }"
+                        >
+                            {{ passwordErrorMsg }}
+                        </span>
+                    </div>
                     <div class="w-full flex items-center justify-between flex-col lg:flex-row gap-y-6">
                         <BaseButton class="w-full lg:w-max">Log In</BaseButton>
                         <RouterLink 
@@ -37,19 +53,45 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 import authRightImage from '@/assets/img/login-signup-image.png'
 
 const email = ref('')
 const password = ref('')
+const emailErrorMsg = ref('')
+const passwordErrorMsg = ref('')
+const emailRegex = new RegExp(/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/gm)
+const numberRegex = new RegExp(/^[0-9]+$/)
+const isEmail = computed(() => !numberRegex.test(email.value))
 
 const login = () => {
-    console.log(email.value)
-    console.log(password.value)
-    // 1. Validate user input and show error if needed
-    // 2. Submit the input
+    if (!email.value) {
+        emailErrorMsg.value = 'This field is required.';
+        return;
+    }
+
+    if (isEmail.value) {
+        if (!emailRegex.test(email.value)) {
+            emailErrorMsg.value = 'Please enter a valid email address.';
+            return;
+        }
+    } else {
+        if (!/^[0-9]{11}$/.test(email.value)) {
+            emailErrorMsg.value = 'Phone number must be exactly 11 digits.';
+            return;
+        }
+    }
+
+    emailErrorMsg.value = '';
+
+    if (!password.value) {
+        passwordErrorMsg.value = 'Password is required.';
+        return;
+    } else {
+        passwordErrorMsg.value = '';
+    }
 }
 </script>
 
