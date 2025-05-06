@@ -6,14 +6,16 @@
             </div>
             <div class="h-[706px] hidden lg:flex"></div>
             <div class="w-full flex justify-center flex-col">
-                <div>Log in to Exclusive</div>
-                <div>Enter your details below</div>
+                <div class="text-4xl font-medium mb-6">Log in</div>
+                <div class="text-base mb-12">Enter your details below</div>
                 <form>
-                    <input type="text" placeholder="Email or Phone Number">
-                    <input type="password" placeholder="Password">
-                    <div>
+                    <input type="text" placeholder="Email or Phone Number" class="w-full outline-none border-b-[1px] border-b-gray-500 py-1 mb-10">
+                    <input type="password" placeholder="Password" class="w-full outline-none border-b-[1px] border-b-gray-500 py-1 mb-10">
+                    <div class="w-full flex items-center justify-between">
                         <button>Submit</button>
-                        <div>Forgot Password?</div>
+                        <RouterLink to="/forgot-password" class="text-primary-500 text-base">
+                            Forget Password?
+                        </RouterLink>
                     </div>
                 </form>
             </div>
