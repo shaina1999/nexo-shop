@@ -13,7 +13,10 @@
                     <input type="password" placeholder="Password" class="w-full outline-none border-b-[1px] border-b-gray-500 py-1 mb-10">
                     <div class="w-full flex items-center justify-between">
                         <BaseButton>Log In</BaseButton>
-                        <RouterLink to="/forgot-password" class="text-secondary-500 text-base">
+                        <RouterLink 
+                            to="/forgot-password" 
+                            class="text-secondary-800 text-base hover:underline hover:text-secondary-500 transition-colors duration-300 ease-in-out underline-offset-6"
+                        >
                             Forget Password?
                         </RouterLink>
                     </div>
