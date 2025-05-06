@@ -13,7 +13,7 @@ const headerHeight = computed(() => windowWidth.value > 1024 ? 97 : 118)
 </script>
 
 <template>
-    <div class="fixed top-0 left-0 right-0">
+    <div class="fixed top-0 left-0 right-0 z-[1]">
         <NotificationBar ref="notificationBarRef" />
         <Header />
     </div>
