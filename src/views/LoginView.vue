@@ -9,7 +9,7 @@
                 <div class="text-4xl font-medium mb-6">Log in</div>
                 <div class="text-base mb-12">Enter your details below</div>
                 <form>
-                    <input type="text" placeholder="Email or Phone Number" class="w-full outline-none border-b-[1px] border-b-gray-500 py-1 mb-10">
+                    <BaseAuthInput />
                     <input type="password" placeholder="Password" class="w-full outline-none border-b-[1px] border-b-gray-500 py-1 mb-10">
                     <div class="w-full flex items-center justify-between">
                         <BaseButton>Log In</BaseButton>
@@ -25,6 +25,7 @@
 
 <script setup>
 import BaseButton from '@/components/BaseButton.vue'
+import BaseAuthInput from '@/components/BaseAuthInput.vue'
 import authRightImage from '@/assets/img/login-signup-image.png'
 </script>
 
