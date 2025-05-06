@@ -5,9 +5,11 @@
                 <img :src="authRightImage" alt="Ecommerce illustration" class="w-full h-full object-cover login-image">
             </div>
             <div class="h-[706px] hidden lg:flex"></div>
-            <div class="w-full flex justify-center flex-col">
-                <div class="text-4xl font-medium mb-6">Log in</div>
-                <div class="text-base mb-12">Enter your details below</div>
+            <div class="w-[320px] md:w-[50%] lg:w-full mx-auto lg:mx-0 flex justify-center flex-col">
+                <div class="text-center lg:text-left">
+                    <div class="text-4xl font-medium mb-6">Log in</div>
+                    <div class="text-base mb-12">Enter your details below</div>
+                </div>
                 <form @submit.prevent="login">
                     <BaseAuthInput 
                         :type="'text'" 
@@ -19,8 +21,8 @@
                         :placeholder="'Password'" 
                         v-model="password"
                     />
-                    <div class="w-full flex items-center justify-between">
-                        <BaseButton>Log In</BaseButton>
+                    <div class="w-full flex items-center justify-between flex-col lg:flex-row gap-y-6">
+                        <BaseButton class="w-full lg:w-max">Log In</BaseButton>
                         <RouterLink 
                             to="/forgot-password" 
                             class="text-secondary-500 text-base hover:underline transition-colors duration-300 ease-in-out underline-offset-6"
