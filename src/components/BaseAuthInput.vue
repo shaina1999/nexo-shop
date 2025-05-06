@@ -1,6 +1,6 @@
 <template>
     <div 
-        class="w-full border-b-[1px] mb-10 flex items-center gap-8"
+        class="w-full border-b-[1px] flex items-center gap-8"
         :class="{ 'border-b-secondary-500' : isFocus, 'border-b-gray-500' : !isFocus }"
     >
         <input 
