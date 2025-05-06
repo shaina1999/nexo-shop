@@ -1,6 +1,6 @@
 <template>
-    <div class="bg-black">
-        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl mx-auto text-white min-h-12 flex items-center justify-between gap-4 md:gap-6 py-2 md:py-0">
+    <div class="bg-black w-full flex items-center justify-center">
+        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl text-white min-h-12 flex items-center justify-between gap-4 md:gap-6 py-2 md:py-0">
             <div class="hidden md:block"></div>
             <div class="text-sm">
                 <span class="inline-block mr-0 md:mr-3">{{ t('notificationBarText') }}</span>
