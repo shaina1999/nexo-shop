@@ -3,7 +3,15 @@
         class="w-full border-b-[1px] mb-10 flex items-center gap-8"
         :class="{ 'border-b-secondary-500' : isFocus, 'border-b-gray-500' : !isFocus }"
     >
-        <input :type="inputType" :placeholder="placeholder" class="w-full outline-none py-1" @focusin="focusInEvent" @focusout="focusOutEvent">
+        <input 
+            :type="inputType" 
+            :placeholder="placeholder" 
+            class="w-full outline-none py-1" 
+            @focusin="focusInEvent" 
+            @focusout="focusOutEvent"
+            :value="modelValue"
+            @input="$emit('update:modelValue', $event.target.value)"
+        >
         <div v-if="props.type === 'password'">
             <button class="cursor-pointer" @click.prevent="togglePasswordVisibility">
                 <PhEye :size="22" :class="{ 'hidden' : showPassword, 'block' : !showPassword }" />
@@ -16,7 +24,10 @@
 <script setup>
 import { ref, computed } from 'vue'
 
+const emit = defineEmits(['update:modelValue'])
+
 const props = defineProps({
+    modelValue: String,
     type: {
         type: String,
         default: 'text'

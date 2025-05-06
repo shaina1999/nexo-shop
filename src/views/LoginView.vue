@@ -8,14 +8,16 @@
             <div class="w-full flex justify-center flex-col">
                 <div class="text-4xl font-medium mb-6">Log in</div>
                 <div class="text-base mb-12">Enter your details below</div>
-                <form>
+                <form @submit.prevent="login">
                     <BaseAuthInput 
                         :type="'text'" 
                         :placeholder="'Email or Phone Number'" 
+                        v-model="email"
                     />
                     <BaseAuthInput 
                         :type="'password'" 
                         :placeholder="'Password'" 
+                        v-model="password"
                     />
                     <div class="w-full flex items-center justify-between">
                         <BaseButton>Log In</BaseButton>
@@ -33,9 +35,20 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 import authRightImage from '@/assets/img/login-signup-image.png'
+
+const email = ref('')
+const password = ref('')
+
+const login = () => {
+    console.log(email.value)
+    console.log(password.value)
+    // 1. Validate user input and show error if needed
+    // 2. Submit the input
+}
 </script>
 
 <style scoped></style>
