@@ -11,7 +11,9 @@
 */
 @theme {
   --color-gray-200: #F5F5F5;
+  --color-secondary-300: #E07575;
   --color-secondary-500: #DB4444;
+  --color-placeholder: #A0A3BD;
 }
 
 body {
@@ -39,4 +41,8 @@ body {
   .login-image {
     object-fit: fill;
   }
+}
+
+input::placeholder, textarea:::placeholder{
+  color: var(--color-placeholder)
 }
