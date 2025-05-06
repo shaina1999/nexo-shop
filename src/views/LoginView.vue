@@ -4,7 +4,7 @@
             <div class="mb-10">
                 <BaseAuthInput 
                     :type="'text'" 
-                    :placeholder="'Email or Phone Number'" 
+                    :placeholder="'Email Address'" 
                     v-model="email"
                     @update:model-value="emailErrorMsg = ''"
                 />
@@ -62,21 +62,16 @@ const password = ref('')
 const emailErrorMsg = ref('')
 const passwordErrorMsg = ref('')
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const numberRegex = /^[0-9]+$/
-const isEmail = computed(() => !numberRegex.test(email.value))
 
 const login = () => {
     const hasError = ref(false)
     hasError.value = false
 
     if (!email.value) {
-        emailErrorMsg.value = 'Email or Phone Number is required.'
+        emailErrorMsg.value = 'Email Address is required.'
         hasError.value = true
-    } else if (isEmail.value && !emailRegex.test(email.value)) {
+    } else if (!emailRegex.test(email.value)) {
         emailErrorMsg.value = 'Please enter a valid email address.'
-        hasError.value = true
-    } else if (!isEmail.value && !/^[0-9]{11}$/.test(email.value)) {
-        emailErrorMsg.value = 'Phone number must be exactly 11 digits.'
         hasError.value = true
     } else {
         emailErrorMsg.value = ''
