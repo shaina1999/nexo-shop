@@ -16,6 +16,7 @@
                             :type="'text'" 
                             :placeholder="'Email or Phone Number'" 
                             v-model="email"
+                            @update:model-value="emailErrorMsg = ''"
                         />
                         <span 
                             class="text-red-500 flex" 
@@ -29,6 +30,7 @@
                             :type="'password'" 
                             :placeholder="'Password'" 
                             v-model="password"
+                            @update:model-value="passwordErrorMsg = ''"
                         />
                         <span 
                             class="text-red-500 flex" 
@@ -62,35 +64,36 @@ const email = ref('')
 const password = ref('')
 const emailErrorMsg = ref('')
 const passwordErrorMsg = ref('')
-const emailRegex = new RegExp(/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/gm)
-const numberRegex = new RegExp(/^[0-9]+$/)
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const numberRegex = /^[0-9]+$/
 const isEmail = computed(() => !numberRegex.test(email.value))
 
 const login = () => {
+    const hasError = ref(false)
+    hasError.value = false
+
     if (!email.value) {
-        emailErrorMsg.value = 'This field is required.';
-        return;
-    }
-
-    if (isEmail.value) {
-        if (!emailRegex.test(email.value)) {
-            emailErrorMsg.value = 'Please enter a valid email address.';
-            return;
-        }
+        emailErrorMsg.value = 'This field is required.'
+        hasError.value = true
+    } else if (isEmail.value && !emailRegex.test(email.value)) {
+        emailErrorMsg.value = 'Please enter a valid email address.'
+        hasError.value = true
+    } else if (!isEmail.value && !/^[0-9]{11}$/.test(email.value)) {
+        emailErrorMsg.value = 'Phone number must be exactly 11 digits.'
+        hasError.value = true
     } else {
-        if (!/^[0-9]{11}$/.test(email.value)) {
-            emailErrorMsg.value = 'Phone number must be exactly 11 digits.';
-            return;
-        }
+        emailErrorMsg.value = ''
     }
-
-    emailErrorMsg.value = '';
 
     if (!password.value) {
-        passwordErrorMsg.value = 'Password is required.';
-        return;
+        passwordErrorMsg.value = 'Password is required.'
+        hasError.value = true
     } else {
-        passwordErrorMsg.value = '';
+        passwordErrorMsg.value = ''
+    }
+
+    if (!hasError.value) {
+        console.log('logging in....', hasError.value)
     }
 }
 </script>
