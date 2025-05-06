@@ -1,16 +1,38 @@
 <template>
     <div 
-        class="w-full border-b-[1px] mb-10"
+        class="w-full border-b-[1px] mb-10 flex items-center gap-8"
         :class="{ 'border-b-secondary-500' : isFocus, 'border-b-gray-500' : !isFocus }"
     >
-        <input type="text" placeholder="Email or Phone Number" class="w-full outline-none py-1" @focusin="focusInEvent" @focusout="focusOutEvent">
+        <input :type="inputType" :placeholder="placeholder" class="w-full outline-none py-1" @focusin="focusInEvent" @focusout="focusOutEvent">
+        <div v-if="props.type === 'password'">
+            <button class="cursor-pointer" @click.prevent="togglePasswordVisibility">
+                <PhEye :size="22" :class="{ 'hidden' : showPassword, 'block' : !showPassword }" />
+                <PhEyeSlash :size="22" :class="{ 'block' : showPassword, 'hidden' : !showPassword }" />
+            </button>
+        </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+
+const props = defineProps({
+    type: {
+        type: String,
+        default: 'text'
+    },
+    placeholder: String
+})
 
 const isFocus = ref(false)
+const showPassword = ref(false)
+
+const inputType = computed(() => {
+  if (props.type === 'password') {
+    return showPassword.value ? 'text' : 'password'
+  }
+  return props.type
+})
 
 const focusInEvent = () => {
     isFocus.value = true
@@ -18,6 +40,12 @@ const focusInEvent = () => {
 
 const focusOutEvent = () => {
     isFocus.value = false
+}
+
+const togglePasswordVisibility = () => {
+  if (props.type === 'password') {
+    showPassword.value = !showPassword.value
+  }
 }
 </script>
 
