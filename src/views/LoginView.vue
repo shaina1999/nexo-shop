@@ -35,7 +35,7 @@
                     to="/forgot-password" 
                     class="text-secondary-500 text-base hover:underline transition-colors duration-300 ease-in-out underline-offset-6"
                 >
-                    Forget Password?
+                    Forgot Password?
                 </RouterLink>
             </div>
         </form>
