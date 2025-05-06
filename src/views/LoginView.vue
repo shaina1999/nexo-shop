@@ -12,7 +12,7 @@
                     <input type="text" placeholder="Email or Phone Number" class="w-full outline-none border-b-[1px] border-b-gray-500 py-1 mb-10">
                     <input type="password" placeholder="Password" class="w-full outline-none border-b-[1px] border-b-gray-500 py-1 mb-10">
                     <div class="w-full flex items-center justify-between">
-                        <button>Submit</button>
+                        <BaseButton>Log In</BaseButton>
                         <RouterLink to="/forgot-password" class="text-primary-500 text-base">
                             Forget Password?
                         </RouterLink>
@@ -24,6 +24,7 @@
 </template>
 
 <script setup>
+import BaseButton from '@/components/BaseButton.vue'
 import authRightImage from '@/assets/img/login-signup-image.png'
 </script>
 
