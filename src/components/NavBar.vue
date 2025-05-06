@@ -32,7 +32,7 @@
                         @keydown="handleArrowKey(0, $event)"
                         @input="showSuggestions"
                     >
-                    <BaseButtonIcon @click="searchProduct(null, searchTerm)" class="hover:text-primary-500 transition-all duration-300 ease-in-out">
+                    <BaseButtonIcon @click="searchProduct(null, searchTerm)" class="hover:text-secondary-500 transition-all duration-300 ease-in-out">
                         <template v-slot:icon>
                             <PhMagnifyingGlass :size="22" />
                         </template>
@@ -45,7 +45,7 @@
                     >
                         <li 
                             ref="focusableItemRef"
-                            class="hover:text-primary-500 focus-within:outline-none focus-visible:outline-none focus-within:text-primary-500 focus-visible:text-primary-500" 
+                            class="hover:text-secondary-500 focus-within:outline-none focus-visible:outline-none focus-within:text-secondary-500 focus-visible:text-secondary-500" 
                             tabindex="0" 
                             v-for="(item, index) in filteredSuggestions" 
                             :key="index" @keyup.enter="searchProduct(item, null)" 
@@ -56,8 +56,8 @@
                         </li>
                     </ul>
                 </div>
-                <RouterLink to="/wishlist" class="hover:text-primary-500 transition-all duration-300 ease-in-out"><PhHeart :size="26" /></RouterLink>
-                <RouterLink to="/cart" class="hover:text-primary-500 transition-all duration-300 ease-in-out"> <PhShoppingCart :size="26" /></RouterLink>
+                <RouterLink to="/wishlist" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"><PhHeart :size="26" /></RouterLink>
+                <RouterLink to="/cart" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"> <PhShoppingCart :size="26" /></RouterLink>
             </div>
 
             <!-- Mobile Nav -->
