@@ -1,10 +1,24 @@
 <template>
     <AuthLayout :title="'Create an account'" :subTitle="'Enter your details to get started with your new account.'">
         <form @submit.prevent="login">
+             <div class="mb-10">
+                <BaseAuthInput 
+                    :type="'text'" 
+                    :placeholder="'Name'" 
+                    v-model="name"
+                    @update:model-value="nameErrorMsg = ''"
+                />
+                <span 
+                    class="text-red-500 flex" 
+                    :class="{ 'mt-1' : nameErrorMsg.length, 'mt-0' : !nameErrorMsg.length }"
+                >
+                    {{ nameErrorMsg }}
+                </span>
+            </div>
             <div class="mb-10">
                 <BaseAuthInput 
                     :type="'text'" 
-                    :placeholder="'Email or Phone Number'" 
+                    :placeholder="'Email Address'" 
                     v-model="email"
                     @update:model-value="emailErrorMsg = ''"
                 />
@@ -29,16 +43,17 @@
                     {{ passwordErrorMsg }}
                 </span>
             </div>
-            <div class="w-full flex items-center justify-between flex-col lg:flex-row gap-y-6 mb-10">
-                <BaseButton class="w-full lg:w-max">Log In</BaseButton>
-                <RouterLink 
-                    to="/forgot-password" 
-                    class="text-secondary-500 text-base hover:underline transition-colors duration-300 ease-in-out underline-offset-6"
+            <div class="w-full flex items-center justify-between flex-col gap-y-4 mb-10">
+                <BaseButton class="w-full">Create Account</BaseButton>
+                <button 
+                    @click.prevent="console.log('sign up with google')"
+                    class="w-full cursor-pointer flex items-center justify-center rounded-sm gap-x-4 border-1 border-gray-300 px-10 py-3 lg:py-4 hover:bg-gray-100 transition-colors duration-300 ease-in-out"
                 >
-                    Forgot Password?
-                </RouterLink>
+                    <img :src="googleIcon" alt="Google Logo" class="size-6">
+                    <span class="text-black">Sign up with Google</span>
+                </button>
             </div>
-            <div class="text-center lg:text-left">
+            <div class="text-center">
                 Already have account?
                 <RouterLink 
                     to="/login" 
@@ -53,30 +68,35 @@
 
 <script setup>
 import { computed, ref } from 'vue'
+import googleIcon from '@/assets/img/google.png'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 import AuthLayout from '@/components/AuthLayout.vue'
 
+const name = ref('')
 const email = ref('')
 const password = ref('')
+const nameErrorMsg = ref('')
 const emailErrorMsg = ref('')
 const passwordErrorMsg = ref('')
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const numberRegex = /^[0-9]+$/
-const isEmail = computed(() => !numberRegex.test(email.value))
 
 const login = () => {
     const hasError = ref(false)
     hasError.value = false
 
+    if (!name.value) {
+        nameErrorMsg.value = 'Name is required.'
+        hasError.value = true
+    } else {
+        nameErrorMsg.value = ''
+    }
+
     if (!email.value) {
-        emailErrorMsg.value = 'Email or Phone Number is required.'
+        emailErrorMsg.value = 'Email Address is required.'
         hasError.value = true
-    } else if (isEmail.value && !emailRegex.test(email.value)) {
+    } else if (!emailRegex.test(email.value)) {
         emailErrorMsg.value = 'Please enter a valid email address.'
-        hasError.value = true
-    } else if (!isEmail.value && !/^[0-9]{11}$/.test(email.value)) {
-        emailErrorMsg.value = 'Phone number must be exactly 11 digits.'
         hasError.value = true
     } else {
         emailErrorMsg.value = ''
