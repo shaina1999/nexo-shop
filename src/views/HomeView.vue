@@ -50,8 +50,8 @@
                         </div>
                         <div class="font-semibold text-[38px]/14 mb-6">Up to 10% off Voucher</div>
                         <RouterLink class="flex items-center gap-x-2 font-medium" to="/products">
-                            <span>Shop Now</span>
-                            <PhCaretRight :size="22" />
+                            <span class="border-b-[1px] border-white text-white bg-transparent">Shop Now</span>
+                            <PhArrowRight :size="22" />
                         </RouterLink>
                     </div>
                     <img :src="heroIimage" alt="Iphone" class="w-[92%] shrink-0">
