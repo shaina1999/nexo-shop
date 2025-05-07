@@ -63,7 +63,7 @@
             <!-- Mobile Nav -->
             <Teleport to="body">
                 <div 
-                    class="fixed top-0 w-[100vw] bg-white h-screen px-4 shadow-md z-10 transition-all duration-200 ease"
+                    class="fixed top-0 w-[100vw] bg-white h-screen px-4 shadow-md z-10 transition-all duration-300 ease"
                     :class="{ 'right-[0] pointer-events-all opacity-[1]' : isMobileNavOpen, 'right-[-50%] pointer-events-none opacity-0' : !isMobileNavOpen }"
                 >
                     <BaseButtonIcon
