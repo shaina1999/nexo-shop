@@ -3,20 +3,29 @@
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl flex">
             <ul class="flex flex-col gap-y-4 border-r-1 border-r-gray-300 w-max pt-10.5 pr-4">
                 <li 
-                    v-for="(productCategory, index) in productCategories" :key="index"
+                    v-for="(productCategory, index) in productCategories" :key="productCategory.id"
                 >   
                     <div v-if="productCategory.value === 'womens-fashion' || productCategory.value === 'mens-fashion'">
                         <button 
                             class="cursor-pointer flex items-center justify-between gap-x-2 min-w-[180px] hover:text-orange-500 transition-colors duration-200 ease"
-                            @click="toggleSubCategories"
+                            @click="toggleSubCategories(index)"
                         >
                             <span>{{ productCategory.label }}</span>
                             <PhCaretRight :size="22" />
                         </button>
                         <!-- Sub Categories -->
-                        <ul class="h-0 opacity-0 pointer-events-none">
-                            <li>one</li>
-                            <li>two</li>
+                        <ul 
+                            class="transition-height duration-100 ease"
+                            :class="{ 'h-max opacity-[1] pointer-events-auto' : productCategory.isSubCategoryOpen, 'h-0 opacity-0 pointer-events-none' : !productCategory.isSubCategoryOpen }"
+                        >
+                            <li v-for="(productSubCategory, index) in productCategory.subCategories" :key="index">
+                                <RouterLink 
+                                    class="text-sm hover:text-orange-500 transition-colors duration-200 ease" 
+                                    :to="`/products?q=${productSubCategory.value}`"
+                                >
+                                    {{ productSubCategory.label }}
+                                </RouterLink>
+                            </li>
                         </ul>
                     </div>
                     <div v-else>
@@ -38,8 +47,8 @@
 import { ref } from 'vue'
 
 const productCategories = ref([
-  { id: 1, value: 'womens-fashion', label: "Women's Fashion", subCategories: [{ value: 'dresses', label: "Dresses" }, { value: 'tops-blouses', label: "Tops & Blouses" }] },
-  { id: 2, value: 'mens-fashion', label: "Men's Fashion", subCategories: [{ value: 'mens-footwear', label: "Footwear" }, { value: 'accessories', label: "Accessories" }] },
+  { id: 1, value: 'womens-fashion', label: "Women's Fashion", subCategories: [{ value: 'dresses', label: "Dresses" }, { value: 'tops-blouses', label: "Tops & Blouses" }], isSubCategoryOpen: false },
+  { id: 2, value: 'mens-fashion', label: "Men's Fashion", subCategories: [{ value: 'mens-footwear', label: "Footwear" }, { value: 'accessories', label: "Accessories" }], isSubCategoryOpen: false },
   { id: 3, value: 'electronics', label: "Electronics" },
   { id: 4, value: 'home-lifestyle', label: "Home & Lifestyle" },
   { id: 5, value: 'medicines', label: "Medicines" },
@@ -49,7 +58,8 @@ const productCategories = ref([
   { id: 9, value: 'health-beauty', label: "Health & Beauty" },
 ])
 
-const toggleSubCategories = () => {
+const toggleSubCategories = (index) => {
+    productCategories.value[index].isSubCategoryOpen = !productCategories.value[index].isSubCategoryOpen
 }
 </script>
 
