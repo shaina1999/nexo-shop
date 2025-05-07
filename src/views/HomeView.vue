@@ -11,14 +11,14 @@
                             @click="toggleSubCategories(index)"
                         >
                             <span>{{ productCategory.label }}</span>
-                            <PhCaretRight :size="22" class="transition-transform duration-300" :class="{ 'rotate-90' : productCategory.isSubCategoryOpen}" />
+                            <PhCaretRight :size="22" :class="{ 'rotate-90' : productCategory.isSubCategoryOpen}" />
                         </button>
                         <!-- Sub Categories -->
                         <ul 
-                            class="transition-all duration-300 ease overflow-hidden flex flex-col gap-y-2 pl-6"
+                            class="overflow-hidden flex flex-col gap-y-2 pl-6"
                             :class="{ 
-                                'max-h-96 pt-4' : productCategory.isSubCategoryOpen, 
-                                'max-h-0 pt-0' : !productCategory.isSubCategoryOpen 
+                                'h-max pt-4' : productCategory.isSubCategoryOpen, 
+                                'h-0 pt-0' : !productCategory.isSubCategoryOpen 
                             }"
                         >
                             <li v-for="(productSubCategory, index) in productCategory.subCategories" :key="index">
