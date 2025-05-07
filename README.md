@@ -1,29 +1,34 @@
-# nexo-shop
+# Nexo Shop - E-Commerce Website
 
-This template should help get you started developing with Vue 3 in Vite.
+Nexo Shop is a modern and responsive e-commerce website built with **Vue 3**. The design for this project is adapted from a Figma template
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- **Fully Responsive Design**: Optimized for mobile, tablet, and desktop devices to ensure a seamless user experience across all screen sizes.
+- **Product Listings**: Display products with images, product name, prices, and available quantities.
+- **Search Functionality**: Search products by name or category.
+- **Product Filtering**: Filter products by categories, price range, and other attributes to help users find exactly what they're looking for.
+- **Shopping Cart**: Add products to a cart and review the selected items before checkout.
+- **Checkout Process**: Streamlined checkout process with basic form validation (e.g., address, payment options).
+- **User Authentication**: Sign up, login, and user profile management.
+- **State Management**: Uses Vue's **Composition API** and **[Pinia](https://pinia.vuejs.org/)** for managing application state.
+- **Figma Design Integration**: The UI is based on a **Figma** template that provides an attractive, user-friendly interface.
 
-## Customize configuration
+## Tools and Technologies Used
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- **Vue 3**: JavaScript framework for building user interfaces.
+- **Vite**: Fast build tool optimized for Vue.
+- **Figma**: Design tool from which the project design was adapted.
+- **Tailwind CSS**: Utility-first CSS framework for styling components.
 
-## Project Setup
+## 🖌️ Design Credit
 
-```sh
-npm install
-```
+This project's design is adapted from [**Full E-commerce Website UI/UX Design**](https://www.figma.com/community/file/1219312065205187851/full-e-commerce-website-ui-ux-design) by [**MD Rimel**](https://www.figma.com/@mdrimel15), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Changes were made.
 
-### Compile and Hot-Reload for Development
+## Live Demo
 
-```sh
-npm run dev
-```
+You can view the live demo of the site here: [Live Demo Link]
 
-### Compile and Minify for Production
+## License
 
-```sh
-npm run build
-```
+All rights reserved. This project is not licensed for public redistribution or modification.
