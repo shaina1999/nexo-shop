@@ -11,7 +11,6 @@ import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
 const routes = [
   { path: '/', name:'home', component: HomeView },
-  { path: '/home', name:'home', component: HomeView },
   { path: '/products', name:'products', component: ProductsView },
   { path: '/login', name:'login', component: LoginView },
   { path: '/sign-up', name:'sign-up', component: SignUpView },
