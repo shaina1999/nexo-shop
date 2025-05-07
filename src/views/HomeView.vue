@@ -11,7 +11,7 @@
                             @click="toggleSubCategories(index)"
                         >
                             <span>{{ productCategory.label }}</span>
-                            <PhCaretRight :size="22" :class="{ 'rotate-90' : productCategory.isSubCategoryOpen}" />
+                            <PhCaretRight :size="22" class="transition-transform duration-300" :class="{ 'rotate-90' : productCategory.isSubCategoryOpen}" />
                         </button>
                         <!-- Sub Categories -->
                         <ul 
