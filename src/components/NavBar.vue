@@ -155,6 +155,14 @@ watch(searchTerm, () => {
     }
 })
 
+watch(isMobileNavOpen, (newVal) => {
+  if (newVal) {
+    document.body.classList.add('overflow-hidden')
+  } else {
+    document.body.classList.remove('overflow-hidden')
+  }
+})
+
 onClickOutside(searchResultsContainerRef, event => isSearching.value = false)
 </script>
 
