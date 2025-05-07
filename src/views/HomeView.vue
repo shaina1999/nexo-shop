@@ -41,13 +41,30 @@
                     </div>
                 </li>
             </ul>
-            <div class="p-10">test</div>
+            <div class="p-10 ml-10 mt-10 bg-black text-white max-h-[344px]">
+                <div class="grid grid-container items-center">
+                    <div class="shrink-0">
+                        <div class="flex items-center gap-x-6 mb-6">
+                            <img :src="appleLogo" alt="Apple Logo">
+                            <span>iPhone 14 Series</span>
+                        </div>
+                        <div class="font-semibold text-[38px]/14 mb-6">Up to 10% off Voucher</div>
+                        <RouterLink class="flex items-center gap-x-2 font-medium" to="/products">
+                            <span>Shop Now</span>
+                            <PhCaretRight :size="22" />
+                        </RouterLink>
+                    </div>
+                    <img :src="heroIimage" alt="Iphone" class="w-[92%] shrink-0">
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import appleLogo from '@/assets/img/apple-logo.png'
+import heroIimage from '@/assets/img/hero-image.png'
 
 const productCategories = ref([
   { id: 1, value: 'womens-fashion', label: "Women's Fashion", subCategories: [{ value: 'dresses', label: "Dresses" }, { value: 'tops-blouses', label: "Tops & Blouses" }], isSubCategoryOpen: false },
@@ -66,4 +83,8 @@ const toggleSubCategories = (index) => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.grid-container{
+    grid-template-columns: .8fr 1.2fr;
+}
+</style>
