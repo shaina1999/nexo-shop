@@ -15,15 +15,18 @@
                         </button>
                         <!-- Sub Categories -->
                         <ul 
-                            class="transition-height duration-300 ease flex flex-col gap-y-2 pl-6"
-                            :class="{ 'h-max opacity-[1] pointer-events-auto pt-4' : productCategory.isSubCategoryOpen, 'h-0 opacity-0 pointer-events-none pt-0' : !productCategory.isSubCategoryOpen }"
+                            class="transition-all duration-300 ease overflow-hidden flex flex-col gap-y-2 pl-6"
+                            :class="{ 
+                                'max-h-96 pt-4' : productCategory.isSubCategoryOpen, 
+                                'max-h-0 pt-0' : !productCategory.isSubCategoryOpen 
+                            }"
                         >
                             <li v-for="(productSubCategory, index) in productCategory.subCategories" :key="index">
-                                <RouterLink 
+                                <RouterLink  
                                     class="hover:text-orange-500 transition-colors duration-200 ease" 
                                     :to="`/products?q=${productSubCategory.value}`"
                                 >
-                                    {{ productSubCategory.label }}
+                                {{ productSubCategory.label }}
                                 </RouterLink>
                             </li>
                         </ul>
