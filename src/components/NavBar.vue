@@ -104,13 +104,13 @@ const toggleMobileNav = () => {
     isMobileNavOpen.value = !isMobileNavOpen.value
 }
 
-const searchProduct = (item, q) => {
+const searchProduct = (qObj, q) => {
     if (searchTerm.value) {
-         isSearching.value = false;
+        isSearching.value = false;
         filteredSuggestions.value = [] // Reset filtered search suggestions
 
-        const query = item?.value
-            ? { q: item.value, key: item.category ?? '' }
+        const query = qObj?.value
+            ? { q: qObj.value, key: qObj.category ?? '' }
             : { q: q ?? '' };
 
         router.push({ path: '/products', query });   
