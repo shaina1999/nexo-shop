@@ -113,7 +113,7 @@ const searchProduct = (item, q) => {
             ? { q: item.value, key: item.category ?? '' }
             : { q: q ?? '' };
 
-        router.push({ path: '/search', query });   
+        router.push({ path: '/products', query });   
     }
 };
 

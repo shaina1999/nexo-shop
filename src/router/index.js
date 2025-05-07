@@ -6,13 +6,13 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SignUpView from '@/views/SignUpView.vue'
 import ForgotPasswordView from '@/views/ForgotPasswordView.vue'
-import SearchView from '@/views/SearchView.vue'
+import ProductsView from '@/views/ProductsView.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
 const routes = [
   { path: '/', name:'home', component: HomeView },
   { path: '/home', name:'home', component: HomeView },
-  { path: '/search', name:'search', component: SearchView },
+  { path: '/products', name:'products', component: ProductsView },
   { path: '/login', name:'login', component: LoginView },
   { path: '/sign-up', name:'sign-up', component: SignUpView },
   { path: '/forgot-password', name:'forgot-password', component: ForgotPasswordView },
