@@ -7,7 +7,7 @@
                 >   
                     <div v-if="productCategory.value === 'womens-fashion' || productCategory.value === 'mens-fashion'">
                         <button 
-                            class="cursor-pointer flex items-center justify-between gap-x-2 min-w-[180px] hover:text-orange-500 transition-colors duration-200 ease font-medium"
+                            class="cursor-pointer flex items-center justify-between gap-x-1 min-w-[180px] hover:text-orange-500 transition-colors duration-200 ease font-medium"
                             @click="toggleSubCategories(index)"
                         >
                             <span>{{ productCategory.label }}</span>
