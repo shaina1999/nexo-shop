@@ -7,7 +7,7 @@
                 >   
                     <div v-if="productCategory.value === 'womens-fashion' || productCategory.value === 'mens-fashion'">
                         <button 
-                            class="cursor-pointer flex items-center justify-between gap-x-2 min-w-[180px] hover:text-orange-500 transition-colors duration-200 ease"
+                            class="cursor-pointer flex items-center justify-between gap-x-2 min-w-[180px] hover:text-orange-500 transition-colors duration-200 ease font-medium"
                             @click="toggleSubCategories(index)"
                         >
                             <span>{{ productCategory.label }}</span>
@@ -15,7 +15,7 @@
                         </button>
                         <!-- Sub Categories -->
                         <ul 
-                            class="overflow-hidden flex flex-col gap-y-2 pl-6"
+                            class="overflow-hidden flex flex-col gap-y-2 pl-8"
                             :class="{ 
                                 'h-max pt-4' : productCategory.isSubCategoryOpen, 
                                 'h-0 pt-0' : !productCategory.isSubCategoryOpen 
@@ -23,7 +23,7 @@
                         >
                             <li v-for="(productSubCategory, index) in productCategory.subCategories" :key="index">
                                 <RouterLink  
-                                    class="hover:text-orange-500 transition-colors duration-200 ease" 
+                                    class="text-[15px] font-normal hover:text-orange-500 transition-colors duration-200 ease" 
                                     :to="`/products?q=${productSubCategory.value}`"
                                 >
                                 {{ productSubCategory.label }}
@@ -33,7 +33,7 @@
                     </div>
                     <div v-else>
                         <RouterLink 
-                            class="hover:text-orange-500 transition-colors duration-200 ease" 
+                            class="hover:text-orange-500 transition-colors duration-200 ease font-medium" 
                             :to="`/products?q=${productCategory.value}`"
                         >
                             {{ productCategory.label }}
