@@ -31,7 +31,7 @@
                     </ul>
                 </div>
                 <div class="basis-[100%] md:basis-[45%] lg:basis-[auto]">
-                    <div class="text-md lg:text-lg font-semibold mb-6">Quick Link</div>
+                    <div class="text-md lg:text-lg font-semibold mb-6">Quick Links</div>
                     <ul class="flex flex-col gap-y-4">
                         <li>Privacy Policy</li>
                         <li>Terms Of Use</li>
