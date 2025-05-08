@@ -63,8 +63,12 @@
             <!-- Mobile Nav -->
             <Teleport to="body">
                 <div 
-                    class="fixed top-0 w-[100vw] bg-white h-screen px-4 shadow-md z-10 transition-all duration-300 ease"
-                    :class="{ 'translate-x-0 pointer-events-all' : isMobileNavOpen, 'translate-x-full pointer-events-none' : !isMobileNavOpen }"
+                    class="fixed top-0 w-[100vw] bg-white h-screen px-4 shadow-md z-10 transition-all duration-300 ease-[cubic-bezier(0.4, 0, 0.2, 1)]"
+                    :class="{
+                        'translate-x-0 pointer-events-all': isMobileNavOpen,
+                        'translate-x-full pointer-events-none': !isMobileNavOpen,
+                        'hidden' : isResizing
+                    }"
                 >
                     <BaseButtonIcon
                         class="flex justify-end ml-auto mt-4"
@@ -82,7 +86,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, useTemplateRef } from 'vue'
+import { computed, ref, watch, useTemplateRef, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import searchSuggestions from '@/assets/js/searchSuggestions'
@@ -99,6 +103,7 @@ const searchResultsContainerRef = useTemplateRef('searchResultsContainerRef')
 const focusableItemsRef = useTemplateRef('focusableItemRef')
 const filteredSuggestions = ref([])
 const { t } = useI18n()
+const isResizing = ref(false)
 
 const toggleMobileNav = () => {
     isMobileNavOpen.value = !isMobileNavOpen.value
@@ -140,6 +145,13 @@ const showSuggestions = () => {
     ).slice(0, 10)
 }
 
+const handleResize = () => {
+    isResizing.value = true
+    setTimeout(() => {
+        isResizing.value = false
+    }, 100);
+}
+
 watch(route, () => {
     isMobileNavOpen.value = false
 
@@ -164,6 +176,14 @@ watch(isMobileNavOpen, (newVal) => {
 })
 
 onClickOutside(searchResultsContainerRef, event => isSearching.value = false)
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 </script>
 
 <style scoped></style>
