@@ -27,7 +27,9 @@
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <SectionHeader :label="`Today's`" :title="'Flash Sales'">
                 <template v-slot:timer>
-                    timer             
+                    <vue-countdown :time="2 * 24 * 60 * 60 * 1000" v-slot="{ days, hours, minutes, seconds }">
+                        Time Remaining：{{ days }} days, {{ hours }} hours, {{ minutes }} minutes, {{ seconds }} seconds.
+                    </vue-countdown>             
                 </template>
                 <template v-slot:buttons>
                     buttons
