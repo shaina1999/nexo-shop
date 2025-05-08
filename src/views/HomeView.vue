@@ -27,29 +27,34 @@
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <SectionHeader :label="`Today's`" :title="'Flash Sales'">
                 <template v-slot:timer>
-                    <vue-countdown :time="2 * 24 * 60 * 60 * 1000" v-slot="{ days, hours, minutes, seconds }">
-                        <div class="flex items-end gap-x-3.5">
-                            <div class="flex items-baseline flex-col">
-                                <span class="text-sm font-medium mb-1 inline-block">Days</span>
-                                <span class="font-bold text-3xl">{{ days }}</span>
+                    <div v-show="!isSaleStarted">
+                        <vue-countdown 
+                            @end="handleCountDowneEnd" 
+                            :time="time" v-slot="{ days, hours, minutes, seconds }"
+                        >
+                            <div class="flex items-end gap-x-3.5">
+                                <div class="flex items-baseline flex-col">
+                                    <span class="text-sm font-medium mb-1 inline-block">Days</span>
+                                    <span class="font-bold text-3xl">{{ days }}</span>
+                                </div>
+                                <span class="text-3xl text-secondary-500">:</span>
+                                <div class="flex items-baseline flex-col">
+                                    <span class="text-sm font-medium mb-1 inline-block">Hours</span>
+                                    <span class="font-bold text-3xl">{{ hours }}</span>
+                                </div>
+                                <span class="text-3xl text-secondary-500">:</span>
+                                <div class="flex items-baseline flex-col">
+                                    <span class="text-sm font-medium mb-1 inline-block">Minutes</span>
+                                    <span class="font-bold text-3xl">{{ minutes }}</span>
+                                </div>
+                                <span class="text-3xl text-secondary-500">:</span>
+                                <div class="flex items-baseline flex-col">
+                                    <span class="text-sm font-medium mb-1 inline-block">Seconds</span>
+                                    <span class="font-bold text-3xl">{{ seconds }}</span>
+                                </div>
                             </div>
-                            <span class="text-3xl text-secondary-500">:</span>
-                            <div class="flex items-baseline flex-col">
-                                <span class="text-sm font-medium mb-1 inline-block">Hours</span>
-                                <span class="font-bold text-3xl">{{ hours }}</span>
-                            </div>
-                            <span class="text-3xl text-secondary-500">:</span>
-                            <div class="flex items-baseline flex-col">
-                                <span class="text-sm font-medium mb-1 inline-block">Minutes</span>
-                                <span class="font-bold text-3xl">{{ minutes }}</span>
-                            </div>
-                            <span class="text-3xl text-secondary-500">:</span>
-                            <div class="flex items-baseline flex-col">
-                                <span class="text-sm font-medium mb-1 inline-block">Seconds</span>
-                                <span class="font-bold text-3xl">{{ seconds }}</span>
-                            </div>
-                        </div>
-                    </vue-countdown>             
+                        </vue-countdown>
+                    </div>
                 </template>
                 <template v-slot:buttons>
                     <div class="flex items-center gap-x-2">
@@ -66,10 +71,30 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watchEffect, onMounted } from 'vue'
+import { useFetch } from '@/composables/fetch'
 import appleLogo from '@/assets/img/apple-logo.png'
 import heroIimage from '@/assets/img/hero-image.png'
 import SectionHeader from '@/components/SectionHeader.vue'
+
+const receivedDateString = ref('June 30, 2025 10:00 AM')
+const targetDate = new Date(receivedDateString.value)
+const now = new Date()
+const time = Math.max(0, targetDate.getTime() - now.getTime())
+const isSaleStarted = ref(false)
+const { data, error, isLoading, fetchNow } = useFetch()
+
+const handleCountDowneEnd = () => {
+    isSaleStarted.value = true
+}
+
+/* watch(data, (newVal) => {
+  receivedDateString.value = newVal?.saleDate
+})
+
+onMounted(() => {
+    fetchNow(`/getsalecountdown/`)
+}) */
 </script>
 
 <style scoped></style>
