@@ -13,7 +13,7 @@
 
             <!-- Hamburger Button -->
             <BaseButtonIcon
-                class="flex lg:hidden justify-end"
+                class="flex lg:hidden justify-end ml-auto w-max"
                 @click="toggleMobileNav"
             >
                 <template v-slot:icon>
