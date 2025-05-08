@@ -28,7 +28,27 @@
             <SectionHeader :label="`Today's`" :title="'Flash Sales'">
                 <template v-slot:timer>
                     <vue-countdown :time="2 * 24 * 60 * 60 * 1000" v-slot="{ days, hours, minutes, seconds }">
-                        Time Remaining：{{ days }} days, {{ hours }} hours, {{ minutes }} minutes, {{ seconds }} seconds.
+                        <div class="flex items-end gap-x-3.5">
+                            <div class="flex items-baseline flex-col">
+                                <span class="text-sm font-medium mb-1 inline-block">Days</span>
+                                <span class="font-bold text-3xl">{{ days }}</span>
+                            </div>
+                            <span class="text-3xl text-secondary-500">:</span>
+                            <div class="flex items-baseline flex-col">
+                                <span class="text-sm font-medium mb-1 inline-block">Hours</span>
+                                <span class="font-bold text-3xl">{{ hours }}</span>
+                            </div>
+                            <span class="text-3xl text-secondary-500">:</span>
+                            <div class="flex items-baseline flex-col">
+                                <span class="text-sm font-medium mb-1 inline-block">Minutes</span>
+                                <span class="font-bold text-3xl">{{ minutes }}</span>
+                            </div>
+                            <span class="text-3xl text-secondary-500">:</span>
+                            <div class="flex items-baseline flex-col">
+                                <span class="text-sm font-medium mb-1 inline-block">Seconds</span>
+                                <span class="font-bold text-3xl">{{ seconds }}</span>
+                            </div>
+                        </div>
                     </vue-countdown>             
                 </template>
                 <template v-slot:buttons>
