@@ -1,7 +1,7 @@
 <template>
     <div class="flex items-center justify-center w-full">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl flex">
-            <ul class="flex flex-col gap-y-4 border-r-1 border-r-gray-300 w-max pt-10.5 pr-4">
+            <ul class="hidden lg:flex flex-col gap-y-4 border-r-1 border-r-gray-300 w-max pt-10.5 pr-4">
                 <li 
                     v-for="(productCategory, index) in productCategories" :key="productCategory.id"
                 >   
@@ -41,20 +41,20 @@
                     </div>
                 </li>
             </ul>
-            <div class="p-10 ml-10 mt-10 bg-black text-white max-h-[344px]">
+            <div class="p-8 md:p-10 ml-0 lg:ml-10 mt-10 bg-black text-white max-h-max w-full lg:max-h-[344px]">
                 <div class="grid grid-container items-center">
                     <div class="shrink-0">
-                        <div class="flex items-center gap-x-6 mb-6">
+                        <div class="flex items-center gap-x-6 mb-3 md:mb-6">
                             <img :src="appleLogo" alt="Apple Logo">
                             <span>iPhone 14 Series</span>
                         </div>
-                        <div class="font-semibold text-[38px]/14 mb-6">Up to 10% off Voucher</div>
+                        <div class="font-semibold text-[26px] sm:text-[30px] md:text-[38px]/14 mb-3 md:mb-6">Up to 10% off Voucher</div>
                         <RouterLink class="flex items-center gap-x-2 font-medium" to="/products">
                             <span class="border-b-[1px] border-white text-white bg-transparent">Shop Now</span>
                             <PhArrowRight :size="22" />
                         </RouterLink>
                     </div>
-                    <img :src="heroIimage" alt="Iphone" class="w-[92%] shrink-0">
+                    <img :src="heroIimage" alt="Iphone" class="w-[88%] md:w-[92%] shrink-0">
                 </div>
             </div>
         </div>
@@ -86,5 +86,12 @@ const toggleSubCategories = (index) => {
 <style scoped>
 .grid-container{
     grid-template-columns: .8fr 1.2fr;
+}
+
+@media (max-width: 48rem) {
+    .grid-container{
+        grid-template-columns: 1fr;
+        row-gap: 32px;
+    }
 }
 </style>
