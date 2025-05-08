@@ -52,7 +52,10 @@
                     </vue-countdown>             
                 </template>
                 <template v-slot:buttons>
-                    buttons
+                    <div class="flex items-center gap-x-2">
+                        <button class="flex items-center justify-center cursor-pointer bg-gray-300 rounded-full w-10 h-10"><PhArrowLeft :size="20" /></button>
+                        <button class="flex items-center justify-center cursor-pointer bg-gray-300 rounded-full w-10 h-10"><PhArrowRight :size="20" /></button>
+                    </div>
                 </template>
             </SectionHeader>
             <div class="pb-15 border-b-[1px] border-b-gray-300">
