@@ -24,8 +24,18 @@
     </section>
     <!-- Flash Sales Section -->
     <section class="flex items-center justify-center w-full pt-35">
-        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl flex">
-            test
+        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
+            <SectionHeader :label="`Today's`" :title="'Flash Sales'">
+                <template v-slot:timer>
+                    timer             
+                </template>
+                <template v-slot:buttons>
+                    buttons
+                </template>
+            </SectionHeader>
+            <div class="pb-15 border-b-[1px] border-b-gray-300">
+                content
+            </div>
         </div>
     </section>
 </template>
@@ -34,6 +44,7 @@
 import { ref } from 'vue'
 import appleLogo from '@/assets/img/apple-logo.png'
 import heroIimage from '@/assets/img/hero-image.png'
+import SectionHeader from '@/components/SectionHeader.vue'
 </script>
 
 <style scoped></style>
