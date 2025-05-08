@@ -22,6 +22,12 @@
             </div>
         </div>
     </section>
+    <!-- Flash Sales Section -->
+    <section class="flex items-center justify-center w-full pt-35">
+        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl flex">
+            test
+        </div>
+    </section>
 </template>
 
 <script setup>
