@@ -22,7 +22,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Flash Sales Section -->
     <section class="flex items-center justify-center w-full pt-35">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
@@ -73,7 +73,7 @@
                 </template>
             </SectionHeader>
             <div class="pb-15 border-b-[1px] border-b-gray-300">
-                <div class="grid grid-cols-4">
+                <div class="grid grid-cols-4 gap-x-7.5">
                     <ProductCard 
                         v-for="(product, index) in products" 
                         :key="product.id"
