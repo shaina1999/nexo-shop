@@ -50,3 +50,15 @@ body {
 input::placeholder, textarea:::placeholder{
   color: var(--color-placeholder)
 }
+
+/* Vue Splide */
+.splide__pagination__page{
+  width: 12px !important;
+  height: 12px !important;
+}
+
+.splide__pagination__page.is-active{
+  border: 2px solid #fff !important;
+  transform: scale(1.2) !important;
+  background-color: var(--color-secondary-500) !important;
+}
