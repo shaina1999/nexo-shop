@@ -75,8 +75,8 @@
                 </template>
             </SectionHeader>
             <div class="pb-15 border-b-[1px] border-b-gray-300">
-                <div class="mb-13 pb-100">
-                    <Splide ref="splideRef" :options="{ type : 'loop', perPage: 4, gap: '16px', arrows: false, speed: 1000 }">
+                <div class="mb-13">
+                    <Splide ref="splideRef" :options="splideOptions">
                         <SplideSlide v-for="(product, index) in products" :key="product.id">
                             <ProductCard 
                                 :product="product"
@@ -107,8 +107,9 @@ const isSaleStarted = ref(false)
 const { data, error, isLoading, fetchNow } = useFetch()
 const splideRef = ref(null)
 const splideInstance = ref(null)
+const splideOptions = ref({ type : 'loop', perPage: 4, gap: '16px', arrows: false, speed: 1000, perMove: 2, pagination: false })
 
-const products = ref([
+const products = ref([ // sample products only
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
   { id: 2, name: 'Product 2', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
   { id: 3, name: 'Product 3', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
@@ -144,9 +145,3 @@ onMounted(() => {
     }
 })
 </script>
-
-<style>
-.splide__pagination {
-    display: none;
-}
-</style>
