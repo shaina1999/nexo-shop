@@ -24,7 +24,7 @@
     </section>
 
     <!-- Flash Sales Section -->
-    <section class="flex items-center justify-center w-full pt-35">
+    <section class="flex items-center justify-center w-full pt-16 sm:pt-20 md:pt-35">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <SectionHeader :label="`Today's`" :title="'Flash Sales'">
                 <template v-slot:timer>
@@ -74,8 +74,8 @@
                     </div>
                 </template>
             </SectionHeader>
-            <div class="pb-15 border-b-[1px] border-b-gray-300">
-                <div class="mb-13">
+            <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300">
+                <div class="mb-7.5 md:mb-15">
                     <Splide ref="splideRef" :options="splideOptions">
                         <SplideSlide v-for="(product, index) in products" :key="product.id">
                             <ProductCard 
@@ -155,27 +155,16 @@ const handleCountDowneEnd = () => {
     if (newBreakpoint !== currentBreakpoint.value) {
         currentBreakpoint.value = newBreakpoint
 
-        switch (newBreakpoint) {
-            case 'mobile':
-                splideOptions.value.perPage = 1
-                splideOptions.value.perMove = 1
-                splideOptions.value.arrows = true
-                break
-            case 'mobile-landscape':
-                splideOptions.value.perPage = 2
-                splideOptions.value.perMove = 2
-                splideOptions.value.arrows = false
-                break
-            case 'tablet':
-                splideOptions.value.perPage = 3
-                splideOptions.value.perMove = 2
-                splideOptions.value.arrows = false
-                break
-            case 'desktop':
-                splideOptions.value.perPage = 4
-                splideOptions.value.perMove = 2
-                splideOptions.value.arrows = false
-                break
+        const breakpointSettings = {
+            mobile: { perPage: 1, perMove: 1, arrows: true },
+            'mobile-landscape': { perPage: 2, perMove: 2, arrows: false },
+            tablet: { perPage: 3, perMove: 2, arrows: false },
+            desktop: { perPage: 4, perMove: 2, arrows: false }
+        }
+
+        const settings = breakpointSettings[newBreakpoint]
+        if (settings) {
+            Object.assign(splideOptions.value, settings)
         }
     }
 }
