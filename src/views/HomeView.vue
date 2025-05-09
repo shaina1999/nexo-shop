@@ -24,7 +24,7 @@
     </section>
 
     <!-- Flash Sales Section -->
-    <section class="flex items-center justify-center w-full pt-16 sm:pt-20 md:pt-35">
+    <section class="flex items-center justify-center w-full pt-16 sm:pt-20 md:pt-25 lg:pt-35">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <SectionHeader :label="`Today's`" :title="'Flash Sales'">
                 <template v-slot:timer>
@@ -33,25 +33,25 @@
                             @end="handleCountDowneEnd" 
                             :time="time" v-slot="{ days, hours, minutes, seconds }"
                         >
-                            <div class="flex items-end gap-x-3.5">
+                            <div class="flex items-end gap-x-2.5 md:gap-x-3.5">
                                 <div class="flex items-baseline flex-col">
                                     <span class="text-sm font-medium mb-1 inline-block">Days</span>
-                                    <span class="font-bold text-2xl md:text-3xl">{{ days }}</span>
+                                    <span class="font-bold text-lg sm:text-2xl md:text-3xl">{{ days }}</span>
                                 </div>
                                 <span class="text-3xl text-secondary-500">:</span>
                                 <div class="flex items-baseline flex-col">
                                     <span class="text-sm font-medium mb-1 inline-block">Hours</span>
-                                    <span class="font-bold text-2xl md:text-3xl">{{ hours }}</span>
+                                    <span class="font-bold text-lg sm:text-2xl md:text-3xl">{{ hours }}</span>
                                 </div>
                                 <span class="text-3xl text-secondary-500">:</span>
                                 <div class="flex items-baseline flex-col">
                                     <span class="text-sm font-medium mb-1 inline-block">Minutes</span>
-                                    <span class="font-bold text-2xl md:text-3xl">{{ minutes }}</span>
+                                    <span class="font-bold text-lg sm:text-2xl md:text-3xl">{{ minutes }}</span>
                                 </div>
                                 <span class="text-3xl text-secondary-500">:</span>
                                 <div class="flex items-baseline flex-col">
                                     <span class="text-sm font-medium mb-1 inline-block">Seconds</span>
-                                    <span class="font-bold text-2xl md:text-3xl">{{ seconds }}</span>
+                                    <span class="font-bold text-lg sm:text-2xl md:text-3xl">{{ seconds }}</span>
                                 </div>
                             </div>
                         </vue-countdown>
