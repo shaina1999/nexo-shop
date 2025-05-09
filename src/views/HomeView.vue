@@ -73,13 +73,14 @@
                 </template>
             </SectionHeader>
             <div class="pb-15 border-b-[1px] border-b-gray-300">
-                <div class="grid grid-cols-4 gap-x-7.5">
+                <div class="grid grid-cols-4 gap-x-7.5 mb-13">
                     <ProductCard 
                         v-for="(product, index) in products" 
                         :key="product.id"
                         :product="product"
                     />
                 </div>
+                <BaseLinkButton :to="'/products'" class="mx-auto">View All Products</BaseLinkButton>
             </div>
         </div>
     </section>
@@ -92,6 +93,7 @@ import appleLogo from '@/assets/img/apple-logo.png'
 import heroIimage from '@/assets/img/hero-image.png'
 import SectionHeader from '@/components/SectionHeader.vue'
 import ProductCard from '@/components/ProductCard.vue'
+import BaseLinkButton from '@/components/BaseLinkButton.vue'
 
 const receivedDateString = ref('June 30, 2025 10:00 AM')
 const targetDate = new Date(receivedDateString.value)
