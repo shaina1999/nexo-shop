@@ -73,31 +73,26 @@
             </SectionHeader>
             <div class="pb-15 border-b-[1px] border-b-gray-300">
                 <div class="grid grid-cols-4">
-                    <div>
-                        <div class="bg-gray-200 p-4 product cursor-pointer" @click="viewProduct">
+                    <RouterLink to="/products">
+                        <div class="bg-gray-200 p-4 product cursor-pointer">
                             <div class="flex items-center justify-between mb-4">
                                 <div class="bg-secondary-500 text-white py-1 px-2 rounded-sm text-sm">-40%</div>
-                                <div class="flex items-center gap-x-2">
-                                    <button 
-                                        class="cursor-pointer bg-white flex items-center justify-center text-secondary-500 w-10 h-10 rounded-full transition-all duration-300 ease-in-out"
-                                        @click.stop="addToWishList"
-                                    >
-                                        <PhHeart :size="24" 
-                                    />
-                                    </button>
-                                    <RouterLink 
-                                        to="/products"
-                                        class="cursor-pointer bg-white flex items-center justify-center text-secondary-500 w-10 h-10 rounded-full transition-all duration-300 ease-in-out"
-                                    >
-                                        <PhEye :size="24" />
-                                    </RouterLink>
-                                </div>
+                                <button 
+                                    class="cursor-pointer bg-white flex items-center justify-center text-secondary-500 w-10 h-10 rounded-full transition-all duration-300 ease-in-out"
+                                    @click.prevent.stop="addToWishList"
+                                >
+                                    <PhHeart :size="24" 
+                                />
+                                </button>
                             </div>
                             <div class="w-[190px] h-[190px] flex items-center justify-center mx-auto">
                                 <img src="/src/assets/img/product-image.png" alt="Iphone" class="w-full">
                             </div>
                         </div>
-                        <button class="bg-black text-white w-full p-1.5 transition-all duration-300 ease-in-out cursor-pointer add-to-cart mb-4 flex items-center justify-center gap-x-2">
+                        <button 
+                            class="bg-black text-white w-full p-1.5 transition-all duration-300 ease-in-out cursor-pointer add-to-cart mb-4 flex items-center justify-center gap-x-2"
+                            @click.prevent.stop="addToCart"
+                        >
                             <span class="text-sm">Add To Cart</span>
                             <PhPlus :size="18" />
                             <PhCheck :size="18" class="hidden" />
@@ -119,7 +114,7 @@
                                 <span class="text-gray-500">(190)</span>
                             </div>
                         </div>
-                    </div>
+                    </RouterLink>
                 </div>
             </div>
         </div>
@@ -148,8 +143,8 @@ const addToWishList = () => {
     console.log('add to wish list')
 }
 
-const viewProduct = () => {
-    console.log('view product')
+const addToCart = () => {
+    console.log('add to cart')
 }
 
 /* watch(data, (newVal) => {
