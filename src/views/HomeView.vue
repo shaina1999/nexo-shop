@@ -91,7 +91,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, onMounted } from 'vue'
+import { ref, watchEffect, onMounted, onUnmounted } from 'vue'
 import { useFetch } from '@/composables/fetch'
 import appleLogo from '@/assets/img/apple-logo.png'
 import heroIimage from '@/assets/img/hero-image.png'
@@ -107,7 +107,8 @@ const isSaleStarted = ref(false)
 const { data, error, isLoading, fetchNow } = useFetch()
 const splideRef = ref(null)
 const splideInstance = ref(null)
-const splideOptions = ref({ type : 'loop', perPage: 4, gap: '16px', arrows: false, speed: 1000, perMove: 2, pagination: false })
+const splideOptions = ref({ type: 'loop', perPage: 4, gap: '16px', arrows: false, speed: 1000, perMove: 2, pagination: false })
+const currentBreakpoint = ref('')
 
 const products = ref([ // sample products only
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
@@ -137,11 +138,56 @@ const handleCountDowneEnd = () => {
 })
  */
 
+ const handleScreenResize = () => {
+    const width = window.innerWidth
+    let newBreakpoint = ''
+
+    if (width < 641) {
+        newBreakpoint = 'mobile'
+    } else if (width < 768) {
+        newBreakpoint = 'mobile-landscape'
+    } else if (width < 1025) {
+        newBreakpoint = 'tablet'
+    } else {
+        newBreakpoint = 'desktop'
+    }
+
+    if (newBreakpoint !== currentBreakpoint.value) {
+        currentBreakpoint.value = newBreakpoint
+
+        switch (newBreakpoint) {
+            case 'mobile':
+                splideOptions.value.perPage = 1
+                splideOptions.value.perMove = 1
+                break
+            case 'mobile-landscape':
+                splideOptions.value.perPage = 2
+                splideOptions.value.perMove = 2
+                break
+            case 'tablet':
+                splideOptions.value.perPage = 3
+                splideOptions.value.perMove = 2
+                break
+            case 'desktop':
+                splideOptions.value.perPage = 4
+                splideOptions.value.perMove = 2
+                break
+        }
+    }
+}
+
 onMounted(() => {
     // fetchNow(`/getsalecountdown/`)
 
     if (splideRef.value) {
         splideInstance.value = splideRef.value.splide
     }
+
+    handleScreenResize()
+    window.addEventListener('resize', handleScreenResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleScreenResize)
 })
 </script>
