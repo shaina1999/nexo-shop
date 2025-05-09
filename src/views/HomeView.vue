@@ -10,7 +10,7 @@
                             <span>iPhone 14 Series</span>
                         </div>
                         <div class="font-semibold text-[26px] sm:text-[38px] md:text-[46px]/14 mb-3 md:mb-6 whitespace-normal lg:whitespace-nowrap">Up to 10% off Voucher</div>
-                        <RouterLink class="flex items-center gap-x-2 font-medium" to="/products">
+                        <RouterLink class="flex items-center gap-x-2 font-medium" to="/product">
                             <span class="border-b-[1px] border-white text-white bg-transparent">Shop Now</span>
                             <PhArrowRight :size="22" />
                         </RouterLink>
@@ -73,7 +73,7 @@
             </SectionHeader>
             <div class="pb-15 border-b-[1px] border-b-gray-300">
                 <div class="grid grid-cols-4">
-                    <RouterLink to="/products">
+                    <RouterLink to="/product">
                         <div class="bg-gray-200 p-4 product cursor-pointer">
                             <div class="flex items-center justify-between mb-4">
                                 <div class="bg-secondary-500 text-white py-1 px-2 rounded-sm text-sm">-40%</div>
