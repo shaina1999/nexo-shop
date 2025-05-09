@@ -72,7 +72,55 @@
                 </template>
             </SectionHeader>
             <div class="pb-15 border-b-[1px] border-b-gray-300">
-                content
+                <div class="grid grid-cols-4">
+                    <div>
+                        <div class="bg-gray-200 p-4 product cursor-pointer" @click="viewProduct">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="bg-secondary-500 text-white py-1 px-2 rounded-sm text-sm">-40%</div>
+                                <div class="flex items-center gap-x-2">
+                                    <button 
+                                        class="cursor-pointer bg-white flex items-center justify-center text-secondary-500 w-10 h-10 rounded-full transition-all duration-300 ease-in-out"
+                                        @click.stop="addToWishList"
+                                    >
+                                        <PhHeart :size="24" 
+                                    />
+                                    </button>
+                                    <RouterLink 
+                                        to="/products"
+                                        class="cursor-pointer bg-white flex items-center justify-center text-secondary-500 w-10 h-10 rounded-full transition-all duration-300 ease-in-out"
+                                    >
+                                        <PhEye :size="24" />
+                                    </RouterLink>
+                                </div>
+                            </div>
+                            <div class="w-[190px] h-[190px] flex items-center justify-center mx-auto">
+                                <img src="/src/assets/img/product-image.png" alt="Iphone" class="w-full">
+                            </div>
+                        </div>
+                        <button class="bg-black text-white w-full p-1.5 transition-all duration-300 ease-in-out cursor-pointer add-to-cart mb-4 flex items-center justify-center gap-x-2">
+                            <span class="text-sm">Add To Cart</span>
+                            <PhPlus :size="18" />
+                            <PhCheck :size="18" class="hidden" />
+                        </button>
+                        <div>
+                            <div class="font-semibold text-base mb-2.5">HAVIT HV-G92 Gamepad</div>
+                            <div class="flex items-center gap-x-2.5 mb-2.5">
+                                <span class="text-secondary-500">&#8369;120</span>
+                                <del class="text-gray-500 decoration-dashed">&#8369;160</del>
+                            </div>
+                             <div class="flex items-center gap-x-2">
+                                <div class="flex items-center text-orange-500 gap-x-1">
+                                    <PhStar :size="19" weight="fill" />
+                                    <PhStar :size="19" weight="fill" />
+                                    <PhStar :size="19" weight="fill" />
+                                    <PhStarHalf :size="19" weight="fill" />
+                                    <PhStar :size="19" />
+                                </div>
+                                <span class="text-gray-500">(190)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -96,6 +144,14 @@ const handleCountDowneEnd = () => {
     isSaleStarted.value = true
 }
 
+const addToWishList = () => {
+    console.log('add to wish list')
+}
+
+const viewProduct = () => {
+    console.log('view product')
+}
+
 /* watch(data, (newVal) => {
   receivedDateString.value = newVal?.saleDate
 })
@@ -104,5 +160,3 @@ onMounted(() => {
     fetchNow(`/getsalecountdown/`)
 }) */
 </script>
-
-<style scoped></style>
