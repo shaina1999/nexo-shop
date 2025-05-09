@@ -22,6 +22,7 @@
             </div>
         </div>
     </section>
+    
     <!-- Flash Sales Section -->
     <section class="flex items-center justify-center w-full pt-35">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
@@ -73,51 +74,11 @@
             </SectionHeader>
             <div class="pb-15 border-b-[1px] border-b-gray-300">
                 <div class="grid grid-cols-4">
-                    <RouterLink to="/product">
-                        <div class="bg-gray-200 p-4 product cursor-pointer">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="bg-secondary-500 text-white py-1 px-2 rounded-sm text-sm">-40%</div>
-                                <button 
-                                    class="cursor-pointer bg-white flex items-center justify-center text-secondary-500 w-10 h-10 rounded-full transition-all duration-300 ease-in-out"
-                                    @click.prevent.stop="addToWishList"
-                                >
-                                    <PhHeart :size="24" 
-                                />
-                                </button>
-                            </div>
-                            <div class="w-[190px] h-[190px] flex items-center justify-center mx-auto">
-                                <img src="/src/assets/img/product-image.png" alt="Iphone" class="w-full">
-                            </div>
-                        </div>
-                        <button 
-                            class="bg-black text-white w-full p-1.5 transition-all duration-300 ease-in-out cursor-pointer add-to-cart mb-4 flex items-center justify-center gap-x-2"
-                            @click.prevent.stop="addToCart"
-                        >
-                            <span class="text-sm">Add To Cart</span>
-                            <PhPlus :size="18" />
-                            <PhCheck :size="18" class="hidden" />
-                        </button>
-                        <div>
-                            <div class="font-semibold text-base mb-2.5">HAVIT HV-G92 Gamepad</div>
-                            <div class="flex items-center gap-x-2.5 mb-2.5">
-                                <span class="text-secondary-500">&#8369;120</span>
-                                <del class="text-gray-500 decoration-dashed">&#8369;160</del>
-                            </div>
-                            <button 
-                                class="flex items-center gap-x-2 cursor-pointer"
-                                @click.prevent.stop="viewProductReviews"
-                            >
-                                <div class="flex items-center text-orange-500 gap-x-1">
-                                    <PhStar :size="19" weight="fill" />
-                                    <PhStar :size="19" weight="fill" />
-                                    <PhStar :size="19" weight="fill" />
-                                    <PhStarHalf :size="19" weight="fill" />
-                                    <PhStar :size="19" />
-                                </div>
-                                <span class="text-gray-500">(190)</span>
-                            </button>
-                        </div>
-                    </RouterLink>
+                    <ProductCard 
+                        v-for="(product, index) in products" 
+                        :key="product.id"
+                        :product="product"
+                    />
                 </div>
             </div>
         </div>
@@ -130,6 +91,7 @@ import { useFetch } from '@/composables/fetch'
 import appleLogo from '@/assets/img/apple-logo.png'
 import heroIimage from '@/assets/img/hero-image.png'
 import SectionHeader from '@/components/SectionHeader.vue'
+import ProductCard from '@/components/ProductCard.vue'
 
 const receivedDateString = ref('June 30, 2025 10:00 AM')
 const targetDate = new Date(receivedDateString.value)
@@ -138,20 +100,13 @@ const time = Math.max(0, targetDate.getTime() - now.getTime())
 const isSaleStarted = ref(false)
 const { data, error, isLoading, fetchNow } = useFetch()
 
+const products = ref([
+  { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
+  { id: 2, name: 'Product 2', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
+])
+
 const handleCountDowneEnd = () => {
     isSaleStarted.value = true
-}
-
-const addToWishList = () => {
-    console.log('add to wish list')
-}
-
-const addToCart = () => {
-    console.log('add to cart')
-}
-
-const viewProductReviews = () => {
-    console.log('view reviews')
 }
 
 /* watch(data, (newVal) => {

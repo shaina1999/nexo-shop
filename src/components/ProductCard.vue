@@ -1,8 +1,8 @@
 <template>
-    <RouterLink :to="`/product/${product.id}`">
+    <button @click="viewProduct(product.id)" class="cursor-pointer">
         <div class="bg-gray-200 p-4 product cursor-pointer">
             <div class="flex items-center justify-between mb-4">
-                <div class="bg-secondary-500 text-white py-1 px-2 rounded-sm text-sm">{{ product.discount }}</div>
+                <div class="bg-secondary-500 text-white py-1 px-2 rounded-sm text-sm">{{ product.discount }}%</div>
                 <button 
                     class="cursor-pointer bg-white flex items-center justify-center text-secondary-500 w-10 h-10 rounded-full transition-all duration-300 ease-in-out"
                     @click.prevent.stop="addToWishList"
@@ -12,7 +12,7 @@
                 </button>
             </div>
             <div class="w-[190px] h-[190px] flex items-center justify-center mx-auto">
-                <img src="/src/assets/img/product-image.png" alt="Iphone" class="w-full">
+                <img :src="product.image" :alt="product.name" class="w-full">
             </div>
         </div>
         <button 
@@ -43,13 +43,21 @@
                 <span class="text-gray-500">{{ `(${product.reviewsCount})` }}</span>
             </button>
         </div>
-    </RouterLink>
+    </button>
 </template>
 
 <script setup>
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+
 defineProps({
     product: Object
 })
+
+const viewProduct = (id) => {
+    router.push({ path: '/product', query: { id: id} } ); 
+}
 
 const addToWishList = () => {
     console.log('add to wish list')
