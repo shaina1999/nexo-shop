@@ -36,29 +36,29 @@
                             <div class="flex items-end gap-x-3.5">
                                 <div class="flex items-baseline flex-col">
                                     <span class="text-sm font-medium mb-1 inline-block">Days</span>
-                                    <span class="font-bold text-3xl">{{ days }}</span>
+                                    <span class="font-bold text-2xl md:text-3xl">{{ days }}</span>
                                 </div>
                                 <span class="text-3xl text-secondary-500">:</span>
                                 <div class="flex items-baseline flex-col">
                                     <span class="text-sm font-medium mb-1 inline-block">Hours</span>
-                                    <span class="font-bold text-3xl">{{ hours }}</span>
+                                    <span class="font-bold text-2xl md:text-3xl">{{ hours }}</span>
                                 </div>
                                 <span class="text-3xl text-secondary-500">:</span>
                                 <div class="flex items-baseline flex-col">
                                     <span class="text-sm font-medium mb-1 inline-block">Minutes</span>
-                                    <span class="font-bold text-3xl">{{ minutes }}</span>
+                                    <span class="font-bold text-2xl md:text-3xl">{{ minutes }}</span>
                                 </div>
                                 <span class="text-3xl text-secondary-500">:</span>
                                 <div class="flex items-baseline flex-col">
                                     <span class="text-sm font-medium mb-1 inline-block">Seconds</span>
-                                    <span class="font-bold text-3xl">{{ seconds }}</span>
+                                    <span class="font-bold text-2xl md:text-3xl">{{ seconds }}</span>
                                 </div>
                             </div>
                         </vue-countdown>
                     </div>
                 </template>
                 <template v-slot:buttons>
-                    <div class="flex items-center gap-x-2">
+                    <div class="hidden sm:flex items-center gap-x-2">
                         <button 
                             class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
                             @click="goPrev"
@@ -159,18 +159,22 @@ const handleCountDowneEnd = () => {
             case 'mobile':
                 splideOptions.value.perPage = 1
                 splideOptions.value.perMove = 1
+                splideOptions.value.arrows = true
                 break
             case 'mobile-landscape':
                 splideOptions.value.perPage = 2
                 splideOptions.value.perMove = 2
+                splideOptions.value.arrows = false
                 break
             case 'tablet':
                 splideOptions.value.perPage = 3
                 splideOptions.value.perMove = 2
+                splideOptions.value.arrows = false
                 break
             case 'desktop':
                 splideOptions.value.perPage = 4
                 splideOptions.value.perMove = 2
+                splideOptions.value.arrows = false
                 break
         }
     }
