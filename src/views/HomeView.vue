@@ -103,7 +103,10 @@
                                 <span class="text-secondary-500">&#8369;120</span>
                                 <del class="text-gray-500 decoration-dashed">&#8369;160</del>
                             </div>
-                             <div class="flex items-center gap-x-2">
+                            <button 
+                                class="flex items-center gap-x-2"
+                                @click.prevent.stop="viewProductReviews"
+                            >
                                 <div class="flex items-center text-orange-500 gap-x-1">
                                     <PhStar :size="19" weight="fill" />
                                     <PhStar :size="19" weight="fill" />
@@ -112,7 +115,7 @@
                                     <PhStar :size="19" />
                                 </div>
                                 <span class="text-gray-500">(190)</span>
-                            </div>
+                            </button>
                         </div>
                     </RouterLink>
                 </div>
@@ -145,6 +148,10 @@ const addToWishList = () => {
 
 const addToCart = () => {
     console.log('add to cart')
+}
+
+const viewProductReviews = () => {
+    console.log('view reviews')
 }
 
 /* watch(data, (newVal) => {
