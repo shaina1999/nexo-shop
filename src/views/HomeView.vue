@@ -73,12 +73,14 @@
                 </template>
             </SectionHeader>
             <div class="pb-15 border-b-[1px] border-b-gray-300">
-                <div class="grid grid-cols-4 gap-x-7.5 mb-13">
-                    <ProductCard 
-                        v-for="(product, index) in products" 
-                        :key="product.id"
-                        :product="product"
-                    />
+                <div class="mb-13">
+                    <Splide :options="{ type : 'loop', perPage: 4, gap: '16px', }">
+                        <SplideSlide v-for="(product, index) in products" :key="product.id">
+                            <ProductCard 
+                                :product="product"
+                            />
+                        </SplideSlide>
+                    </Splide>
                 </div>
                 <BaseLinkButton :to="'/products'" class="mx-auto">View All Products</BaseLinkButton>
             </div>
@@ -105,6 +107,11 @@ const { data, error, isLoading, fetchNow } = useFetch()
 const products = ref([
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
   { id: 2, name: 'Product 2', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
+  { id: 3, name: 'Product 3', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
+  { id: 4, name: 'Product 4', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
+  { id: 5, name: 'Product 5', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
+  { id: 6, name: 'Product 6', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
+  { id: 7, name: 'Product 7', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
 ])
 
 const handleCountDowneEnd = () => {
