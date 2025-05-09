@@ -1,5 +1,5 @@
 <template>
-    <button @click="viewProduct(product.id)" class="cursor-pointer">
+    <button @click="router.push({ path: '/product', query: { id: product.id} } ); " class="cursor-pointer">
         <div class="bg-gray-200 p-4 product cursor-pointer">
             <div class="flex items-center justify-between mb-4">
                 <div class="bg-secondary-500 text-white py-1 px-2 rounded-sm text-sm">{{ product.discount }}%</div>
@@ -54,10 +54,6 @@ const router = useRouter()
 defineProps({
     product: Object
 })
-
-const viewProduct = (id) => {
-    router.push({ path: '/product', query: { id: id} } ); 
-}
 
 const addToWishList = () => {
     console.log('add to wish list')
