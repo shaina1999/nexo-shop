@@ -104,7 +104,7 @@
                                 <del class="text-gray-500 decoration-dashed">&#8369;160</del>
                             </div>
                             <button 
-                                class="flex items-center gap-x-2"
+                                class="flex items-center gap-x-2 cursor-pointer"
                                 @click.prevent.stop="viewProductReviews"
                             >
                                 <div class="flex items-center text-orange-500 gap-x-1">
