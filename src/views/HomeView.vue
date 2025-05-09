@@ -61,11 +61,13 @@
                     <div class="flex items-center gap-x-2">
                         <button 
                             class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
+                            @click="goPrev"
                         >
                             <PhArrowLeft :size="20" />
                         </button>
                          <button 
                             class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
+                            @click="goNext"
                         >
                             <PhArrowRight :size="20" />
                         </button>
@@ -73,8 +75,8 @@
                 </template>
             </SectionHeader>
             <div class="pb-15 border-b-[1px] border-b-gray-300">
-                <div class="mb-13">
-                    <Splide :options="{ type : 'loop', perPage: 4, gap: '16px', }">
+                <div class="mb-13 pb-100">
+                    <Splide ref="splideRef" :options="{ type : 'loop', perPage: 4, gap: '16px', arrows: false, speed: 1000 }">
                         <SplideSlide v-for="(product, index) in products" :key="product.id">
                             <ProductCard 
                                 :product="product"
@@ -103,6 +105,8 @@ const now = new Date()
 const time = Math.max(0, targetDate.getTime() - now.getTime())
 const isSaleStarted = ref(false)
 const { data, error, isLoading, fetchNow } = useFetch()
+const splideRef = ref(null)
+const splideInstance = ref(null)
 
 const products = ref([
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
@@ -112,7 +116,16 @@ const products = ref([
   { id: 5, name: 'Product 5', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
   { id: 6, name: 'Product 6', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
   { id: 7, name: 'Product 7', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
+  { id: 8, name: 'Product 8', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
 ])
+
+const goPrev = () => {
+    splideInstance.value?.go('<')
+}
+
+const goNext = () => {
+    splideInstance.value?.go('>')
+}
 
 const handleCountDowneEnd = () => {
     isSaleStarted.value = true
@@ -121,8 +134,19 @@ const handleCountDowneEnd = () => {
 /* watch(data, (newVal) => {
   receivedDateString.value = newVal?.saleDate
 })
+ */
 
 onMounted(() => {
-    fetchNow(`/getsalecountdown/`)
-}) */
+    // fetchNow(`/getsalecountdown/`)
+
+    if (splideRef.value) {
+        splideInstance.value = splideRef.value.splide
+    }
+})
 </script>
+
+<style>
+.splide__pagination {
+    display: none;
+}
+</style>
