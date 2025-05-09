@@ -12,7 +12,7 @@
                 </button>
             </header>
             <figure class="w-[190px] h-[190px] flex items-center justify-center mx-auto">
-                <img :src="product.image" :alt="product.name" class="w-full">
+                <img :src="product.image" :alt="product.name" class="w-full lg:w-[90%]">
             </figure>
         </div>
         <footer>
