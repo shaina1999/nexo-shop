@@ -200,6 +200,53 @@
             </div>
         </div>
     </section>
+
+    <!-- Best Selling Products Section -->
+    <section class="flex items-center justify-center w-full pt-16 sm:pt-20">
+        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
+            <SectionHeader :label="'This Month'" :title="'Best Selling Products'">
+                <template v-slot:buttons>
+                    <BaseLinkButton class="py-2!">View All</BaseLinkButton>
+                </template>
+            </SectionHeader>
+            <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300">
+                <div class="mb-7.5 md:mb-15">
+                    <Splide 
+                        :ref="el => registerSplide(el, 'best-selling')"
+                        :options="{
+                            type: 'loop',
+                            perPage: 4,
+                            gap: '16px',
+                            arrows: false,
+                            speed: 1000,
+                            perMove: 1,
+                            pagination: false,
+                            breakpoints: {
+                                640: {
+                                    perPage: 1, arrows: true
+                                },
+                                768: {
+                                    perPage: 2, arrows: false
+                                },
+                                1024: {
+                                    perPage: 3, arrows: false
+                                },
+                                1280: {
+                                    perPage: 4, arrows: false
+                                },
+                            }
+                        }"
+                    >
+                        <SplideSlide v-for="(product, index) in products" :key="product.id">
+                            <ProductCard 
+                                :product="product"
+                            />
+                        </SplideSlide>
+                    </Splide>
+                </div>
+            </div>
+        </div>
+    </section>
 </template>
 
 <script setup>
