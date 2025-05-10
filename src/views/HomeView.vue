@@ -261,6 +261,67 @@
             </div>
         </div>
     </section>
+
+    <!-- Explore Our Products Section -->
+    <section class="flex items-center justify-center w-full pt-16 sm:pt-20">
+        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
+            <SectionHeader :label="'Our Products'" :title="'Explore Our Products'">
+                <template v-slot:buttons>
+                    <div class="hidden sm:flex items-center gap-x-2">
+                        <button 
+                            class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
+                            @click="goPrev('products')"
+                        >
+                            <PhArrowLeft :size="20" />
+                        </button>
+                         <button 
+                            class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
+                            @click="goNext('products')"
+                        >
+                            <PhArrowRight :size="20" />
+                        </button>
+                    </div>
+                </template>
+            </SectionHeader>
+            <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300">
+                <div class="mb-7.5 md:mb-15">
+                    <Splide 
+                        :ref="el => registerSplide(el, 'products')"
+                        :options="{
+                            type: 'loop',
+                            perPage: 4,
+                            gap: '16px',
+                            arrows: false,
+                            speed: 1000,
+                            perMove: 1,
+                            pagination: false,
+                            breakpoints: {
+                                640: {
+                                    perPage: 1, arrows: true
+                                },
+                                768: {
+                                    perPage: 2, arrows: false
+                                },
+                                1024: {
+                                    perPage: 3, arrows: false
+                                },
+                                1280: {
+                                    perPage: 4, arrows: false
+                                },
+                            }
+                        }"
+                    >
+                        <SplideSlide v-for="(product, index) in products" :key="product.id">
+                            <ProductCard 
+                                :product="product"
+                            />
+                        </SplideSlide>
+                    </Splide>
+                </div>
+                <BaseLinkButton :to="'/products'" class="mx-auto">View All Products</BaseLinkButton>
+            </div>
+        </div>
+    </section>
 </template>
 
 <script setup>
