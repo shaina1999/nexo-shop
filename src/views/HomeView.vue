@@ -330,6 +330,7 @@
             <div class="grid new-arrival-grid gap-2.5 lg:gap-7.5 text-white">
                 <figure class="bg-black item1 p-5 lg:p-6 relative flex justify-center lg:justify-center">
                     <div class="h-[222px] w-[210px] lg:h-[434px] lg:w-full flex items-end justify-center">
+                        <!-- Product image max width: 416px, max height: 734px -->
                         <img src="/src/assets/img/ps5.png" alt="PlayStation 5" class="h-full w-full object-contain">
                     </div>
                     <figcaption class="absolute left-5 bottom-5 right-5 lg:left-6 lg:bottom-6 lg:right-6">
