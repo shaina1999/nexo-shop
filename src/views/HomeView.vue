@@ -322,6 +322,25 @@
             </div>
         </div>
     </section>
+
+    <!-- New Arrival Section -->
+    <section class="flex items-center justify-center w-full py-16 sm:py-20 md:py-25 lg:py-35">
+        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
+            <SectionHeader :label="'Featured'" :title="'New Arrival'"> </SectionHeader>
+            <div>
+                test
+            </div>
+        </div>
+    </section>
+
+    <section class="flex items-center justify-center w-full py-16 sm:py-20 md:py-25 lg:py-35">
+        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
+            <SectionHeader :label="'Featured'" :title="'New Arrival'"> </SectionHeader>
+            <div>
+                test
+            </div>
+        </div>
+    </section>
 </template>
 
 <script setup>
