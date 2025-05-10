@@ -83,13 +83,13 @@
                     <div class="hidden sm:flex items-center gap-x-2">
                         <button 
                             class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
-                            @click="goPrev"
+                            @click="goPrev('flash')"
                         >
                             <PhArrowLeft :size="20" />
                         </button>
                          <button 
                             class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
-                            @click="goNext"
+                            @click="goNext('flash')"
                         >
                             <PhArrowRight :size="20" />
                         </button>
@@ -99,7 +99,7 @@
             <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300">
                 <div class="mb-7.5 md:mb-15">
                     <Splide 
-                        ref="splideRef" 
+                        :ref="el => registerSplide(el, 'flash')"
                         :options="{
                             type: 'loop',
                             perPage: 4,
@@ -144,11 +144,13 @@
                     <div class="hidden sm:flex items-center gap-x-2">
                         <button 
                             class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
+                            @click="goPrev('categories')"
                         >
                             <PhArrowLeft :size="20" />
                         </button>
                          <button 
                             class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
+                            @click="goNext('categories')"
                         >
                             <PhArrowRight :size="20" />
                         </button>
@@ -157,6 +159,7 @@
             </SectionHeader>
             <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300 categories">
                 <Splide 
+                    :ref="el => registerSplide(el, 'categories')"
                     :options="{
                         perPage: 6,
                         autoplay: true,
@@ -214,8 +217,7 @@ const now = new Date()
 const time = Math.max(0, targetDate.getTime() - now.getTime())
 const isSaleStarted = ref(false)
 const { data, error, isLoading, fetchNow } = useFetch()
-const splideRef = ref(null)
-const splideInstance = ref(null)
+const splideInstances = ref({})
 
 const categories = ref([
   { label: 'Phones', icon: 'PhDeviceMobile' },
@@ -241,12 +243,18 @@ const products = ref([ // sample products only
   { id: 8, name: 'Product 8', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
 ])
 
-const goPrev = () => {
-    splideInstance.value?.go('<')
+const registerSplide = (el, key) => {
+  if (el && el.splide) {
+    splideInstances.value[key] = el.splide
+  }
 }
 
-const goNext = () => {
-    splideInstance.value?.go('>')
+const goPrev = (key) => {
+  splideInstances.value[key]?.go('<')
+}
+
+const goNext = (key) => {
+  splideInstances.value[key]?.go('>')
 }
 
 const handleCountDowneEnd = () => {
@@ -257,11 +265,7 @@ const handleCountDowneEnd = () => {
   receivedDateString.value = newVal?.saleDate
 }) */
 
-onMounted(() => {
-    // fetchNow(`/getsalecountdown/`)
-
-    if (splideRef.value) {
-        splideInstance.value = splideRef.value.splide
-    }
-})
+/* onMounted(() => {
+    fetchNow(`/getsalecountdown/`)
+}) */
 </script>
