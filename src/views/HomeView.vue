@@ -336,8 +336,8 @@
                         <RouterLink to="'/products'" class="underline block underline-offset-6">Shop Now</RouterLink>
                     </figcaption>
                 </figure>
-                <figure class="bg-black text-white p-5 md:p-6 relative h-[250px] item2">
-                    <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="w-max! md:w-[60%] h-full object-contain lg:w-[80%] ml-auto">
+                <figure class="bg-black text-white p-5 md:p-6 relative h-[250px] lg:h-full item2">
+                    <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="w-max! max-h-[286px] md:w-[60%] h-full object-contain lg:w-[80%] ml-auto">
                     <figcaption class="absolute left-5 bottom-5 right-5 md:left-6 md:bottom-6 md:right-8">
                         <h3 class="font-semibold text-base lg:text-lg mb-2">PlayStation 5</h3>
                         <p class="font-normal text-sm mb-2">Featured woman collections that give you another vibe.</p>
@@ -345,7 +345,7 @@
                     </figcaption>
                 </figure>
                 <figure class="basis-[100%] bg-black text-white p-5 md:p-6 relative h-[250px] lg:h-full w-full item3">
-                    <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="w-max! md:w-[60%] h-full object-contain lg:w-[80%] ml-auto lg:ml-0">
+                    <img src="/src/assets/img/gucci.png" alt="PlayStation 5" class="w-max! max-h-[286px] h-auto lg:h-[286px] md:w-[60%] object-contain lg:w-[80%] ml-auto lg:ml-0">
                     <figcaption class="absolute left-5 bottom-5 right-5 md:left-6 md:bottom-6 md:right-8">
                         <h3 class="font-semibold text-base lg:text-lg mb-1">Speakers</h3>
                         <p class="font-normal text-sm mb-1">Amazon wireless speakers</p>
@@ -353,7 +353,7 @@
                     </figcaption>
                 </figure>
                 <figure class="basis-[100%] bg-black text-white p-5 md:p-6 relative h-[250px] lg:h-full w-full item4">
-                    <img src="/src/assets/img/gucci.png" alt="PlayStation 5" class="w-max! md:w-[60%] h-full object-contain lg:w-[80%] ml-auto lg:ml-0">
+                    <img src="/src/assets/img/gucci.png" alt="PlayStation 5" class="w-max! max-h-[286px] h-auto lg:h-[286px] md:w-[60%] object-contain lg:w-[80%] ml-auto lg:ml-0">
                     <figcaption class="absolute left-5 bottom-5 right-5 md:left-6 md:bottom-6 md:right-8">
                         <h3 class="font-semibold text-base lg:text-lg mb-1">Perfume</h3>
                         <p class="font-normal text-sm mb-1">GUCCI INTENSE OUD EDP</p>
