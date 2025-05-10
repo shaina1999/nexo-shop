@@ -327,8 +327,39 @@
     <section class="flex items-center justify-center w-full py-16 sm:py-20 md:py-25 lg:py-35">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <SectionHeader :label="'Featured'" :title="'New Arrival'"> </SectionHeader>
-            <div>
-                test
+            <div class="grid new-arrival-grid gap-2.5 lg:gap-5">
+                <figure class="bg-black text-white p-5 md:p-8 relative h-[250px] lg:h-full item1">
+                    <img src="/src/assets/img/ps5.png" alt="PlayStation 5" class="ml-auto mt-auto h-full object-contain">
+                    <figcaption class="absolute left-5 bottom-5 right-5 md:left-8 md:bottom-8 md:right-8">
+                        <h3 class="font-semibold text-base lg:text-2xl mb-1 lg:mb-4">PlayStation 5</h3>
+                        <p class="font-normal text-sm lg:text-base mb-1 lg:mb-4">Black and White version of the PS5 coming out on sale.</p>
+                        <RouterLink to="'/products'" class="underline block underline-offset-6">Shop Now</RouterLink>
+                    </figcaption>
+                </figure>
+                <figure class="bg-black text-white p-5 md:p-6 relative h-[250px] item2">
+                    <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="w-max! md:w-[60%] h-full object-contain lg:w-[80%] ml-auto">
+                    <figcaption class="absolute left-5 bottom-5 right-5 md:left-6 md:bottom-6 md:right-8">
+                        <h3 class="font-semibold text-base lg:text-lg mb-2">PlayStation 5</h3>
+                        <p class="font-normal text-sm mb-2">Featured woman collections that give you another vibe.</p>
+                        <RouterLink to="'/products'" class="underline text-sm block underline-offset-6">Shop Now</RouterLink>
+                    </figcaption>
+                </figure>
+                <figure class="basis-[100%] bg-black text-white p-5 md:p-6 relative h-[250px] lg:h-full w-full item3">
+                    <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="w-max! md:w-[60%] h-full object-contain lg:w-[80%] ml-auto lg:ml-0">
+                    <figcaption class="absolute left-5 bottom-5 right-5 md:left-6 md:bottom-6 md:right-8">
+                        <h3 class="font-semibold text-base lg:text-lg mb-1">Speakers</h3>
+                        <p class="font-normal text-sm mb-1">Amazon wireless speakers</p>
+                        <RouterLink to="'/products'" class="underline text-sm block underline-offset-6">Shop Now</RouterLink>
+                    </figcaption>
+                </figure>
+                <figure class="basis-[100%] bg-black text-white p-5 md:p-6 relative h-[250px] lg:h-full w-full item4">
+                    <img src="/src/assets/img/gucci.png" alt="PlayStation 5" class="w-max! md:w-[60%] h-full object-contain lg:w-[80%] ml-auto lg:ml-0">
+                    <figcaption class="absolute left-5 bottom-5 right-5 md:left-6 md:bottom-6 md:right-8">
+                        <h3 class="font-semibold text-base lg:text-lg mb-1">Perfume</h3>
+                        <p class="font-normal text-sm mb-1">GUCCI INTENSE OUD EDP</p>
+                        <RouterLink to="'/products'" class="underline text-sm block underline-offset-6">Shop Now</RouterLink>
+                    </figcaption>
+                </figure>
             </div>
         </div>
     </section>
@@ -410,3 +441,33 @@ const handleCountDowneEnd = () => {
     fetchNow(`/getsalecountdown/`)
 }) */
 </script>
+
+<style scoped>
+@media (max-width: 1024px) {
+    .new-arrival-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .new-arrival-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 1025px) {
+    .item1{ grid-area: item1; }
+    .item2{ grid-area: item2; }
+    .item3{ grid-area: item3; }
+    .item4{ grid-area: item4; }
+
+    .new-arrival-grid {
+        grid-template-areas:
+        'item1 item1 item2 item2'
+        'item1 item1 item2 item2'
+        'item1 item1 item3 item4'
+        'item1 item1 item3 item4';
+    }
+}
+</style>
