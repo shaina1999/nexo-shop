@@ -206,43 +206,15 @@
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <SectionHeader :label="'This Month'" :title="'Best Selling Products'">
                 <template v-slot:buttons>
-                    <BaseLinkButton class="py-2!">View All</BaseLinkButton>
+                    <BaseLinkButton class="py-2!" :to="'/products'">View All</BaseLinkButton>
                 </template>
             </SectionHeader>
             <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300">
-                <div class="mb-7.5 md:mb-15">
-                    <Splide 
-                        :ref="el => registerSplide(el, 'best-selling')"
-                        :options="{
-                            type: 'loop',
-                            perPage: 4,
-                            gap: '16px',
-                            arrows: false,
-                            speed: 1000,
-                            perMove: 1,
-                            pagination: false,
-                            breakpoints: {
-                                640: {
-                                    perPage: 1, arrows: true
-                                },
-                                768: {
-                                    perPage: 2, arrows: false
-                                },
-                                1024: {
-                                    perPage: 3, arrows: false
-                                },
-                                1280: {
-                                    perPage: 4, arrows: false
-                                },
-                            }
-                        }"
-                    >
-                        <SplideSlide v-for="(product, index) in products" :key="product.id">
-                            <ProductCard 
-                                :product="product"
-                            />
-                        </SplideSlide>
-                    </Splide>
+                <div class="grid grid-cols-4 gap-x-4">
+                    <ProductCard 
+                        v-for="(product, index) in bestSellingProducts" :key="product.id"
+                        :product="product"
+                    />
                 </div>
             </div>
         </div>
@@ -250,7 +222,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, onMounted, onUnmounted } from 'vue'
+import { ref, watchEffect, onMounted, onUnmounted, computed } from 'vue'
 import { useFetch } from '@/composables/fetch'
 import appleLogo from '@/assets/img/apple-logo.png'
 import heroIimage from '@/assets/img/hero-image.png'
@@ -279,7 +251,7 @@ const categories = ref([
   { label: 'Accessories', icon: 'PhPlug' }
 ])
 
-const products = ref([ // sample products only
+const products = ref([ // sample products
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
   { id: 2, name: 'Product 2', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
   { id: 3, name: 'Product 3', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
@@ -288,6 +260,13 @@ const products = ref([ // sample products only
   { id: 6, name: 'Product 6', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
   { id: 7, name: 'Product 7', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
   { id: 8, name: 'Product 8', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
+])
+
+const bestSellingProducts = ref([ // sample best products
+  { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
+  { id: 2, name: 'Product 2', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
+  { id: 3, name: 'Product 3', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
+  { id: 4, name: 'Product 4', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
 ])
 
 const registerSplide = (el, key) => {
