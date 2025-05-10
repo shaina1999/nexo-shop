@@ -98,7 +98,32 @@
             </SectionHeader>
             <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300">
                 <div class="mb-7.5 md:mb-15">
-                    <Splide ref="splideRef" :options="splideOptions">
+                    <Splide 
+                        ref="splideRef" 
+                        :options="{
+                            type: 'loop',
+                            perPage: 4,
+                            gap: '16px',
+                            arrows: false,
+                            speed: 1000,
+                            perMove: 2,
+                            pagination: false,
+                            breakpoints: {
+                                640: {
+                                    perPage: 1, perMove: 1, arrows: true
+                                },
+                                768: {
+                                    perPage: 2, perMove: 2, arrows: false
+                                },
+                                1024: {
+                                    perPage: 3, perMove: 2, arrows: false
+                                },
+                                1280: {
+                                    perPage: 4, perMove: 2, arrows: false
+                                },
+                            }
+                        }"
+                    >
                         <SplideSlide v-for="(product, index) in products" :key="product.id">
                             <ProductCard 
                                 :product="product"
@@ -136,6 +161,12 @@
                         perPage: 6,
                         autoplay: true,
                         gap: '1rem',
+                        type: 'loop',
+                        interval: 2500,
+                        arrows: false,
+                        speed: 1000,
+                        perMove: 1,
+                        pagination: false,
                         breakpoints: {
                             640: {
                                 perPage: 2,
@@ -152,12 +183,6 @@
                                 perPage: 6,
                             },
                         },
-                        type: 'loop',
-                        interval: 2500,
-                        arrows: false,
-                        speed: 1000,
-                        perMove: 1,
-                        pagination: false
                     }"
                 >
                     <SplideSlide v-for="(category, index) in categories" :key="index">
@@ -191,8 +216,6 @@ const isSaleStarted = ref(false)
 const { data, error, isLoading, fetchNow } = useFetch()
 const splideRef = ref(null)
 const splideInstance = ref(null)
-const splideOptions = ref({ type: 'loop', perPage: 4, gap: '16px', arrows: false, speed: 1000, perMove: 2, pagination: false })
-const currentBreakpoint = ref('')
 
 const categories = ref([
   { label: 'Phones', icon: 'PhDeviceMobile' },
@@ -232,39 +255,7 @@ const handleCountDowneEnd = () => {
 
 /* watch(data, (newVal) => {
   receivedDateString.value = newVal?.saleDate
-})
- */
-
- const handleScreenResize = () => {
-    const width = window.innerWidth
-    let newBreakpoint = ''
-
-    if (width < 641) {
-        newBreakpoint = 'mobile'
-    } else if (width < 768) {
-        newBreakpoint = 'mobile-landscape'
-    } else if (width < 1025) {
-        newBreakpoint = 'tablet'
-    } else {
-        newBreakpoint = 'desktop'
-    }
-
-    if (newBreakpoint !== currentBreakpoint.value) {
-        currentBreakpoint.value = newBreakpoint
-
-        const breakpointSettings = {
-            mobile: { perPage: 1, perMove: 1, arrows: true },
-            'mobile-landscape': { perPage: 2, perMove: 2, arrows: false },
-            tablet: { perPage: 3, perMove: 2, arrows: false },
-            desktop: { perPage: 4, perMove: 2, arrows: false }
-        }
-
-        const settings = breakpointSettings[newBreakpoint]
-        if (settings) {
-            Object.assign(splideOptions.value, settings)
-        }
-    }
-}
+}) */
 
 onMounted(() => {
     // fetchNow(`/getsalecountdown/`)
@@ -272,12 +263,5 @@ onMounted(() => {
     if (splideRef.value) {
         splideInstance.value = splideRef.value.splide
     }
-
-    handleScreenResize()
-    window.addEventListener('resize', handleScreenResize)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', handleScreenResize)
 })
 </script>
