@@ -110,6 +110,68 @@
             </div>
         </div>
     </section>
+
+    <!-- Categories Section -->
+    <section class="flex items-center justify-center w-full pt-16 sm:pt-20">
+        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
+            <SectionHeader :label="'Categories'" :title="'Browse By Category'">
+                <template v-slot:buttons>
+                    <div class="hidden sm:flex items-center gap-x-2">
+                        <button 
+                            class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
+                        >
+                            <PhArrowLeft :size="20" />
+                        </button>
+                         <button 
+                            class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
+                        >
+                            <PhArrowRight :size="20" />
+                        </button>
+                    </div>
+                </template>
+            </SectionHeader>
+            <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300 categories">
+                <Splide 
+                    :options="{
+                        perPage: 6,
+                        autoplay: true,
+                        gap: '1rem',
+                        breakpoints: {
+                            640: {
+                                perPage: 2,
+                                arrows: true,
+                                gap: '0.5rem',
+                            },
+                            768: {
+                                perPage: 3,
+                            },
+                            1024: {
+                                perPage: 4,
+                            },
+                            1280: {
+                                perPage: 6,
+                            },
+                        },
+                        type: 'loop',
+                        interval: 2500,
+                        arrows: false,
+                        speed: 1000,
+                        perMove: 1,
+                        pagination: false
+                    }"
+                >
+                    <SplideSlide v-for="(category, index) in categories" :key="index">
+                        <div 
+                            class="flex flex-col items-center space-y-3 rounded-sm border-[1px] border-gray-300 px-2 py-4 sm:px-4 sm:py-8 cursor-pointer category-item transition-all duration-300 ease-in-out hover:bg-secondary-500 hover:text-white"
+                        >
+                            <component :is="category.icon" :size="38" />
+                            <span>{{ category.label }}</span>
+                        </div>
+                    </SplideSlide>
+                </Splide>
+            </div>
+        </div>
+    </section>
 </template>
 
 <script setup>
@@ -131,6 +193,19 @@ const splideRef = ref(null)
 const splideInstance = ref(null)
 const splideOptions = ref({ type: 'loop', perPage: 4, gap: '16px', arrows: false, speed: 1000, perMove: 2, pagination: false })
 const currentBreakpoint = ref('')
+
+const categories = ref([
+  { label: 'Phones', icon: 'PhDeviceMobile' },
+  { label: 'Computers', icon: 'PhLaptop' },
+  { label: 'SmartWatch', icon: 'PhWatch' },
+  { label: 'Camera', icon: 'PhCamera' },
+  { label: 'HeadPhones', icon: 'PhHeadset' },
+  { label: 'Gaming', icon: 'PhGameController' },
+  { label: 'Tablets', icon: 'PhDeviceTablet' },
+  { label: 'Drones', icon: 'PhDrone' },
+  { label: 'TVs', icon: 'PhTelevision' },
+  { label: 'Accessories', icon: 'PhPlug' }
+])
 
 const products = ref([ // sample products only
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, image: '/src/assets/img/product-image.png', reviewsCount: 100 },
