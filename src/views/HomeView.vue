@@ -430,7 +430,7 @@ const categories = ref([
   { label: 'Computers', icon: 'PhLaptop' },
   { label: 'SmartWatch', icon: 'PhWatch' },
   { label: 'Camera', icon: 'PhCamera' },
-  { label: 'HeadPhones', icon: 'PhHeadset' },
+  { label: 'HeadPhones', icon: 'PhHeadphones' },
   { label: 'Gaming', icon: 'PhGameController' },
   { label: 'Tablets', icon: 'PhDeviceTablet' },
   { label: 'Drones', icon: 'PhDrone' },
