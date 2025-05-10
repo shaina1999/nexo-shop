@@ -328,8 +328,8 @@
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <SectionHeader :label="'Featured'" :title="'New Arrival'"> </SectionHeader>
             <div class="grid new-arrival-grid gap-2.5 lg:gap-7.5 text-white">
-                <figure class="bg-black item1 p-5 lg:p-6 relative">
-                    <div class="h-[250px] lg:h-[434px] w-full flex items-end justify-center">
+                <figure class="bg-black item1 p-5 lg:p-6 relative flex justify-end lg:justify-center">
+                    <div class="h-[222px] w-[210px] lg:h-[434px] lg:w-full flex items-end justify-center">
                         <img src="/src/assets/img/ps5.png" alt="PlayStation 5" class="h-full w-full object-contain">
                     </div>
                     <figcaption class="absolute left-5 bottom-5 right-5 lg:left-6 lg:bottom-6 lg:right-6">
@@ -339,7 +339,7 @@
                     </figcaption>
                 </figure>
                 <figure class="bg-black item2 p-5 lg:p-6 relative flex items-center justify-end">
-                    <div class="h-full w-full lg:h-[250px] lg:w-[250px] flex items-end justify-center">
+                    <div class="w-[210px] h-[222px] lg:h-[250px] lg:w-[250px] flex items-end justify-center">
                         <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="h-full w-full object-contain">
                     </div>
                     <figcaption class="absolute left-5 bottom-5 right-5 lg:left-6 lg:bottom-6 lg:right-6 w-[90%] lg:w-[50%]">
@@ -349,7 +349,7 @@
                     </figcaption>
                 </figure>
                 <figure class="bg-black item3 p-5 lg:p-6 relative flex items-center justify-end">
-                    <div class="h-full w-full lg:h-[210px] lg:w-[190px] flex items-end justify-center">
+                    <div class="w-[210px] h-[222px] lg:h-[210px] lg:w-[190px] flex items-end justify-center">
                         <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="h-full w-full object-contain">
                     </div>
                     <figcaption class="absolute left-5 bottom-5 right-5 lg:left-6 lg:bottom-6 lg:right-6 w-[90%] lg:w-[80%]">
@@ -359,7 +359,7 @@
                     </figcaption>
                 </figure>
                 <figure class="bg-black item4 p-5 lg:p-6 relative flex items-center justify-end">
-                    <div class="h-full w-full lg:h-[210px] lg:w-[190px] flex items-end justify-center">
+                    <div class="w-[210px] h-[222px] lg:h-[210px] lg:w-[190px] flex items-end justify-center">
                         <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="h-full w-full object-contain">
                     </div>
                     <figcaption class="absolute left-5 bottom-5 right-5 lg:left-6 lg:bottom-6 lg:right-6 w-[90%] lg:w-[80%]">
