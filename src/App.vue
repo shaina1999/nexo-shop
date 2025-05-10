@@ -5,6 +5,7 @@ import { computed, useTemplateRef, ref } from 'vue'
 import NotificationBar from '@/components/NotificationBar.vue'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
+import ScrollToTop from '@/components/ScrollToTop.vue'
 
 const notificationBarRef = useTemplateRef('notificationBarRef')
 const { width, height } = useElementSize(notificationBarRef)
@@ -21,4 +22,5 @@ const headerHeight = computed(() => windowWidth.value > 1024 ? 97 : 118)
         <RouterView />
     </div>
     <Footer />
+    <ScrollToTop />
 </template>
