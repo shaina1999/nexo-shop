@@ -328,7 +328,7 @@
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <SectionHeader :label="'Featured'" :title="'New Arrival'"> </SectionHeader>
             <div class="grid new-arrival-grid gap-2.5 lg:gap-7.5 text-white">
-                <figure class="bg-black item1 p-5 lg:p-6 relative flex justify-end lg:justify-center">
+                <figure class="bg-black item1 p-5 lg:p-6 relative flex justify-center lg:justify-center">
                     <div class="h-[222px] w-[210px] lg:h-[434px] lg:w-full flex items-end justify-center">
                         <img src="/src/assets/img/ps5.png" alt="PlayStation 5" class="h-full w-full object-contain">
                     </div>
@@ -338,7 +338,7 @@
                         <RouterLink to="'/products'" class="underline block underline-offset-6">Shop Now</RouterLink>
                     </figcaption>
                 </figure>
-                <figure class="bg-black item2 p-5 lg:p-6 relative flex items-center justify-end">
+                <figure class="bg-black item2 p-5 lg:p-6 relative flex items-center justify-center">
                     <div class="w-[210px] h-[222px] lg:h-[250px] lg:w-[250px] flex items-end justify-center">
                         <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="h-full w-full object-contain">
                     </div>
@@ -348,7 +348,7 @@
                         <RouterLink to="'/products'" class="underline block underline-offset-6">Shop Now</RouterLink>
                     </figcaption>
                 </figure>
-                <figure class="bg-black item3 p-5 lg:p-6 relative flex items-center justify-end">
+                <figure class="bg-black item3 p-5 lg:p-6 relative flex items-center justify-center">
                     <div class="w-[210px] h-[222px] lg:h-[210px] lg:w-[190px] flex items-end justify-center">
                         <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="h-full w-full object-contain">
                     </div>
@@ -358,7 +358,7 @@
                         <RouterLink to="'/products'" class="underline block underline-offset-6">Shop Now</RouterLink>
                     </figcaption>
                 </figure>
-                <figure class="bg-black item4 p-5 lg:p-6 relative flex items-center justify-end">
+                <figure class="bg-black item4 p-5 lg:p-6 relative flex items-center justify-center">
                     <div class="w-[210px] h-[222px] lg:h-[210px] lg:w-[190px] flex items-end justify-center">
                         <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="h-full w-full object-contain">
                     </div>
