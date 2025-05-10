@@ -106,20 +106,20 @@
                             gap: '16px',
                             arrows: false,
                             speed: 1000,
-                            perMove: 2,
+                            perMove: 1,
                             pagination: false,
                             breakpoints: {
                                 640: {
-                                    perPage: 1, perMove: 1, arrows: true
+                                    perPage: 1, arrows: true
                                 },
                                 768: {
-                                    perPage: 2, perMove: 2, arrows: false
+                                    perPage: 2, arrows: false
                                 },
                                 1024: {
-                                    perPage: 3, perMove: 2, arrows: false
+                                    perPage: 3, arrows: false
                                 },
                                 1280: {
-                                    perPage: 4, perMove: 2, arrows: false
+                                    perPage: 4, arrows: false
                                 },
                             }
                         }"
