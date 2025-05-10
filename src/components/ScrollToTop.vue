@@ -5,7 +5,7 @@
             <button
                 v-if="show"
                 @click="scrollToTop"
-                class="cursor-pointer fixed bottom-5 right-5 bg-secondary-500 text-white p-2.5 md:p-3 rounded-full shadow-lg hover:bg-secondary-300 transition-colors duration-300 ease-in-out"
+                class="cursor-pointer z-1 fixed bottom-12 sm:bottom-5 right-5 bg-secondary-500 text-white p-2.5 md:p-3 rounded-full shadow-lg hover:bg-secondary-300 transition-colors duration-300 ease-in-out"
             >
                 <PhArrowUp :size="22" />
             </button>
