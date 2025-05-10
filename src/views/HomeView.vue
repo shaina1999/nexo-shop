@@ -327,37 +327,45 @@
     <section class="flex items-center justify-center w-full py-16 sm:py-20 md:py-25 lg:py-35">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <SectionHeader :label="'Featured'" :title="'New Arrival'"> </SectionHeader>
-            <div class="grid new-arrival-grid gap-2.5 lg:gap-5">
-                <figure class="bg-black text-white p-5 md:p-8 relative h-[250px] lg:h-full item1">
-                    <img src="/src/assets/img/ps5.png" alt="PlayStation 5" class="ml-auto mt-auto h-full object-contain">
-                    <figcaption class="absolute left-5 bottom-5 right-5 md:left-8 md:bottom-8 md:right-8">
-                        <h3 class="font-semibold text-base lg:text-2xl mb-1 lg:mb-4">PlayStation 5</h3>
-                        <p class="font-normal text-sm lg:text-base mb-1 lg:mb-4">Black and White version of the PS5 coming out on sale.</p>
+            <div class="grid new-arrival-grid gap-2.5 lg:gap-7.5 text-white">
+                <figure class="bg-black item1 p-5 lg:p-6 relative">
+                    <div class="h-[250px] lg:h-[434px] w-full flex items-end justify-center">
+                        <img src="/src/assets/img/ps5.png" alt="PlayStation 5" class="h-full w-full object-contain">
+                    </div>
+                    <figcaption class="absolute left-5 bottom-5 right-5 lg:left-6 lg:bottom-6 lg:right-6">
+                        <h3 class="font-semibold text-base sm:text-xl md:text-2xl mb-1 lg:mb-2">PlayStation 5</h3>
+                        <p class="font-normal text-sm md:text-base mb-1 lg:mb-2">Black and White version of the PS5 coming out on sale.</p>
                         <RouterLink to="'/products'" class="underline block underline-offset-6">Shop Now</RouterLink>
                     </figcaption>
                 </figure>
-                <figure class="bg-black text-white p-5 md:p-6 relative h-[250px] lg:h-full item2">
-                    <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="w-max! max-h-[286px] md:w-[60%] h-full object-contain lg:w-[80%] ml-auto">
-                    <figcaption class="absolute left-5 bottom-5 right-5 md:left-6 md:bottom-6 md:right-8">
-                        <h3 class="font-semibold text-base lg:text-lg mb-2">PlayStation 5</h3>
-                        <p class="font-normal text-sm mb-2">Featured woman collections that give you another vibe.</p>
-                        <RouterLink to="'/products'" class="underline text-sm block underline-offset-6">Shop Now</RouterLink>
+                <figure class="bg-black item2 p-5 lg:p-6 relative flex items-center justify-end">
+                    <div class="h-full w-full lg:h-[250px] lg:w-[250px] flex items-end justify-center">
+                        <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="h-full w-full object-contain">
+                    </div>
+                    <figcaption class="absolute left-5 bottom-5 right-5 lg:left-6 lg:bottom-6 lg:right-6 w-[90%] lg:w-[50%]">
+                        <h3 class="font-semibold text-base sm:text-xl md:text-2xl mb-1 lg:mb-2">Women's Collections</h3>
+                        <p class="font-normal text-sm md:text-base mb-1 lg:mb-2">Featured woman collections that give you another vibe.</p>
+                        <RouterLink to="'/products'" class="underline block underline-offset-6">Shop Now</RouterLink>
                     </figcaption>
                 </figure>
-                <figure class="basis-[100%] bg-black text-white p-5 md:p-6 relative h-[250px] lg:h-full w-full item3">
-                    <img src="/src/assets/img/gucci.png" alt="PlayStation 5" class="w-max! max-h-[286px] h-auto lg:h-[286px] md:w-[60%] object-contain lg:w-[80%] ml-auto lg:ml-0">
-                    <figcaption class="absolute left-5 bottom-5 right-5 md:left-6 md:bottom-6 md:right-8">
-                        <h3 class="font-semibold text-base lg:text-lg mb-1">Speakers</h3>
-                        <p class="font-normal text-sm mb-1">Amazon wireless speakers</p>
-                        <RouterLink to="'/products'" class="underline text-sm block underline-offset-6">Shop Now</RouterLink>
+                <figure class="bg-black item3 p-5 lg:p-6 relative flex items-center justify-end">
+                    <div class="h-full w-full lg:h-[210px] lg:w-[190px] flex items-end justify-center">
+                        <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="h-full w-full object-contain">
+                    </div>
+                    <figcaption class="absolute left-5 bottom-5 right-5 lg:left-6 lg:bottom-6 lg:right-6 w-[90%] lg:w-[80%]">
+                        <h3 class="font-semibold text-base sm:text-xl md:text-2xl mb-1 lg:mb-2">Speakers</h3>
+                        <p class="font-normal text-sm md:text-base mb-1 lg:mb-2">Amazon wireless speakers</p>
+                        <RouterLink to="'/products'" class="underline block underline-offset-6">Shop Now</RouterLink>
                     </figcaption>
                 </figure>
-                <figure class="basis-[100%] bg-black text-white p-5 md:p-6 relative h-[250px] lg:h-full w-full item4">
-                    <img src="/src/assets/img/gucci.png" alt="PlayStation 5" class="w-max! max-h-[286px] h-auto lg:h-[286px] md:w-[60%] object-contain lg:w-[80%] ml-auto lg:ml-0">
-                    <figcaption class="absolute left-5 bottom-5 right-5 md:left-6 md:bottom-6 md:right-8">
-                        <h3 class="font-semibold text-base lg:text-lg mb-1">Perfume</h3>
-                        <p class="font-normal text-sm mb-1">GUCCI INTENSE OUD EDP</p>
-                        <RouterLink to="'/products'" class="underline text-sm block underline-offset-6">Shop Now</RouterLink>
+                <figure class="bg-black item4 p-5 lg:p-6 relative flex items-center justify-end">
+                    <div class="h-full w-full lg:h-[210px] lg:w-[190px] flex items-end justify-center">
+                        <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="h-full w-full object-contain">
+                    </div>
+                    <figcaption class="absolute left-5 bottom-5 right-5 lg:left-6 lg:bottom-6 lg:right-6 w-[90%] lg:w-[80%]">
+                        <h3 class="font-semibold text-base sm:text-xl md:text-2xl mb-1 lg:mb-2">Perfume</h3>
+                        <p class="font-normal text-sm md:text-base mb-1 lg:mb-2">GUCCI INTENSE OUD EDP</p>
+                        <RouterLink to="'/products'" class="underline block underline-offset-6">Shop Now</RouterLink>
                     </figcaption>
                 </figure>
             </div>
@@ -443,10 +451,11 @@ const handleCountDowneEnd = () => {
 </script>
 
 <style scoped>
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
     .new-arrival-grid {
         grid-template-columns: 1fr 1fr;
         grid-template-areas: none;
+        grid-template-rows: 270px 270px;
     }
 }
 
@@ -456,18 +465,20 @@ const handleCountDowneEnd = () => {
     }
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 1024px) {
     .item1{ grid-area: item1; }
     .item2{ grid-area: item2; }
     .item3{ grid-area: item3; }
     .item4{ grid-area: item4; }
 
     .new-arrival-grid {
+        grid-template-columns: repeat(2, 1fr);
         grid-template-areas:
-        'item1 item1 item2 item2'
-        'item1 item1 item2 item2'
-        'item1 item1 item3 item4'
-        'item1 item1 item3 item4';
+            'item1 item1 item2 item2'
+            'item1 item1 item2 item2'
+            'item1 item1 item3 item4'
+            'item1 item1 item3 item4'
+        ;
     }
 }
 </style>
