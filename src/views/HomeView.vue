@@ -375,10 +375,35 @@
 
     <section class="flex items-center justify-center w-full py-16 sm:py-20 md:py-25 lg:py-35">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
-            <SectionHeader :label="'Featured'" :title="'New Arrival'"> </SectionHeader>
-            <div>
-                test
-            </div>
+            <ul>
+                <li class="service-item">
+                    <div>
+                        <div>
+                            <PhTruck :size="32" />
+                        </div>
+                    </div>
+                    <h3>Free and Fast Delivery</h3>
+                    <p>Free delivery for all orders over &#8369;140</p>
+                </li>
+                <li class="service-item">
+                    <div>
+                        <div>
+                            <PhHeadset :size="32" />
+                        </div>
+                    </div>
+                    <h3>Free and Fast Delivery</h3>
+                    <p>Friendly 24/7 customer support</p>
+                </li>
+                <li class="service-item">
+                    <div>
+                        <div>
+                            <PhShieldCheck :size="32" />
+                        </div>
+                    </div>
+                    <h3>MONEY BACK GUARANTEE</h3>
+                    <p>We reurn money within 30 days</p>
+                </li>
+            </ul>
         </div>
     </section>
 </template>
