@@ -55,6 +55,7 @@
 import { computed, ref } from 'vue'
 import { supabase } from '@/supabase'
 import Swal from 'sweetalert2'
+import { useRouter, useRoute } from 'vue-router'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 import AuthLayout from '@/components/AuthLayout.vue'
@@ -65,6 +66,8 @@ const emailErrorMsg = ref('')
 const passwordErrorMsg = ref('')
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const isSubmitting = ref(false)
+const router = useRouter()
+const route = useRoute()
 
 const login = async () => {
     const hasError = ref(false)
@@ -107,14 +110,10 @@ const login = async () => {
             } else {
                 console.log('Logged in user:', data.user)
                 isSubmitting.value = false
+                router.push('/'); 
             }
         } catch (err) {
-            Swal.fire({
-                title: 'Error logging in',
-                text: err,
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
+            console.log('Error logging in: ', err)
             isSubmitting.value = false
         }
     }
