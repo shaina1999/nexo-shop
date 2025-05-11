@@ -53,6 +53,7 @@
 
 <script setup>
 import { computed, ref } from 'vue'
+import { supabase } from '@/supabase'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 import AuthLayout from '@/components/AuthLayout.vue'
@@ -63,7 +64,7 @@ const emailErrorMsg = ref('')
 const passwordErrorMsg = ref('')
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-const login = () => {
+const login = async () => {
     const hasError = ref(false)
     hasError.value = false
 
@@ -85,7 +86,21 @@ const login = () => {
     }
 
     if (!hasError.value) {
-        console.log('logging in....', hasError.value)
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email.value,
+                password: password.value
+            })
+
+            if (error) {
+                console.error('Login error:', error.message)
+                emailErrorMsg.value = 'Invalid email or password'
+            } else {
+                console.log('Logged in user:', data.user)
+            }
+        } catch (err) {
+            console.error('Error logging in:', err)
+        }
     }
 }
 </script>
