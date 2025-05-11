@@ -59,6 +59,7 @@ import { useRouter, useRoute } from 'vue-router'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 import AuthLayout from '@/components/AuthLayout.vue'
+import NProgress from 'nprogress'
 
 const email = ref('nexoshop@email.com')
 const password = ref('11111')
@@ -72,6 +73,7 @@ const route = useRoute()
 const login = async () => {
     const hasError = ref(false)
     hasError.value = false
+    NProgress.start()
 
     if (!email.value) {
         emailErrorMsg.value = 'Email Address is required.'
@@ -115,6 +117,8 @@ const login = async () => {
         } catch (err) {
             console.log('Error logging in: ', err)
             isSubmitting.value = false
+        } finally {
+            NProgress.done()
         }
     }
 }
