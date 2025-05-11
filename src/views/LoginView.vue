@@ -54,11 +54,12 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { supabase } from '@/supabase'
+import Swal from 'sweetalert2'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 import AuthLayout from '@/components/AuthLayout.vue'
 
-const email = ref('')
+const email = ref('nexoshop@email.com')
 const password = ref('')
 const emailErrorMsg = ref('')
 const passwordErrorMsg = ref('')
@@ -94,7 +95,12 @@ const login = async () => {
 
             if (error) {
                 console.error('Login error:', error.message)
-                emailErrorMsg.value = 'Invalid email or password'
+                Swal.fire({
+                    title: 'Login Failed',
+                    text: error.message,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
             } else {
                 console.log('Logged in user:', data.user)
             }
