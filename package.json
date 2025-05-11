@@ -13,6 +13,7 @@
     "@fontsource/poppins": "^5.2.5",
     "@phosphor-icons/vue": "^2.2.1",
     "@splidejs/vue-splide": "^0.6.12",
+    "@supabase/supabase-js": "^2.49.4",
     "@tailwindcss/vite": "^4.1.4",
     "@vueuse/components": "^13.1.0",
     "@vueuse/core": "^13.1.0",
