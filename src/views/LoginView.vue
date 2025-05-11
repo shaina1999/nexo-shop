@@ -30,7 +30,7 @@
                 </span>
             </div>
             <div class="w-full flex items-center justify-between flex-col lg:flex-row gap-y-6 mb-6 md:mb-10">
-                <BaseButton class="w-full lg:w-max">Log In</BaseButton>
+                <BaseButton class="w-full lg:w-max" :disabled="isSubmitting"><span class="inline-block min-w-[90px]">{{ isSubmitting ? 'Logging in' : 'Log In' }}</span></BaseButton>
                 <RouterLink 
                     to="/forgot-password" 
                     class="text-secondary-500 text-base hover:underline transition-colors duration-300 ease-in-out underline-offset-6"
@@ -64,6 +64,7 @@ const password = ref('')
 const emailErrorMsg = ref('')
 const passwordErrorMsg = ref('')
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const isSubmitting = ref(false)
 
 const login = async () => {
     const hasError = ref(false)
@@ -87,6 +88,8 @@ const login = async () => {
     }
 
     if (!hasError.value) {
+        isSubmitting.value = true
+
         try {
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: email.value,
@@ -94,18 +97,25 @@ const login = async () => {
             })
 
             if (error) {
-                console.error('Login error:', error.message)
                 Swal.fire({
                     title: 'Login Failed',
                     text: error.message,
                     icon: 'error',
                     confirmButtonText: 'Ok'
                 })
+                isSubmitting.value = false
             } else {
                 console.log('Logged in user:', data.user)
+                isSubmitting.value = false
             }
         } catch (err) {
-            console.error('Error logging in:', err)
+            Swal.fire({
+                title: 'Error logging in',
+                text: err,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+            isSubmitting.value = false
         }
     }
 }
