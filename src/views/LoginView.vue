@@ -57,6 +57,7 @@ import { supabase } from '@/supabase'
 import Swal from 'sweetalert2'
 import { useRouter, useRoute } from 'vue-router'
 import NProgress from 'nprogress'
+import { useAuthStore } from '@/stores/authStore'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 import AuthLayout from '@/components/AuthLayout.vue'
@@ -69,6 +70,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const isSubmitting = ref(false)
 const router = useRouter()
 const route = useRoute()
+const auth = useAuthStore()
 
 const login = async () => {
     const hasError = ref(false)
@@ -92,7 +94,8 @@ const login = async () => {
     }
 
     if (!hasError.value) {
-        isSubmitting.value = true
+        await auth.login()
+        /* isSubmitting.value = true
         NProgress.start()
 
         try {
@@ -121,7 +124,7 @@ const login = async () => {
             email.value = ''
             password.value = ''
             NProgress.done()
-        }
+        } */
     }
 }
 </script>

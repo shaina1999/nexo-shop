@@ -24,6 +24,11 @@ export const useAuthStore = defineStore('auth', () => {
         })
     }
 
+    // Login
+    async function login() {
+        console.log('login')
+    }
+
     // Logout
     async function logout() {
         NProgress.start()
@@ -33,5 +38,5 @@ export const useAuthStore = defineStore('auth', () => {
         NProgress.done()
     }
     
-    return { user, session, loading, initAuth, logout }
+    return { user, session, loading, initAuth, login, logout }
 })
