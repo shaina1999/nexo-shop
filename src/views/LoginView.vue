@@ -118,6 +118,8 @@ const login = async () => {
             console.log('Error logging in: ', err)
             isSubmitting.value = false
         } finally {
+            email.value = ''
+            password.value = ''
             NProgress.done()
         }
     }

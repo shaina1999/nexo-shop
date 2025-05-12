@@ -113,7 +113,7 @@ const signUp = async () => {
         hasError.value = true
     } else if (password.value.length < 6) {
         passwordErrorMsg.value = 'Password must be at least 6 characters.'
-        hasError = true
+        hasError.value = true
     } else {
         passwordErrorMsg.value = ''
     }
@@ -155,6 +155,9 @@ const signUp = async () => {
             console.log('Error signing up: ', err)
             isSubmitting.value = false
         } finally {
+            name.value = ''
+            email.value = ''
+            password.value = ''
             NProgress.done()
         }
     }
