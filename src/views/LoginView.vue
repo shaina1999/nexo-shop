@@ -56,10 +56,10 @@ import { computed, ref } from 'vue'
 import { supabase } from '@/supabase'
 import Swal from 'sweetalert2'
 import { useRouter, useRoute } from 'vue-router'
+import NProgress from 'nprogress'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 import AuthLayout from '@/components/AuthLayout.vue'
-import NProgress from 'nprogress'
 
 const email = ref('nexoshop@email.com')
 const password = ref('11111')

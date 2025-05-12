@@ -44,7 +44,7 @@
                 </span>
             </div>
             <div class="w-full flex items-center justify-between flex-col gap-y-3 mb-6 md:mb-10">
-                <BaseButton class="w-full">Create Account</BaseButton>
+                <BaseButton class="w-full" @click.prevent="signUp">Create Account</BaseButton>
                 <button 
                     @click.prevent="console.log('sign up with google')"
                     class="w-full cursor-pointer flex items-center justify-center rounded-sm gap-x-4 border-1 border-gray-300 px-10 py-2.5 lg:py-4 hover:bg-gray-100 transition-colors duration-300 ease-in-out"
@@ -68,6 +68,10 @@
 
 <script setup>
 import { computed, ref } from 'vue'
+import { supabase } from '@/supabase'
+import Swal from 'sweetalert2'
+import { useRouter, useRoute } from 'vue-router'
+import NProgress from 'nprogress'
 import googleIcon from '@/assets/img/google.png'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
@@ -80,8 +84,10 @@ const nameErrorMsg = ref('')
 const emailErrorMsg = ref('')
 const passwordErrorMsg = ref('')
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const isSubmitting = ref(false)
+const router = useRouter()
 
-const login = () => {
+const signUp = async () => {
     const hasError = ref(false)
     hasError.value = false
 
@@ -105,12 +111,41 @@ const login = () => {
     if (!password.value) {
         passwordErrorMsg.value = 'Password is required.'
         hasError.value = true
+    } else if (password.value.length < 6) {
+        passwordErrorMsg.value = 'Password must be at least 6 characters.'
+        hasError = true
     } else {
         passwordErrorMsg.value = ''
     }
 
     if (!hasError.value) {
-        console.log('logging in....', hasError.value)
+        isSubmitting.value = true
+
+        try {
+            const { data, error } = await supabase.auth.signUp({
+                email: email.value,
+                password: password.value
+            })
+
+            if (error) {
+                Swal.fire({
+                    title: 'Login Failed',
+                    text: error.message,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
+                isSubmitting.value = false
+            } else {
+                console.log('Logged in user:', data.user)
+                isSubmitting.value = false
+                router.push('/'); 
+            }
+        } catch (err) {
+            console.log('Error logging in: ', err)
+            isSubmitting.value = false
+        } finally {
+            NProgress.done()
+        }
     }
 }
 </script>
