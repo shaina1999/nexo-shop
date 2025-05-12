@@ -61,8 +61,8 @@ import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 import AuthLayout from '@/components/AuthLayout.vue'
 
-const email = ref('nexoshop@email.com')
-const password = ref('11111')
+const email = ref('')
+const password = ref('')
 const emailErrorMsg = ref('')
 const passwordErrorMsg = ref('')
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
