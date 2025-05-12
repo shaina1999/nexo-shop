@@ -58,6 +58,9 @@
                 </div>
                 <RouterLink to="/wishlist" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"><PhHeart :size="26" /></RouterLink>
                 <RouterLink to="/cart" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"> <PhShoppingCart :size="26" /></RouterLink>
+                <div v-if="auth.user" class="flex items-center">
+                    <button class="cursor-pointer"><PhUserCircle :size="27" /></button>
+                </div>
             </div>
 
             <!-- Mobile Nav -->
@@ -88,6 +91,7 @@
 <script setup>
 import { computed, ref, watch, useTemplateRef, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
 import { useI18n } from 'vue-i18n'
 import searchSuggestions from '@/assets/js/searchSuggestions'
 import { onClickOutside } from '@vueuse/core'
@@ -104,6 +108,7 @@ const focusableItemsRef = useTemplateRef('focusableItemRef')
 const filteredSuggestions = ref([])
 const { t } = useI18n()
 const isResizing = ref(false)
+const auth = useAuthStore()
 
 const toggleMobileNav = () => {
     isMobileNavOpen.value = !isMobileNavOpen.value

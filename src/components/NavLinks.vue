@@ -7,10 +7,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '@/stores/authStore'
 
 const { t } = useI18n()
+const auth = useAuthStore()
 
 const navLinks = ref([
     { label: 'nav.home', to: '/' },
@@ -18,6 +20,20 @@ const navLinks = ref([
     { label: 'nav.about', to: '/about' },
     { label: 'nav.login', to: '/login' }
 ])
+
+watchEffect(() => {
+  const links = [
+    { label: 'nav.home', to: '/' },
+    { label: 'nav.contact', to: '/contact' },
+    { label: 'nav.about', to: '/about' }
+  ]
+
+  if (!auth.user) {
+    links.push({ label: 'nav.login', to: '/login' })
+  }
+
+  navLinks.value = links
+})
 </script>
 
 <style scoped></style>

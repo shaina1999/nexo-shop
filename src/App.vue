@@ -1,6 +1,7 @@
 <script setup>
 import { useElementSize } from '@vueuse/core'
-import { computed, useTemplateRef, ref } from 'vue'
+import { computed, useTemplateRef, ref, onMounted } from 'vue'
+import { useAuthStore } from '@/stores/authStore'
 
 import NotificationBar from '@/components/NotificationBar.vue'
 import Header from '@/components/Header.vue'
@@ -11,6 +12,11 @@ const notificationBarRef = useTemplateRef('notificationBarRef')
 const { width, height } = useElementSize(notificationBarRef)
 const windowWidth = ref(window.innerWidth)
 const headerHeight = computed(() => windowWidth.value > 1024 ? 97 : 118)
+const auth = useAuthStore()
+
+onMounted(async () => {
+  await auth.initAuth()
+})
 </script>
 
 <template>
