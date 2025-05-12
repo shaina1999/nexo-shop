@@ -59,7 +59,7 @@
                 <RouterLink to="/wishlist" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"><PhHeart :size="26" /></RouterLink>
                 <RouterLink to="/cart" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"> <PhShoppingCart :size="26" /></RouterLink>
                 <div v-if="auth.user" class="flex items-center">
-                    <button class="cursor-pointer"><PhUserCircle :size="27" /></button>
+                    <button class="cursor-pointer" @click.prevent="logout"><PhUserCircle :size="27" /></button>
                 </div>
             </div>
 
@@ -155,6 +155,10 @@ const handleResize = () => {
     setTimeout(() => {
         isResizing.value = false
     }, 100);
+}
+
+const logout = async () => {
+    await auth.logout()
 }
 
 watch(route, () => {

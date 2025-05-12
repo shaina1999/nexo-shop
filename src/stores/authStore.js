@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { supabase } from '@/supabase'
 import { ref } from 'vue'
+import NProgress from 'nprogress'
 
 export const useAuthStore = defineStore('auth', () => {
     const user = ref(null)
@@ -22,6 +23,15 @@ export const useAuthStore = defineStore('auth', () => {
             user.value = newSession?.user || null
         })
     }
+
+    // Logout
+    async function logout() {
+        NProgress.start()
+        await supabase.auth.signOut()
+        user.value = null
+        session.value = null
+        NProgress.done()
+    }
     
-    return { user, session, loading, initAuth }
+    return { user, session, loading, initAuth, logout }
 })
