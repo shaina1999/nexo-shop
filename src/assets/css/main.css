@@ -27,7 +27,7 @@ body {
 
 #nprogress .bar{
   background-color: var(--color-secondary-500) !important;
-  height: 4px !important;
+  height: 5px !important;
 }
 
 .skeleton-loader {
