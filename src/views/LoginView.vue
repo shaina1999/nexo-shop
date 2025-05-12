@@ -73,7 +73,6 @@ const route = useRoute()
 const login = async () => {
     const hasError = ref(false)
     hasError.value = false
-    NProgress.start()
 
     if (!email.value) {
         emailErrorMsg.value = 'Email Address is required.'
@@ -94,6 +93,7 @@ const login = async () => {
 
     if (!hasError.value) {
         isSubmitting.value = true
+        NProgress.start()
 
         try {
             const { data, error } = await supabase.auth.signInWithPassword({

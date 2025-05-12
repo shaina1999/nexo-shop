@@ -44,7 +44,7 @@
                 </span>
             </div>
             <div class="w-full flex items-center justify-between flex-col gap-y-3 mb-6 md:mb-10">
-                <BaseButton class="w-full" @click.prevent="signUp">Create Account</BaseButton>
+                <BaseButton class="w-full" @click.prevent="signUp" :disabled="isSubmitting"><span class="inline-block min-w-[90px]">{{ isSubmitting ? 'Creating Account' : 'Create Account' }}</span></BaseButton>
                 <button 
                     @click.prevent="console.log('sign up with google')"
                     class="w-full cursor-pointer flex items-center justify-center rounded-sm gap-x-4 border-1 border-gray-300 px-10 py-2.5 lg:py-4 hover:bg-gray-100 transition-colors duration-300 ease-in-out"
@@ -120,28 +120,39 @@ const signUp = async () => {
 
     if (!hasError.value) {
         isSubmitting.value = true
+        NProgress.start()
 
         try {
             const { data, error } = await supabase.auth.signUp({
                 email: email.value,
-                password: password.value
+                password: password.value,
+                options: {
+                    data: {
+                        name: name.value
+                    }
+                }
             })
 
             if (error) {
                 Swal.fire({
-                    title: 'Login Failed',
+                    title: 'Sign Up Failed',
                     text: error.message,
                     icon: 'error',
                     confirmButtonText: 'Ok'
                 })
                 isSubmitting.value = false
             } else {
-                console.log('Logged in user:', data.user)
+                console.log(data.user)
                 isSubmitting.value = false
-                router.push('/'); 
+                Swal.fire({
+                    title: 'Account Created!',
+                    html: `Please check your email <span class='font-bold'>${data.user.user_metadata.email}</span> to verify your account before logging in.`,
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                })
             }
         } catch (err) {
-            console.log('Error logging in: ', err)
+            console.log('Error signing up: ', err)
             isSubmitting.value = false
         } finally {
             NProgress.done()
