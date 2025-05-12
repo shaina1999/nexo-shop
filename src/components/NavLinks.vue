@@ -14,12 +14,7 @@ import { useAuthStore } from '@/stores/authStore'
 const { t } = useI18n()
 const auth = useAuthStore()
 
-const navLinks = ref([
-    { label: 'nav.home', to: '/' },
-    { label: 'nav.contact', to: '/contact' },
-    { label: 'nav.about', to: '/about' },
-    { label: 'nav.login', to: '/login' }
-])
+const navLinks = ref([])
 
 watchEffect(() => {
   const links = [
