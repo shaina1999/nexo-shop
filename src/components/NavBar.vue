@@ -59,12 +59,23 @@
                 <RouterLink to="/wishlist" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"><PhHeart :size="26" /></RouterLink>
                 <RouterLink to="/cart" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"> <PhShoppingCart :size="26" /></RouterLink>
                 <div v-if="auth.user" class="flex items-center relative" ref="profileDropdownContainer">
-                    <button class="cursor-pointer" @click.prevent.stop="toggleProfileDropdown"><PhUserCircle :size="27" /></button>
-                    <ul 
-                        class="items-baseline flex-col gap-5 profile-dropdown absolute bottom-[-236px] left-[-177px] sm:bottom-[-244px] sm:left-[-194px] z-50 py-4 px-6 rounded-sm shadow-2xl bg-white text-black border-[1px] border-gray-300 w-max"
-                        :class="{ 'hidden' : !dropdownShow, 'flex' : dropdownShow }"
+                    <button 
+                        class="cursor-pointer transition-colors duration-300 ease-in-out" @click.prevent.stop="toggleProfileDropdown"
+                        :class="{
+                            'text-black': !dropdownShow,
+                            'text-secondary-500': dropdownShow
+                        }"
                     >
-                        <li v-for="(item, index) in profileOptions" :key="index" class="text-black text-sm sm:text-base hover:text-secondary-500 transition-all duration-300 ease-in-out">
+                        <PhUserCircle :size="27" />
+                    </button>
+                    <ul 
+                        class="flex items-baseline flex-col gap-5 profile-dropdown absolute bottom-[-236px] left-[-177px] sm:bottom-[-244px] sm:left-[-194px] z-50 py-4 px-6 rounded-sm shadow-2xl bg-white text-black border-[1px] border-gray-300 w-max transition-all duration-300 ease-in-out"
+                        :class="{
+                            'opacity-100 translate-y-0 pointer-events-auto': dropdownShow,
+                            'opacity-0 -translate-y-3 pointer-events-none': !dropdownShow
+                        }"
+                    >
+                        <li v-for="(item, index) in profileOptions" :key="index" class="text-black text-sm sm:text-base hover:text-secondary-500 transition-colors duration-300 ease-in-out">
                             <RouterLink 
                                 v-if="item.type === 'link'" 
                                 class="flex items-center gap-3" 
