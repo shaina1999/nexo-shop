@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { supabase } from '@/supabase'
 import Swal from 'sweetalert2'
 import { useRouter, useRoute } from 'vue-router'
@@ -113,7 +113,7 @@ const submit = async () => {
                     icon: 'success',
                     confirmButtonText: 'Ok'
                 }).then((result) => {
-                    if (result.isConfirmed || result.dismiss === Swal.DismissReason.close) {
+                    if (result.isDismissed || result.isConfirmed) {
                         router.push('/')
                     }
                 })
@@ -131,4 +131,27 @@ const submit = async () => {
         }
     }
 }
+
+onMounted(() => {
+    const hash = window.location.hash
+    const params = new URLSearchParams(hash.substring(1))
+    const error = params.get('error')
+    const errorCode = params.get('error_code')
+    const errorDescription = params.get('error_description')
+
+    if (error && errorCode === 'otp_expired') {
+        Swal.fire({
+            title: 'OTP Expired',
+            html: `${errorDescription}`,
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        }).then((result) => {
+            if (result.isDismissed || result.isConfirmed) {
+                setTimeout(() => {
+                    router.push('/')
+                }, 100);
+            }
+        })
+    }
+})
 </script>
