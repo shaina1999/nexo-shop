@@ -63,7 +63,6 @@ const isSubmitting = ref(false)
 const submit = async () => {
     const hasError = ref(false)
     hasError.value = false
-    isSubmitting.value = true
 
     if (!newPassword.value) {
         newPasswordErrorMsg.value = 'New password is required.'
@@ -98,6 +97,7 @@ const submit = async () => {
 
     if (!hasError.value) {
         NProgress.start()
+        isSubmitting.value = true
 
         try {
             const { data, error } = await supabase.auth.updateUser({
@@ -133,8 +133,8 @@ const submit = async () => {
         } finally {
             newPassword.value = ''
             confirmPassword.value = ''
-            isSubmitting.value = false
             NProgress.done()
+            isSubmitting.value = false
         }
     }
 }
