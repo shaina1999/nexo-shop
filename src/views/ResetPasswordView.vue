@@ -149,7 +149,7 @@ onMounted(() => {
     if (error && errorCode === 'otp_expired') {
         Swal.fire({
             title: 'OTP Expired',
-            html: `${errorDescription}`,
+            html: `${errorDescription}. Please submit your signed-in email on the Forgot Password page to request a new OTP.`,
             icon: 'error',
             confirmButtonText: 'Ok'
         }).then((result) => {
