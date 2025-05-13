@@ -23,7 +23,7 @@
 
             <!-- Desktop Nav -->
             <div class="flex items-center gap-3 lg:gap-6 col-span-2 lg:col-span-0">
-                <div class="py-2 px-4 bg-gray-200 flex gap-4 item-center rounded-sm w-full lg:w-max relative">
+                <div class="py-2 px-2 bg-gray-200 flex gap-4 item-center rounded-sm w-full lg:w-max relative">
                     <input 
                         :placeholder="t('placeholderSearch')"
                         class="outline-none :focus-visible:outline-none focus-within:outline-none w-full lg:w-max text-sm lg:text-base"
@@ -57,14 +57,14 @@
                     </ul>
                 </div>
                 <div v-if="auth.user">
-                    <RouterLink to="/wishlist" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"><PhHeart class="text-2xl" /></RouterLink>
+                    <RouterLink to="/wishlist" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"><PhHeart :size="26" /></RouterLink>
                 </div>
-                <RouterLink to="/cart" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"> <PhShoppingCart class="text-2xl" /></RouterLink>
+                <RouterLink to="/cart" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"> <PhShoppingCart :size="26" /></RouterLink>
                 <div v-if="!auth.user">
                     <RouterLink to="/login" class="hover:text-secondary-500 transition-all duration-300 ease-in-out text-sm lg:text-base">{{ t('loginText') }}</RouterLink>
                 </div>
                 <div v-if="auth.user" class="flex items-center">
-                    <button class="cursor-pointer" @click.prevent="logout"><PhUserCircle class="text-2xl" /></button>
+                    <button class="cursor-pointer" @click.prevent="logout"><PhUserCircle :size="27" /></button>
                 </div>
             </div>
 
