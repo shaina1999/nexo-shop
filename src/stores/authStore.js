@@ -11,6 +11,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     // Initialize session on app load
     async function initAuth() {
+        NProgress.start()
         const { data, error } = await supabase.auth.getSession()
         if (!error) {
             session.value = data.session
@@ -23,6 +24,7 @@ export const useAuthStore = defineStore('auth', () => {
             session.value = newSession
             user.value = newSession?.user || null
         })
+        NProgress.done()
     }
 
     // Login
