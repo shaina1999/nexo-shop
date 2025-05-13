@@ -159,6 +159,8 @@ onMounted(() => {
                 }, 100);
             }
         })
+    } else {
+        router.push('/')
     }
 })
 </script>
