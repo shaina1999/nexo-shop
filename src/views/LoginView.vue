@@ -30,7 +30,7 @@
                 </span>
             </div>
             <div class="w-full flex items-center justify-between flex-col lg:flex-row gap-y-6 mb-6 md:mb-10">
-                <BaseButton class="w-full lg:w-max" :disabled="isSubmitting"><span class="inline-block min-w-[90px]">{{ isSubmitting ? 'Logging in' : 'Log In' }}</span></BaseButton>
+                <BaseButton class="w-full lg:w-max" :disabled="auth.isSubmitting"><span class="inline-block min-w-[90px]">{{ auth.isSubmitting ? 'Logging in' : 'Log In' }}</span></BaseButton>
                 <RouterLink 
                     to="/forgot-password" 
                     class="text-secondary-500 text-base hover:underline transition-colors duration-300 ease-in-out underline-offset-6"
@@ -52,11 +52,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
-import { supabase } from '@/supabase'
-import Swal from 'sweetalert2'
-import { useRouter, useRoute } from 'vue-router'
-import NProgress from 'nprogress'
+import { ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
@@ -67,12 +63,9 @@ const password = ref('')
 const emailErrorMsg = ref('')
 const passwordErrorMsg = ref('')
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const isSubmitting = ref(false)
-const router = useRouter()
-const route = useRoute()
 const auth = useAuthStore()
 
-const login = async () => {
+const login = () => {
     const hasError = ref(false)
     hasError.value = false
 
@@ -94,9 +87,7 @@ const login = async () => {
     }
 
     if (!hasError.value) {
-        isSubmitting.value = true
-        await auth.login(email.value, password.value)
-        isSubmitting.value = false
+        auth.login(email.value, password.value)
     }
 }
 </script>

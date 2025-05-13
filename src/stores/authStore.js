@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { supabase } from '@/supabase'
+import { useRouter, useRoute } from 'vue-router'
 import { ref } from 'vue'
 import NProgress from 'nprogress'
 import Swal from 'sweetalert2'
@@ -8,6 +9,9 @@ export const useAuthStore = defineStore('auth', () => {
     const user = ref(null)
     const session = ref(null)
     const loading = ref(true)
+    const isSubmitting = ref(false)
+    const router = useRouter()
+    const route = useRoute()
 
     // Initialize session on app load
     async function initAuth() {
@@ -30,6 +34,8 @@ export const useAuthStore = defineStore('auth', () => {
     // Login
     async function login(email, password) {
         NProgress.start()
+        isSubmitting.value = true
+
         const { data, error } = await supabase.auth.signInWithPassword({
             email: email,
             password: password
@@ -47,6 +53,8 @@ export const useAuthStore = defineStore('auth', () => {
             })
         }
         NProgress.done()
+        isSubmitting.value = false
+        router.push('/')
     }
 
     // Logout
@@ -58,5 +66,5 @@ export const useAuthStore = defineStore('auth', () => {
         NProgress.done()
     }
     
-    return { user, session, loading, initAuth, login, logout }
+    return { user, session, loading, initAuth, login, logout, isSubmitting }
 })
