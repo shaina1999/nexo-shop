@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { supabase } from '@/supabase'
 import { useRouter, useRoute } from 'vue-router'
-import { ref, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import NProgress from 'nprogress'
 import Swal from 'sweetalert2'
 
@@ -30,17 +30,13 @@ export const useAuthStore = defineStore('auth', () => {
                 confirmButtonText: 'Ok'
             })
         }
-        
+
         loading.value = false
 
         // Auth change listener
         supabase.auth.onAuthStateChange((_event, newSession) => {
             session.value = newSession
             user.value = newSession?.user || null
-        })
-
-        onUnmounted(() => {
-            authListener?.unsubscribe()
         })
 
         NProgress.done()
