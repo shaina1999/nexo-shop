@@ -57,14 +57,14 @@
                     </ul>
                 </div>
                 <div v-if="auth.user">
-                    <RouterLink to="/wishlist" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"><PhHeart :size="26" /></RouterLink>
+                    <RouterLink to="/wishlist" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"><PhHeart class="text-2xl" /></RouterLink>
                 </div>
-                <RouterLink to="/cart" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"> <PhShoppingCart :size="26" /></RouterLink>
+                <RouterLink to="/cart" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"> <PhShoppingCart class="text-2xl" /></RouterLink>
                 <div v-if="!auth.user">
                     <RouterLink to="/login" class="hover:text-secondary-500 transition-all duration-300 ease-in-out text-sm lg:text-base">{{ t('loginText') }}</RouterLink>
                 </div>
                 <div v-if="auth.user" class="flex items-center">
-                    <button class="cursor-pointer" @click.prevent="logout"><PhUserCircle :size="27" /></button>
+                    <button class="cursor-pointer" @click.prevent="logout"><PhUserCircle class="text-2xl" /></button>
                 </div>
             </div>
 
