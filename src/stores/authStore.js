@@ -76,6 +76,7 @@ export const useAuthStore = defineStore('auth', () => {
         user.value = null
         session.value = null
         NProgress.done()
+        router.push('/')
     }
     
     return { user, session, loading, initAuth, login, logout, isSubmitting }
