@@ -36,7 +36,7 @@
                         </span>
                     </div>
                     <div class="w-full flex items-center justify-between flex-col lg:flex-row gap-y-6">
-                        <BaseButton class="w-full" @click.prevent="submit">Submit</BaseButton>
+                        <BaseButton class="w-full" :disabled="isSubmitting" @click.prevent="submit">{{ isSubmitting ? 'Submitting' : 'Submit' }}</BaseButton>
                     </div>
                 </form>
             </div>  
@@ -49,6 +49,7 @@ import { ref, onMounted } from 'vue'
 import { supabase } from '@/supabase'
 import Swal from 'sweetalert2'
 import { useRouter, useRoute } from 'vue-router'
+import NProgress from 'nprogress'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 
@@ -57,10 +58,12 @@ const confirmPassword = ref('')
 const newPasswordErrorMsg = ref('')
 const confirmPasswordErrorMsg = ref('')
 const router = useRouter()
+const isSubmitting = ref(false)
 
 const submit = async () => {
     const hasError = ref(false)
     hasError.value = false
+    isSubmitting.value = true
 
     if (!newPassword.value) {
         newPasswordErrorMsg.value = 'New password is required.'
@@ -94,6 +97,8 @@ const submit = async () => {
     }
 
     if (!hasError.value) {
+        NProgress.start()
+
         try {
             const { data, error } = await supabase.auth.updateUser({
                 password: confirmPassword.value
@@ -128,6 +133,8 @@ const submit = async () => {
         } finally {
             newPassword.value = ''
             confirmPassword.value = ''
+            isSubmitting.value = false
+            NProgress.done()
         }
     }
 }
@@ -148,7 +155,7 @@ onMounted(() => {
         }).then((result) => {
             if (result.isDismissed || result.isConfirmed) {
                 setTimeout(() => {
-                    router.push('/')
+                    window.close()
                 }, 100);
             }
         })

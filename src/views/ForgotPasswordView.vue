@@ -16,7 +16,7 @@
                 </span>
             </div>
             <div class="w-full flex items-center justify-between flex-col lg:flex-row gap-y-6">
-                <BaseButton class="w-full lg:w-max" @click.prevent="submit">Submit</BaseButton>
+                <BaseButton class="w-full lg:w-max" :disabled="isSubmitting" @click.prevent="submit">{{ isSubmitting ? 'Submitting' : 'Submit' }}</BaseButton>
                 <RouterLink 
                     to="/login" 
                     class="text-secondary-500 text-base hover:underline transition-colors duration-300 ease-in-out underline-offset-6"
@@ -32,6 +32,7 @@
 import { ref } from 'vue'
 import { supabase } from '@/supabase'
 import Swal from 'sweetalert2'
+import NProgress from 'nprogress'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 import AuthLayout from '@/components/AuthLayout.vue'
@@ -39,10 +40,12 @@ import AuthLayout from '@/components/AuthLayout.vue'
 const email = ref('')
 const emailErrorMsg = ref('')
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const isSubmitting = ref(false)
 
 const submit = async () => {
     const hasError = ref(false)
     hasError.value = false
+    isSubmitting.value = true
 
     if (!email.value) {
         emailErrorMsg.value = 'Email Address is required.'
@@ -55,6 +58,8 @@ const submit = async () => {
     }
 
     if (!hasError.value) {
+        NProgress.start()
+
         try {
             const { data, error } = await supabase.auth.resetPasswordForEmail(email.value, {
                 redirectTo: 'http://localhost:5173/reset-password'
@@ -84,6 +89,8 @@ const submit = async () => {
             })
         } finally {
             email.value = ''
+            isSubmitting.value = false
+            NProgress.done()
         }
     }
 }
