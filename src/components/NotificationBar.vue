@@ -41,7 +41,6 @@
 import { computed, ref, watch, useTemplateRef, onMounted} from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import NProgress from 'nprogress'
 import { useRouter } from 'vue-router'
 
 const languageOptions = ref([
@@ -59,7 +58,6 @@ const { t, locale } = useI18n()
 const router = useRouter()
 
 const updateLanguage = (newLanguage) => {
-    NProgress.start()
     selectedLanguage.value = newLanguage
     locale.value = newLanguage
     localStorage.setItem('lang', newLanguage)
@@ -72,7 +70,6 @@ const updateLanguage = (newLanguage) => {
             flag.value = option.flag
             flagAltTezt.value = option.flagAltText
         }
-        NProgress.done()
     })
 }
 
