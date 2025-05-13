@@ -94,37 +94,9 @@ const login = async () => {
     }
 
     if (!hasError.value) {
-        await auth.login()
-        /* isSubmitting.value = true
-        NProgress.start()
-
-        try {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email.value,
-                password: password.value
-            })
-
-            if (error) {
-                Swal.fire({
-                    title: 'Login Failed',
-                    text: error.message,
-                    icon: 'error',
-                    confirmButtonText: 'Ok'
-                })
-                isSubmitting.value = false
-            } else {
-                console.log('Logged in user:', data.user)
-                isSubmitting.value = false
-                router.push('/'); 
-            }
-        } catch (err) {
-            console.log('Error logging in: ', err)
-            isSubmitting.value = false
-        } finally {
-            email.value = ''
-            password.value = ''
-            NProgress.done()
-        } */
+        isSubmitting.value = true
+        await auth.login(email.value, password.value)
+        isSubmitting.value = false
     }
 }
 </script>

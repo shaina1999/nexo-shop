@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { supabase } from '@/supabase'
 import { ref } from 'vue'
 import NProgress from 'nprogress'
+import Swal from 'sweetalert2'
 
 export const useAuthStore = defineStore('auth', () => {
     const user = ref(null)
@@ -25,8 +26,25 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     // Login
-    async function login() {
-        console.log('login')
+    async function login(email, password) {
+        NProgress.start()
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        })
+
+        if (!error) {
+            session.value = data.session
+            user.value = data.session?.user || null
+        } else if (error) {
+            Swal.fire({
+                title: 'Login Failed',
+                text: error.message,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        }
+        NProgress.done()
     }
 
     // Logout
