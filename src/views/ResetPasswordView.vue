@@ -48,6 +48,7 @@
 import { ref } from 'vue'
 import { supabase } from '@/supabase'
 import Swal from 'sweetalert2'
+import { useRouter, useRoute } from 'vue-router'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 
@@ -55,6 +56,7 @@ const newPassword = ref('')
 const confirmPassword = ref('')
 const newPasswordErrorMsg = ref('')
 const confirmPasswordErrorMsg = ref('')
+const router = useRouter()
 
 const submit = async () => {
     const hasError = ref(false)
@@ -92,7 +94,41 @@ const submit = async () => {
     }
 
     if (!hasError.value) {
-        console.log('update passs...')
+        try {
+            const { data, error } = await supabase.auth.updateUser({
+                password: confirmPassword.value
+            })
+
+            if (error) {
+                Swal.fire({
+                    title: 'Something went wrong',
+                    html: error.message,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
+            } else {
+                Swal.fire({
+                    title: 'Success!',
+                    html: 'Your password has been updated successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                }).then((result) => {
+                    if (result.isConfirmed || result.dismiss === Swal.DismissReason.close) {
+                        router.push('/')
+                    }
+                })
+            }
+        } catch (err) {
+            Swal.fire({
+                title: 'Unexpected Error',
+                html: 'An unexpected error occurred. Please try again later.',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        } finally {
+            newPassword.value = ''
+            confirmPassword.value = ''
+        }
     }
 }
 </script>
