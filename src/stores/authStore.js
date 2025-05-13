@@ -16,7 +16,9 @@ export const useAuthStore = defineStore('auth', () => {
     // Initialize session on app load
     async function initAuth() {
         NProgress.start()
+
         const { data, error } = await supabase.auth.getSession()
+
         if (!error) {
             session.value = data.session
             user.value = data.session?.user || null
@@ -28,6 +30,7 @@ export const useAuthStore = defineStore('auth', () => {
                 confirmButtonText: 'Ok'
             })
         }
+        
         loading.value = false
 
         // Auth change listener
@@ -65,7 +68,7 @@ export const useAuthStore = defineStore('auth', () => {
                 confirmButtonText: 'Ok'
             })
         }
-        
+
         NProgress.done()
         isSubmitting.value = false
     }
