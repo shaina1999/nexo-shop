@@ -1,0 +1,93 @@
+<template>
+    <div class="w-full flex items-center justify-center pt-0 lg:pt-15 relative h-[calc(100vh_-_214px)] lg:h-[781px]">
+        <div class="px-4 md:px-8 lg:px-16 xl:px-34 max-w-7xl flex flex-col">
+            <div class="w-[320px] sm:w-[400px]">
+                <div class="text-center">
+                    <div class="text-2xl md:text-4xl font-medium mb-2.5 md:mb-6">Update Password</div>
+                    <div class="text-base mb-4 md:mb-12">Please enter your new password below. This will update your account password. Make sure your new password is strong and secure.</div>
+                </div>
+                <form @submit.prevent="submit">
+                    <div class="mb-6 md:mb-10">
+                        <BaseAuthInput 
+                            :type="'password'" 
+                            :placeholder="'New Password'" 
+                            v-model="newPassword"
+                            @update:model-value="newPasswordErrorMsg = ''"
+                        />
+                        <span 
+                            class="text-red-500 flex" 
+                            :class="{ 'mt-1' : newPasswordErrorMsg.length, 'mt-0' : !newPasswordErrorMsg.length }"
+                        >
+                            {{ newPasswordErrorMsg }}
+                        </span>
+                    </div>
+                    <div class="mb-6 md:mb-10">
+                        <BaseAuthInput 
+                            :type="'password'" 
+                            :placeholder="'Confirm Password'" 
+                            v-model="confirmPassword"
+                            @update:model-value="confirmPasswordErrorMsg = ''"
+                        />
+                        <span 
+                            class="text-red-500 flex" 
+                            :class="{ 'mt-1' : confirmPasswordErrorMsg.length, 'mt-0' : !confirmPasswordErrorMsg.length }"
+                        >
+                            {{ confirmPasswordErrorMsg }}
+                        </span>
+                    </div>
+                    <div class="w-full flex items-center justify-between flex-col lg:flex-row gap-y-6">
+                        <BaseButton class="w-full" @click.prevent="submit">Submit</BaseButton>
+                    </div>
+                </form>
+            </div>  
+        </div>
+    </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { supabase } from '@/supabase'
+import Swal from 'sweetalert2'
+import BaseButton from '@/components/BaseButton.vue'
+import BaseAuthInput from '@/components/BaseAuthInput.vue'
+
+const newPassword = ref('')
+const confirmPassword = ref('')
+
+const newPasswordErrorMsg = ref('')
+const confirmPasswordErrorMsg = ref('')
+
+const submit = async () => {
+    const hasError = ref(false)
+    hasError.value = false
+
+    if (!newPassword.value) {
+        newPasswordErrorMsg.value = 'New password is required.'
+        hasError.value = true
+    } else {
+        newPasswordErrorMsg.value = ''
+    }
+
+    if (!confirmPassword.value) {
+        confirmPasswordErrorMsg.value = 'Confirm password is required.'
+        hasError.value = true
+    } else {
+        confirmPasswordErrorMsg.value = ''
+    }
+
+    if (newPassword.value && confirmPassword.value) {
+        if (newPassword.value !== confirmPassword.value) {
+            newPasswordErrorMsg.value = 'Passwords do not match.'
+            confirmPasswordErrorMsg.value = 'Passwords do not match.'
+            hasError.value = true
+        } else {
+            newPasswordErrorMsg.value = ''
+            confirmPasswordErrorMsg.value = ''
+        }   
+    }
+
+    if (!hasError.value) {
+        console.log('update passs...')
+    }
+}
+</script>
