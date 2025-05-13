@@ -7,7 +7,7 @@
                 <RouterLink to="/products"><span class="font-medium underline">Shop Now</span></RouterLink>
             </div>
             <div class="relative shrink-0">
-                <RouterLink to="/login" class="underline text-base lg:text-base">
+                <RouterLink to="/login" class="text-sm bg-secondary-500 rounded-sm py-1 px-4">
                     <span>Login / Join</span>
                 </RouterLink>
             </div>
