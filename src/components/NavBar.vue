@@ -58,19 +58,23 @@
                 </div>
                 <RouterLink to="/wishlist" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"><PhHeart :size="26" /></RouterLink>
                 <RouterLink to="/cart" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"> <PhShoppingCart :size="26" /></RouterLink>
-                <div v-if="auth.user" class="flex items-center relative">
-                    <button class="cursor-pointer" @click.prevent="toggleProfileDropdown"><PhUserCircle :size="27" /></button>
+                <div v-if="auth.user" class="flex items-center relative" ref="profileDropdownContainer">
+                    <button class="cursor-pointer" @click.prevent.stop="toggleProfileDropdown"><PhUserCircle :size="27" /></button>
                     <ul 
                         class="items-baseline flex-col gap-5 profile-dropdown absolute bottom-[-236px] left-[-177px] sm:bottom-[-244px] sm:left-[-194px] z-50 py-4 px-6 rounded-sm shadow-2xl bg-white text-black border-[1px] border-gray-300 w-max"
                         :class="{ 'hidden' : !dropdownShow, 'flex' : dropdownShow }"
-                        ref="profileDropdown"
                     >
                         <li v-for="(item, index) in profileOptions" :key="index" class="text-black text-sm sm:text-base hover:text-secondary-500 transition-all duration-300 ease-in-out">
-                            <RouterLink v-if="item.type === 'link'" class="flex items-center gap-3" :to="item.to">
+                            <RouterLink 
+                                v-if="item.type === 'link'" 
+                                class="flex items-center gap-3" 
+                                :to="item.to"
+                                @click="dropdownShow = false"
+                            >
                                 <component :is="item.icon" :size="22" />
                                 <span>{{ item.label }}</span>
                             </RouterLink>
-                            <button v-else class="flex items-center gap-3 cursor-pointer" @click.prevent="logout">
+                            <button v-else class="flex items-center gap-3 cursor-pointer" @click.prevent="handleLogout">
                                 <component :is="item.icon" :size="22" />
                                 <span>{{ item.label }}</span>
                             </button>
@@ -124,7 +128,7 @@ const filteredSuggestions = ref([])
 const isResizing = ref(false)
 const auth = useAuthStore()
 const dropdownShow = ref(false)
-const profileDropdown = useTemplateRef('profileDropdown')
+const profileDropdownContainer = useTemplateRef('profileDropdownContainer')
 
 const profileOptions = ref([
     {
@@ -214,6 +218,11 @@ const logout = async () => {
     await auth.logout()
 }
 
+const handleLogout = async () => {
+  dropdownShow.value = false
+  await logout()
+}
+
 watch(route, () => {
     isMobileNavOpen.value = false
 
@@ -238,7 +247,7 @@ watch(isMobileNavOpen, (newVal) => {
 })
 
 onClickOutside(searchResultsContainerRef, event => isSearching.value = false)
-onClickOutside(profileDropdown, event => dropdownShow.value = false)
+onClickOutside(profileDropdownContainer, event => dropdownShow.value = false)
 
 onMounted(() => {
   window.addEventListener('resize', handleResize)
