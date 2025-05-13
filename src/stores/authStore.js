@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { supabase } from '@/supabase'
 import { useRouter, useRoute } from 'vue-router'
-import { ref } from 'vue'
+import { ref, onUnmounted } from 'vue'
 import NProgress from 'nprogress'
 import Swal from 'sweetalert2'
 
@@ -20,6 +20,13 @@ export const useAuthStore = defineStore('auth', () => {
         if (!error) {
             session.value = data.session
             user.value = data.session?.user || null
+        } else {
+            Swal.fire({
+                title: 'Session Error',
+                text: error.message,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
         }
         loading.value = false
 
@@ -28,6 +35,11 @@ export const useAuthStore = defineStore('auth', () => {
             session.value = newSession
             user.value = newSession?.user || null
         })
+
+        onUnmounted(() => {
+            authListener?.unsubscribe()
+        })
+
         NProgress.done()
     }
 
@@ -44,7 +56,8 @@ export const useAuthStore = defineStore('auth', () => {
         if (!error) {
             session.value = data.session
             user.value = data.session?.user || null
-        } else if (error) {
+            router.push('/')
+        } else {
             Swal.fire({
                 title: 'Login Failed',
                 text: error.message,
@@ -52,9 +65,9 @@ export const useAuthStore = defineStore('auth', () => {
                 confirmButtonText: 'Ok'
             })
         }
+        
         NProgress.done()
         isSubmitting.value = false
-        router.push('/')
     }
 
     // Logout
