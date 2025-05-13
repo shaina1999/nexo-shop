@@ -72,3 +72,8 @@ button:disabled{
 button:disabled:hover{
   background: var(--color-secondary-500);
 }
+
+/* Sweetalert2 */
+.swal2-shown {
+  overflow: unset !important;
+}
