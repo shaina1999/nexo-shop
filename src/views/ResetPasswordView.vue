@@ -53,7 +53,6 @@ import BaseAuthInput from '@/components/BaseAuthInput.vue'
 
 const newPassword = ref('')
 const confirmPassword = ref('')
-
 const newPasswordErrorMsg = ref('')
 const confirmPasswordErrorMsg = ref('')
 
@@ -64,6 +63,9 @@ const submit = async () => {
     if (!newPassword.value) {
         newPasswordErrorMsg.value = 'New password is required.'
         hasError.value = true
+    } else if (newPassword.value.length < 6) {
+        newPasswordErrorMsg.value = 'Password must be at least 6 characters long.'
+        hasError.value = true
     } else {
         newPasswordErrorMsg.value = ''
     }
@@ -71,11 +73,14 @@ const submit = async () => {
     if (!confirmPassword.value) {
         confirmPasswordErrorMsg.value = 'Confirm password is required.'
         hasError.value = true
+    } else if (confirmPassword.value.length < 6) {
+        confirmPasswordErrorMsg.value = 'Password must be at least 6 characters long.'
+        hasError.value = true
     } else {
         confirmPasswordErrorMsg.value = ''
     }
 
-    if (newPassword.value && confirmPassword.value) {
+    if (newPassword.value && confirmPassword.value && newPassword.value.length >= 6 && confirmPassword.value.length >= 6) {
         if (newPassword.value !== confirmPassword.value) {
             newPasswordErrorMsg.value = 'Passwords do not match.'
             confirmPasswordErrorMsg.value = 'Passwords do not match.'
