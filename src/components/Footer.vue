@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-20 bg-black w-full flex items-center justify-center">
+    <div class="mt-25 bg-black w-full flex items-center justify-center">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pt-20 text-white">
             <div class="flex justify-between gap-16 flex-wrap lg:flex-nowrap">
                 <div class="basis-[100%] md:basis-[45%] lg:basis-[auto]">
