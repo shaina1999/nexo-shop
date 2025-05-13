@@ -23,7 +23,7 @@
 
             <!-- Desktop Nav -->
             <div class="flex items-center gap-3 lg:gap-6 col-span-2 lg:col-span-0">
-                <div class="py-2 px-2 bg-gray-200 flex gap-4 item-center rounded-sm w-full lg:w-max relative">
+                <div class="py-2 px-2 bg-gray-200 flex gap-3 item-center rounded-sm w-full lg:w-max relative">
                     <input 
                         :placeholder="'What are you looking for?'"
                         class="outline-none :focus-visible:outline-none focus-within:outline-none w-full lg:w-max text-sm lg:text-base"
