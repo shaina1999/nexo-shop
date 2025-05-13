@@ -25,7 +25,7 @@
             <div class="flex items-center gap-3 lg:gap-6 col-span-2 lg:col-span-0">
                 <div class="py-2 px-2 bg-gray-200 flex gap-4 item-center rounded-sm w-full lg:w-max relative">
                     <input 
-                        :placeholder="t('placeholderSearch')"
+                        :placeholder="'What are you looking for?'"
                         class="outline-none :focus-visible:outline-none focus-within:outline-none w-full lg:w-max text-sm lg:text-base"
                         v-model="searchTerm"
                         @keyup.enter="searchProduct(null, searchTerm)"
@@ -92,7 +92,6 @@
 import { computed, ref, watch, useTemplateRef, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
-import { useI18n } from 'vue-i18n'
 import searchSuggestions from '@/assets/js/searchSuggestions'
 import { onClickOutside } from '@vueuse/core'
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
@@ -106,7 +105,6 @@ const isSearching = ref(false)
 const searchResultsContainerRef = useTemplateRef('searchResultsContainerRef')
 const focusableItemsRef = useTemplateRef('focusableItemRef')
 const filteredSuggestions = ref([])
-const { t } = useI18n()
 const isResizing = ref(false)
 const auth = useAuthStore()
 
