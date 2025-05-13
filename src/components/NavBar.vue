@@ -56,9 +56,7 @@
                         </li>
                     </ul>
                 </div>
-                <div v-if="auth.user">
-                    <RouterLink to="/wishlist" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"><PhHeart :size="26" /></RouterLink>
-                </div>
+                <RouterLink to="/wishlist" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"><PhHeart :size="26" /></RouterLink>
                 <RouterLink to="/cart" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"> <PhShoppingCart :size="26" /></RouterLink>
                 <div v-if="!auth.user">
                     <RouterLink to="/login" class="hover:text-secondary-500 transition-all duration-300 ease-in-out text-sm lg:text-base">{{ t('loginText') }}</RouterLink>
