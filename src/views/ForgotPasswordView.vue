@@ -16,7 +16,7 @@
                 </span>
             </div>
             <div class="w-full flex items-center justify-between flex-col lg:flex-row gap-y-6">
-                <BaseButton class="w-full lg:w-max">Submit</BaseButton>
+                <BaseButton class="w-full lg:w-max" @click.prevent="submit">Submit</BaseButton>
                 <RouterLink 
                     to="/login" 
                     class="text-secondary-500 text-base hover:underline transition-colors duration-300 ease-in-out underline-offset-6"
@@ -30,6 +30,8 @@
 
 <script setup>
 import { ref } from 'vue'
+import { supabase } from '@/supabase'
+import Swal from 'sweetalert2'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseAuthInput from '@/components/BaseAuthInput.vue'
 import AuthLayout from '@/components/AuthLayout.vue'
@@ -38,7 +40,7 @@ const email = ref('')
 const emailErrorMsg = ref('')
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-const login = () => {
+const submit = async () => {
     const hasError = ref(false)
     hasError.value = false
 
@@ -53,7 +55,36 @@ const login = () => {
     }
 
     if (!hasError.value) {
-        console.log('submitting...')
+        try {
+            const { data, error } = await supabase.auth.resetPasswordForEmail(email.value, {
+                redirectTo: 'http://localhost:5173/reset-password'
+            })
+
+            if (error) {
+                Swal.fire({
+                    title: 'Something went wrong',
+                    html: error.message,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
+            } else {
+                Swal.fire({
+                    title: 'Reset Email Sent',
+                    html: `We've sent a password reset link to <strong>${email.value}</strong>. Please check your inbox and follow the instructions to reset your password.`,
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                })
+            }
+        } catch (err) {
+            Swal.fire({
+                title: 'Unexpected Error',
+                html: 'An unexpected error occurred. Please try again later.',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        } finally {
+            email.value = ''
+        }
     }
 }
 </script>
