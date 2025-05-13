@@ -45,13 +45,6 @@
             </div>
             <div class="w-full flex items-center justify-between flex-col gap-y-3 mb-6 md:mb-10">
                 <BaseButton class="w-full" @click.prevent="signUp" :disabled="isSubmitting"><span class="inline-block min-w-[90px]">{{ isSubmitting ? 'Creating Account' : 'Create Account' }}</span></BaseButton>
-                <button 
-                    @click.prevent="console.log('sign up with google')"
-                    class="w-full cursor-pointer flex items-center justify-center rounded-sm gap-x-4 border-1 border-gray-300 px-10 py-2.5 lg:py-4 hover:bg-gray-100 transition-colors duration-300 ease-in-out"
-                >
-                    <img :src="googleIcon" alt="Google Logo" class="size-5 md:size-6">
-                    <span class="text-black">Sign up with Google</span>
-                </button>
             </div>
             <div class="text-center">
                 Already have account?
