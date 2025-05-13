@@ -25,6 +25,7 @@ watchEffect(() => {
 
   if (!auth.user) {
     links.push({ label: 'nav.login', to: '/login' })
+    links.push({ label: 'nav.signup', to: '/sign-up' })
   }
 
   navLinks.value = links

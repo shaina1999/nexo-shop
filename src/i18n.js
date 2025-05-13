@@ -9,7 +9,8 @@ const messages = {
       home: 'Home',
       contact: 'Contact',
       about: 'About',
-      login: 'Log In'
+      login: 'Log In',
+      signup: 'Sign Up'
     },
     placeholderSearch: 'What are you looking for?'
   },
@@ -20,7 +21,8 @@ const messages = {
       home: 'Umpisa',
       contact: 'Kontak',
       about: 'Kilalanin',
-      login: 'Mag-login'
+      login: 'Mag-login',
+      signup: 'Mag-rehistro'
     },
     placeholderSearch: 'Ano ang hinahanap mo?'
   }
