@@ -1,11 +1,27 @@
 <template>
-  <section class="flex items-center justify-center w-full pt-16 sm:pt-20">
+  <section class="flex items-center justify-center w-full pt-5 md:pt-10">
     <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
-      <div v-if="products?.length === 0">
-        <p>No products found. Try adjusting your search criteria.</p>
+      <div class="flex items-start md:items-center justify-between pb-5 md:pb-10 flex-col-reverse md:flex-row gap-3 md:gap-5">
+        <p class="inline-block md:flex items-center gap-x-3 text-sm md:text-base">Showing results for "{{ searchQuery }}" <span class="font-regular text-gray-500"> 50 items found</span></p>
+        <div class="flex items-center gap-x-3">
+          <BaseButton class="text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!">
+            <span>Filters</span>
+            <PhFadersHorizontal :size="20" />
+          </BaseButton>
+          <BaseButton class="text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!">
+            <span>Sort</span>
+            <PhArrowsDownUp :size="20" />
+          </BaseButton>
+        </div>
       </div>
 
-      <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
+      <!-- Show this if there are no results found -->
+      <div class="flex flex-col items-center justify-center mb-8 hidden">
+        <p class="text-center mb-2">No results found for <span class="font-semibold">"{{ searchQuery }}"</span></p>
+        <p>Here are some suggestions you may find useful:</p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
         <ProductCard v-for="(product, index) in products" :key="product.id" :product="product" />
       </div>
     </div>
@@ -18,6 +34,7 @@ import { watch, watchEffect, computed, ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
 import { useFetch } from '@/composables/fetch'
 import ProductCard from '@/components/ProductCard.vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 const router = useRouter()
 const route = useRoute()
