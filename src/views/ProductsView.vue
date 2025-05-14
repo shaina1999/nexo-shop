@@ -4,11 +4,17 @@
       <div class="flex items-start md:items-center justify-between pb-5 md:pb-10 flex-col-reverse md:flex-row gap-3 md:gap-5">
         <p class="inline-block md:flex items-center gap-x-3 text-sm md:text-base">Showing results for "{{ searchQuery }}" <span class="font-regular text-gray-500"> 50 items found</span></p>
         <div class="flex items-center gap-x-3">
-          <BaseButton class="text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!">
+          <BaseButton 
+            class="text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!"
+            @click="handleToggleFilter"
+          >
             <span>Filters</span>
             <PhFadersHorizontal :size="20" />
           </BaseButton>
-          <BaseButton class="text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!">
+          <BaseButton 
+            class="text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!"
+            @click="handleToggleSort"
+          >
             <span>Sort</span>
             <PhArrowsDownUp :size="20" />
           </BaseButton>
