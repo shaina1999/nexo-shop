@@ -1,6 +1,6 @@
 <template>
     <article @click="goToProductPage(product.id)" class="cursor-pointer">
-        <div class="bg-gray-200 p-4 product cursor-pointer">
+        <div class="bg-gray-200 p-2.5 sm:p-4 product cursor-pointer">
             <header class="flex items-center justify-between mb-4">
                 <div v-if="!product.isNew">
                     <div class="bg-secondary-500 text-white py-1 px-2 rounded-sm text-sm">{{ product.discount }}%</div>
@@ -8,44 +8,34 @@
                 <div v-else-if="product.isNew">
                     <div class="bg-green-500 text-white py-1 px-2 rounded-sm text-sm">New</div>
                 </div>
-                <button 
+                <button
                     class="cursor-pointer bg-white flex items-center justify-center text-secondary-500 w-10 h-10 rounded-full transition-all duration-300 ease-in-out"
-                    @click.prevent.stop="addToWishList"
-                >
-                    <PhHeart :size="24" 
-                />
+                    @click.prevent.stop="addToWishList">
+                    <PhHeart :size="24" />
                 </button>
             </header>
-            <figure class="w-[190px] h-[190px] flex items-center justify-center mx-auto">
-                <img :src="product.image" :alt="product.name" class="w-full lg:w-[90%]">
-            </figure>
+            <div class="w-full h-[100px] sm:h-[190px] flex items-center justify-center mr-auto ml-auto">
+                <img :src="product.image" :alt="product.name" class="object-contain h-full w-[80%] lg:w-[86%] mx-auto">
+            </div>
         </div>
         <footer>
-            <button 
-                class="bg-black text-white w-full p-1.5 transition-all duration-300 ease-in-out cursor-pointer add-to-cart mb-4 flex items-center justify-center gap-x-2"
-                @click.prevent.stop="addToCart"
-            >
+            <button
+                class="shadow-xl/5 bg-black text-white w-full p-1.5 transition-all duration-300 ease-in-out cursor-pointer add-to-cart mb-2 sm:mb-4 flex items-center justify-center gap-x-2"
+                @click.prevent.stop="addToCart">
                 <span class="text-sm">Add To Cart</span>
                 <PhPlus :size="18" />
                 <PhCheck :size="18" class="hidden" />
             </button>
             <div>
-                <h2 class="font-semibold text-base mb-2.5">{{ product.name }}</h2>
-                <div class="flex items-center gap-x-2.5 mb-2.5">
+                <h2 class="font-semibold text-sm sm:text-base mb-1 sm:mb-2.5">{{ product.name }}</h2>
+                <div class="flex items-center gap-x-2.5 mb-1 sm:mb-2.5 text-sm sm:text-base">
                     <span class="text-secondary-500">&#8369;{{ product.discountedPrice }}</span>
                     <del class="text-gray-500 decoration-dashed">&#8369;{{ product.price }}</del>
                 </div>
-                <button 
-                    class="flex items-center gap-x-2 cursor-pointer"
-                    @click.prevent.stop="viewProductReviews"
-                >
-                    <div class="flex items-center text-orange-500 gap-x-1">
-                        <PhStar :size="19" weight="fill" />
-                        <PhStar :size="19" weight="fill" />
-                        <PhStar :size="19" weight="fill" />
-                        <PhStarHalf :size="19" weight="fill" />
-                        <PhStar :size="19" />
-                    </div>
+                <button class="flex items-center gap-x-1 cursor-pointer text-sm sm:text-base"
+                    @click.prevent.stop="viewProductReviews">
+                    <PhStar class="text-yellow-500" weight="fill" />
+                    <span class="font-medium">4.9</span>
                     <span class="text-gray-500">{{ `(${product.reviewsCount})` }}</span>
                 </button>
             </div>
