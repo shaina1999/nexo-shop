@@ -31,6 +31,14 @@
         <ProductCard v-for="(product, index) in products" :key="product.id" :product="product" />
       </div>
     </div>
+
+    <Teleport to="body">
+      <div 
+        class="fixed top-0 right-0 w-[70vw] sm:w-[40vw] lg:w-[20vw] xl:w-[20vw] bg-white h-screen px-4 shadow-md z-10 transition-all duration-300 ease-[cubic-bezier(0.4, 0, 0.2, 1)]"
+      >
+        filters
+      </div>
+    </Teleport>
   </section>
 
 </template>
