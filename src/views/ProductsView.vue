@@ -33,8 +33,8 @@
 
     <Teleport to="body">
       <div 
-        class="fixed z-20 top-0 right-0 w-[90vw] sm:w-[40vw] lg:w-[30vw] xl:w-[25vw] bg-white h-screen shadow-md transition-all duration-300 ease-[cubic-bezier(0.4, 0, 0.2, 1)]"
-        :class="{ 'right-0 opacity-100' : filtersOpen, 'right-[-50%] opacity-0' : !filtersOpen }"
+        class="fixed z-20 top-0 right-0 w-[90vw] sm:w-[50vw] lg:w-[35vw] xl:w-[500px] bg-white h-screen shadow-md transition-all duration-300 ease-[cubic-bezier(0.4, 0, 0.2, 1)]"
+        :class="{ 'right-0 opacity-100 pointer-events-auto' : filtersOpen, 'right-[-50%] opacity-0 pointer-events-none' : !filtersOpen }"
       >
         <div class="border-b-[1px] border-b-gray-300 py-4 px-6 flex items-center gap-4">
           <button class="cursor-pointer" @click="filtersOpen = false">
@@ -42,47 +42,59 @@
             </button>
           <span>Filters</span>
         </div>
-        <div class="py-4 px-6">
-          <h2 class="text-black font-semibold mb-4">Category</h2>
-          <ul class="flex flex-wrap gap-2 text-xs sm:text-base">
-            <li 
-              class="flex items-center justify-center text-center border-gray-300 border-[1px] rounded-sm p-2 cursor-pointer"
-              v-for="(category, index) in categories" :key="index"
-            >
-            {{ category.label }}
-            </li>
-          </ul>
+        <div class="overflow-y-scroll h-[calc(100vh_-_130px)] ">
+          <div class="py-4 px-6">
+            <h2 class="text-black font-semibold mb-4">Category</h2>
+            <ul class="flex flex-wrap gap-2 text-xs sm:text-base">
+              <li 
+                class="flex items-center justify-center text-center border-gray-300 border-[1px] rounded-sm p-2 cursor-pointer"
+                v-for="(category, index) in categories" :key="index"
+              >
+              {{ category.label }}
+              </li>
+            </ul>
+          </div>
+          <div class="py-4 px-6">
+            <h2 class="text-black font-semibold mb-4">Price</h2>
+            <ul class="flex flex-col text-sm sm:text-base gap-3">
+              <li 
+                class="flex items-center text-center cursor-pointer relative"
+                v-for="(price, index) in priceFilter" :key="index"
+              >
+                <span class="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full border-[1px] border-black mr-3 flex items-center justify-center">
+                  <span class="w-[60%] h-[60%] m-auto rounded-full transition-colors duration-100 ease-in" :class="{ 'bg-black': selectedPrice === price.label }"></span>
+                </span>
+                <input type="radio" :value="price.label" name="price" v-model="selectedPrice" :id="index" class="opacity-0 absolute left-0 right-0 top-0 bottom-0 w-full h-full cursor-pointer">
+                <span>{{ price.label }}</span>
+              </li>
+            </ul>
+          </div>
+          <div class="py-4 px-6">
+            <h2 class="text-black font-semibold mb-4">Rating</h2>
+            <ul class="flex flex-col text-sm sm:text-base gap-3">
+              <li 
+                class="flex items-center text-center cursor-pointer relative"
+                v-for="(rating, index) in ratingFilter" :key="index"
+              >
+                <span class="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full border-[1px] border-black mr-3 flex items-center justify-center">
+                  <span class="w-[60%] h-[60%] m-auto rounded-full transition-colors duration-100 ease-in" :class="{ 'bg-black': selectedRating === rating.label }"></span>
+                </span>
+                <input type="radio" :value="rating.label" name="rating" v-model="selectedRating" :id="index" class="opacity-0 absolute left-0 right-0 top-0 bottom-0 w-full h-full cursor-pointer">
+                <PhStar class="text-yellow-500 mr-2" weight="fill" />
+                <span>{{ rating.label }}</span>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="py-4 px-6">
-          <h2 class="text-black font-semibold mb-4">Price</h2>
-          <ul class="flex flex-col text-sm sm:text-base gap-3">
-            <li 
-              class="flex items-center text-center cursor-pointer relative"
-              v-for="(price, index) in priceFilter" :key="index"
-            >
-              <span class="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full border-[1px] border-black mr-3 flex items-center justify-center">
-                <span class="w-[60%] h-[60%] m-auto rounded-full transition-colors duration-100 ease-in" :class="{ 'bg-black': selectedPrice === price.label }"></span>
-              </span>
-              <input type="radio" :value="price.label" name="price" v-model="selectedPrice" :id="index" class="opacity-0 absolute left-0 right-0 top-0 bottom-0 w-full h-full cursor-pointer">
-              <span>{{ price.label }}</span>
-            </li>
-          </ul>
-        </div>
-        <div class="py-4 px-6">
-          <h2 class="text-black font-semibold mb-4">Rating</h2>
-          <ul class="flex flex-col text-sm sm:text-base gap-3">
-            <li 
-              class="flex items-center text-center cursor-pointer relative"
-              v-for="(rating, index) in ratingFilter" :key="index"
-            >
-              <span class="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full border-[1px] border-black mr-3 flex items-center justify-center">
-                <span class="w-[60%] h-[60%] m-auto rounded-full transition-colors duration-100 ease-in" :class="{ 'bg-black': selectedRating === rating.label }"></span>
-              </span>
-              <input type="radio" :value="rating.label" name="rating" v-model="selectedRating" :id="index" class="opacity-0 absolute left-0 right-0 top-0 bottom-0 w-full h-full cursor-pointer">
-              <PhStar class="text-yellow-500 mr-2" weight="fill" />
-              <span>{{ rating.label }}</span>
-            </li>
-          </ul>
+        <div class="flex items-center gap-4 py-4 px-6 border-t-[1px] border-t-gray-300">
+          <BaseButton 
+            class="w-full text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!"
+          >
+            <span>Clear</span>
+          </BaseButton>
+          <BaseButton class="w-full text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center">
+            Apply
+          </BaseButton>
         </div>
       </div>
     </Teleport>
@@ -155,6 +167,14 @@ const searchQuery = computed(() => {
 
 watch(data, (newVal) => {
   // products.value = newVal?.products || []
+})
+
+watch(filtersOpen, (newVal) => {
+  if (filtersOpen.value) {
+    document.body.classList.add('overflow-hidden')
+  } else {
+    document.body.classList.remove('overflow-hidden')
+  }
 })
 
 watchEffect(() => {
