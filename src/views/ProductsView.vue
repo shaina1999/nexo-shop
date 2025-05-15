@@ -46,10 +46,10 @@
           <h2 class="text-black font-semibold mb-4">Category</h2>
           <ul class="flex flex-wrap gap-2 text-sm">
             <li 
-              class="flex items-center justify-center text-center border-gray-300 border-[1px] rounded-sm"
+              class="flex items-center justify-center text-center border-gray-300 border-[1px] rounded-sm p-2 cursor-pointer"
               v-for="(category, index) in categories" :key="index"
             >
-              <RouterLink class="p-2" :to="category.route">{{ category.label }}</RouterLink>
+            {{ category.label }}
             </li>
           </ul>
         </div>
