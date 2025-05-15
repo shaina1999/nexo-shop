@@ -42,14 +42,29 @@
             </button>
           <span>Filters</span>
         </div>
-        <div class="p-4">
+        <div class="p-4 mb-4">
           <h2 class="text-black font-semibold mb-4">Category</h2>
-          <ul class="flex flex-wrap gap-2 text-sm">
+          <ul class="flex flex-wrap gap-2 text-sm sm:text-base">
             <li 
               class="flex items-center justify-center text-center border-gray-300 border-[1px] rounded-sm p-2 cursor-pointer"
               v-for="(category, index) in categories" :key="index"
             >
             {{ category.label }}
+            </li>
+          </ul>
+        </div>
+        <div class="p-4">
+          <h2 class="text-black font-semibold mb-4">Price</h2>
+          <ul class="flex flex-col text-sm sm:text-base gap-3">
+            <li 
+              class="flex items-center text-center cursor-pointer relative"
+              v-for="(price, index) in priceFilter" :key="index"
+            >
+              <span class="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full border-[1px] border-black mr-3 flex items-center justify-center">
+                <span class="w-[60%] h-[60%] m-auto rounded-full transition-colors duration-100 ease-in" :class="{ 'bg-black': selectedPrice === price.label }"></span>
+              </span>
+              <input type="radio" :value="price.label" name="price" v-model="selectedPrice" :id="index" class="opacity-0 absolute left-0 right-0 top-0 bottom-0 w-full h-full cursor-pointer">
+              <span>{{ price.label }}</span>
             </li>
           </ul>
         </div>
@@ -78,6 +93,7 @@ const router = useRouter()
 const route = useRoute()
 const { data, error, isLoading, fetchNow } = useFetch()
 const filtersOpen = ref(false)
+const selectedPrice = ref(null)
 
 const products = ref([ // sample products
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, image: '/src/assets/img/product-image.png', reviewsCount: 100, isNew: true },
@@ -99,6 +115,14 @@ const categories = [
   { label: "Men's Shoes", route: "/products" },
   { label: "Men's Bag", route: "/products" },
   { label: "Men's Sports", route: "/products" }
+];
+
+const priceFilter = [
+  { label: "Below PHP 100", min: 0, max: 99 },
+  { label: "PHP 100 - 199", min: 100, max: 199 },
+  { label: "PHP 200 - 299", min: 200, max: 299 },
+  { label: "PHP 300 - 499", min: 300, max: 499 },
+  { label: "PHP 500 and up", min: 500, max: Infinity }
 ];
 
 const searchQuery = computed(() => {
