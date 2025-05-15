@@ -33,18 +33,18 @@
 
     <Teleport to="body">
       <div 
-        class="fixed z-20 top-0 right-0 w-[70vw] sm:w-[40vw] lg:w-[30vw] xl:w-[25vw] bg-white h-screen shadow-md transition-all duration-300 ease-[cubic-bezier(0.4, 0, 0.2, 1)]"
+        class="fixed z-20 top-0 right-0 w-[90vw] sm:w-[40vw] lg:w-[30vw] xl:w-[25vw] bg-white h-screen shadow-md transition-all duration-300 ease-[cubic-bezier(0.4, 0, 0.2, 1)]"
         :class="{ 'right-0 opacity-100' : filtersOpen, 'right-[-50%] opacity-0' : !filtersOpen }"
       >
-        <div class="border-b-[1px] border-b-gray-300 p-4 flex items-center gap-4">
+        <div class="border-b-[1px] border-b-gray-300 py-4 px-6 flex items-center gap-4">
           <button class="cursor-pointer" @click="filtersOpen = false">
             <PhX :size="22" />
             </button>
           <span>Filters</span>
         </div>
-        <div class="p-4 mb-4">
+        <div class="py-4 px-6">
           <h2 class="text-black font-semibold mb-4">Category</h2>
-          <ul class="flex flex-wrap gap-2 text-sm sm:text-base">
+          <ul class="flex flex-wrap gap-2 text-xs sm:text-base">
             <li 
               class="flex items-center justify-center text-center border-gray-300 border-[1px] rounded-sm p-2 cursor-pointer"
               v-for="(category, index) in categories" :key="index"
@@ -53,7 +53,7 @@
             </li>
           </ul>
         </div>
-        <div class="p-4">
+        <div class="py-4 px-6">
           <h2 class="text-black font-semibold mb-4">Price</h2>
           <ul class="flex flex-col text-sm sm:text-base gap-3">
             <li 
@@ -65,6 +65,22 @@
               </span>
               <input type="radio" :value="price.label" name="price" v-model="selectedPrice" :id="index" class="opacity-0 absolute left-0 right-0 top-0 bottom-0 w-full h-full cursor-pointer">
               <span>{{ price.label }}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="py-4 px-6">
+          <h2 class="text-black font-semibold mb-4">Rating</h2>
+          <ul class="flex flex-col text-sm sm:text-base gap-3">
+            <li 
+              class="flex items-center text-center cursor-pointer relative"
+              v-for="(rating, index) in ratingFilter" :key="index"
+            >
+              <span class="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full border-[1px] border-black mr-3 flex items-center justify-center">
+                <span class="w-[60%] h-[60%] m-auto rounded-full transition-colors duration-100 ease-in" :class="{ 'bg-black': selectedRating === rating.label }"></span>
+              </span>
+              <input type="radio" :value="rating.label" name="rating" v-model="selectedRating" :id="index" class="opacity-0 absolute left-0 right-0 top-0 bottom-0 w-full h-full cursor-pointer">
+              <PhStar class="text-yellow-500 mr-2" weight="fill" />
+              <span>{{ rating.label }}</span>
             </li>
           </ul>
         </div>
@@ -94,6 +110,7 @@ const route = useRoute()
 const { data, error, isLoading, fetchNow } = useFetch()
 const filtersOpen = ref(false)
 const selectedPrice = ref(null)
+const selectedRating = ref(null)
 
 const products = ref([ // sample products
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, image: '/src/assets/img/product-image.png', reviewsCount: 100, isNew: true },
@@ -115,7 +132,7 @@ const categories = [
   { label: "Men's Shoes", route: "/products" },
   { label: "Men's Bag", route: "/products" },
   { label: "Men's Sports", route: "/products" }
-];
+]
 
 const priceFilter = [
   { label: "Below PHP 100", min: 0, max: 99 },
@@ -123,7 +140,14 @@ const priceFilter = [
   { label: "PHP 200 - 299", min: 200, max: 299 },
   { label: "PHP 300 - 499", min: 300, max: 499 },
   { label: "PHP 500 and up", min: 500, max: Infinity }
-];
+]
+
+const ratingFilter = [
+  { label: '4 & up', value: 4 },
+  { label: '3 & up', value: 3 },
+  { label: '2 & up', value: 2 },
+  { label: '1 & up', value: 1 }
+]
 
 const searchQuery = computed(() => {
   return route.query?.q || ''
