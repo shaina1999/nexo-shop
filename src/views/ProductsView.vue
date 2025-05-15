@@ -170,10 +170,14 @@ watch(data, (newVal) => {
 })
 
 watch(filtersOpen, (newVal) => {
+  const html = document.documentElement
+
   if (filtersOpen.value) {
-    document.body.classList.add('overflow-hidden')
+    html.style.paddingRight = '15px'
+    html.style.overflow = 'hidden'
   } else {
-    document.body.classList.remove('overflow-hidden')
+    html.style.overflow = ''
+    html.style.paddingRight = ''
   }
 })
 
