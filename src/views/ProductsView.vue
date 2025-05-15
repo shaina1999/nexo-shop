@@ -6,14 +6,13 @@
         <div class="flex items-center gap-x-3">
           <BaseButton 
             class="text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!"
-            @click="handleToggleFilter"
+            @click="filtersOpen = true"
           >
             <span>Filters</span>
             <PhFadersHorizontal :size="20" />
           </BaseButton>
           <BaseButton 
             class="text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!"
-            @click="handleToggleSort"
           >
             <span>Sort</span>
             <PhArrowsDownUp :size="20" />
@@ -34,9 +33,34 @@
 
     <Teleport to="body">
       <div 
-        class="fixed top-0 right-0 w-[70vw] sm:w-[40vw] lg:w-[20vw] xl:w-[20vw] bg-white h-screen px-4 shadow-md z-10 transition-all duration-300 ease-[cubic-bezier(0.4, 0, 0.2, 1)]"
+        class="fixed z-20 top-0 right-0 w-[70vw] sm:w-[40vw] lg:w-[30vw] xl:w-[25vw] bg-white h-screen shadow-md transition-all duration-300 ease-[cubic-bezier(0.4, 0, 0.2, 1)]"
+        :class="{ 'right-0 opacity-100' : filtersOpen, 'right-[-50%] opacity-0' : !filtersOpen }"
       >
-        filters
+        <div class="border-b-[1px] border-b-gray-300 p-4 flex items-center gap-4">
+          <button class="cursor-pointer" @click="filtersOpen = false">
+            <PhX :size="22" />
+            </button>
+          <span>Filters</span>
+        </div>
+        <div class="p-4">
+          <h2 class="text-black font-semibold mb-4">Category</h2>
+          <ul class="flex flex-wrap gap-2 text-sm">
+            <li 
+              class="flex items-center justify-center text-center border-gray-300 border-[1px] rounded-sm"
+              v-for="(category, index) in categories" :key="index"
+            >
+              <RouterLink class="p-2" :to="category.route">{{ category.label }}</RouterLink>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </Teleport>
+    
+    <Teleport to="body">
+      <div 
+        class="w-screen h-screen fixed left-0 right-0 top-0 z-10 bg-black transition-opacity duration-200 ease-in" 
+        @click="filtersOpen = false" :class="{ 'opacity-30 pointer-events-auto' : filtersOpen, 'opacity-0 pointer-events-none' : !filtersOpen }"
+      >
       </div>
     </Teleport>
   </section>
@@ -53,6 +77,7 @@ import BaseButton from '@/components/BaseButton.vue'
 const router = useRouter()
 const route = useRoute()
 const { data, error, isLoading, fetchNow } = useFetch()
+const filtersOpen = ref(false)
 
 const products = ref([ // sample products
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, image: '/src/assets/img/product-image.png', reviewsCount: 100, isNew: true },
@@ -64,6 +89,17 @@ const products = ref([ // sample products
   { id: 7, name: 'Product 7', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100, isNew: false },
   { id: 8, name: 'Product 8', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100, isNew: false },
 ])
+
+const categories = [
+  { label: "Women's Clothing", route: "/products" },
+  { label: "Women's Shoes", route: "/products" },
+  { label: "Women's Bag", route: "/products" },
+  { label: "Women's Sports", route: "/products" },
+  { label: "Men's Clothing", route: "/products" },
+  { label: "Men's Shoes", route: "/products" },
+  { label: "Men's Bag", route: "/products" },
+  { label: "Men's Sports", route: "/products" }
+];
 
 const searchQuery = computed(() => {
   return route.query?.q || ''
