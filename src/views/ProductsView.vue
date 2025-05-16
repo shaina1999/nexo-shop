@@ -175,13 +175,13 @@
 <script setup>
 import { watch, watchEffect, computed, ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
-import { useFetch } from '@/composables/fetch'
+import { supabase } from '@/supabase'
+
 import ProductCard from '@/components/ProductCard.vue'
 import BaseButton from '@/components/BaseButton.vue'
 
 const router = useRouter()
 const route = useRoute()
-const { data, error, isLoading, fetchNow } = useFetch()
 const filtersOpen = ref(false)
 const sortingOptionOpen = ref(false)
 const selectedPrice = ref(null)
@@ -266,10 +266,6 @@ const searchQuery = computed(() => {
   return route.query?.q || ''
 })
 
-watch(data, (newVal) => {
-  // products.value = newVal?.products || []
-})
-
 watch([filtersOpen, sortingOptionOpen], (newVal) => {
   const html = document.documentElement
 
@@ -280,11 +276,8 @@ watch([filtersOpen, sortingOptionOpen], (newVal) => {
   }
 })
 
-watchEffect(() => {
-  fetchNow(`/products/search?q=${searchQuery.value}`)
-})
-
-onMounted(() => {
-  // products.value = data.products
+onMounted(async() => {
+  let { data: products, error } = await supabase.from('products').select('*')
+  console.log(products)
 })
 </script>
