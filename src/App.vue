@@ -11,7 +11,7 @@ import ScrollToTop from '@/components/ScrollToTop.vue'
 const notificationBarRef = useTemplateRef('notificationBarRef')
 const { width, height } = useElementSize(notificationBarRef)
 const windowWidth = ref(window.innerWidth)
-const headerHeight = computed(() => windowWidth.value > 1024 ? 97 : 118)
+const headerHeight = computed(() => windowWidth.value > 1024 ? 97 : 112)
 const auth = useAuthStore()
 
 onMounted(async () => {
