@@ -1,9 +1,8 @@
-<!-- src/components/ScrollToTop.vue -->
 <template>
     <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl relative">
         <Transition name="fade-scale">
             <button
-                v-if="show"
+                v-if="showScrollTopButton"
                 @click="scrollToTop"
                 class="cursor-pointer z-1 fixed bottom-12 sm:bottom-5 right-5 bg-secondary-500 text-white p-2.5 md:p-3 rounded-full shadow-lg hover:bg-secondary-300 transition-colors duration-300 ease-in-out"
             >
@@ -14,25 +13,15 @@
 </template>
   
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+const emit = defineEmits(['scroll-top'])
 
-const show = ref(false)
-
-const handleScroll = () => {
-    show.value = window.scrollY > 500
-}
+defineProps({
+    showScrollTopButton: Boolean,
+})
 
 const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    emit('scroll-top')
 }
-
-onMounted(() => {
-    window.addEventListener('scroll', handleScroll)
-})
-
-onBeforeUnmount(() => {
-    window.removeEventListener('scroll', handleScroll)
-})
 </script>
 
 <style scoped>

@@ -1,7 +1,8 @@
 <script setup>
 import { useElementSize } from '@vueuse/core'
-import { computed, useTemplateRef, ref, onMounted } from 'vue'
+import { computed, useTemplateRef, ref, onMounted, watch } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
+import { useRoute } from 'vue-router'
 
 import NotificationBar from '@/components/NotificationBar.vue'
 import Header from '@/components/Header.vue'
@@ -13,9 +14,24 @@ const { width, height } = useElementSize(notificationBarRef)
 const windowWidth = ref(window.innerWidth)
 const headerHeight = computed(() => windowWidth.value > 1024 ? 97 : 112)
 const auth = useAuthStore()
+const showScrollTopButton = ref(false)
+const mainContainerRef = ref(null)
+const route = useRoute()
+
+const handleScroll = () => {
+    showScrollTopButton.value = mainContainerRef.value?.scrollTop > 500
+}
+
+const scrollToTop = () => {
+    mainContainerRef.value?.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+watch(route, () => {
+    mainContainerRef.value?.scrollTo({ top: 0 })
+})
 
 onMounted(async () => {
-  await auth.initAuth()
+    await auth.initAuth()
 })
 </script>
 
@@ -25,10 +41,18 @@ onMounted(async () => {
             <NotificationBar ref="notificationBarRef" />
             <Header />
         </div>
-        <div :style="{ marginTop: `${height + headerHeight}px` }">
-            <RouterView />
+        <div :style="{ height: `${height + headerHeight}px` }"></div>
+        <div 
+            class="overflow-y-scroll" 
+            ref="mainContainerRef"
+            @scroll="handleScroll"
+            :style="`height: calc(100vh - ${height + headerHeight}px);`"
+        >
+            <div>
+                <RouterView />
+            </div>
+            <Footer />
+            <ScrollToTop :showScrollTopButton="showScrollTopButton" @scroll-top="scrollToTop" />
         </div>
-        <Footer />
-        <ScrollToTop />
     </div>
 </template>

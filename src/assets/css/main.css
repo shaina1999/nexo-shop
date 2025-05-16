@@ -22,7 +22,6 @@
 }
 
 html{
-  scrollbar-gutter: stable; /* this prevent layout changes, even if the scrollbar appear/disappear, the space is reserved for it */
 }
 
 body {
