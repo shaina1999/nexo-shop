@@ -270,10 +270,10 @@ watch(data, (newVal) => {
   // products.value = newVal?.products || []
 })
 
-watch(filtersOpen, (newVal) => {
+watch([filtersOpen, sortingOptionOpen], (newVal) => {
   const html = document.documentElement
 
-  if (filtersOpen.value) {
+  if (filtersOpen.value || sortingOptionOpen.value) {
     html.style.overflow = 'hidden'
   } else {
     html.style.overflow = ''
