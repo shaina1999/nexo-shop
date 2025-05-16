@@ -274,11 +274,9 @@ watch(filtersOpen, (newVal) => {
   const html = document.documentElement
 
   if (filtersOpen.value) {
-    html.style.paddingRight = '15px'
     html.style.overflow = 'hidden'
   } else {
     html.style.overflow = ''
-    html.style.paddingRight = ''
   }
 })
 

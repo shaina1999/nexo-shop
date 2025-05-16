@@ -21,6 +21,10 @@
   --color-placeholder: #A0A3BD;
 }
 
+html{
+  scrollbar-gutter: stable; /* this prevent layout changes, even if the scrollbar appear/disappear, the space is reserved for it */
+}
+
 body {
   font-family: 'Poppins', sans-serif;
 }
