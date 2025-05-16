@@ -47,10 +47,23 @@
             <h2 class="text-black font-semibold mb-4">Category</h2>
             <ul class="flex flex-wrap gap-2 text-xs sm:text-base">
               <li 
-                class="flex items-center justify-center text-center border-gray-300 border-[1px] rounded-sm p-2 cursor-pointer"
+                class="flex items-center justify-center text-center border-gray-300 border-[1px] rounded-sm p-2 cursor-pointer relative"
                 v-for="(category, index) in categories" :key="index"
               >
-              {{ category.label }}
+                <input 
+                  name="category" 
+                  :value="category.label" 
+                  type="checkbox" 
+                  class="absolute left-0 right-0 top-0 bottom-0 w-full h-full opacity-0 cursor-pointer" 
+                  @change="(event) => handleCategoryChange(event, index)"
+                >
+                <span 
+                  class="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-sm border-[1px] border-black mr-2 flex items-center justify-center text-white relative"
+                  :class="{ 'bg-black' : category.isSelected }"
+                >
+                  <PhCheckFat :size="12" weight="fill" class="absolute top-[50%] -translate-x-1/2 left-1/2 -translate-y-1/2 text-transparent" :class="{ 'bg-black text-white' : category.isSelected }" />
+                </span>
+                <span>{{ category.label }}</span>
               </li>
             </ul>
           </div>
@@ -89,10 +102,11 @@
         <div class="flex items-center gap-4 py-4 px-6 border-t-[1px] border-t-gray-300">
           <BaseButton 
             class="w-full text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!"
+            @click="clearFilters"
           >
             <span>Clear</span>
           </BaseButton>
-          <BaseButton class="w-full text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center">
+          <BaseButton class="w-full text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center" @click="applyFilters">
             Apply
           </BaseButton>
         </div>
@@ -123,6 +137,7 @@ const { data, error, isLoading, fetchNow } = useFetch()
 const filtersOpen = ref(false)
 const selectedPrice = ref(null)
 const selectedRating = ref(null)
+const selectedCategories = ref([])
 
 const products = ref([ // sample products
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, image: '/src/assets/img/product-image.png', reviewsCount: 100, isNew: true },
@@ -135,16 +150,16 @@ const products = ref([ // sample products
   { id: 8, name: 'Product 8', price: 2000, discountedPrice: 600, discount: 40, image: '/src/assets/img/product-image.png', reviewsCount: 100, isNew: false },
 ])
 
-const categories = [
-  { label: "Women's Clothing", route: "/products" },
-  { label: "Women's Shoes", route: "/products" },
-  { label: "Women's Bag", route: "/products" },
-  { label: "Women's Sports", route: "/products" },
-  { label: "Men's Clothing", route: "/products" },
-  { label: "Men's Shoes", route: "/products" },
-  { label: "Men's Bag", route: "/products" },
-  { label: "Men's Sports", route: "/products" }
-]
+const categories = ref([
+  { label: "Women's Clothing", route: "/products", isSelected: false },
+  { label: "Women's Shoes", route: "/products", isSelected: false },
+  { label: "Women's Bag", route: "/products", isSelected: false },
+  { label: "Women's Sports", route: "/products", isSelected: false },
+  { label: "Men's Clothing", route: "/products", isSelected: false },
+  { label: "Men's Shoes", route: "/products", isSelected: false },
+  { label: "Men's Bag", route: "/products", isSelected: false },
+  { label: "Men's Sports", route: "/products", isSelected: false }
+])
 
 const priceFilter = [
   { label: "Below PHP 100", min: 0, max: 99 },
@@ -160,6 +175,30 @@ const ratingFilter = [
   { label: '2 & up', value: 2 },
   { label: '1 & up', value: 1 }
 ]
+
+const filteredCategories = computed(() => {
+  return categories.value
+    .filter((category) => category.isSelected)
+    .map((category) => category.label)
+})
+
+const handleCategoryChange = (event, index) => {
+  categories.value[index].isSelected = event.target.checked
+}
+
+const applyFilters = () => {
+  console.log('categories', filteredCategories.value)
+  console.log('selectedPrice', selectedPrice.value)
+  console.log('selectedRating', selectedRating.value)
+}
+
+const clearFilters = () => {
+  categories.value.forEach(category => {
+    category.isSelected = false
+  })
+  selectedPrice.value = ''
+  selectedRating.value = ''
+}
 
 const searchQuery = computed(() => {
   return route.query?.q || ''
