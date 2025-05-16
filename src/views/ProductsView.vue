@@ -13,6 +13,7 @@
           </BaseButton>
           <BaseButton 
             class="text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!"
+            @click="sortingOptionOpen = true"
           >
             <span>Sort</span>
             <PhArrowsDownUp :size="20" />
@@ -31,6 +32,7 @@
       </div>
     </div>
 
+    <!-- Filters Options -->
     <Teleport to="body">
       <div 
         class="fixed z-20 top-0 right-0 w-[90vw] sm:w-[50vw] lg:w-[35vw] xl:w-[500px] bg-white h-screen shadow-md transition-all duration-300 ease-[cubic-bezier(0.4, 0, 0.2, 1)]"
@@ -113,11 +115,56 @@
         </div>
       </div>
     </Teleport>
-    
+
+    <!-- Sort Options -->
     <Teleport to="body">
       <div 
-        class="w-screen h-screen fixed left-0 right-0 top-0 z-10 bg-black transition-opacity duration-200 ease-in" 
-        @click="filtersOpen = false" :class="{ 'opacity-30 pointer-events-auto' : filtersOpen, 'opacity-0 pointer-events-none' : !filtersOpen }"
+        class="fixed z-20 top-0 right-0 w-[90vw] sm:w-[50vw] lg:w-[35vw] xl:w-[500px] bg-white h-screen shadow-md transition-all duration-300 ease-[cubic-bezier(0.4, 0, 0.2, 1)]"
+        :class="{ 'right-0 opacity-100 pointer-events-auto' : sortingOptionOpen, 'right-[-50%] opacity-0 pointer-events-none' : !sortingOptionOpen }"
+      >
+        <div class="border-b-[1px] border-b-gray-300 py-4 px-6 flex items-center gap-4">
+          <button class="cursor-pointer" @click="sortingOptionOpen = false">
+            <PhX :size="22" />
+            </button>
+          <span>Sort</span>
+        </div>
+        <div class="overflow-y-scroll h-[calc(100vh_-_130px)] ">
+          <div class="py-4 px-6">
+            <h2 class="text-black font-semibold mb-4">Sort By:</h2>
+            <ul class="flex flex-col text-sm sm:text-base gap-3">
+              <li 
+                class="flex items-center text-center cursor-pointer relative"
+                v-for="(sortingOption, index) in sortingOptions" :key="index"
+              >
+                <span class="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full border-[1px] border-black mr-3 flex items-center justify-center">
+                  <span class="w-[60%] h-[60%] m-auto rounded-full transition-colors duration-100 ease-in" :class="{ 'bg-black': selectedSortOption === sortingOption.label }"></span>
+                </span>
+                <input 
+                  type="radio" 
+                  :value="sortingOption.label" 
+                  name="sort_option" 
+                  v-model="selectedSortOption" 
+                  :id="index" 
+                  class="opacity-0 absolute left-0 right-0 top-0 bottom-0 w-full h-full cursor-pointer"
+                  @change="handleSortOptionChange"
+                >
+                <span>{{ sortingOption.label }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+    
+    <!-- Overlay for sort and filter options -->
+    <Teleport to="body">
+      <div
+        class="w-screen h-screen fixed left-0 right-0 top-0 z-10 bg-black transition-opacity duration-300 ease-in"
+        @click="filtersOpen = false; sortingOptionOpen = false"
+        :class="{
+          'opacity-50 pointer-events-auto': filtersOpen || sortingOptionOpen,
+          'opacity-0 pointer-events-none': !filtersOpen && !sortingOptionOpen
+        }"
       >
       </div>
     </Teleport>
@@ -136,8 +183,10 @@ const router = useRouter()
 const route = useRoute()
 const { data, error, isLoading, fetchNow } = useFetch()
 const filtersOpen = ref(false)
+const sortingOptionOpen = ref(false)
 const selectedPrice = ref(null)
 const selectedRating = ref(null)
+const selectedSortOption = ref(null)
 const selectedCategories = ref([])
 
 const products = ref([ // sample products
@@ -177,6 +226,12 @@ const ratingFilter = [
   { label: '1 & up', value: 1 }
 ]
 
+const sortingOptions = [
+  { label: 'Top Rated' },
+  { label: 'Price High to Low' },
+  { label: 'Price Low to High' }
+]
+
 const filteredCategories = computed(() => {
   return categories.value
     .filter((category) => category.isSelected)
@@ -197,8 +252,14 @@ const clearFilters = () => {
   categories.value.forEach(category => {
     category.isSelected = false
   })
-  selectedPrice.value = ''
-  selectedRating.value = ''
+  selectedPrice.value = null
+  selectedRating.value = null
+}
+
+const handleSortOptionChange = () => {
+  setTimeout(() => {
+    sortingOptionOpen.value = false
+  }, 300);
 }
 
 const searchQuery = computed(() => {
