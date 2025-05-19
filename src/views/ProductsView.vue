@@ -27,7 +27,7 @@
         <p>Here are some suggestions you may find useful:</p>
       </div>
 
-      <div v-if="isLoading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
+      <div v-if="isLoading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8 pointer-events-none">
         <ProductCardSkeleton v-for="i in 30" :key="i" />
       </div>
       
