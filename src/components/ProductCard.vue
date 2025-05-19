@@ -15,7 +15,7 @@
                 </button>
             </header>
             <div class="w-full h-[100px] sm:h-[190px] flex items-center justify-center mr-auto ml-auto">
-                <img :src="product.image" :alt="product.name" class="object-contain h-full w-[80%] lg:w-[86%] mx-auto">
+                <img :src="product.images[0].url" :alt="product.images[0].alt" class="object-contain h-full w-[80%] lg:w-[86%] mx-auto">
             </div>
         </div>
         <footer>
@@ -29,14 +29,15 @@
             <div>
                 <h2 class="font-semibold text-sm sm:text-base mb-1 sm:mb-2.5">{{ product.name }}</h2>
                 <div class="flex items-center gap-x-2.5 mb-1 sm:mb-2.5 text-sm sm:text-base">
-                    <span class="text-secondary-500">&#8369;{{ product.discountedPrice }}</span>
+                    <span class="text-secondary-500">&#8369;{{ product.discount_price }}</span>
                     <del class="text-gray-500 decoration-dashed">&#8369;{{ product.price }}</del>
                 </div>
                 <button class="flex items-center gap-x-1 cursor-pointer text-sm sm:text-base"
                     @click.prevent.stop="viewProductReviews">
                     <PhStar class="text-yellow-500" weight="fill" />
                     <span class="font-medium">4.9</span>
-                    <span class="text-gray-500">{{ `(${product.reviewsCount})` }}</span>
+                    <span class="text-gray-500">{{ `(${100})` }}</span>
+                    <!-- <span class="text-gray-500">{{ `(${product.reviewsCount})` }}</span> -->
                 </button>
             </div>
         </footer>
