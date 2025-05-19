@@ -36,6 +36,14 @@ body {
   background-color: #e6e6e6;
   border-radius: 4px;
   color: transparent !important;
+  border-color: transparent !important;
+  pointer-events: none !important;
+}
+
+.skeleton-loader *{
+  color: transparent !important;
+  border-color: transparent !important;
+  pointer-events: none !important;
 }
 
 .skeleton-loader::after {

@@ -2,10 +2,11 @@
   <section class="flex items-center justify-center w-full pt-5 md:pt-10">
     <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
       <div class="flex items-start md:items-center justify-between pb-5 md:pb-10 flex-col-reverse md:flex-row gap-3 md:gap-5">
-        <p class="inline-block md:flex items-center gap-x-3 text-sm md:text-base">Showing results for "{{ searchQuery }}" <span class="font-regular text-gray-500"> 50 items found</span></p>
+        <p class="inline-block md:flex items-center gap-x-3 text-sm md:text-base" :class="{ 'skeleton-loader' : isLoading }">Showing results for "{{ searchQuery }}" <span class="font-regular text-gray-500"> 50 items found</span></p>
         <div class="flex items-center gap-x-3">
           <BaseButton 
             class="text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!"
+            :class="{ 'skeleton-loader' : isLoading }"
             @click="filtersOpen = true"
           >
             <span>Filters</span>
@@ -13,6 +14,7 @@
           </BaseButton>
           <BaseButton 
             class="text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!"
+            :class="{ 'skeleton-loader' : isLoading }"
             @click="sortingOptionOpen = true"
           >
             <span>Sort</span>
@@ -28,7 +30,7 @@
       </div>
 
       <div v-if="isLoading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8 pointer-events-none">
-        <ProductCardSkeleton v-for="i in 30" :key="i" />
+        <ProductCardSkeleton v-for="i in 32" :key="i" />
       </div>
       
       <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
