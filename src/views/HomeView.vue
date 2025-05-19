@@ -235,7 +235,7 @@
     <!-- New Arrival Section -->
     <section class="flex items-center justify-center w-full py-16 sm:py-20 md:py-25 lg:py-35">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
-            <SectionHeader :label="'Featured'" :title="'New Arrivals'"></SectionHeader>
+            <SectionHeader :label="'Featured'" :title="'New Arrival'"></SectionHeader>
             <div class="grid new-arrival-grid gap-2.5 lg:gap-7.5 text-white">
                 <figure class="bg-black item1 py-8 px-5 lg:p-6 relative flex justify-center lg:justify-center">
                     <div class="h-[190px] w-[210px] lg:h-[434px] lg:w-full flex items-end justify-center">
@@ -279,7 +279,7 @@
                     </figcaption>
                 </figure>
             </div>
-            <BaseLinkButton :to="'/products?tag=new-arrivals'" class="mx-auto !bg-black !text-white mt-7.5 md:mt-15">View All Products</BaseLinkButton>
+            <BaseLinkButton :to="'/products?tag=new-arrival'" class="mx-auto !bg-black !text-white mt-7.5 md:mt-15">View All Products</BaseLinkButton>
         </div>
     </section>
 
