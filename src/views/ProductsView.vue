@@ -1,8 +1,18 @@
 <template>
   <section class="flex items-center justify-center w-full pt-5 md:pt-10">
     <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
-      <div class="flex items-start md:items-center justify-between pb-5 md:pb-10 flex-col-reverse md:flex-row gap-3 md:gap-5">
-        <p class="inline-block md:flex items-center gap-x-3 text-sm md:text-base" :class="{ 'skeleton-loader' : isLoading }">Showing results for "{{ searchQuery }}" <span class="font-regular text-gray-500"> 50 items found</span></p>
+      <div class="flex items-start md:items-center justify-between pb-5 md:pb-10 flex-col md:flex-row gap-3 md:gap-5">
+        <p :class="{ 'skeleton-loader' : isLoading }">
+          <span class="inline-block md:flex items-center gap-x-3 text-sm md:text-base" v-if="searchQuery">
+            <div class="mb-1 md:mb-0">
+              Showing results for <span class="font-semibold">"{{ searchQuery }}"</span>
+            </div> 
+            <span class="font-regular text-gray-500"> 50 items found</span>
+          </span>
+          <span class="inline-block md:flex items-center gap-x-3 text-base md:text-lg font-semibold" v-else>
+            {{ route.query.tag ? useTitleCaseConcat(route.query?.tag) : 'All' }} Products 🛍️
+          </span>
+        </p>
         <div class="flex items-center gap-x-3">
           <BaseButton 
             class="text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!"
@@ -263,6 +273,10 @@ const handleSortOptionChange = () => {
 const searchQuery = computed(() => {
   return route.query?.q || ''
 })
+
+const useTitleCaseConcat = (words) => {
+  return words.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
+}
 
 watch([filtersOpen, sortingOptionOpen], (newVal) => {
   const html = document.documentElement
