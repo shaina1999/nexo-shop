@@ -66,7 +66,7 @@
                     </div>
                 </template>
             </SectionHeader>
-            <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300 categories">
+            <div class="pb-7.5 px-0.5 md:pb-15 border-b-[1px] border-b-gray-300 categories">
                 <Splide 
                     :ref="el => registerSplide(el, 'categories')"
                     :options="{
