@@ -13,7 +13,7 @@
                                 </div>
                                 <div class="font-semibold text-[26px] sm:text-[38px] md:text-[46px]/14 mb-3 md:mb-6 whitespace-normal lg:whitespace-nowrap">Up to 10% off Voucher</div>
                                 <RouterLink class="flex items-center gap-x-2 font-medium" to="/product">
-                                    <span class="border-b-[1px] border-white text-white bg-transparent">Shop Now</span>
+                                    <span class="border-b-[1px] border-white text-white bg-transparent">Get this now</span>
                                     <PhArrowRight :size="22" />
                                 </RouterLink>
                             </div>
@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="font-semibold text-[26px] sm:text-[38px] md:text-[46px]/14 mb-3 md:mb-6 whitespace-normal lg:whitespace-nowrap">Up to 10% off Voucher</div>
                                 <RouterLink class="flex items-center gap-x-2 font-medium" to="/product">
-                                    <span class="border-b-[1px] border-white text-white bg-transparent">Shop Now</span>
+                                    <span class="border-b-[1px] border-white text-white bg-transparent">Get this now</span>
                                     <PhArrowRight :size="22" />
                                 </RouterLink>
                             </div>
@@ -41,97 +41,6 @@
                         </div>
                     </SplideSlide>
                 </Splide>
-            </div>
-        </div>
-    </section>
-
-    <!-- Flash Sales Section -->
-    <section class="flex items-center justify-center w-full pt-16 sm:pt-20 md:pt-25 lg:pt-35">
-        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
-            <SectionHeader :label="`Today's`" :title="'Flash Sales'">
-                <template v-slot:timer>
-                    <div v-show="!isSaleStarted">
-                        <vue-countdown 
-                            @end="handleCountDowneEnd" 
-                            :time="time" v-slot="{ days, hours, minutes, seconds }"
-                        >
-                            <div class="flex items-end gap-x-2.5 md:gap-x-3.5">
-                                <div class="flex items-baseline flex-col">
-                                    <span class="text-sm font-medium mb-1 inline-block">Days</span>
-                                    <span class="font-bold text-lg sm:text-2xl md:text-3xl">{{ days }}</span>
-                                </div>
-                                <span class="text-3xl text-secondary-500">:</span>
-                                <div class="flex items-baseline flex-col">
-                                    <span class="text-sm font-medium mb-1 inline-block">Hours</span>
-                                    <span class="font-bold text-lg sm:text-2xl md:text-3xl">{{ hours }}</span>
-                                </div>
-                                <span class="text-3xl text-secondary-500">:</span>
-                                <div class="flex items-baseline flex-col">
-                                    <span class="text-sm font-medium mb-1 inline-block">Minutes</span>
-                                    <span class="font-bold text-lg sm:text-2xl md:text-3xl">{{ minutes }}</span>
-                                </div>
-                                <span class="text-3xl text-secondary-500">:</span>
-                                <div class="flex items-baseline flex-col">
-                                    <span class="text-sm font-medium mb-1 inline-block">Seconds</span>
-                                    <span class="font-bold text-lg sm:text-2xl md:text-3xl">{{ seconds }}</span>
-                                </div>
-                            </div>
-                        </vue-countdown>
-                    </div>
-                </template>
-                <template v-slot:buttons>
-                    <div class="hidden sm:flex items-center gap-x-2">
-                        <button 
-                            class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
-                            @click="goPrev('flash')"
-                        >
-                            <PhArrowLeft :size="20" />
-                        </button>
-                         <button 
-                            class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
-                            @click="goNext('flash')"
-                        >
-                            <PhArrowRight :size="20" />
-                        </button>
-                    </div>
-                </template>
-            </SectionHeader>
-            <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300">
-                <div class="mb-7.5 md:mb-15">
-                    <Splide 
-                        :ref="el => registerSplide(el, 'flash')"
-                        :options="{
-                            type: 'loop',
-                            perPage: 4,
-                            gap: '16px',
-                            arrows: false,
-                            speed: 1000,
-                            perMove: 1,
-                            pagination: false,
-                            breakpoints: {
-                                640: {
-                                    perPage: 1, arrows: true
-                                },
-                                768: {
-                                    perPage: 2, arrows: false
-                                },
-                                1024: {
-                                    perPage: 3, arrows: false
-                                },
-                                1280: {
-                                    perPage: 4, arrows: false
-                                },
-                            }
-                        }"
-                    >
-                        <SplideSlide v-for="(product, index) in products" :key="product.id">
-                            <ProductCard 
-                                :product="product"
-                            />
-                        </SplideSlide>
-                    </Splide>
-                </div>
-                <BaseLinkButton :to="'/products'" class="mx-auto">View All Products</BaseLinkButton>
             </div>
         </div>
     </section>
@@ -257,7 +166,7 @@
                         </SplideSlide>
                     </Splide>
                 </div>
-                <BaseLinkButton :to="'/products'" class="mx-auto">View All Products</BaseLinkButton>
+                <BaseLinkButton :to="'/products?tag=best-selling'" class="mx-auto">View All Products</BaseLinkButton>
             </div>
         </div>
     </section>
@@ -326,7 +235,7 @@
     <!-- New Arrival Section -->
     <section class="flex items-center justify-center w-full py-16 sm:py-20 md:py-25 lg:py-35">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
-            <SectionHeader :label="'Featured'" :title="'New Arrival'"> </SectionHeader>
+            <SectionHeader :label="'Featured'" :title="'New Arrivals'"></SectionHeader>
             <div class="grid new-arrival-grid gap-2.5 lg:gap-7.5 text-white">
                 <figure class="bg-black item1 py-8 px-5 lg:p-6 relative flex justify-center lg:justify-center">
                     <div class="h-[190px] w-[210px] lg:h-[434px] lg:w-full flex items-end justify-center">
@@ -336,7 +245,7 @@
                     <figcaption class="absolute left-5 bottom-8 right-5 lg:left-6 lg:bottom-6 lg:right-6">
                         <h3 class="font-semibold text-base sm:text-xl md:text-2xl mb-1 lg:mb-2">PlayStation 5</h3>
                         <p class="font-normal text-sm md:text-base mb-1 lg:mb-2">Black and White version of the PS5 coming out on sale.</p>
-                        <RouterLink to="'/products'" class="underline block underline-offset-6">Shop Now</RouterLink>
+                        <RouterLink to="/products" class="underline block underline-offset-6">See Details</RouterLink>
                     </figcaption>
                 </figure>
                 <figure class="bg-black item2 py-8 px-5 lg:p-6 relative flex items-center justify-center">
@@ -346,7 +255,7 @@
                     <figcaption class="absolute left-5 bottom-8 right-5 lg:left-6 lg:bottom-6 lg:right-6 w-[90%] lg:w-[50%]">
                         <h3 class="font-semibold text-base sm:text-xl md:text-2xl mb-1 lg:mb-2">Women's Collections</h3>
                         <p class="font-normal text-sm md:text-base mb-1 lg:mb-2">Featured woman collections that give you another vibe.</p>
-                        <RouterLink to="'/products'" class="underline block underline-offset-6">Shop Now</RouterLink>
+                        <RouterLink to="/products" class="underline block underline-offset-6">See Details</RouterLink>
                     </figcaption>
                 </figure>
                 <figure class="bg-black item3 py-8 px-5 lg:p-6 relative flex items-center justify-center">
@@ -356,7 +265,7 @@
                     <figcaption class="absolute left-5 bottom-8 right-5 lg:left-6 lg:bottom-6 lg:right-6 w-[90%] lg:w-[80%]">
                         <h3 class="font-semibold text-base sm:text-xl md:text-2xl mb-1 lg:mb-2">Speakers</h3>
                         <p class="font-normal text-sm md:text-base mb-1 lg:mb-2">Amazon wireless speakers</p>
-                        <RouterLink to="'/products'" class="underline block underline-offset-6">Shop Now</RouterLink>
+                        <RouterLink to="/products" class="underline block underline-offset-6">See Details</RouterLink>
                     </figcaption>
                 </figure>
                 <figure class="bg-black item4 py-8 px-5 lg:p-6 relative flex items-center justify-center">
@@ -366,10 +275,11 @@
                     <figcaption class="absolute left-5 bottom-8 right-5 lg:left-6 lg:bottom-6 lg:right-6 w-[90%] lg:w-[80%]">
                         <h3 class="font-semibold text-base sm:text-xl md:text-2xl mb-1 lg:mb-2">Perfume</h3>
                         <p class="font-normal text-sm md:text-base mb-1 lg:mb-2">GUCCI INTENSE OUD EDP</p>
-                        <RouterLink to="'/products'" class="underline block underline-offset-6">Shop Now</RouterLink>
+                        <RouterLink to="/products" class="underline block underline-offset-6">See Details</RouterLink>
                     </figcaption>
                 </figure>
             </div>
+            <BaseLinkButton :to="'/products?tag=new-arrivals'" class="mx-auto !bg-black !text-white mt-7.5 md:mt-15">View All Products</BaseLinkButton>
         </div>
     </section>
 
@@ -416,19 +326,11 @@
 
 <script setup>
 import { ref, watchEffect, onMounted, onUnmounted, computed } from 'vue'
-import { useFetch } from '@/composables/fetch'
 import appleLogo from '@/assets/img/apple-logo.png'
 import heroIimage from '@/assets/img/hero-image.png'
 import SectionHeader from '@/components/SectionHeader.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
-
-const receivedDateString = ref('June 30, 2025 10:00 AM')
-const targetDate = new Date(receivedDateString.value)
-const now = new Date()
-const time = Math.max(0, targetDate.getTime() - now.getTime())
-const isSaleStarted = ref(false)
-const { data, error, isLoading, fetchNow } = useFetch()
 const splideInstances = ref({})
 
 const categories = ref([
@@ -468,18 +370,6 @@ const goPrev = (key) => {
 const goNext = (key) => {
   splideInstances.value[key]?.go('>')
 }
-
-const handleCountDowneEnd = () => {
-    isSaleStarted.value = true
-}
-
-/* watch(data, (newVal) => {
-  receivedDateString.value = newVal?.saleDate
-}) */
-
-/* onMounted(() => {
-    fetchNow(`/getsalecountdown/`)
-}) */
 </script>
 
 <style scoped>
