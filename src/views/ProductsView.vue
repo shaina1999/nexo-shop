@@ -27,7 +27,11 @@
         <p>Here are some suggestions you may find useful:</p>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
+      <div v-if="isLoading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
+        <ProductCardSkeleton v-for="i in 30" :key="i" />
+      </div>
+      
+      <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
         <ProductCard v-for="(product, index) in products" :key="product.id" :product="product" />
       </div>
     </div>
@@ -179,6 +183,7 @@ import { supabase } from '@/supabase'
 
 import ProductCard from '@/components/ProductCard.vue'
 import BaseButton from '@/components/BaseButton.vue'
+import ProductCardSkeleton from '@/components/ProductCardSkeleton.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -188,6 +193,7 @@ const selectedPrice = ref(null)
 const selectedRating = ref(null)
 const selectedSortOption = ref(null)
 const selectedCategories = ref([])
+const isLoading = ref(false)
 
 const products = ref([ // sample products
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, image: '/src/assets/img/product-image.png', reviewsCount: 100, isNew: true },
@@ -276,8 +282,10 @@ watch([filtersOpen, sortingOptionOpen], (newVal) => {
   }
 })
 
-onMounted(async() => {
+onMounted(async () => {
+  isLoading.value = true
   let { data: products, error } = await supabase.from('products').select('*')
   console.log(products)
+  isLoading.value = false
 })
 </script>
