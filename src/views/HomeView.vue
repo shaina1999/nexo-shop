@@ -267,57 +267,6 @@
         </div>
     </section>
 
-    <!-- New Arrival Section -->
-    <section class="flex items-center justify-center w-full py-16 sm:py-20 md:py-25 lg:py-35">
-        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
-            <SectionHeader :label="'Featured'" :title="'New Arrival'"></SectionHeader>
-            <div class="grid new-arrival-grid gap-2.5 lg:gap-7.5 text-white">
-                <figure class="bg-black item1 py-8 px-5 lg:p-6 relative flex justify-center lg:justify-center">
-                    <div class="h-[190px] w-[210px] lg:h-[434px] lg:w-full flex items-end justify-center">
-                        <!-- Product image max width: 416px, max height: 734px -->
-                        <img src="/src/assets/img/ps5.png" alt="PlayStation 5" class="h-full w-full object-contain">
-                    </div>
-                    <figcaption class="absolute left-5 bottom-8 right-5 lg:left-6 lg:bottom-6 lg:right-6">
-                        <h3 class="font-semibold text-base sm:text-xl md:text-2xl mb-1 lg:mb-2">PlayStation 5</h3>
-                        <p class="font-normal text-sm md:text-base mb-1 lg:mb-2">Black and White version of the PS5 coming out on sale.</p>
-                        <RouterLink to="/products" class="underline block underline-offset-6">See Details</RouterLink>
-                    </figcaption>
-                </figure>
-                <figure class="bg-black item2 py-8 px-5 lg:p-6 relative flex items-center justify-center">
-                    <div class="w-[210px] h-[190px] lg:h-[250px] lg:w-[250px] flex items-end justify-center">
-                        <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="h-full w-full object-contain">
-                    </div>
-                    <figcaption class="absolute left-5 bottom-8 right-5 lg:left-6 lg:bottom-6 lg:right-6 w-[90%] lg:w-[50%]">
-                        <h3 class="font-semibold text-base sm:text-xl md:text-2xl mb-1 lg:mb-2">Women's Collections</h3>
-                        <p class="font-normal text-sm md:text-base mb-1 lg:mb-2">Featured woman collections that give you another vibe.</p>
-                        <RouterLink to="/products" class="underline block underline-offset-6">See Details</RouterLink>
-                    </figcaption>
-                </figure>
-                <figure class="bg-black item3 py-8 px-5 lg:p-6 relative flex items-center justify-center">
-                    <div class="w-[210px] h-[190px] lg:h-[210px] lg:w-[190px] flex items-end justify-center">
-                        <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="h-full w-full object-contain">
-                    </div>
-                    <figcaption class="absolute left-5 bottom-8 right-5 lg:left-6 lg:bottom-6 lg:right-6 w-[90%] lg:w-[80%]">
-                        <h3 class="font-semibold text-base sm:text-xl md:text-2xl mb-1 lg:mb-2">Speakers</h3>
-                        <p class="font-normal text-sm md:text-base mb-1 lg:mb-2">Amazon wireless speakers</p>
-                        <RouterLink to="/products" class="underline block underline-offset-6">See Details</RouterLink>
-                    </figcaption>
-                </figure>
-                <figure class="bg-black item4 py-8 px-5 lg:p-6 relative flex items-center justify-center">
-                    <div class="w-[210px] h-[190px] lg:h-[210px] lg:w-[190px] flex items-end justify-center">
-                        <img src="/src/assets/img/speaker.png" alt="PlayStation 5" class="h-full w-full object-contain">
-                    </div>
-                    <figcaption class="absolute left-5 bottom-8 right-5 lg:left-6 lg:bottom-6 lg:right-6 w-[90%] lg:w-[80%]">
-                        <h3 class="font-semibold text-base sm:text-xl md:text-2xl mb-1 lg:mb-2">Perfume</h3>
-                        <p class="font-normal text-sm md:text-base mb-1 lg:mb-2">GUCCI INTENSE OUD EDP</p>
-                        <RouterLink to="/products" class="underline block underline-offset-6">See Details</RouterLink>
-                    </figcaption>
-                </figure>
-            </div>
-            <BaseLinkButton :to="'/products?tag=new-arrival'" class="mx-auto !bg-black !text-white mt-7.5 md:mt-15">View All Products</BaseLinkButton>
-        </div>
-    </section>
-
     <section class="flex items-center justify-center w-full py-16 sm:py-20 md:py-25 lg:py-35">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20 items-start">
@@ -363,8 +312,6 @@
 import { ref, watchEffect, onMounted, onUnmounted, computed } from 'vue'
 import { supabase } from '@/supabase'
 
-import appleLogo from '@/assets/img/apple-logo.png'
-import heroIimage from '@/assets/img/hero-image.png'
 import SectionHeader from '@/components/SectionHeader.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
