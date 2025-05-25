@@ -3,16 +3,6 @@
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pt-20 text-white">
             <div class="flex justify-between gap-16 flex-wrap lg:flex-nowrap">
                 <div class="basis-[100%] md:basis-[45%] lg:basis-[auto]">
-                    <div class="text-md lg:text-lg font-bold mb-6">NexoShop</div>
-                    <ul class="flex flex-col gap-y-4">
-                        <li>Get 10% off your first order</li>
-                        <li class="border-[1.5px] border-white rounded-sm flex gap-1 p-2 max-w-[400px]">
-                            <input type="text" class="outline-none text-white w-full shrink" placeholder="Enter your email">
-                            <button class="cursor-pointer"><PhPaperPlaneRight :size="22" /></button>
-                        </li>
-                    </ul>
-                </div>
-                <div class="basis-[100%] md:basis-[45%] lg:basis-[auto]">
                     <div class="ttext-md lg:ext-lg font-semibold mb-6">Support</div>
                     <ul class="flex flex-col gap-y-4">
                         <li>111 Bijoy sarani, Dhaka, DH 1515, Bangladesh.</li>
