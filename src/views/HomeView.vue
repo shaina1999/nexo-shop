@@ -115,12 +115,14 @@
                 <template v-slot:buttons>
                     <div class="hidden sm:flex items-center gap-x-2">
                         <button 
+                            :class="{ 'skeleton-loader' : bestSellingProductsLoading }"
                             class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
                             @click="goPrev('best-selling')"
                         >
                             <PhArrowLeft :size="20" />
                         </button>
                          <button 
+                            :class="{ 'skeleton-loader' : bestSellingProductsLoading }"
                             class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
                             @click="goNext('best-selling')"
                         >
@@ -132,6 +134,7 @@
             <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300">
                 <div class="mb-7.5 md:mb-15">
                     <Splide 
+                        v-if="!bestSellingProductsLoading"
                         :ref="el => registerSplide(el, 'best-selling')"
                         :options="{
                             type: 'loop',
@@ -157,14 +160,15 @@
                             }
                         }"
                     >
-                        <SplideSlide v-for="(product, index) in products" :key="product.id">
+                        <SplideSlide v-for="(bestSellingProduct, index) in bestSellingProducts" :key="bestSellingProduct.id">
                             <ProductCard 
-                                :product="product"
+                                :product="bestSellingProduct"
                             />
                         </SplideSlide>
                     </Splide>
+                    <sliderProduct v-else />
                 </div>
-                <BaseLinkButton :to="'/products?tag=best-selling'" class="mx-auto">View All Products</BaseLinkButton>
+                <BaseLinkButton :to="'/products?tag=best-selling'" class="mx-auto" :class="{ 'skeleton-loader' : bestSellingProductsLoading }">View All Products</BaseLinkButton>
             </div>
         </div>
     </section>
@@ -279,12 +283,15 @@ import SectionHeader from '@/components/SectionHeader.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
 import CategoriesSkeleton from '@/components/CategoriesSkeleton.vue'
+import sliderProduct from '@/components/sliderProduct.vue'
 
 const splideInstances = ref({})
 const promotionProducts = ref([])
 const categories = ref([])
+const bestSellingProducts = ref([])
 const promotionProductsLoading = ref(false)
 const categoriesLoading = ref([])
+const bestSellingProductsLoading = ref([])
 
 const products = ref([ // sample products
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, images: [{ url: '/src/assets/img/product-image.png', alt: 'test' }], reviewsCount: 100, isNew: true },
@@ -325,9 +332,17 @@ const getCategories = async () => {
     categoriesLoading.value = false
 }
 
+const getBestSellingProducts = async () => {
+    bestSellingProductsLoading.value = true
+    let { data: products, error } = await supabase.from('products').select('*').order('sales_count', { ascending: false }).limit(10)
+    bestSellingProducts.value = products
+    bestSellingProductsLoading.value = false
+}
+
 onMounted(async () => {
     getPromotionsProducts()
     getCategories()
+    getBestSellingProducts()
 })
 </script>
 
