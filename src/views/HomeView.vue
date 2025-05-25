@@ -46,12 +46,14 @@
                 <template v-slot:buttons>
                     <div class="hidden sm:flex items-center gap-x-2">
                         <button 
+                            :class="{ 'skeleton-loader' : categoriesLoading }"
                             class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
                             @click="goPrev('categories')"
                         >
                             <PhArrowLeft :size="20" />
                         </button>
                          <button 
+                            :class="{ 'skeleton-loader' : categoriesLoading }"
                             class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
                             @click="goNext('categories')"
                         >
@@ -62,6 +64,7 @@
             </SectionHeader>
             <div class="pb-7.5 px-0.5 md:pb-15 border-b-[1px] border-b-gray-300 categories">
                 <Splide 
+                    v-if="!categoriesLoading"
                     :ref="el => registerSplide(el, 'categories')"
                     :options="{
                         perPage: 6,
@@ -97,6 +100,44 @@
                         >
                             <component :is="category.icon" :size="38" />
                             <span>{{ category.label }}</span>
+                        </div>
+                    </SplideSlide>
+                </Splide>
+                <Splide 
+                    v-else
+                    :ref="el => registerSplide(el, 'categories')"
+                    :options="{
+                        perPage: 6,
+                        autoplay: true,
+                        gap: '1rem',
+                        type: 'loop',
+                        interval: 2500,
+                        arrows: false,
+                        speed: 1000,
+                        perMove: 1,
+                        pagination: false,
+                        breakpoints: {
+                            640: {
+                                perPage: 2,
+                                arrows: true,
+                                gap: '0.5rem',
+                            },
+                            768: {
+                                perPage: 3,
+                            },
+                            1024: {
+                                perPage: 4,
+                            },
+                            1280: {
+                                perPage: 6,
+                            },
+                        },
+                    }"
+                >
+                    <SplideSlide v-for="i in 8" :key="i">
+                        <div 
+                            class="skeleton-loader h-[150px] flex flex-col items-center space-y-3 rounded-sm border-[1px] border-gray-300 px-2 py-4 sm:px-4 sm:py-8 cursor-pointer category-item transition-all duration-300 ease-in-out hover:bg-secondary-500 hover:text-white"
+                        >
                         </div>
                     </SplideSlide>
                 </Splide>
@@ -330,20 +371,9 @@ import BaseLinkButton from '@/components/BaseLinkButton.vue'
 
 const splideInstances = ref({})
 const promotionProducts = ref([])
+const categories = ref([])
 const promotionProductsLoading = ref(false)
-
-const categories = ref([
-  { label: 'Phones', icon: 'PhDeviceMobile' },
-  { label: 'Computers', icon: 'PhLaptop' },
-  { label: 'SmartWatch', icon: 'PhWatch' },
-  { label: 'Camera', icon: 'PhCamera' },
-  { label: 'HeadPhones', icon: 'PhHeadphones' },
-  { label: 'Gaming', icon: 'PhGameController' },
-  { label: 'Tablets', icon: 'PhDeviceTablet' },
-  { label: 'Drones', icon: 'PhDrone' },
-  { label: 'TVs', icon: 'PhTelevision' },
-  { label: 'Accessories', icon: 'PhPlug' }
-])
+const categoriesLoading = ref([])
 
 const products = ref([ // sample products
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, images: [{ url: '/src/assets/img/product-image.png', alt: 'test' }], reviewsCount: 100, isNew: true },
@@ -377,8 +407,16 @@ const getPromotionsProducts = async () => {
     promotionProductsLoading.value = false
 }
 
+const getCategories = async () => {
+    categoriesLoading.value = true
+    let { data: items, error } = await supabase.from('categories').select('*')
+    categories.value = items
+    categoriesLoading.value = false
+}
+
 onMounted(async () => {
     getPromotionsProducts()
+    getCategories()
 })
 </script>
 
