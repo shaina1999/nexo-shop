@@ -168,7 +168,9 @@
                     </Splide>
                     <SliderProductSkeleton v-else />
                 </div>
-                <BaseLinkButton :to="'/products?tag=best-selling'" class="mx-auto" :class="{ 'skeleton-loader pointer-events-none' : bestSellingProductsLoading }">View All Products</BaseLinkButton>
+                <BaseLinkButton :to="'/products?tag=best-selling'" class="mx-auto" :class="{ 'skeleton-loader pointer-events-none' : bestSellingProductsLoading }">
+                    <span :class="{ 'opacity-0' : bestSellingProductsLoading }">View All Products</span>
+                </BaseLinkButton>
             </div>
         </div>
     </section>
@@ -233,7 +235,9 @@
                     </Splide>
                     <SliderProductSkeleton v-else />
                 </div>
-                <BaseLinkButton :to="'/products'" class="mx-auto" :class="{ 'skeleton-loader pointer-events-none' : productsLoading }">View All Products</BaseLinkButton>
+                <BaseLinkButton :to="'/products'" class="mx-auto" :class="{ 'skeleton-loader pointer-events-none' : productsLoading }">
+                    <span :class="{ 'opacity-0' : bestSellingProductsLoading }">View All Products</span>
+                </BaseLinkButton>
             </div>
         </div>
     </section>
@@ -318,7 +322,7 @@ const getPromotionsProducts = async () => {
     promotionProductsLoading.value = true
     let { data: products, error } = await supabase.from('promotions').select('*')
     promotionProducts.value = products
-    promotionProductsLoading.value = false
+    // promotionProductsLoading.value = false
 }
 
 // Product Categories
@@ -326,7 +330,7 @@ const getCategories = async () => {
     categoriesLoading.value = true
     let { data: items, error } = await supabase.from('categories').select('*')
     categories.value = items
-    categoriesLoading.value = false
+    // categoriesLoading.value = false
 }
 
 // Best Selling Products
@@ -334,7 +338,7 @@ const getBestSellingProducts = async () => {
     bestSellingProductsLoading.value = true
     let { data: products, error } = await supabase.from('products').select('*').order('sales_count', { ascending: false }).limit(10)
     bestSellingProducts.value = products
-    bestSellingProductsLoading.value = false
+    // bestSellingProductsLoading.value = false
 }
 
 // All Products
