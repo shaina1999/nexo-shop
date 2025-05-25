@@ -44,6 +44,9 @@ body {
   color: transparent !important;
   border-color: transparent !important;
   pointer-events: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  opacity: 0 !important;
 }
 
 .skeleton-loader::after {
@@ -56,7 +59,7 @@ body {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.6),
     transparent
   );
   animation: soft-shimmer 2.5s ease-in-out 0.5s infinite;

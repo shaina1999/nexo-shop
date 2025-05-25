@@ -1,42 +1,36 @@
 <template>
     <!-- Hero Section -->
-    <section class="flex items-center justify-center w-full">
+    <section class="flex items-center justify-center w-full hero">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl flex">
-            <div class="p-6 md:p-10 mt-10 bg-black text-white max-h-max w-full lg:max-h-[344px]">
-                <Splide :options="{ type: 'loop', arrows: false, speed: 1000, perMove: 2, pagination: true }">
-                    <SplideSlide>
+            <div class="p-6 md:p-10 mt-10 bg-black text-white max-h-max w-full lg:max-h-[344px]" :class="{ 'skeleton-loader h-[330px]' : promotionProductsLoading }">
+                <Splide 
+                    :options="{
+                        type: 'loop', 
+                        arrows: false, 
+                        pagination: true,
+                        arrows: false,
+                        breakpoints: {
+                            768: {
+                                arrows: true,
+                                pagination: false
+                            },
+                        }
+                    }"
+                >
+                    <SplideSlide v-for="promotionProduct in promotionProducts" :key="promotionProduct.id">
                         <div class="flex items-baseline md:items-center gap-y-8 sm:gap-y-12 md:gap-y-0 justify-center flex-col md:flex-row">
                             <div class="shrink">
-                                <div class="flex items-center gap-x-6 mb-3 md:mb-6">
-                                    <img :src="appleLogo" alt="Apple Logo">
-                                    <span>iPhone 14 Series</span>
+                                <div class="flex items-center gap-x-6 mb-3 md:mb-6 font-medium">
+                                    <span>{{ promotionProduct.title }}</span>
                                 </div>
-                                <div class="font-semibold text-[26px] sm:text-[38px] md:text-[46px]/14 mb-3 md:mb-6 whitespace-normal lg:whitespace-nowrap">Up to 10% off Voucher</div>
+                                <div class="font-semibold text-[26px] sm:text-[38px] md:text-[46px]/14 mb-3 md:mb-6 whitespace-normal lg:whitespace-nowrap">{{ promotionProduct.description }}</div>
                                 <RouterLink class="flex items-center gap-x-2 font-medium" to="/product">
                                     <span class="border-b-[1px] border-white text-white bg-transparent">Get this now</span>
                                     <PhArrowRight :size="22" />
                                 </RouterLink>
                             </div>
-                            <div class="w-[90%] md:w-[450px]">
-                                <img :src="heroIimage" alt="Iphone" class="w-full">
-                            </div>
-                        </div>
-                    </SplideSlide>
-                    <SplideSlide>
-                        <div class="flex items-baseline md:items-center gap-y-8 sm:gap-y-12 md:gap-y-0 justify-center flex-col md:flex-row">
-                            <div class="shrink">
-                                <div class="flex items-center gap-x-6 mb-3 md:mb-6">
-                                    <img :src="appleLogo" alt="Apple Logo">
-                                    <span>iPhone 14 Series</span>
-                                </div>
-                                <div class="font-semibold text-[26px] sm:text-[38px] md:text-[46px]/14 mb-3 md:mb-6 whitespace-normal lg:whitespace-nowrap">Up to 10% off Voucher</div>
-                                <RouterLink class="flex items-center gap-x-2 font-medium" to="/product">
-                                    <span class="border-b-[1px] border-white text-white bg-transparent">Get this now</span>
-                                    <PhArrowRight :size="22" />
-                                </RouterLink>
-                            </div>
-                            <div class="w-[90%] md:w-[450px]">
-                                <img :src="heroIimage" alt="Iphone" class="w-full">
+                            <div class="w-[90%] md:w-[450px] h-[160px] sm:h-[250px]">
+                                <img :src="promotionProduct.image_url" :alt="promotionProduct.title" class="w-full h-full object-contain">
                             </div>
                         </div>
                     </SplideSlide>
@@ -326,12 +320,17 @@
 
 <script setup>
 import { ref, watchEffect, onMounted, onUnmounted, computed } from 'vue'
+import { supabase } from '@/supabase'
+
 import appleLogo from '@/assets/img/apple-logo.png'
 import heroIimage from '@/assets/img/hero-image.png'
 import SectionHeader from '@/components/SectionHeader.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
+
 const splideInstances = ref({})
+const promotionProducts = ref([])
+const promotionProductsLoading = ref(false)
 
 const categories = ref([
   { label: 'Phones', icon: 'PhDeviceMobile' },
@@ -370,6 +369,13 @@ const goPrev = (key) => {
 const goNext = (key) => {
   splideInstances.value[key]?.go('>')
 }
+
+onMounted(async () => {
+    promotionProductsLoading.value = true
+    let { data: products, error } = await supabase.from('promotions').select('*')
+    promotionProducts.value = products
+    promotionProductsLoading.value = false
+})
 </script>
 
 <style scoped>
