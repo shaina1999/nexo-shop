@@ -322,7 +322,7 @@ const getPromotionsProducts = async () => {
     promotionProductsLoading.value = true
     let { data: products, error } = await supabase.from('promotions').select('*')
     promotionProducts.value = products
-    // promotionProductsLoading.value = false
+    promotionProductsLoading.value = false
 }
 
 // Product Categories
@@ -330,7 +330,7 @@ const getCategories = async () => {
     categoriesLoading.value = true
     let { data: items, error } = await supabase.from('categories').select('*')
     categories.value = items
-    // categoriesLoading.value = false
+    categoriesLoading.value = false
 }
 
 // Best Selling Products
@@ -338,7 +338,7 @@ const getBestSellingProducts = async () => {
     bestSellingProductsLoading.value = true
     let { data: products, error } = await supabase.from('products').select('*').order('sales_count', { ascending: false }).limit(10)
     bestSellingProducts.value = products
-    // bestSellingProductsLoading.value = false
+    bestSellingProductsLoading.value = false
 }
 
 // All Products
@@ -346,7 +346,7 @@ const getProducts = async () => {
     productsLoading.value = true
     let { data: items, error } = await supabase.from('products').select('*').limit(10)
     products.value = items
-    // productsLoading.value = false
+    productsLoading.value = false
 }
 
 onMounted(async () => {
