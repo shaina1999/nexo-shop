@@ -290,8 +290,8 @@ const promotionProducts = ref([])
 const categories = ref([])
 const bestSellingProducts = ref([])
 const promotionProductsLoading = ref(false)
-const categoriesLoading = ref([])
-const bestSellingProductsLoading = ref([])
+const categoriesLoading = ref(false)
+const bestSellingProductsLoading = ref(false)
 
 const products = ref([ // sample products
   { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, images: [{ url: '/src/assets/img/product-image.png', alt: 'test' }], reviewsCount: 100, isNew: true },
