@@ -166,9 +166,9 @@
                             />
                         </SplideSlide>
                     </Splide>
-                    <sliderProduct v-else />
+                    <SliderProductSkeleton v-else />
                 </div>
-                <BaseLinkButton :to="'/products?tag=best-selling'" class="mx-auto" :class="{ 'skeleton-loader' : bestSellingProductsLoading }">View All Products</BaseLinkButton>
+                <BaseLinkButton :to="'/products?tag=best-selling'" class="mx-auto" :class="{ 'skeleton-loader pointer-events-none' : bestSellingProductsLoading }">View All Products</BaseLinkButton>
             </div>
         </div>
     </section>
@@ -180,12 +180,14 @@
                 <template v-slot:buttons>
                     <div class="hidden sm:flex items-center gap-x-2">
                         <button 
+                            :class="{ 'skeleton-loader' : productsLoading }"
                             class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
                             @click="goPrev('products')"
                         >
                             <PhArrowLeft :size="20" />
                         </button>
                          <button 
+                            :class="{ 'skeleton-loader' : productsLoading }"
                             class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
                             @click="goNext('products')"
                         >
@@ -197,6 +199,7 @@
             <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300">
                 <div class="mb-7.5 md:mb-15">
                     <Splide 
+                        v-if="!productsLoading"
                         :ref="el => registerSplide(el, 'products')"
                         :options="{
                             type: 'loop',
@@ -228,8 +231,9 @@
                             />
                         </SplideSlide>
                     </Splide>
+                    <SliderProductSkeleton v-else />
                 </div>
-                <BaseLinkButton :to="'/products'" class="mx-auto">View All Products</BaseLinkButton>
+                <BaseLinkButton :to="'/products'" class="mx-auto" :class="{ 'skeleton-loader pointer-events-none' : productsLoading }">View All Products</BaseLinkButton>
             </div>
         </div>
     </section>
@@ -283,26 +287,17 @@ import SectionHeader from '@/components/SectionHeader.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
 import CategoriesSkeleton from '@/components/CategoriesSkeleton.vue'
-import sliderProduct from '@/components/sliderProduct.vue'
+import SliderProductSkeleton from '@/components/SliderProductSkeleton.vue'
 
 const splideInstances = ref({})
 const promotionProducts = ref([])
 const categories = ref([])
 const bestSellingProducts = ref([])
+const products = ref([])
 const promotionProductsLoading = ref(false)
 const categoriesLoading = ref(false)
 const bestSellingProductsLoading = ref(false)
-
-const products = ref([ // sample products
-  { id: 1, name: 'Product 1', price: 1000, discountedPrice: 500, discount: 10, images: [{ url: '/src/assets/img/product-image.png', alt: 'test' }], reviewsCount: 100, isNew: true },
-  { id: 2, name: 'Product 2', price: 2000, discountedPrice: 600, discount: 40, images: [{ url: '/src/assets/img/product-image.png', alt: 'test' }], reviewsCount: 100, isNew: false },
-  { id: 3, name: 'Product 3', price: 2000, discountedPrice: 600, discount: 40, images: [{ url: '/src/assets/img/product-image.png', alt: 'test' }], reviewsCount: 100, isNew: false },
-  { id: 4, name: 'Product 4', price: 2000, discountedPrice: 600, discount: 40, images: [{ url: '/src/assets/img/product-image.png', alt: 'test' }], reviewsCount: 100, isNew: false },
-  { id: 5, name: 'Product 5', price: 2000, discountedPrice: 600, discount: 40, images: [{ url: '/src/assets/img/product-image.png', alt: 'test' }], reviewsCount: 100, isNew: false },
-  { id: 6, name: 'Product 6', price: 2000, discountedPrice: 600, discount: 40, images: [{ url: '/src/assets/img/product-image.png', alt: 'test' }], reviewsCount: 100, isNew: false },
-  { id: 7, name: 'Product 7', price: 2000, discountedPrice: 600, discount: 40, images: [{ url: '/src/assets/img/product-image.png', alt: 'test' }], reviewsCount: 100, isNew: false },
-  { id: 8, name: 'Product 8', price: 2000, discountedPrice: 600, discount: 40, images: [{ url: '/src/assets/img/product-image.png', alt: 'test' }], reviewsCount: 100, isNew: false },
-])
+const productsLoading = ref(false)
 
 const registerSplide = (el, key) => {
   if (el && el.splide) {
@@ -318,6 +313,7 @@ const goNext = (key) => {
   splideInstances.value[key]?.go('>')
 }
 
+// Promotions Products
 const getPromotionsProducts = async () => {
     promotionProductsLoading.value = true
     let { data: products, error } = await supabase.from('promotions').select('*')
@@ -325,6 +321,7 @@ const getPromotionsProducts = async () => {
     promotionProductsLoading.value = false
 }
 
+// Product Categories
 const getCategories = async () => {
     categoriesLoading.value = true
     let { data: items, error } = await supabase.from('categories').select('*')
@@ -332,6 +329,7 @@ const getCategories = async () => {
     categoriesLoading.value = false
 }
 
+// Best Selling Products
 const getBestSellingProducts = async () => {
     bestSellingProductsLoading.value = true
     let { data: products, error } = await supabase.from('products').select('*').order('sales_count', { ascending: false }).limit(10)
@@ -339,10 +337,19 @@ const getBestSellingProducts = async () => {
     bestSellingProductsLoading.value = false
 }
 
+// All Products
+const getProducts = async () => {
+    productsLoading.value = true
+    let { data: items, error } = await supabase.from('products').select('*').limit(10)
+    products.value = items
+    // productsLoading.value = false
+}
+
 onMounted(async () => {
     getPromotionsProducts()
     getCategories()
     getBestSellingProducts()
+    getProducts()
 })
 </script>
 
