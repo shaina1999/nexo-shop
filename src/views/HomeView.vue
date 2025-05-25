@@ -370,11 +370,15 @@ const goNext = (key) => {
   splideInstances.value[key]?.go('>')
 }
 
-onMounted(async () => {
+const getPromotionsProducts = async () => {
     promotionProductsLoading.value = true
     let { data: products, error } = await supabase.from('promotions').select('*')
     promotionProducts.value = products
     promotionProductsLoading.value = false
+}
+
+onMounted(async () => {
+    getPromotionsProducts()
 })
 </script>
 
