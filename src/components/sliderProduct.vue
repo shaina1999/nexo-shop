@@ -8,6 +8,11 @@
             speed: 1000,
             perMove: 1,
             pagination: false,
+            autoplay: false,
+            drag: false,
+            swipe: false,
+            keyboard: false,
+            wheel: false,
             breakpoints: {
                 640: {
                     perPage: 1, arrows: true
