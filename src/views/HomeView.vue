@@ -95,12 +95,13 @@
                     }"
                 >
                     <SplideSlide v-for="(category, index) in categories" :key="index">
-                        <div 
+                        <RouterLink 
+                            :to="`/products?category=${category.label}`"
                             class="flex flex-col items-center space-y-3 rounded-sm border-[1px] border-gray-300 px-2 py-4 sm:px-4 sm:py-8 cursor-pointer category-item transition-all duration-300 ease-in-out hover:bg-secondary-500 hover:text-white"
                         >
                             <component :is="category.icon" :size="38" />
                             <span>{{ category.label }}</span>
-                        </div>
+                        </RouterLink>
                     </SplideSlide>
                 </Splide>
                 <CategoriesSkeleton v-else />

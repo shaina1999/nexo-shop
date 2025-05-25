@@ -10,7 +10,7 @@
             <span class="font-regular text-gray-500"> 50 items found</span>
           </span>
           <span class="inline-block md:flex items-center gap-x-3 text-base md:text-lg font-semibold" v-else>
-            {{ route.query.tag ? useTitleCaseConcat(route.query?.tag) : 'All' }} Products 🛍️
+            {{ route.query.tag || route.query.category ? useTitleCaseConcat(route.query?.tag || route.query.category) : 'Browse All Products' }} 🛍️
           </span>
         </p>
         <div class="flex items-center gap-x-3">
