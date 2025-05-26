@@ -191,7 +191,8 @@ const searchProduct = (qObj, q) => {
 
         searchTerm.value = qObj?.name || q
         localStorage.setItem('searchTerm', searchTerm.value)
-        router.push({ path: '/products', query });   
+        localStorage.setItem('productTag', qObj?.tags[0] ? qObj?.tags[0] : q)
+        router.push({ path: '/products', query });
     }
 };
 

@@ -3,11 +3,11 @@
     <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
       <div class="flex items-start md:items-center justify-between pb-5 md:pb-10 flex-col md:flex-row gap-3 md:gap-5">
         <p :class="{ 'skeleton-loader' : isLoading }">
-          <span class="inline-block md:flex items-center gap-x-3 text-sm md:text-base" v-if="searchQuery">
+          <span class="inline-block md:flex items-center gap-x-3 text-sm md:text-base" v-if="route.query?.q">
             <div class="mb-1 md:mb-0">
               Showing results for <span class="font-semibold">"{{ searchQuery }}"</span>
             </div> 
-            <span class="font-regular text-gray-500"> 50 items found</span>
+            <span class="font-regular text-gray-500"> {{ productsArr?.length }} items found</span>
           </span>
           <span class="inline-block md:flex items-center gap-x-3 text-base md:text-lg font-semibold" v-else>
             {{ route.query.tag || route.query.category ? useTitleCaseConcat(route.query?.tag || route.query.category) : 'Browse All Products' }} 🛍️
@@ -209,6 +209,7 @@ const selectedCategories = ref([])
 const productsArr = ref([])
 const isLoading = ref(false)
 const searchQuery = ref(localStorage.getItem('searchTerm'))
+const productTag = ref(localStorage.getItem('productTag'))
 
 const categories = ref([
   { label: "Women's Clothing", route: "/products", isSelected: false },
@@ -288,6 +289,7 @@ watch([filtersOpen, sortingOptionOpen], (newVal) => {
 
 watch(route, () => {
   searchQuery.value = localStorage.getItem('searchTerm')
+  productTag.value = localStorage.getItem('productTag')
 })
 
 onMounted(async () => {
@@ -312,6 +314,8 @@ onMounted(async () => {
       query = query
         .gt('sales_count', 100)
         .order('sales_count', { ascending: false })
+    } else if (route.query?.q) {
+      query = query.contains('tags', [productTag.value]);
     }
 
     const { data: products, error: productsError } = await query
