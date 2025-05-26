@@ -288,10 +288,14 @@ watch([filtersOpen, sortingOptionOpen], (newVal) => {
   }
 })
 
+/* watch(route, (newVal) => {
+  // for search
+}); */
+
 onMounted(async () => {
-  isLoading.value = true
+  /* isLoading.value = true
   let { data: products, error } = await supabase.from('products').select('*')
   productsArr.value = products
-  isLoading.value = false
+  isLoading.value = false */
 })
 </script>
