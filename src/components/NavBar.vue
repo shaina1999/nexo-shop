@@ -38,21 +38,23 @@
                         </template>
                     </BaseButtonIcon>
                     <ul 
-                        v-if="filteredSuggestions.length"
-                        class="absolute w-full h-max top-[42px] bg-white right-0 py-2 px-4 border-t-[1px] border-t-white shadow-md flex-col gap-4 cursor-pointer max-h-max overflow-hidden"
+                        v-if="searchSuggestions.length"
+                        class="absolute w-full h-max top-[42px] bg-white right-0 py-2 px-4 border-t-[1px] border-t-white shadow-md flex-col gap-4 max-h-max overflow-hidden"
                         :class="{ 'flex' : isSearching, 'hidden' : !isSearching }"
                         ref="searchResultsContainerRef"
                     >
-                        <li 
+                        <li v-if="loading" class="text-base font-medium">Searching...</li>
+                        <li
+                            v-else 
                             ref="focusableItemRef"
-                            class="hover:text-secondary-500 focus-within:outline-none focus-visible:outline-none focus-within:text-secondary-500 focus-visible:text-secondary-500" 
+                            class="cursor-pointer hover:text-secondary-500 focus-within:outline-none focus-visible:outline-none focus-within:text-secondary-500 focus-visible:text-secondary-500" 
                             tabindex="0" 
-                            v-for="(item, index) in filteredSuggestions" 
+                            v-for="(item, index) in searchSuggestions" 
                             :key="index" @keyup.enter="searchProduct(item, null)" 
                             @click="searchProduct(item, null)"
                             @keydown="handleArrowKey($event.key === 'ArrowDown' ? index + 1 : index, $event)"
                         >
-                            {{ item.value }}
+                            {{ item.name }}
                         </li>
                     </ul>
                 </div>
@@ -120,11 +122,12 @@
 </template>
 
 <script setup>
+import { supabase } from '@/supabase'
 import { computed, ref, watch, useTemplateRef, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
-import searchSuggestions from '@/assets/js/searchSuggestions'
 import { onClickOutside } from '@vueuse/core'
+
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
 import NavLinks from '@/components/NavLinks.vue'
 
@@ -135,11 +138,12 @@ const searchTerm = ref('')
 const isSearching = ref(false)
 const searchResultsContainerRef = useTemplateRef('searchResultsContainerRef')
 const focusableItemsRef = useTemplateRef('focusableItemRef')
-const filteredSuggestions = ref([])
+const searchSuggestions = ref([])
 const isResizing = ref(false)
 const auth = useAuthStore()
 const dropdownShow = ref(false)
 const profileDropdownContainer = useTemplateRef('profileDropdownContainer')
+const loading = ref(false)
 
 const profileOptions = ref([
     {
@@ -181,12 +185,13 @@ const toggleMobileNav = () => {
 const searchProduct = (qObj, q) => {
     if (searchTerm.value) {
         isSearching.value = false;
-        filteredSuggestions.value = [] // Reset filtered search suggestions
+        searchSuggestions.value = [] // Reset search suggestions
 
-        const query = qObj?.value
-            ? { q: qObj.value, key: qObj.category ?? '' }
+        const query = qObj?.tags
+            ? { q: qObj.slug }
             : { q: q ?? '' };
 
+        searchTerm.value = qObj?.name || q
         router.push({ path: '/products', query });   
     }
 };
@@ -203,15 +208,29 @@ const handleArrowKey = (index, event) => {
     }
 }
 
-const showSuggestions = () => {
-    const term = searchTerm.value.trim()
-    if (!term) return []
+const showSuggestions = async () => {
+    loading.value = true
 
-    const regex = new RegExp(`^${term}`, 'i')
+    const query = searchTerm.value.trim().toLowerCase()
+    let supabaseQuery = supabase.from('products').select('*')
 
-    filteredSuggestions.value = searchSuggestions.filter((suggestion) =>
-        regex.test(suggestion.value) || regex.test(suggestion.category)
-    ).slice(0, 10)
+    if (query) {
+        supabaseQuery = supabase
+        .from('products')
+        .select('*')
+        .or(`name.ilike.%${query}%,tags.cs.{${query}}`)
+    }
+
+    const { data, error } = await supabaseQuery
+
+    if (error) {
+        console.error('Error fetching products:', error)
+        searchSuggestions.value = []
+    } else {
+        searchSuggestions.value = data
+    }
+
+    loading.value = false
 }
 
 const handleResize = () => {
@@ -236,9 +255,6 @@ const handleLogout = async () => {
 
 watch(route, () => {
     isMobileNavOpen.value = false
-
-    // Update the searchTerm based on the query parameter from the route
-    searchTerm.value = route.query?.q || ''
 })
 
 watch(searchTerm, () => {
