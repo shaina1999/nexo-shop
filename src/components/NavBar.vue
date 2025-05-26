@@ -194,18 +194,6 @@ const searchProduct = (qObj, q) => {
     }
 };
 
-const handleArrowKey = (index, event) => {
-    if (event.key === 'ArrowDown') {
-        const next = focusableItemsRef.value[index]
-        if (next) next.focus()
-    }
-
-    if (event.key === 'ArrowUp') {
-        const prev = focusableItemsRef.value[index - 1]
-        if (prev) prev.focus()
-    }
-}
-
 const fetchSuggestions = async () => {
   const query = searchTerm.value.trim()
 
@@ -234,6 +222,18 @@ const showSuggestions = () => {
   debounceTimeout = setTimeout(() => {
     fetchSuggestions()
   }, 300)
+}
+
+const handleArrowKey = (index, event) => {
+    if (event.key === 'ArrowDown') {
+        const next = focusableItemsRef.value[index]
+        if (next) next.focus()
+    }
+
+    if (event.key === 'ArrowUp') {
+        const prev = focusableItemsRef.value[index - 1]
+        if (prev) prev.focus()
+    }
 }
 
 const handleResize = () => {
