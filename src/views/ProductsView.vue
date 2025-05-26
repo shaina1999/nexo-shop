@@ -33,18 +33,18 @@
         </div>
       </div>
 
-      <!-- Show this if there are no results found -->
-      <div class="flex flex-col items-center justify-center mb-8 hidden">
-        <p class="text-center mb-2">No results found for <span class="font-semibold">"{{ searchQuery }}"</span></p>
-        <p>Here are some suggestions you may find useful:</p>
-      </div>
-
       <div v-if="isLoading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8 pointer-events-none">
         <ProductCardSkeleton v-for="i in 32" :key="i" />
       </div>
-      
-      <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
-        <ProductCard v-for="(product, index) in productsArr" :key="product.id" :product="product" />
+
+      <div v-else>
+        <div class="flex flex-col items-center justify-center mb-8" v-if="!productsArr.length && searchQuery">
+          <p class="text-center mb-2">No results found for <span class="font-semibold">"{{ searchQuery }}"</span></p>
+          <p>Here are some suggestions you may find useful:</p>
+        </div>
+        <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
+          <ProductCard v-for="(product, index) in productsArr" :key="product.id" :product="product" />
+        </div>
       </div>
     </div>
 
