@@ -265,6 +265,10 @@ const handleLogout = async () => {
 
 watch(route, () => {
     isMobileNavOpen.value = false
+
+    if (router?.currentRoute.value.name !== 'products') { // clear searchbar value when going to other page
+        searchTerm.value = ''
+    }
 })
 
 watch(searchTerm, () => {
