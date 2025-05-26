@@ -1,6 +1,6 @@
 <template>
-    <article @click="goToProductPage(product.id)" class="cursor-pointer">
-        <div class="bg-gray-200 p-2.5 sm:p-4 product cursor-pointer">
+    <article>
+        <div @click="goToProductPage(product.id)" class="bg-gray-200 p-2.5 sm:p-4 product cursor-pointer">
             <header class="flex items-center justify-between mb-4">
                 <div v-if="!product.isNew">
                     <div class="bg-secondary-500 text-white py-1 px-2 rounded-sm text-sm">{{ product.discount }}%</div>
@@ -27,18 +27,25 @@
                 <PhCheck :size="18" class="hidden" />
             </button>
             <div>
-                <h2 class="font-semibold text-sm sm:text-base mb-1 sm:mb-2.5">{{ product.name }}</h2>
+                <button 
+                    class="font-semibold text-sm sm:text-base mb-1 sm:mb-2.5 cursor-pointer hover:text-secondary-500 transition-colors duration-300 ease-in-out" 
+                    @click="goToProductPage(product.id)"
+                >
+                    {{ product.name }}
+                </button>
                 <div class="flex items-center gap-x-2.5 mb-1 sm:mb-2.5 text-sm sm:text-base">
                     <span class="text-secondary-500">&#8369;{{ product.discount_price }}</span>
                     <del class="text-gray-500 decoration-dashed">&#8369;{{ product.price }}</del>
                 </div>
-                <button class="flex items-center gap-x-1 cursor-pointer text-sm sm:text-base"
-                    @click.prevent.stop="viewProductReviews">
-                    <PhStar class="text-yellow-500" weight="fill" />
-                    <span class="font-medium">4.9</span>
-                    <span class="text-gray-500">{{ `(${100})` }}</span>
-                    <!-- <span class="text-gray-500">{{ `(${product.reviewsCount})` }}</span> -->
-                </button>
+                <div class="flex items-center text-sm sm:text-base gap-2">
+                    <div>{{ product.sales_count }} sold</div>
+                    <span class="text-gray-300">&VerticalLine;</span>
+                    <div class="flex items-center gap-x-1">
+                        <PhStar class="text-yellow-500" weight="fill" />
+                        <span class="font-medium">4.9</span>
+                        <span class="text-gray-500">{{ `(${100})` }}</span>
+                    </div>
+                </div>
             </div>
         </footer>
     </article>
@@ -63,9 +70,5 @@ const addToWishList = () => {
 
 const addToCart = () => {
     console.log('add to cart')
-}
-
-const viewProductReviews = () => {
-    console.log('view reviews')
 }
 </script>
