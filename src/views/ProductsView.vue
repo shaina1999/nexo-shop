@@ -11,6 +11,7 @@
           </span>
           <span class="inline-block md:flex items-center gap-x-3 text-base md:text-lg font-semibold" v-else>
             {{ route.query.tag || route.query.category ? useTitleCaseConcat(route.query?.tag || route.query.category) : 'Browse All Products' }} 🛍️
+            <span class="text-sm text-gray-500 !font-normal">{{ productsArr.length ? productsArr.length +' items' : '' }}</span>
           </span>
         </p>
         <div class="flex items-center gap-x-3">
