@@ -144,6 +144,7 @@ const auth = useAuthStore()
 const dropdownShow = ref(false)
 const profileDropdownContainer = useTemplateRef('profileDropdownContainer')
 const loading = ref(false)
+let debounceTimeout = null
 
 const profileOptions = ref([
     {
@@ -208,29 +209,38 @@ const handleArrowKey = (index, event) => {
     }
 }
 
-const showSuggestions = async () => {
-    loading.value = true
+const fetchSuggestions = async () => {
+  loading.value = true
 
-    const query = searchTerm.value.trim().toLowerCase()
-    let supabaseQuery = supabase.from('products').select('*')
+  const query = searchTerm.value.trim()
 
-    if (query) {
-        supabaseQuery = supabase
-        .from('products')
-        .select('*')
-        .or(`name.ilike.%${query}%,tags.cs.{${query}}`)
-    }
+  let supabaseQuery = supabase.from('products').select('*')
 
-    const { data, error } = await supabaseQuery
+  if (query) {
+    supabaseQuery = supabase
+      .from('products')
+      .select('*')
+      .or(`name.ilike.%${query}%,tags.cs.{\"${query}\"}`)
+  }
 
-    if (error) {
-        console.error('Error fetching products:', error)
-        searchSuggestions.value = []
-    } else {
-        searchSuggestions.value = data
-    }
+  const { data, error } = await supabaseQuery
 
-    loading.value = false
+  if (error) {
+    console.error('Error fetching products:', error)
+    searchSuggestions.value = []
+  } else {
+    searchSuggestions.value = data
+  }
+
+  loading.value = false
+}
+
+const showSuggestions = () => {
+  if (debounceTimeout) clearTimeout(debounceTimeout)
+
+  debounceTimeout = setTimeout(() => {
+    fetchSuggestions()
+  }, 300)
 }
 
 const handleResize = () => {
