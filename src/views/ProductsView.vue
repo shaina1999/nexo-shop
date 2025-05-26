@@ -1,6 +1,6 @@
 <template>
   <section class="flex items-center justify-center w-full pt-5 md:pt-10">
-    <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
+    <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
       <div class="flex items-start md:items-center justify-between pb-5 md:pb-10 flex-col md:flex-row gap-3 md:gap-5">
         <p :class="{ 'skeleton-loader' : isLoading }">
           <span class="inline-block md:flex items-center gap-x-3 text-sm md:text-base" v-if="route.query?.q">
@@ -38,13 +38,13 @@
         <ProductCardSkeleton v-for="i in 32" :key="i" />
       </div>
 
-      <div v-else>
-        <div class="flex flex-col items-center justify-center mb-8" v-if="!productsArr.length && searchQuery">
+      <div v-else class="flex flex-col justify-center">
+        <div v-if="!productsArr.length && searchQuery" class="text-center">
           <p class="text-center mb-2">No results found for <span class="font-semibold">"{{ searchQuery }}"</span></p>
-          <p>Here are some suggestions you may find useful:</p>
+          <p class="mb-8">Here are some suggestions you may find useful:</p>
         </div>
-        <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
-          <ProductCard v-for="(product, index) in productsArr" :key="product.id" :product="product" />
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
+          <ProductCard v-for="product in productsArr.length ? productsArr : suggestedProductsArr" :key="product.id" :product="product" />
         </div>
       </div>
     </div>
@@ -207,6 +207,7 @@ const selectedRating = ref(null)
 const selectedSortOption = ref(null)
 const selectedCategories = ref([])
 const productsArr = ref([])
+const suggestedProductsArr = ref([])
 const isLoading = ref(false)
 const searchQuery = ref(localStorage.getItem('searchTerm'))
 const productTag = ref(localStorage.getItem('productTag'))
@@ -322,6 +323,11 @@ onMounted(async () => {
     if (productsError) throw productsError
 
     productsArr.value = products
+
+    if (!productsArr.value.length) {
+      const { data: products, error: productsError } = await supabase.from('products').select('*')
+      suggestedProductsArr.value = products
+    }
   } catch (err) {
     console.error('Error fetching products:', err)
   } finally {
