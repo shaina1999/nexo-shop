@@ -67,7 +67,7 @@
                     v-if="!categoriesLoading"
                     :ref="el => registerSplide(el, 'categories')"
                     :options="{
-                        perPage: 6,
+                        perPage: 5,
                         autoplay: true,
                         gap: '1rem',
                         type: 'loop',
@@ -89,7 +89,7 @@
                                 perPage: 4,
                             },
                             1280: {
-                                perPage: 6,
+                                perPage: 5,
                             },
                         },
                     }"
