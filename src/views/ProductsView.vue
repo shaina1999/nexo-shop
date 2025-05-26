@@ -208,6 +208,7 @@ const selectedSortOption = ref(null)
 const selectedCategories = ref([])
 const productsArr = ref([])
 const isLoading = ref(false)
+const searchQuery = ref(localStorage.getItem('searchTerm'))
 
 const categories = ref([
   { label: "Women's Clothing", route: "/products", isSelected: false },
@@ -271,10 +272,6 @@ const handleSortOptionChange = () => {
   }, 300);
 }
 
-const searchQuery = computed(() => {
-  return route.query?.q || ''
-})
-
 const useTitleCaseConcat = (words) => {
   return words.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
 }
@@ -287,6 +284,10 @@ watch([filtersOpen, sortingOptionOpen], (newVal) => {
   } else {
     html.style.overflow = ''
   }
+})
+
+watch(route, () => {
+  searchQuery.value = localStorage.getItem('searchTerm')
 })
 
 onMounted(async () => {

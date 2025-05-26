@@ -190,6 +190,7 @@ const searchProduct = (qObj, q) => {
             : { q: q ?? '' };
 
         searchTerm.value = qObj?.name || q
+        localStorage.setItem('searchTerm', searchTerm.value)
         router.push({ path: '/products', query });   
     }
 };
