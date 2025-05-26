@@ -96,7 +96,7 @@
                 >
                     <SplideSlide v-for="(category, index) in categories" :key="index">
                         <RouterLink 
-                            :to="`/products?category=${category.label}`"
+                            :to="`/products?category=${category.slug}`"
                             class="text-sm text-center font-medium flex flex-col items-center justify-center space-y-3 rounded-sm border-[1px] border-gray-300 px-2 py-4 sm:px-4 sm:py-8 cursor-pointer category-item transition-all duration-300 ease-in-out hover:bg-secondary-500 hover:text-white"
                         >
                             <component :is="category.icon" :size="38" />

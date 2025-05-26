@@ -288,14 +288,38 @@ watch([filtersOpen, sortingOptionOpen], (newVal) => {
   }
 })
 
-/* watch(route, (newVal) => {
-  // for search
-}); */
-
 onMounted(async () => {
-  /* isLoading.value = true
-  let { data: products, error } = await supabase.from('products').select('*')
-  productsArr.value = products
-  isLoading.value = false */
+  isLoading.value = true
+
+  try {
+    const categorySlug = route.query.category
+    const tag = route.query.tag
+
+    let query = supabase.from('products').select('*')
+
+    if (categorySlug) {
+      const { data: category, error: categoryError } = await supabase
+        .from('categories')
+        .select('id')
+        .eq('slug', categorySlug)
+        .single()
+
+      if (categoryError || !category) throw categoryError || new Error('Category not found')
+      query = query.eq('category_id', category.id)
+    } else if (tag === 'best-selling') {
+      query = query
+        .gt('sales_count', 100)
+        .order('sales_count', { ascending: false })
+    }
+
+    const { data: products, error: productsError } = await query
+    if (productsError) throw productsError
+
+    productsArr.value = products
+  } catch (err) {
+    console.error('Error fetching products:', err)
+  } finally {
+    isLoading.value = false
+  }
 })
 </script>
