@@ -43,9 +43,7 @@
                         :class="{ 'flex' : isSearching, 'hidden' : !isSearching }"
                         ref="searchResultsContainerRef"
                     >
-                        <li v-if="loading" class="text-base font-medium">Searching...</li>
                         <li
-                            v-else 
                             ref="focusableItemRef"
                             class="cursor-pointer hover:text-secondary-500 focus-within:outline-none focus-visible:outline-none focus-within:text-secondary-500 focus-visible:text-secondary-500" 
                             tabindex="0" 
@@ -143,7 +141,6 @@ const isResizing = ref(false)
 const auth = useAuthStore()
 const dropdownShow = ref(false)
 const profileDropdownContainer = useTemplateRef('profileDropdownContainer')
-const loading = ref(false)
 let debounceTimeout = null
 
 const profileOptions = ref([
@@ -210,8 +207,6 @@ const handleArrowKey = (index, event) => {
 }
 
 const fetchSuggestions = async () => {
-  loading.value = true
-
   const query = searchTerm.value.trim()
 
   let supabaseQuery = supabase.from('products').select('*')
@@ -231,8 +226,6 @@ const fetchSuggestions = async () => {
   } else {
     searchSuggestions.value = data
   }
-
-  loading.value = false
 }
 
 const showSuggestions = () => {
