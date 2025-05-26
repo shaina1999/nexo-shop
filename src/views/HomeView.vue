@@ -139,7 +139,7 @@
                         :ref="el => registerSplide(el, 'best-selling')"
                         :options="{
                             type: 'loop',
-                            perPage: 4,
+                            perPage: bestSellingProducts.length < 4 ?  bestSellingProducts.length : 4,
                             gap: '16px',
                             arrows: false,
                             speed: 1000,
@@ -156,7 +156,7 @@
                                     perPage: 3, arrows: false
                                 },
                                 1280: {
-                                    perPage: 4, arrows: false
+                                    perPage: bestSellingProducts.length < 4 ?  bestSellingProducts.length : 4, arrows: false
                                 },
                             }
                         }"
@@ -337,7 +337,7 @@ const getCategories = async () => {
 // Best Selling Products
 const getBestSellingProducts = async () => {
     bestSellingProductsLoading.value = true
-    let { data: products, error } = await supabase.from('products').select('*').order('sales_count', { ascending: false }).limit(10)
+    let { data: products, error } = await supabase.from('products').select('*').gt('sales_count', 100).order('sales_count', { ascending: false })
     bestSellingProducts.value = products
     bestSellingProductsLoading.value = false
 }
