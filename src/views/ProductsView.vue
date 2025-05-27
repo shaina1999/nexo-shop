@@ -316,6 +316,7 @@ const applyFilters = async () => {
 
     const query = { ...route.query };
     delete query.q;
+    delete query.category;
     query.categories = filteredCategories.value.join(',');
     router.replace({ query });
   } catch (error) {
