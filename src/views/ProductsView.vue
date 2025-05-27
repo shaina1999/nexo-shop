@@ -335,10 +335,23 @@ const clearFilters = () => {
 }
 
 const handleSortOptionChange = () => {
-  setTimeout(() => {
-    sortingOptionOpen.value = false
-  }, 300);
-}
+  if (!productsArr.value.length) return;
+
+  switch (selectedSortOption.value) {
+    case 'Top Rated':
+      productsArr.value.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      break;
+    case 'Price High to Low':
+      productsArr.value.sort((a, b) => (b.discount_price || 0) - (a.discount_price || 0));
+      break;
+    case 'Price Low to High':
+      productsArr.value.sort((a, b) => (a.discount_price || 0) - (b.discount_price || 0));
+      break;
+    default:
+      break;
+  }
+  sortingOptionOpen.value = false;
+};
 
 const useTitleCaseConcat = (words) => {
   return words.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
