@@ -214,7 +214,7 @@ const productTag = ref(localStorage.getItem('productTag'))
 const categories = ref([])
 
 const priceFilter = [
-  { label: "Below PHP 100", min: 0, max: 99 },
+  { label: "Below PHP 100", min: 1, max: 99 },
   { label: "PHP 100 - 199", min: 100, max: 199 },
   { label: "PHP 200 - 299", min: 200, max: 299 },
   { label: "PHP 300 - 499", min: 300, max: 499 },
@@ -244,11 +244,87 @@ const handleCategoryChange = (event, index) => {
   categories.value[index].isSelected = event.target.checked
 }
 
-const applyFilters = () => {
-  console.log('categories', filteredCategories.value)
-  console.log('selectedPrice', selectedPrice.value)
-  console.log('selectedRating', selectedRating.value)
-}
+const parsePriceRange = (priceStr) => {
+  if (!priceStr) return { min: 0, max: Infinity };
+
+  if (priceStr.includes('Below')) {
+    const match = priceStr.match(/Below PHP\s*(\d+)/);
+    if (match) return { min: 0, max: Number(match[1]) };
+  }
+
+  if (priceStr.includes('and up')) {
+    const match = priceStr.match(/PHP\s*(\d+)\s*and up/);
+    if (match) return { min: Number(match[1]), max: Infinity };
+  }
+
+  const match = priceStr.match(/PHP\s*(\d+)\s*-\s*(\d+)/);
+  if (match) {
+    return { min: Number(match[1]), max: Number(match[2]) };
+  }
+
+  return { min: 0, max: Infinity };
+};
+
+const parseRating = (ratingStr) => {
+  if (!ratingStr) return null;
+  const match = ratingStr.match(/(\d+)/);
+  return match ? Number(match[1]) : null;
+};
+
+const applyFilters = async () => {
+  isLoading.value = true;
+
+  try {
+    if (!filteredCategories.value.length) {
+      productsArr.value = [];
+      isLoading.value = false;
+      return;
+    }
+
+    const { data: categories, error: categoryError } = await supabase
+      .from('categories')
+      .select('id')
+      .in('slug', filteredCategories.value);
+
+    if (categoryError) throw categoryError;
+
+    const categoryIds = categories.map(cat => cat.id);
+
+    let productQuery = supabase
+      .from('products')
+      .select('*')
+      .in('category_id', categoryIds);
+
+    const priceRange = parsePriceRange(selectedPrice.value);
+    if (priceRange && !isNaN(priceRange.min) && !isNaN(priceRange.max)) {
+      productQuery = productQuery
+        .gte('discount_price', priceRange.min)
+        .lte('discount_price', priceRange.max);
+    }
+
+    const minRating = parseRating(selectedRating.value);
+    if (minRating && !isNaN(minRating)) {
+      productQuery = productQuery.gte('rating', minRating);
+    }
+
+    const { data: products, error: productError } = await productQuery;
+
+    if (productError) throw productError;
+
+    searchQuery.value = '';
+    productsArr.value = products;
+
+    const query = { ...route.query };
+    delete query.q;
+    query.categories = filteredCategories.value.join(',');
+    router.replace({ query });
+  } catch (error) {
+    console.error('Error applying filters:', error);
+  } finally {
+    isLoading.value = false;
+    filtersOpen.value = false;
+  }
+};
 
 const clearFilters = () => {
   categories.value.forEach(category => {

@@ -264,6 +264,10 @@ watch(route, () => {
     if (router?.currentRoute.value.name !== 'products') { // clear searchbar value when going to other page
         searchTerm.value = ''
     }
+
+    if (!route?.query?.q) { // clear searchbar value when applying filters
+        searchTerm.value = ''
+    }
 })
 
 watch(searchTerm, () => {

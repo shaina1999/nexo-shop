@@ -42,8 +42,8 @@
                     <span class="text-gray-300">&VerticalLine;</span>
                     <div class="flex items-center gap-x-1">
                         <PhStar class="text-yellow-500" weight="fill" />
-                        <span class="font-medium">4.9</span>
-                        <span class="text-gray-500">{{ `(${100})` }}</span>
+                        <span class="font-medium">{{ product.rating }}</span>
+                        <span class="text-gray-500">{{ `(${product.discount_price})` }}</span>
                     </div>
                 </div>
             </div>
