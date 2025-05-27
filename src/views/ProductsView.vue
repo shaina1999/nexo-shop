@@ -66,7 +66,8 @@
             <h2 class="text-black font-semibold mb-4">Category</h2>
             <ul class="flex flex-wrap gap-2 text-xs sm:text-base">
               <li 
-                class="flex items-center justify-center text-center border-gray-300 border-[1px] rounded-sm p-2 cursor-pointer relative"
+                class="flex items-center justify-center text-center border-gray-300 border-[1px] rounded-sm p-2 relative"
+                :class="{ 'opacity-[0.7]' : isLoading }"
                 v-for="(category, index) in categories" :key="index"
               >
                 <input 
@@ -76,10 +77,12 @@
                   v-model="category.isSelected"
                   class="absolute left-0 right-0 top-0 bottom-0 w-full h-full opacity-0 cursor-pointer" 
                   @change="(event) => handleCategoryChange(event, index)"
+                  :disabled="isLoading"
+                  :class="{ '!cursor-not-allowed' : isLoading }"
                 >
                 <span 
                   class="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-sm border-[1px] border-black mr-2 flex items-center justify-center text-white relative"
-                  :class="{ 'bg-black' : category.isSelected }"
+                  :class="{ 'bg-black' : category.isSelected, '!cursor-not-allowed' : isLoading }"
                 >
                   <PhCheckFat :size="12" weight="fill" class="absolute top-[50%] -translate-x-1/2 left-1/2 -translate-y-1/2 text-transparent" :class="{ 'bg-black text-white' : category.isSelected }" />
                 </span>
@@ -92,12 +95,22 @@
             <ul class="flex flex-col text-sm sm:text-base gap-3">
               <li 
                 class="flex items-center text-center cursor-pointer relative"
+                :class="{ 'opacity-[0.7]' : isLoading }"
                 v-for="(price, index) in priceFilter" :key="index"
               >
                 <span class="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full border-[1px] border-black mr-3 flex items-center justify-center">
                   <span class="w-[60%] h-[60%] m-auto rounded-full transition-colors duration-100 ease-in" :class="{ 'bg-black': selectedPrice === price.label }"></span>
                 </span>
-                <input type="radio" :value="price.label" name="price" v-model="selectedPrice" :id="index" class="opacity-0 absolute left-0 right-0 top-0 bottom-0 w-full h-full cursor-pointer">
+                <input 
+                  :disabled="isLoading" 
+                  type="radio" 
+                  :value="price.label" 
+                  name="price" 
+                  v-model="selectedPrice" 
+                  :id="index" 
+                  class="opacity-0 absolute left-0 right-0 top-0 bottom-0 w-full h-full cursor-pointer"
+                  :class="{ '!cursor-not-allowed' : isLoading }"
+                >
                 <span>{{ price.label }}</span>
               </li>
             </ul>
@@ -107,12 +120,22 @@
             <ul class="flex flex-col text-sm sm:text-base gap-3">
               <li 
                 class="flex items-center text-center cursor-pointer relative"
+                :class="{ 'opacity-[0.7]' : isLoading }"
                 v-for="(rating, index) in ratingFilter" :key="index"
               >
                 <span class="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full border-[1px] border-black mr-3 flex items-center justify-center">
                   <span class="w-[60%] h-[60%] m-auto rounded-full transition-colors duration-100 ease-in" :class="{ 'bg-black': selectedRating === rating.label }"></span>
                 </span>
-                <input type="radio" :value="rating.label" name="rating" v-model="selectedRating" :id="index" class="opacity-0 absolute left-0 right-0 top-0 bottom-0 w-full h-full cursor-pointer">
+                <input 
+                  :disabled="isLoading" 
+                  type="radio" 
+                  :value="rating.label" 
+                  name="rating" 
+                  v-model="selectedRating" 
+                  :id="index" 
+                  class="opacity-0 absolute left-0 right-0 top-0 bottom-0 w-full h-full cursor-pointer"
+                  :class="{ '!cursor-not-allowed' : isLoading }"
+                >
                 <PhStar class="text-yellow-500 mr-2" weight="fill" />
                 <span>{{ rating.label }}</span>
               </li>
@@ -121,12 +144,17 @@
         </div>
         <div class="flex items-center gap-4 py-4 px-6 border-t-[1px] border-t-gray-300">
           <BaseButton 
+            :disabled="isLoading"
             class="w-full text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!"
             @click="clearFilters"
           >
             <span>Clear</span>
           </BaseButton>
-          <BaseButton class="w-full text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center" @click="applyFilters">
+          <BaseButton 
+            class="w-full text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center" 
+            @click="applyFilters" 
+            :disabled="!isApplyEnabled || isLoading"
+          >
             Apply
           </BaseButton>
         </div>
@@ -238,6 +266,13 @@ const filteredCategories = computed(() => {
   return categories.value
     .filter((category) => category.isSelected)
     .map((category) => category.slug)
+})
+
+const isApplyEnabled = computed(() => {
+  const hasSelectedCategories = categories.value.some(c => c.isSelected)
+  const hasSelectedPrice = selectedPrice.value !==null
+  const hasSelectedRating = selectedRating.value !==null
+  return hasSelectedCategories || hasSelectedPrice || hasSelectedRating
 })
 
 const handleCategoryChange = (event, index) => {
