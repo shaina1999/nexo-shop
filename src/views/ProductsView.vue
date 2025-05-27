@@ -190,7 +190,7 @@
 </template>
 
 <script setup>
-import { watch, watchEffect, computed, ref, onMounted } from 'vue';
+import { watch, watchEffect, computed, ref, onMounted, onUnmounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
 import { supabase } from '@/supabase'
 
@@ -335,22 +335,27 @@ const clearFilters = () => {
 }
 
 const handleSortOptionChange = () => {
-  if (!productsArr.value.length) return;
+  const targetArr = productsArr.value.length ? productsArr : suggestedProductsArr;
 
-  switch (selectedSortOption.value) {
-    case 'Top Rated':
-      productsArr.value.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-      break;
-    case 'Price High to Low':
-      productsArr.value.sort((a, b) => (b.discount_price || 0) - (a.discount_price || 0));
-      break;
-    case 'Price Low to High':
-      productsArr.value.sort((a, b) => (a.discount_price || 0) - (b.discount_price || 0));
-      break;
-    default:
-      break;
-  }
+  // Create a new sorted array based on the selected option
+  const sorted = [...targetArr.value].sort((a, b) => {
+    switch (selectedSortOption.value) {
+      case 'Top Rated':
+        return (b.rating || 0) - (a.rating || 0);
+      case 'Price High to Low':
+        return (b.discount_price || 0) - (a.discount_price || 0);
+      case 'Price Low to High':
+        return (a.discount_price || 0) - (b.discount_price || 0);
+      default:
+        return 0;
+    }
+  });
+
+  targetArr.value = sorted;
+
   sortingOptionOpen.value = false;
+
+  localStorage.setItem('sortOption', selectedSortOption.value);
 };
 
 const useTitleCaseConcat = (words) => {
@@ -426,6 +431,9 @@ onMounted(async () => {
       const { data: products, error: productsError } = await supabase.from('products').select('*')
       suggestedProductsArr.value = products
     }
+
+    selectedSortOption.value = localStorage.getItem('sortOption')
+    handleSortOptionChange()
   } catch (err) {
     console.error('Error fetching products:', err)
   } finally {
@@ -447,5 +455,9 @@ onMounted(async () => {
   } finally {
     isLoading.value = false
   }
+})
+
+onUnmounted(() => {
+  localStorage.removeItem('sortOption')
 })
 </script>
