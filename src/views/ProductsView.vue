@@ -324,6 +324,9 @@ const applyFilters = async () => {
   } finally {
     isLoading.value = false;
     filtersOpen.value = false;
+    localStorage.setItem('selectedCategories', JSON.stringify(filteredCategories.value))
+    localStorage.setItem('selectedPrice', selectedPrice.value)
+    localStorage.setItem('selectedRating', selectedRating.value)
   }
 };
 
@@ -333,6 +336,10 @@ const clearFilters = () => {
   })
   selectedPrice.value = null
   selectedRating.value = null
+
+  localStorage.removeItem('selectedCategories')
+  localStorage.removeItem('selectedPrice')
+  localStorage.removeItem('selectedRating')
 }
 
 const handleSortOptionChange = () => {
@@ -464,10 +471,38 @@ onMounted(async () => {
     console.error('Error fetching products:', err)
   } finally {
     isLoading.value = false
+
+    let hasSavedFilters = false
+    const savedCategories = JSON.parse(localStorage.getItem('selectedCategories'))
+    if (savedCategories?.length) {
+      categories.value.forEach((category) => {
+        category.isSelected = savedCategories.includes(category.slug)
+      })
+      hasSavedFilters = true
+    }
+
+    const savedPrice = localStorage.getItem('selectedPrice')
+    if (savedPrice) {
+      selectedPrice.value = savedPrice
+      hasSavedFilters = true
+    }
+
+    const savedRating = localStorage.getItem('selectedRating')
+    if (savedRating) {
+      selectedRating.value = savedRating
+      hasSavedFilters = true
+    }
+
+    if (hasSavedFilters) {
+      applyFilters()
+    }
   }
 })
 
 onUnmounted(() => {
+  localStorage.removeItem('selectedCategories')
+  localStorage.removeItem('selectedPrice')
+  localStorage.removeItem('selectedRating')
   localStorage.removeItem('sortOption')
 })
 </script>
