@@ -55,11 +55,11 @@
         class="fixed z-20 top-0 right-0 w-[90vw] sm:w-[50vw] lg:w-[35vw] xl:w-[500px] bg-white h-screen shadow-md transition-all duration-300 ease-[cubic-bezier(0.4, 0, 0.2, 1)]"
         :class="{ 'right-0 opacity-100 pointer-events-auto' : filtersOpen, 'right-[-50%] opacity-0 pointer-events-none' : !filtersOpen }"
       >
-        <div class="border-b-[1px] border-b-gray-300 py-4 px-6 flex items-center gap-4">
+        <div class="border-b-[1px] border-b-gray-300 py-4 px-6 flex items-center gap-4 justify-between">
+          <span>Filters</span>
           <button class="cursor-pointer" @click="filtersOpen = false">
             <PhX :size="22" />
-            </button>
-          <span>Filters</span>
+          </button>
         </div>
         <div class="overflow-y-scroll h-[calc(100vh_-_130px)] ">
           <div class="py-4 px-6">
