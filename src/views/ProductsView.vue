@@ -278,6 +278,21 @@ const useTitleCaseConcat = (words) => {
   return words.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
 }
 
+const searchProduct = async (tag) => {
+  isLoading.value = true
+  
+  const { data: products, error: productsError } = await supabase.from('products').select('*').contains('tags', [tag]);
+  productsArr.value = products
+
+  if (!productsArr.value.length) {
+    const { data: products, error: productsError } = await supabase.from('products').select('*');
+    suggestedProductsArr.value = products
+    isLoading.value = false
+  }
+
+  isLoading.value = false
+}
+
 watch([filtersOpen, sortingOptionOpen], (newVal) => {
   const html = document.documentElement
 
@@ -291,6 +306,10 @@ watch([filtersOpen, sortingOptionOpen], (newVal) => {
 watch(route, () => {
   searchQuery.value = localStorage.getItem('searchTerm')
   productTag.value = localStorage.getItem('productTag')
+
+  if (route.query?.q) {
+    searchProduct(productTag.value)
+  }
 })
 
 onMounted(async () => {
