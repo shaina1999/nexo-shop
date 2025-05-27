@@ -211,17 +211,7 @@ const suggestedProductsArr = ref([])
 const isLoading = ref(false)
 const searchQuery = ref(localStorage.getItem('searchTerm'))
 const productTag = ref(localStorage.getItem('productTag'))
-
-const categories = ref([
-  { label: "Women's Clothing", route: "/products", isSelected: false },
-  { label: "Women's Shoes", route: "/products", isSelected: false },
-  { label: "Women's Bag", route: "/products", isSelected: false },
-  { label: "Women's Sports", route: "/products", isSelected: false },
-  { label: "Men's Clothing", route: "/products", isSelected: false },
-  { label: "Men's Shoes", route: "/products", isSelected: false },
-  { label: "Men's Bag", route: "/products", isSelected: false },
-  { label: "Men's Sports", route: "/products", isSelected: false }
-])
+const categories = ref([])
 
 const priceFilter = [
   { label: "Below PHP 100", min: 0, max: 99 },
@@ -247,7 +237,7 @@ const sortingOptions = [
 const filteredCategories = computed(() => {
   return categories.value
     .filter((category) => category.isSelected)
-    .map((category) => category.label)
+    .map((category) => category.slug)
 })
 
 const handleCategoryChange = (event, index) => {
@@ -346,6 +336,22 @@ onMounted(async () => {
     if (!productsArr.value.length) {
       const { data: products, error: productsError } = await supabase.from('products').select('*')
       suggestedProductsArr.value = products
+    }
+  } catch (err) {
+    console.error('Error fetching products:', err)
+  } finally {
+    isLoading.value = false
+  }
+
+  try {
+    let { data: items, error } = await supabase.from('categories').select('*')
+    if (error) {
+      console.error('Error fetching categories:', error)
+    } else {
+      categories.value = items.map(category => ({
+        ...category,
+        isSelected: false
+      }))
     }
   } catch (err) {
     console.error('Error fetching products:', err)
