@@ -403,6 +403,7 @@ onMounted(async () => {
   try {
     const categorySlug = route.query.category
     const tag = route.query.tag
+    const categorySlugsArray = route.query.categories?.split(',')
 
     let query = supabase.from('products').select('*')
 
@@ -421,6 +422,14 @@ onMounted(async () => {
         .order('sales_count', { ascending: false })
     } else if (route.query?.q) {
       query = query.contains('tags', [productTag.value]);
+    } else if (categorySlugsArray.length) {
+      const { data: categories, error: categoriesError } = await supabase
+      .from('categories')
+      .select('id, slug')
+      .in('slug', categorySlugsArray);
+      
+      const categoryIds = categories?.map(category => category.id) || [];
+      query = query.in('category_id', categoryIds)
     }
 
     const { data: products, error: productsError } = await query
