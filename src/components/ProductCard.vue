@@ -35,7 +35,6 @@
                 </button>
                 <div class="flex items-center gap-x-2.5 mb-1 sm:mb-2.5 text-sm sm:text-base">
                     <span class="text-secondary-500">Php {{ formatAmount(product.discount_price) }}</span>
-                    <del class="text-gray-500 decoration-dashed">Php {{ formatAmount(product.price) }}</del>
                 </div>
                 <div class="flex items-center text-sm sm:text-base gap-2">
                     <div>{{ product.sales_count }} sold</div>

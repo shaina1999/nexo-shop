@@ -21,8 +21,8 @@
         <!-- Product Details -->
         <article class="space-y-6 basis-[40%]">
           <header>
-            <h1 class="text-2xl font-bold mb-1.5">{{ productObj?.name }}</h1>
-            <div class="flex items-center mb-1.5">
+            <h1 class="text-2xl font-bold mb-2">{{ productObj?.name }}</h1>
+            <div class="flex items-center mb-2">
               <div class="flex text-yellow-400 gap-1 mr-1">
                 <PhStar class="text-yellow-500" weight="fill" />
                 <PhStar class="text-yellow-500" weight="fill" />
@@ -34,7 +34,11 @@
               <span class="text-gray-300 mx-2.5">&VerticalLine;</span>
               <span class="text-green-600 text-sm font-medium py-0.5 px-2.5 bg-green-100 rounded-sm">In Stock</span>
             </div>
-            <p class="text-2xl font-semibold">Php {{ formatAmount(productObj?.discount_price) }}</p>
+            <p class="text-2xl font-semibold flex items-center gap-2">
+              Php {{ formatAmount(productObj?.discount_price) }} 
+              <del class="text-gray-500 text-sm font-normal!">Php {{ formatAmount(productObj?.price) }}</del> 
+              <span class="text-sm font-semibold bg-secondary-100 text-secondary-500 rounded-sm px-1">-{{ productObj?.discount }}%</span>
+            </p>
           </header>
           <p class="text-gray-600 lead-[1.7]">{{ productObj?.description }}</p>
           <!-- Color Options -->
