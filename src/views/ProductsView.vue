@@ -1,6 +1,6 @@
 <template>
   <section class="flex items-center justify-center w-full pt-5 md:pt-10">
-    <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25" v-if="hasFilteredResults">
+    <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25" v-if="hasResults">
       <div class="flex items-start md:items-center justify-between pb-5 md:pb-10 flex-col md:flex-row gap-3 md:gap-5">
         <p :class="{ 'skeleton-loader' : isLoading }">
           <span class="inline-block md:flex items-center gap-x-3 text-sm md:text-base" v-if="route.query?.q">
@@ -55,7 +55,7 @@
         </div>
         <h2 class="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mb-2">No results found</h2>
         <p class="text-sm sm:text-base text-gray-600 mb-6 leading-1.9">Sorry, we couldn't find any items that matched your criteria.</p>
-        <BaseButton class="!py-2 w-auto">Search</BaseButton>
+        <BaseButton class="!py-2 w-auto" @click="handleNoResultsAction">Clear Filters and Try Again</BaseButton>
       </div>
     </div>
 
@@ -252,7 +252,7 @@ const searchQuery = ref(localStorage.getItem('searchTerm'))
 const productTag = ref(localStorage.getItem('productTag'))
 const categories = ref([])
 let hasSavedFilters = ref(false)
-let hasFilteredResults = ref(true)
+let hasResults = ref(true)
 
 const priceFilter = [
   { label: "Below PHP 100", min: 1, max: 99 },
@@ -280,6 +280,13 @@ const filteredCategories = computed(() => {
     .filter((category) => category.isSelected)
     .map((category) => category.slug)
 })
+
+const handleNoResultsAction = () => {
+  hasResults.value = true
+  clearFilters()
+  fetchProducts(false) // no filters
+  router.replace({ query: {} })
+}
 
 const isApplyEnabled = computed(() => {
   const hasSelectedCategories = categories.value.some(c => c.isSelected)
@@ -471,9 +478,9 @@ const fetchProducts = async (filter) => {
 
     // If no filtered results
     if (!productsArr.length && isFilters && filter) {
-      hasFilteredResults.value = false
+      hasResults.value = false
     } else {
-      hasFilteredResults.value = true
+      hasResults.value = true
     }
 
     // Sort products
