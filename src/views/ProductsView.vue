@@ -1,6 +1,6 @@
 <template>
   <section class="flex items-center justify-center w-full pt-5 md:pt-10">
-    <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25" v-if="hasResults">
+    <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
       <div class="flex items-start md:items-center justify-between pb-5 md:pb-10 flex-col md:flex-row gap-3 md:gap-5">
         <p :class="{ 'skeleton-loader' : isLoading }">
           <span class="inline-block md:flex items-center gap-x-3 text-sm md:text-base" v-if="route.query?.q">
@@ -46,16 +46,6 @@
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
           <ProductCard v-for="product in productsArr.length ? productsArr : suggestedProductsArr" :key="product.id" :product="product" />
         </div>
-      </div>
-    </div>
-    <div v-else class="px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 w-full max-w-7xl mx-auto py-12 sm:py-16 md:py-20">
-      <div class="text-center max-w-md w-full mx-auto">
-        <div class="flex justify-center mb-6">
-          <img :src="noResultsIcon" alt="No results icon" class="w-20 sm:w-20 md:w-24 lg:w-28 xl:w-32" />
-        </div>
-        <h2 class="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mb-2">No results found</h2>
-        <p class="text-sm sm:text-base text-gray-600 mb-6 leading-1.9">Sorry, we couldn't find any items that matched your criteria.</p>
-        <BaseButton class="!py-2 w-auto" @click="handleNoResultsAction">Clear Filters and Try Again</BaseButton>
       </div>
     </div>
 
@@ -252,7 +242,6 @@ const searchQuery = ref(localStorage.getItem('searchTerm'))
 const productTag = ref(localStorage.getItem('productTag'))
 const categories = ref([])
 let hasSavedFilters = ref(false)
-let hasResults = ref(true)
 
 const priceFilter = [
   { label: "Below PHP 100", min: 1, max: 99 },
@@ -280,13 +269,6 @@ const filteredCategories = computed(() => {
     .filter((category) => category.isSelected)
     .map((category) => category.slug)
 })
-
-const handleNoResultsAction = () => {
-  hasResults.value = true
-  clearFilters()
-  fetchProducts(false) // no filters
-  router.replace({ query: {} })
-}
 
 const isApplyEnabled = computed(() => {
   const hasSelectedCategories = categories.value.some(c => c.isSelected)
@@ -478,9 +460,16 @@ const fetchProducts = async (filter) => {
 
     // If no filtered results
     if (!productsArr.length && isFilters && filter) {
-      hasResults.value = false
-    } else {
-      hasResults.value = true
+      router.replace({ query: {} })
+      clearFilters()
+
+      Swal.fire({
+        title: 'No Matching Items Found',
+        html: "We couldn't find any products that match your current filters. Try adjusting your criteria or explore our other available items.",
+        icon: 'warning',
+        confirmButtonText: 'Browse Other Products',
+        allowOutsideClick: false,
+      })
     }
 
     // Sort products
@@ -490,10 +479,10 @@ const fetchProducts = async (filter) => {
   } catch (err) {
     console.log(err.message)
     Swal.fire({
-        title: 'Something went wrong',
-        html: 'Please try again later',
-        icon: 'error',
-        confirmButtonText: 'Ok'
+      title: 'Something went wrong',
+      html: 'Please try again later',
+      icon: 'error',
+      confirmButtonText: 'Ok'
     })
     const { data: products, error: productsError } = await supabase.from('products').select('*')
     productsArr.value = products
