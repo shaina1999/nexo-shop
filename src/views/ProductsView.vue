@@ -369,26 +369,32 @@ const applyFilters = async () => {
 }
 
 const sortProducts = () => {
-  const targetArr = productsArr.value.length ? productsArr : suggestedProductsArr;
+  spinner.start()
 
-  const sorted = [...targetArr.value].sort((a, b) => {
-    switch (selectedSortOption.value) {
-      case 'Top Rated':
-        return (b.rating || 0) - (a.rating || 0);
-      case 'Price High to Low':
-        return (b.discount_price || 0) - (a.discount_price || 0);
-      case 'Price Low to High':
-        return (a.discount_price || 0) - (b.discount_price || 0);
-      default:
-        return 0;
-    }
-  });
+  setTimeout(() => {
+    const targetArr = productsArr.value.length ? productsArr : suggestedProductsArr;
 
-  targetArr.value = sorted;
+    const sorted = [...targetArr.value].sort((a, b) => {
+      switch (selectedSortOption.value) {
+        case 'Top Rated':
+          return (b.rating || 0) - (a.rating || 0);
+        case 'Price High to Low':
+          return (b.discount_price || 0) - (a.discount_price || 0);
+        case 'Price Low to High':
+          return (a.discount_price || 0) - (b.discount_price || 0);
+        default:
+          return 0;
+      }
+    });
 
-  sortingOptionOpen.value = false;
+    targetArr.value = sorted;
 
-  localStorage.setItem('sortOption', selectedSortOption.value);
+    sortingOptionOpen.value = false;
+
+    localStorage.setItem('sortOption', selectedSortOption.value);
+
+    spinner.stop()
+  }, 500);
 }
 
 const searchProduct = async (tag) => {
