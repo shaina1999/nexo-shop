@@ -16,7 +16,7 @@
         </p>
         <div class="flex items-center gap-x-3">
           <BaseButton 
-            class="text-sm md:text-base !py-1.5 px-2.5 !md:py-2 !md:px-4.5 flex items-center justify-center gap-x-1 bg-white !text-black border-[1px] border-black/50 !hover:bg-gray-200"
+            class="text-sm md:text-base !py-1.5 px-2.5 !md:py-2 !md:px-4.5 flex items-center justify-center gap-x-1 bg-white !text-black border-[1px] border-black/50 hover:!bg-gray-200"
             :class="{ 'skeleton-loader' : isLoading }"
             @click="filtersOpen = true"
           >
@@ -24,7 +24,7 @@
             <PhFadersHorizontal :size="20" />
           </BaseButton>
           <BaseButton 
-            class="text-sm md:text-base !py-1.5 !px-2.5 !md:py-2 !md:px-4.5 flex items-center justify-center gap-x-1 bg-white !text-black border-[1px] border-black/50 !hover:bg-gray-200"
+            class="text-sm md:text-base !py-1.5 !px-2.5 !md:py-2 !md:px-4.5 flex items-center justify-center gap-x-1 bg-white !text-black border-[1px] border-black/50 hover:!bg-gray-200"
             :class="{ 'skeleton-loader' : isLoading }"
             @click="sortingOptionOpen = true"
           >
@@ -144,7 +144,7 @@
         </div>
         <div class="flex items-center gap-4 py-4 px-6 border-t-[1px] border-t-gray-300">
           <BaseButton 
-            class="w-full text-sm md:text-base !py-1.5 !px-2.5 !md:py-2 !md:px-4.5 flex items-center justify-center gap-x-1 bg-white !text-black border-[1px] border-black/50 !hover:bg-gray-200"
+            class="w-full text-sm md:text-base !py-1.5 !px-2.5 !md:py-2 !md:px-4.5 flex items-center justify-center gap-x-1 bg-white !text-black border-[1px] border-black/50 hover:!bg-gray-200"
             @click="clearFilters"
             :disabled="!isApplyEnabled || isLoading"
           >
