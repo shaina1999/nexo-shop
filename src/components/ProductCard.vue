@@ -34,8 +34,8 @@
                     {{ product.name }}
                 </button>
                 <div class="flex items-center gap-x-2.5 mb-1 sm:mb-2.5 text-sm sm:text-base">
-                    <span class="text-secondary-500">&#8369;{{ product.discount_price }}</span>
-                    <del class="text-gray-500 decoration-dashed">&#8369;{{ product.price }}</del>
+                    <span class="text-secondary-500">Php {{ product.discount_price }}</span>
+                    <del class="text-gray-500 decoration-dashed">Php {{ product.price }}</del>
                 </div>
                 <div class="flex items-center text-sm sm:text-base gap-2">
                     <div>{{ product.sales_count }} sold</div>
