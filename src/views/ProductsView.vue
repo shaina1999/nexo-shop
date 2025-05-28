@@ -39,7 +39,7 @@
       </div>
 
       <div v-else class="flex flex-col justify-center">
-        <div v-if="!productsArr.length && searchQuery" class="text-center">
+        <div v-if="!productsArr.length && searchQuery && !isFiltered" class="text-center">
           <p class="text-center mb-2">No results found for <span class="font-semibold">"{{ searchQuery }}"</span></p>
           <p class="mb-8">Here are some suggestions you may find useful:</p>
         </div>
@@ -242,6 +242,7 @@ const searchQuery = ref(localStorage.getItem('searchTerm'))
 const productTag = ref(localStorage.getItem('productTag'))
 const categories = ref([])
 let hasSavedFilters = ref(false)
+let isFiltered = ref(false)
 
 const priceFilter = [
   { label: "Below PHP 100", min: 1, max: 99 },
@@ -325,6 +326,7 @@ const clearFilters = () => {
 }
 
 const applyFilters = async () => {
+  isFiltered.value = true
   const query = { ...route.query };
 
   delete query.q;
@@ -459,7 +461,7 @@ const fetchProducts = async (filter) => {
     }
 
     // If no filtered results
-    if (!productsArr.length && isFilters && filter) {
+    if (!productsArr.value.length && isFilters && filter) {
       router.replace({ query: {} })
       clearFilters()
 
@@ -545,6 +547,7 @@ watch(route, () => {
 
   if (route.query?.q) {
     searchProduct(productTag.value)
+    isFiltered.value = false
   }
 })
 
