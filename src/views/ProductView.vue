@@ -23,12 +23,9 @@
           <header>
             <h1 class="text-2xl font-bold mb-2">{{ productObj?.name }}</h1>
             <div class="flex items-center mb-2">
-              <div class="flex text-yellow-400 gap-1 mr-1">
+              <div class="flex items-center text-yellow-400 gap-1 mr-1">
                 <PhStar class="text-yellow-500" weight="fill" />
-                <PhStar class="text-yellow-500" weight="fill" />
-                <PhStar class="text-yellow-500" weight="fill" />
-                <PhStarHalf class="text-yellow-500" weight="fill" />
-                <PhStar class="text-yellow-500" />
+                <p class="text-gray-500 text-base">{{ productObj?.rating }}</p>
               </div>
               <p class="text-gray-500 text-base">(150 Reviews)</p>
               <span class="text-gray-300 mx-2.5">&VerticalLine;</span>
