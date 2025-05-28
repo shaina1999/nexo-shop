@@ -8,6 +8,7 @@ import NotificationBar from '@/components/NotificationBar.vue'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import ScrollToTop from '@/components/ScrollToTop.vue'
+import Spinner from '@/assets/img/spinner.svg'
 
 const notificationBarRef = useTemplateRef('notificationBarRef')
 const { width, height } = useElementSize(notificationBarRef)
@@ -36,6 +37,10 @@ onMounted(async () => {
 </script>
 
 <template>
+    <!-- Spinner -->
+    <div class="w-full fixed left-0 right-0 bottom-0 top-0 z-50 flex items-center justify-center">
+        <img :src="Spinner" alt="Spinner">
+    </div>
     <div v-if="!auth.loading">
         <div class="fixed top-0 left-0 right-0 z-[2]">
             <NotificationBar ref="notificationBarRef" />
