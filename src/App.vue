@@ -32,10 +32,6 @@ watch(route, () => {
 
 onMounted(async () => {
     await auth.initAuth()
-    localStorage.removeItem('selectedCategories')
-    localStorage.removeItem('selectedPrice')
-    localStorage.removeItem('selectedRating')
-    localStorage.removeItem('sortOption')
 })
 </script>
 
