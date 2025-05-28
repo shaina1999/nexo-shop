@@ -415,57 +415,61 @@ const getCategoryIdsBySlugs = async (slugs) => {
   return data.map(cat => cat.id)
 }
 
-// Fetch products
-const fetchProducts = async (filter) => {
-  isLoading.value = true
-
-  const isCategory = route.query?.category
-  const isTag = route.query?.tag
-  const isSearch = route.query?.q
-  const isFilters = route.query?.categories || route.query?.price || route.query?.rating
+const buildQuery = async (routeQuery, filter, hasFilters) => {
+  const isCategory = routeQuery?.category
+  const isTag = routeQuery?.tag
+  const isSearch = routeQuery?.q
 
   let query = supabase.from('products').select('*')
 
-  try {
-    if (isCategory) {
-      const categorySlug = route.query.category
-      const { data: category, error: categoryError } = await supabase
-        .from('categories')
-        .select('id')
-        .eq('slug', categorySlug)
-        .single()
-      if (categoryError || !category) throw categoryError || new Error('Category not found')
-      query = query.eq('category_id', category.id)
-    } else if (isTag && route.query.tag === 'best-selling') {
-      query = query
-        .gt('sales_count', 100)
-        .order('sales_count', { ascending: false })
-    } else if (isSearch) {
-      query = query.contains('tags', [productTag.value]);
-    } else if (isFilters && filter) {
-      if (filteredCategories.value.length) {
-        const categoryIds = await getCategoryIdsBySlugs(filteredCategories.value);
-        query = query.in('category_id', categoryIds);
-      }
+  if (isCategory) {
+    const categorySlug = route.query.category
+    const { data: category, error: categoryError } = await supabase
+      .from('categories')
+      .select('id')
+      .eq('slug', categorySlug)
+      .single()
+    if (categoryError || !category) throw categoryError || new Error('Category not found')
+    query = query.eq('category_id', category.id)
+  } else if (isTag && route.query.tag === 'best-selling') {
+    query = query
+      .gt('sales_count', 100)
+      .order('sales_count', { ascending: false })
+  } else if (isSearch) {
+    query = query.contains('tags', [productTag.value]);
+  } else if (hasFilters && filter) {
+    if (filteredCategories.value.length) {
+      const categoryIds = await getCategoryIdsBySlugs(filteredCategories.value);
+      query = query.in('category_id', categoryIds);
+    }
 
-      if (selectedPrice.value) {
-        const priceRange = parsePriceRange(selectedPrice.value);
-        if (priceRange && !isNaN(priceRange.min) && !isNaN(priceRange.max)) {
-          query = query
-            .gte('discount_price', priceRange.min)
-            .lte('discount_price', priceRange.max);
-        }
-      }
-
-      if (selectedRating.value) {
-        const minRating = parseRating(selectedRating.value);
-        if (minRating && !isNaN(minRating)) {
-          query = query.gte('rating', minRating);
-        }
+    if (selectedPrice.value) {
+      const priceRange = parsePriceRange(selectedPrice.value);
+      if (priceRange && !isNaN(priceRange.min) && !isNaN(priceRange.max)) {
+        query = query
+          .gte('discount_price', priceRange.min)
+          .lte('discount_price', priceRange.max);
       }
     }
 
-    const { data: products, error: productsError } = await query
+    if (selectedRating.value) {
+      const minRating = parseRating(selectedRating.value);
+      if (minRating && !isNaN(minRating)) {
+        query = query.gte('rating', minRating);
+      }
+    }
+  }
+
+  return query;
+}
+
+// Fetch products
+const fetchProducts = async (filter) => {
+  isLoading.value = true
+  const hasFilters = route.query?.categories || route.query?.price || route.query?.rating
+
+  try {
+    const { data: products, error: productsError } = await buildQuery(route.query, filter, hasFilters)
     if (productsError) throw productsError
 
     productsArr.value = products
@@ -477,7 +481,7 @@ const fetchProducts = async (filter) => {
     }
 
     // If no filtered results
-    if (!productsArr.value.length && isFilters && filter) {
+    if (!productsArr.value.length && hasFilters && filter) {
       router.replace({ query: {} })
       clearFilters()
 
