@@ -222,12 +222,14 @@ import { watch, computed, ref, onMounted, onUnmounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
 import { supabase } from '@/supabase'
 import Swal from 'sweetalert2'
+import { useSpinner } from '@/stores/spinnerStore'
 
 import ProductCard from '@/components/ProductCard.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import ProductCardSkeleton from '@/components/ProductCardSkeleton.vue'
 import noResultsIcon from '@/assets/img/no-results.png'
 
+const spinner = useSpinner()
 const router = useRouter()
 const route = useRoute()
 const filtersOpen = ref(false)
@@ -314,6 +316,7 @@ const useTitleCaseConcat = (words) => {
 }
 
 const clearFilters = async () => {
+  spinner.start();
   categories.value.forEach(category => {
     category.isSelected = false
   })
@@ -328,11 +331,13 @@ const clearFilters = async () => {
   localStorage.removeItem('selectedRating')
 
   filtersOpen.value = false;
+  spinner.stop();
 }
 
 const applyFilters = async () => {
   isFiltered.value = true
   const query = { ...route.query };
+  spinner.start();
 
   delete query.q;
   delete query.category;
@@ -355,6 +360,7 @@ const applyFilters = async () => {
 
   searchQuery.value = '';
   filtersOpen.value = false;
+  spinner.stop()
 
   // Save the new selected filters
   localStorage.setItem('selectedCategories', JSON.stringify(filteredCategories.value))
