@@ -41,7 +41,7 @@ onMounted(async () => {
 <template>
     <!-- Spinner -->
     <div class="w-full fixed left-0 right-0 bottom-0 top-0 z-50 flex items-center justify-center" v-if="spinner.isLoading">
-        <img :src="Spinner" alt="Spinner" class="w-34 h-34">
+        <img :src="Spinner" alt="Spinner" class="w-38 h-38">
     </div>
     <div v-if="!auth.loading">
         <div class="fixed top-0 left-0 right-0 z-[2]">
