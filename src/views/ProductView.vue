@@ -1,7 +1,7 @@
 <template>
   <section class="flex items-center justify-center w-full pt-5 md:pt-10">
     <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
-      <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-base mb-8 sm:mb-16">{{ productObj.name }}</h2>
+      <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-base mb-8 sm:mb-16">{{ productObj?.name }}</h2>
       <div class="flex gap-10">
         <!-- Product Images -->
         <div class="grid grid-cols-2 gap-2 basis-[60%]">
@@ -29,9 +29,9 @@
               <p class="text-gray-500 text-sm">(150 Reviews)</p>
               <span class="text-green-600 text-sm font-medium">In Stock</span>
             </div>
-            <p class="text-2xl font-semibold mt-2">&#8369;{{ productObj.discount_price }}</p>
+            <p class="text-2xl font-semibold mt-2">&#8369;{{ productObj?.discount_price }}</p>
           </header>
-          <p class="text-gray-600 lead-[1.7]">{{ productObj.description }}</p>
+          <p class="text-gray-600 lead-[1.7]">{{ productObj?.description }}</p>
           <!-- Color Options -->
           <div>
             <h2 class="text-sm font-medium mb-1">Colours:</h2>
