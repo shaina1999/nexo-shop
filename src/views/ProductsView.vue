@@ -10,8 +10,8 @@
             <span class="font-regular text-gray-500"> {{ productsArr?.length }} items found</span>
           </span>
           <span class="inline-block md:flex items-center gap-x-3 text-base md:text-lg font-semibold" v-else>
-            {{ route.query.tag || route.query.category ? useTitleCaseConcat(route.query?.tag || route.query.category) : 'Browse All Products' }} 🛍️
-            <span class="text-sm text-gray-500 !font-normal">{{ productsArr.length ? productsArr.length +' items' : '' }}</span>
+            {{ route.query.tag || route.query.category ? useTitleCaseConcat(route.query?.tag || route.query.category) : 'Browse Products' }} 🛍️
+            <span class="text-sm text-gray-500 !font-normal inline-block min-w-[70px]">{{ productsArr.length ? productsArr.length +' items' : '' }}</span>
           </span>
         </p>
         <div class="flex items-center gap-x-3">
@@ -191,7 +191,7 @@
                   v-model="selectedSortOption" 
                   :id="index" 
                   class="opacity-0 absolute left-0 right-0 top-0 bottom-0 w-full h-full cursor-pointer"
-                  @change="handleSortOptionChange"
+                  @change="sortProducts"
                 >
                 <span>{{ sortingOption.label }}</span>
               </li>
@@ -218,9 +218,10 @@
 </template>
 
 <script setup>
-import { watch, watchEffect, computed, ref, onMounted, onUnmounted } from 'vue';
+import { watch, computed, ref, onMounted, onUnmounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
 import { supabase } from '@/supabase'
+import Swal from 'sweetalert2'
 
 import ProductCard from '@/components/ProductCard.vue'
 import BaseButton from '@/components/BaseButton.vue'
@@ -233,13 +234,13 @@ const sortingOptionOpen = ref(false)
 const selectedPrice = ref(null)
 const selectedRating = ref(null)
 const selectedSortOption = ref(null)
-const selectedCategories = ref([])
 const productsArr = ref([])
 const suggestedProductsArr = ref([])
 const isLoading = ref(false)
 const searchQuery = ref(localStorage.getItem('searchTerm'))
 const productTag = ref(localStorage.getItem('productTag'))
 const categories = ref([])
+let hasSavedFilters = ref(false)
 
 const priceFilter = [
   { label: "Below PHP 100", min: 1, max: 99 },
@@ -298,72 +299,17 @@ const parsePriceRange = (priceStr) => {
   }
 
   return { min: 0, max: Infinity };
-};
+}
 
 const parseRating = (ratingStr) => {
   if (!ratingStr) return null;
   const match = ratingStr.match(/(\d+)/);
   return match ? Number(match[1]) : null;
-};
+}
 
-const applyFilters = async () => {
-  isLoading.value = true;
-
-  try {
-    if (!filteredCategories.value.length) {
-      productsArr.value = [];
-      isLoading.value = false;
-      return;
-    }
-
-    const { data: categories, error: categoryError } = await supabase
-      .from('categories')
-      .select('id')
-      .in('slug', filteredCategories.value);
-
-    if (categoryError) throw categoryError;
-
-    const categoryIds = categories.map(cat => cat.id);
-
-    let productQuery = supabase
-      .from('products')
-      .select('*')
-      .in('category_id', categoryIds);
-
-    const priceRange = parsePriceRange(selectedPrice.value);
-    if (priceRange && !isNaN(priceRange.min) && !isNaN(priceRange.max)) {
-      productQuery = productQuery
-        .gte('discount_price', priceRange.min)
-        .lte('discount_price', priceRange.max);
-    }
-
-    const minRating = parseRating(selectedRating.value);
-    if (minRating && !isNaN(minRating)) {
-      productQuery = productQuery.gte('rating', minRating);
-    }
-
-    const { data: products, error: productError } = await productQuery;
-
-    if (productError) throw productError;
-
-    searchQuery.value = '';
-    productsArr.value = products;
-
-    const query = { ...route.query };
-    delete query.q;
-    delete query.category;
-    query.categories = filteredCategories.value.join(',');
-    router.replace({ query });
-  } catch (error) {
-    console.error('Error applying filters:', error);
-  } finally {
-    isLoading.value = false;
-    filtersOpen.value = false;
-    localStorage.setItem('selectedCategories', JSON.stringify(filteredCategories.value))
-    localStorage.setItem('selectedPrice', selectedPrice.value)
-    localStorage.setItem('selectedRating', selectedRating.value)
-  }
-};
+const useTitleCaseConcat = (words) => {
+  return words.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
+}
 
 const clearFilters = () => {
   categories.value.forEach(category => {
@@ -377,10 +323,40 @@ const clearFilters = () => {
   localStorage.removeItem('selectedRating')
 }
 
-const handleSortOptionChange = () => {
+const applyFilters = async () => {
+  const query = { ...route.query };
+
+  delete query.q;
+  delete query.category;
+  delete query.tag;
+  delete query.categories;
+  delete query.price;
+  delete query.rating;
+  if (filteredCategories.value.length) {
+    query.categories = filteredCategories.value.join(',');
+  }
+  if (selectedPrice.value) {
+    query.price = selectedPrice.value.replace(/\s+/g, '');
+  }
+  if (selectedRating.value) {
+    query.rating = selectedRating.value.replace(/[\s&]+/g, '');
+  }
+  await router.replace({ query });
+
+  await fetchProducts(true) // set to true to apply filters
+
+  searchQuery.value = '';
+  filtersOpen.value = false;
+
+  // Save the new selected filters
+  localStorage.setItem('selectedCategories', JSON.stringify(filteredCategories.value))
+  localStorage.setItem('selectedPrice', selectedPrice.value)
+  localStorage.setItem('selectedRating', selectedRating.value)
+}
+
+const sortProducts = () => {
   const targetArr = productsArr.value.length ? productsArr : suggestedProductsArr;
 
-  // Create a new sorted array based on the selected option
   const sorted = [...targetArr.value].sort((a, b) => {
     switch (selectedSortOption.value) {
       case 'Top Rated':
@@ -399,10 +375,6 @@ const handleSortOptionChange = () => {
   sortingOptionOpen.value = false;
 
   localStorage.setItem('sortOption', selectedSortOption.value);
-};
-
-const useTitleCaseConcat = (words) => {
-  return words.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
 }
 
 const searchProduct = async (tag) => {
@@ -418,6 +390,128 @@ const searchProduct = async (tag) => {
   }
 
   isLoading.value = false
+}
+
+// Fetch products
+const fetchProducts = async (filter) => {
+  isLoading.value = true
+
+  const isCategory = route.query?.category
+  const isTag = route.query?.tag
+  const isSearch = route.query?.q
+  const isFilters = route.query?.categories || route.query?.price || route.query?.rating
+
+  let query = supabase.from('products').select('*')
+
+  try {
+    if (isCategory) {
+      const categorySlug = route.query.category
+      const { data: category, error: categoryError } = await supabase
+        .from('categories')
+        .select('id')
+        .eq('slug', categorySlug)
+        .single()
+      if (categoryError || !category) throw categoryError || new Error('Category not found')
+      query = query.eq('category_id', category.id)
+    } else if (isTag && route.query.tag === 'best-selling') {
+      query = query
+        .gt('sales_count', 100)
+        .order('sales_count', { ascending: false })
+    } else if (isSearch) {
+      query = query.contains('tags', [productTag.value]);
+    } else if (isFilters && filter) {
+      if (filteredCategories.value.length) {
+        const { data: categories, error: categoryError } = await supabase
+        .from('categories')
+        .select('id')
+        .in('slug', filteredCategories.value);
+        const categoryIds = categories.map(cat => cat.id);
+        query = query.in('category_id', categoryIds);
+      }
+
+      if (selectedPrice.value) {
+        const priceRange = parsePriceRange(selectedPrice.value);
+        if (priceRange && !isNaN(priceRange.min) && !isNaN(priceRange.max)) {
+          query = query
+            .gte('discount_price', priceRange.min)
+            .lte('discount_price', priceRange.max);
+        }
+      }
+
+      if (selectedRating.value) {
+        const minRating = parseRating(selectedRating.value);
+        if (minRating && !isNaN(minRating)) {
+          query = query.gte('rating', minRating);
+        }
+      }
+    }
+
+    const { data: products, error: productsError } = await query
+    if (productsError) throw productsError
+
+    productsArr.value = products
+
+    // If returns no results, show suggested products instead
+    if (!productsArr.length) {
+      const { data: products, error: productsError } = await supabase.from('products').select('*')
+      suggestedProductsArr.value = products
+    }
+
+    // Sort products
+    if (selectedSortOption.value) {
+      sortProducts()
+    }
+  } catch (err) {
+    console.log(err.message)
+    Swal.fire({
+        title: 'Something went wrong',
+        html: 'Please try again later',
+        icon: 'error',
+        confirmButtonText: 'Ok'
+    })
+    const { data: products, error: productsError } = await supabase.from('products').select('*')
+    productsArr.value = products
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const fetchCategories = async () => {
+  try {
+    let { data: items, error } = await supabase.from('categories').select('*')
+    if (error) {
+      console.error('Error fetching categories:', error)
+    } else {
+      categories.value = items.map(category => ({
+        ...category,
+        isSelected: false
+      }))
+    }
+  } catch (err) {
+    console.error('Error fetching categories:', err)
+  }
+}
+
+const populateAndCheckSavedFilters = async () => {
+  const savedCategories = JSON.parse(localStorage.getItem('selectedCategories'))
+  if (savedCategories?.length) {
+    categories.value.forEach((category) => {
+      category.isSelected = savedCategories.includes(category.slug)
+    })
+    hasSavedFilters.value = true
+  }
+
+  const savedPrice = localStorage.getItem('selectedPrice')
+  if (savedPrice) {
+    selectedPrice.value = savedPrice
+    hasSavedFilters.value = true
+  }
+
+  const savedRating = localStorage.getItem('selectedRating')
+  if (savedRating) {
+    selectedRating.value = savedRating
+    hasSavedFilters.value = true
+  }
 }
 
 watch([filtersOpen, sortingOptionOpen], (newVal) => {
@@ -441,97 +535,10 @@ watch(route, () => {
 
 onMounted(async () => {
   isLoading.value = true
-
-  try {
-    const categorySlug = route.query.category
-    const tag = route.query.tag
-    const categorySlugsArray = route.query.categories?.split(',')
-
-    let query = supabase.from('products').select('*')
-
-    if (categorySlug) {
-      const { data: category, error: categoryError } = await supabase
-        .from('categories')
-        .select('id')
-        .eq('slug', categorySlug)
-        .single()
-
-      if (categoryError || !category) throw categoryError || new Error('Category not found')
-      query = query.eq('category_id', category.id)
-    } else if (tag === 'best-selling') {
-      query = query
-        .gt('sales_count', 100)
-        .order('sales_count', { ascending: false })
-    } else if (route.query?.q) {
-      query = query.contains('tags', [productTag.value]);
-    } else if (categorySlugsArray.length) {
-      const { data: categories, error: categoriesError } = await supabase
-      .from('categories')
-      .select('id, slug')
-      .in('slug', categorySlugsArray);
-      
-      const categoryIds = categories?.map(category => category.id) || [];
-      query = query.in('category_id', categoryIds)
-    }
-
-    const { data: products, error: productsError } = await query
-    if (productsError) throw productsError
-
-    productsArr.value = products
-
-    if (!productsArr.value.length) {
-      const { data: products, error: productsError } = await supabase.from('products').select('*')
-      suggestedProductsArr.value = products
-    }
-
-    selectedSortOption.value = localStorage.getItem('sortOption')
-    handleSortOptionChange()
-  } catch (err) {
-    console.error('Error fetching products:', err)
-  } finally {
-    isLoading.value = false
-  }
-
-  try {
-    let { data: items, error } = await supabase.from('categories').select('*')
-    if (error) {
-      console.error('Error fetching categories:', error)
-    } else {
-      categories.value = items.map(category => ({
-        ...category,
-        isSelected: false
-      }))
-    }
-  } catch (err) {
-    console.error('Error fetching products:', err)
-  } finally {
-    isLoading.value = false
-
-    let hasSavedFilters = false
-    const savedCategories = JSON.parse(localStorage.getItem('selectedCategories'))
-    if (savedCategories?.length) {
-      categories.value.forEach((category) => {
-        category.isSelected = savedCategories.includes(category.slug)
-      })
-      hasSavedFilters = true
-    }
-
-    const savedPrice = localStorage.getItem('selectedPrice')
-    if (savedPrice) {
-      selectedPrice.value = savedPrice
-      hasSavedFilters = true
-    }
-
-    const savedRating = localStorage.getItem('selectedRating')
-    if (savedRating) {
-      selectedRating.value = savedRating
-      hasSavedFilters = true
-    }
-
-    if (hasSavedFilters) {
-      applyFilters()
-    }
-  }
+  selectedSortOption.value = localStorage.getItem('sortOption') || ''
+  await fetchCategories() // Populate categories first
+  await populateAndCheckSavedFilters() // Check for saved filter before loading the products
+  fetchProducts(hasSavedFilters) // Pass hasSavedFilters to apply filters conditionally
 })
 
 onUnmounted(() => {
