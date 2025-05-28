@@ -2,6 +2,7 @@
 import { useElementSize } from '@vueuse/core'
 import { computed, useTemplateRef, ref, onMounted, watch } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
+import { useSpinner } from '@/stores/spinnerStore'
 import { useRoute } from 'vue-router'
 
 import NotificationBar from '@/components/NotificationBar.vue'
@@ -15,6 +16,7 @@ const { width, height } = useElementSize(notificationBarRef)
 const windowWidth = ref(window.innerWidth)
 const headerHeight = computed(() => windowWidth.value > 1024 ? 97 : 112)
 const auth = useAuthStore()
+const spinner = useSpinner()
 const showScrollTopButton = ref(false)
 const mainContainerRef = ref(null)
 const route = useRoute()
@@ -38,7 +40,7 @@ onMounted(async () => {
 
 <template>
     <!-- Spinner -->
-    <div class="w-full fixed left-0 right-0 bottom-0 top-0 z-50 flex items-center justify-center">
+    <div class="w-full fixed left-0 right-0 bottom-0 top-0 z-50 flex items-center justify-center" v-if="spinner.isLoading">
         <img :src="Spinner" alt="Spinner">
     </div>
     <div v-if="!auth.loading">
