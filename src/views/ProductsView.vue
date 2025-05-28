@@ -469,6 +469,16 @@ const buildQuery = async (routeQuery, filter, hasFilters) => {
   return query;
 }
 
+const fetchAllProducts = async () => {
+  const { data: products, error } = await supabase.from('products').select('*')
+
+  if (error) {
+    throw error
+  }
+
+  return products
+}
+
 // Fetch products
 const fetchProducts = async (filter) => {
   isLoading.value = true
@@ -482,8 +492,11 @@ const fetchProducts = async (filter) => {
 
     // If returns no results, show suggested products instead
     if (!productsArr.length) {
-      const { data: products, error: productsError } = await supabase.from('products').select('*')
-      suggestedProductsArr.value = products
+      try {
+        suggestedProductsArr.value = await fetchAllProducts()
+      } catch (err) {
+        console.error('Failed to load products:', err)
+      }
     }
 
     // If no filtered results
@@ -505,15 +518,19 @@ const fetchProducts = async (filter) => {
       sortProducts()
     }
   } catch (err) {
-    console.log(err.message)
     Swal.fire({
       title: 'Something went wrong',
       html: 'Please try again later',
       icon: 'error',
       confirmButtonText: 'Ok'
     })
-    const { data: products, error: productsError } = await supabase.from('products').select('*')
-    productsArr.value = products
+
+    try {
+      productsArr.value = await fetchAllProducts()
+    } catch (err) {
+      console.error('Failed to load products:', err)
+    }
+    
   } finally {
     isLoading.value = false
   }
