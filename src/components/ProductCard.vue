@@ -34,8 +34,8 @@
                     {{ product.name }}
                 </button>
                 <div class="flex items-center gap-x-2.5 mb-1 sm:mb-2.5 text-sm sm:text-base">
-                    <span class="text-secondary-500">Php {{ product.discount_price }}</span>
-                    <del class="text-gray-500 decoration-dashed">Php {{ product.price }}</del>
+                    <span class="text-secondary-500">Php {{ formatAmount(product.discount_price) }}</span>
+                    <del class="text-gray-500 decoration-dashed">Php {{ formatAmount(product.price) }}</del>
                 </div>
                 <div class="flex items-center text-sm sm:text-base gap-2">
                     <div>{{ product.sales_count }} sold</div>
@@ -43,7 +43,7 @@
                     <div class="flex items-center gap-x-1">
                         <PhStar class="text-yellow-500" weight="fill" />
                         <span class="font-medium">{{ product.rating }}</span>
-                        <span class="text-gray-500">{{ `(${product.discount_price})` }}</span>
+                        <span class="text-gray-500">{{ `(591)` }}</span>
                     </div>
                 </div>
             </div>
@@ -53,8 +53,10 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
+import { useCurrencyFormat } from '@/composables/currencyFormat'
 
 const router = useRouter()
+const { formatAmount } = useCurrencyFormat()
 
 defineProps({
     product: Object

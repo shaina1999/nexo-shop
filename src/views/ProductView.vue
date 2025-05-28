@@ -34,7 +34,7 @@
               <span class="text-gray-300 mx-2.5">&VerticalLine;</span>
               <span class="text-green-600 text-sm font-medium py-0.5 px-2.5 bg-green-100 rounded-sm">In Stock</span>
             </div>
-            <p class="text-2xl font-semibold">Php {{ productObj?.discount_price }}</p>
+            <p class="text-2xl font-semibold">Php {{ formatAmount(productObj?.discount_price) }}</p>
           </header>
           <p class="text-gray-600 lead-[1.7]">{{ productObj?.description }}</p>
           <!-- Color Options -->
@@ -93,10 +93,12 @@
 import { watch, computed, ref, onMounted, onUnmounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
 import { supabase } from '@/supabase'
+import { useCurrencyFormat } from '@/composables/currencyFormat'
 
 const route = useRoute()
 const productObj = ref(null)
 const isLoading = ref(false)
+const { formatAmount } = useCurrencyFormat()
 
 const fetchProduct = async () => {
   isLoading.value = true
