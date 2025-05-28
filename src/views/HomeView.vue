@@ -2,7 +2,7 @@
     <!-- Hero Section -->
     <section class="flex items-center justify-center w-full hero">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl flex">
-            <div class="p-6 md:p-10 mt-10 bg-black text-white max-h-max w-full lg:max-h-[344px]" :class="{ 'skeleton-loader h-[330px]' : promotionProductsLoading }">
+            <div class="p-6 md:p-10 mt-10 bg-black text-white max-h-max w-full lg:max-h-[344px]" :class="{ 'skeleton-loader h-[330px]' : featuredProductsLoading }">
                 <Splide 
                     :options="{
                         type: 'loop', 
@@ -17,20 +17,20 @@
                         }
                     }"
                 >
-                    <SplideSlide v-for="promotionProduct in promotionProducts" :key="promotionProduct.id">
+                    <SplideSlide v-for="featuredProduct in featuredProducts" :key="featuredProduct.id">
                         <div class="flex items-baseline md:items-center gap-y-8 sm:gap-y-12 md:gap-y-0 justify-center flex-col md:flex-row">
                             <div class="shrink">
                                 <div class="flex items-center gap-x-6 mb-3 md:mb-6 font-medium">
-                                    <span>{{ promotionProduct.title }}</span>
+                                    <span>{{ featuredProduct.name }}</span>
                                 </div>
-                                <div class="font-semibold text-[26px] sm:text-[38px] md:text-[46px]/14 mb-3 md:mb-6 whitespace-normal lg:whitespace-nowrap">{{ promotionProduct.description }}</div>
+                                <div class="font-semibold text-[26px] sm:text-[38px] md:text-[46px]/14 mb-3 md:mb-6 whitespace-normal lg:whitespace-nowrap">{{ featuredProduct.featured_description }}</div>
                                 <RouterLink class="flex items-center gap-x-2 font-medium" to="/product">
                                     <span class="border-b-[1px] border-white text-white bg-transparent">Get this now</span>
                                     <PhArrowRight :size="22" />
                                 </RouterLink>
                             </div>
                             <div class="w-[90%] md:w-[450px] h-[160px] sm:h-[250px]">
-                                <img :src="promotionProduct.image_url" :alt="promotionProduct.title" class="w-full h-full object-contain">
+                                <img :src="featuredProduct.images[0].url" :alt="featuredProduct.images[0].alt" class="w-full h-full object-contain">
                             </div>
                         </div>
                     </SplideSlide>
@@ -295,11 +295,11 @@ import CategoriesSkeleton from '@/components/CategoriesSkeleton.vue'
 import SliderProductSkeleton from '@/components/SliderProductSkeleton.vue'
 
 const splideInstances = ref({})
-const promotionProducts = ref([])
+const featuredProducts = ref([])
 const categories = ref([])
 const bestSellingProducts = ref([])
 const products = ref([])
-const promotionProductsLoading = ref(false)
+const featuredProductsLoading = ref(false)
 const categoriesLoading = ref(false)
 const bestSellingProductsLoading = ref(false)
 const productsLoading = ref(false)
@@ -318,12 +318,13 @@ const goNext = (key) => {
   splideInstances.value[key]?.go('>')
 }
 
-// Promotions Products
-const getPromotionsProducts = async () => {
-    promotionProductsLoading.value = true
-    let { data: products, error } = await supabase.from('promotions').select('*')
-    promotionProducts.value = products
-    promotionProductsLoading.value = false
+// Featured Products
+const getFeaturedProducts = async () => {
+    featuredProductsLoading.value = true
+    let { data: products, error } = await supabase.from('products').select('*').eq('is_featured', true);
+    featuredProducts.value = products
+    featuredProductsLoading.value = false
+    console.log(featuredProducts.value)
 }
 
 // Product Categories
@@ -351,7 +352,7 @@ const getProducts = async () => {
 }
 
 onMounted(async () => {
-    getPromotionsProducts()
+    getFeaturedProducts()
     getCategories()
     getBestSellingProducts()
     getProducts()
