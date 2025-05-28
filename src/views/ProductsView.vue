@@ -406,6 +406,15 @@ const searchProduct = async (tag) => {
   isLoading.value = false
 }
 
+const getCategoryIdsBySlugs = async (slugs) => {
+  const { data, error } = await supabase
+    .from('categories')
+    .select('id')
+    .in('slug', slugs);
+  if (error) throw error;
+  return data.map(cat => cat.id)
+}
+
 // Fetch products
 const fetchProducts = async (filter) => {
   isLoading.value = true
@@ -435,11 +444,7 @@ const fetchProducts = async (filter) => {
       query = query.contains('tags', [productTag.value]);
     } else if (isFilters && filter) {
       if (filteredCategories.value.length) {
-        const { data: categories, error: categoryError } = await supabase
-        .from('categories')
-        .select('id')
-        .in('slug', filteredCategories.value);
-        const categoryIds = categories.map(cat => cat.id);
+        const categoryIds = await getCategoryIdsBySlugs(filteredCategories.value);
         query = query.in('category_id', categoryIds);
       }
 
