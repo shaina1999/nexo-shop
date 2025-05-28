@@ -1,22 +1,27 @@
 <template>
   <section class="flex items-center justify-center w-full pt-5 md:pt-10">
     <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
-      <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-base mb-8 sm:mb-16">Product Details</h2>
-      <div class="product-grid">
-        <div class="flex lg:flex-col gap-4 order-2 lg:order-1">
-          <!-- Thumbnails -->
-          <div class="flex lg:flex-col gap-4 order-2 lg:order-1">
-            <!-- <img v-for="n in 4" :key="n" :src="product.images[0]?.url" :alt="product.images[0]?.alt" class="w-20 h-20 object-cover cursor-pointer border rounded" /> -->
+      <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-base mb-8 sm:mb-16">{{ productObj.name }}</h2>
+      <div class="flex gap-10">
+        <!-- Product Images -->
+        <div class="grid grid-cols-2 gap-2 basis-[60%]">
+          <div class="bg-gray-200 p-6 flex items-center justify-center">
+            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-[90%] object-cover rounded" />
           </div>
-          <!-- Main Image -->
-          <div class="flex-1 order-1 lg:order-2">
-            <img :src="productOj?.images[0]?.url" :alt="productOj?.images[0]?.alt" class="w-full object-cover rounded" />
+          <div class="bg-gray-200 p-6 flex items-center justify-center">
+            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-[90%] object-cover rounded" />
+          </div>
+          <div class="bg-gray-200 p-6 flex items-center justify-center">
+            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-[90%] object-cover rounded" />
+          </div>
+          <div class="bg-gray-200 p-6 flex items-center justify-center">
+            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-[90%] object-cover rounded" />
           </div>
         </div>
         <!-- Product Details -->
-        <article class="space-y-6">
+        <article class="space-y-6 basis-[40%]">
           <header>
-            <h1 class="text-2xl font-bold">{{ productOj?.name }}</h1>
+            <h1 class="text-2xl font-bold">{{ productObj?.name }}</h1>
             <div class="flex items-center space-x-2">
               <div class="flex text-yellow-400">
                 ★★★★☆
@@ -24,9 +29,9 @@
               <p class="text-gray-500 text-sm">(150 Reviews)</p>
               <span class="text-green-600 text-sm font-medium">In Stock</span>
             </div>
-            <p class="text-2xl font-semibold mt-2">$192.00</p>
+            <p class="text-2xl font-semibold mt-2">&#8369;{{ productObj.discount_price }}</p>
           </header>
-          <p class="text-gray-600">PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive. </p>
+          <p class="text-gray-600 lead-[1.7]">{{ productObj.description }}</p>
           <!-- Color Options -->
           <div>
             <h2 class="text-sm font-medium mb-1">Colours:</h2>
@@ -85,22 +90,18 @@ import { useRouter, useRoute } from 'vue-router'
 import { supabase } from '@/supabase'
 
 const route = useRoute()
-const productOj = ref(null)
+const productObj = ref(null)
+const isLoading = ref(false)
 
 const fetchProduct = async () => {
+  isLoading.value = true
   const id = route.query?.id
   const { data: product, error } = await supabase.from('products').select('*').eq('id', id).single();
-  productOj.value = product
+  productObj.value = product
+  isLoading.value = false
 }
 
 onMounted(() => {
   fetchProduct()
 })
 </script>
-
-<style scoped>
-.product-grid{
-  display: grid;
-  grid-template-columns: 670px auto;
-}
-</style>
