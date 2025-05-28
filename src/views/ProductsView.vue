@@ -144,9 +144,9 @@
         </div>
         <div class="flex items-center gap-4 py-4 px-6 border-t-[1px] border-t-gray-300">
           <BaseButton 
-            :disabled="isLoading"
             class="w-full text-sm md:text-base py-1.5! px-2.5! md:py-2! md:px-4.5! flex items-center justify-center gap-x-1 bg-white text-black! border-[1px] border-black/50 hover:bg-gray-200!"
             @click="clearFilters"
+            :disabled="!isApplyEnabled || isLoading"
           >
             <span>Clear</span>
           </BaseButton>
@@ -313,16 +313,21 @@ const useTitleCaseConcat = (words) => {
   return words.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
 }
 
-const clearFilters = () => {
+const clearFilters = async () => {
   categories.value.forEach(category => {
     category.isSelected = false
   })
   selectedPrice.value = null
   selectedRating.value = null
 
+  await router.replace({ query: {} })
+  await fetchProducts(false)
+
   localStorage.removeItem('selectedCategories')
   localStorage.removeItem('selectedPrice')
   localStorage.removeItem('selectedRating')
+
+  filtersOpen.value = false;
 }
 
 const applyFilters = async () => {
