@@ -39,13 +39,14 @@
           </header>
           <p class="text-gray-600 lead-[1.7]">{{ productObj?.description }}</p>
           <!-- Color Options -->
-          <div>
-            <h2 class="text-base font-medium mb-1">Colours:</h2>
-            <div class="flex items-center gap-3">
-              <button class="w-5 h-5 rounded-full border-2 border-gray-400 bg-red-500"></button>
-              <button class="w-5 h-5 rounded-full border-2 border-gray-400 bg-blue-500"></button>
+          <section>
+            <h2 class="text-base font-medium mb-1">Colors:</h2>
+            <div class="flex gap-3">
+              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out text-white bg-secondary-500 border-secondary-500">Green</button>
+              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out">Pink</button>
+              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out">Yello</button>
             </div>
-          </div>
+          </section>
           <!-- Size Options -->
           <section>
             <h2 class="text-base font-medium mb-1">Size:</h2>
