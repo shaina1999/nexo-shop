@@ -69,8 +69,16 @@
             </div>
 
             <div class="flex items-center gap-2">
-              <BaseButton class="w-full text-sm md:text-base !py-3 !px-2.5 !md:py-3.5 !md:px-4.5 flex items-center justify-center font-medium gap-x-1 bg-white !text-secondary-500 border-[1px] border-secondary-500 hover:!bg-secondary-100">Buy Now</BaseButton>
-              <BaseButton class="w-full text-sm md:text-base !py-3 !px-2.5 !md:py-3.5 !md:px-4.5 flex items-center justify-center font-medium">Add to Cart</BaseButton>
+              <BaseButton class="w-full text-sm md:text-base !py-3 !px-2.5 !md:py-3.5 !md:px-4.5 flex items-center justify-center font-medium gap-x-2">
+                <span>Add to Cart</span>
+                <PhShoppingCart :size="22" />
+              </BaseButton>
+              <BaseButton 
+                class="w-full text-sm md:text-base !py-3 !px-2.5 !md:py-3.5 !md:px-4.5 flex items-center justify-center font-medium gap-x-2 bg-white !text-secondary-500 border-[1px] border-secondary-500 hover:!bg-secondary-100"
+              >
+                <span>Add to wishlist</span>
+                <PhHeart :size="22" />
+              </BaseButton>
             </div>
           </section>
         </article>
