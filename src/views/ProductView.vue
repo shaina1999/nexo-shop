@@ -4,9 +4,9 @@
       <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-base mb-8 sm:mb-16">{{ productObj?.name }}</h2>
       <div class="flex gap-10 flex-col lg:flex-row">
         <!-- Product Images -->
-        <div class="flex basis-[60%] gap-2 flex-col-reverse lg:flex-row">
-          <div class="grid grid-cols-4 lg:grid-cols-1 gap-2 basis-[100px] shrink-0">
-            <div class="bg-gray-200 p-3 flex items-center justify-center cursor-pointer border-[2px] border-secondary-500">
+        <div class="flex basis-[60%] gap-2 flex-col-reverse">
+          <div class="grid grid-cols-4 gap-2 basis-[100px] shrink-0">
+            <div class="bg-gray-200 p-3 flex items-center justify-center cursor-pointer">
               <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full object-cover rounded" />
             </div>
             <div class="bg-gray-200 p-3 flex items-center justify-center cursor-pointer">
