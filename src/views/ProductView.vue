@@ -69,7 +69,13 @@
                 >
                   <PhMinus :size="20" weight="bold" />
                 </button>
-                <input type="text" class="w-[80px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-base font-semibold h-full" v-model="quantity">
+                <input 
+                  type="text" 
+                  class="w-[80px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-base font-semibold h-full" 
+                  v-model="quantity"
+                  @input="handleQuantityInput"
+                  @paste="handleQuantityInput"
+                >
                 <button 
                   @click="increaseQuantity"
                   :disabled="quantity === maxQuantity"
@@ -112,7 +118,7 @@ const productObj = ref(null)
 const isLoading = ref(false)
 const { formatAmount } = useCurrencyFormat()
 const quantity = ref(1)
-const maxQuantity = ref(5)
+const maxQuantity = ref(50)
 
 const fetchProduct = async () => {
   isLoading.value = true
@@ -132,6 +138,19 @@ const decreaseQuantity = () => {
   if (quantity.value > 1) {
     quantity.value--
   }
+}
+
+const handleQuantityInput = (e) => {
+  const input = e.target.value.replace(/\D/g, '')
+  let parsed = parseInt(input)
+
+  if (isNaN(parsed) || parsed < 1) {
+    parsed = 1
+  } else if (parsed > maxQuantity.value) {
+    parsed = maxQuantity.value
+  }
+
+  quantity.value = parsed
 }
 
 onMounted(() => {
