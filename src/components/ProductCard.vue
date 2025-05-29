@@ -23,7 +23,7 @@
                 class="shadow-xl/5 bg-black text-white w-full p-1.5 transition-all duration-300 ease-in-out cursor-pointer add-to-cart mb-2 sm:mb-4 flex items-center justify-center gap-x-2"
                 @click.prevent.stop="addToCart">
                 <span class="text-sm">Add To Cart</span>
-                <PhPlus :size="18" />
+                <PhShoppingCart :size="18" />
                 <PhCheck :size="18" class="hidden" />
             </button>
             <div>
