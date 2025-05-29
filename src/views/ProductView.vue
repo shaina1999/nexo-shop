@@ -50,40 +50,29 @@
           <section>
             <h2 class="text-base font-medium mb-1">Size:</h2>
             <div class="flex gap-2">
-              <button class="px-3 py-1 border rounded">XS</button>
-              <button class="px-3 py-1 border rounded">S</button>
-              <button class="px-3 py-1 border rounded bg-red-500 text-white">M</button>
-              <button class="px-3 py-1 border rounded">L</button>
-              <button class="px-3 py-1 border rounded">XL</button>
+              <button class="px-3 py-1 border rounded-sm cursor-pointer hover:bg-secondary-500 hover:text-white transition-all duration-200 ease-in">XS</button>
+              <button class="px-3 py-1 border rounded-sm cursor-pointer hover:bg-secondary-500 hover:text-white transition-all duration-200 ease-in">S</button>
+              <button class="px-3 py-1 border rounded-sm cursor-pointer hover:bg-secondary-500 hover:text-white transition-all duration-200 ease-in bg-secondary-500 text-white">M</button>
+              <button class="px-3 py-1 border rounded-sm cursor-pointer hover:bg-secondary-500 hover:text-white transition-all duration-200 ease-in">L</button>
+              <button class="px-3 py-1 border rounded-sm cursor-pointer hover:bg-secondary-500 hover:text-white transition-all duration-200 ease-in">XL</button>
             </div>
           </section>
           <!-- Quantity and Action Buttons -->
-          <section class="flex items-center gap-4">
-            <div class="flex items-center border rounded overflow-hidden">
-              <button class="px-3 py-1 text-lg">−</button>
-              <span class="px-4">2</span>
-              <button class="px-3 py-1 text-lg">+</button>
+          <section class="flex flex-col gap-8">
+            <div class="flex flex-col">
+              <h2 class="text-base font-medium mb-1">Quantity:</h2>
+              <div class="flex items-center border rounded overflow-hidden w-max">
+                <button class="px-3 py-1 text-lg">−</button>
+                <span class="px-4">2</span>
+                <button class="px-3 py-1 text-lg">+</button>
+              </div>
             </div>
-            <button class="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600">Buy Now</button>
-            <button class="p-2 border rounded"><span class="sr-only">Add to wishlist</span>♡</button>
+
+            <div class="flex items-center gap-2">
+              <BaseButton class="w-full text-sm md:text-base !py-3 !px-2.5 !md:py-3.5 !md:px-4.5 flex items-center justify-center font-medium gap-x-1 bg-white !text-secondary-500 border-[1px] border-secondary-500 hover:!bg-secondary-100">Buy Now</BaseButton>
+              <BaseButton class="w-full text-sm md:text-base !py-3 !px-2.5 !md:py-3.5 !md:px-4.5 flex items-center justify-center font-medium">Add to Cart</BaseButton>
+            </div>
           </section>
-          <!-- Delivery Info -->
-          <footer class="space-y-4 pt-6 border-t mt-6">
-            <div class="flex items-start gap-4">
-              <div class="text-xl">🚚</div>
-              <div>
-                <p class="font-medium">Free Delivery</p>
-                <a href="#" class="text-blue-600 text-sm underline">Enter your postal code for Delivery Availability</a>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <div class="text-xl">↩️</div>
-              <div>
-                <p class="font-medium">Return Delivery</p>
-                <p class="text-sm">Free 30 Days Delivery Returns. <a href="#" class="text-blue-600 underline">Details</a></p>
-              </div>
-            </div>
-          </footer>
         </article>
       </div>
     </div>
@@ -95,6 +84,8 @@ import { watch, computed, ref, onMounted, onUnmounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
 import { supabase } from '@/supabase'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
+
+import BaseButton from '@/components/BaseButton.vue'
 
 const route = useRoute()
 const productObj = ref(null)
