@@ -61,10 +61,14 @@
           <section class="flex flex-col gap-8">
             <div class="flex flex-col">
               <h2 class="text-base font-medium mb-1">Quantity:</h2>
-              <div class="flex items-center border rounded overflow-hidden w-max">
-                <button class="px-3 py-1 text-lg">−</button>
-                <span class="px-4">2</span>
-                <button class="px-3 py-1 text-lg">+</button>
+              <div class="flex items-center rounded overflow-hidden w-max h-[44px]">
+                <button class="text-lg w-[40px] cursor-pointer h-full border-r-[1px] border flex items-center justify-center rounded-tl-sm rounded-bl-sm">
+                  <PhMinus :size="20" weight="bold" />
+                </button>
+                <input type="text" class="w-[80px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-base font-semibold h-full" v-model="quantity">
+                <button class="text-lg w-[40px] cursor-pointer h-full border-r-[1px] text-white border-secondary-500 flex items-center justify-center bg-secondary-500 rounded-tr-sm rounded-br-sm">
+                  <PhPlus :size="20" weight="bold" />
+                </button>
               </div>
             </div>
 
@@ -99,6 +103,7 @@ const route = useRoute()
 const productObj = ref(null)
 const isLoading = ref(false)
 const { formatAmount } = useCurrencyFormat()
+const quantity = ref(1)
 
 const fetchProduct = async () => {
   isLoading.value = true
