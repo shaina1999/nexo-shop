@@ -2,16 +2,16 @@
   <section class="flex items-center justify-center w-full pt-5 md:pt-10">
     <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
       <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-base mb-8 sm:mb-16 font-semibold">{{ productObj?.name }}</h2>
-      <div class="flex gap-6 sm:gap-10 flex-col lg:flex-row">
+      <div class="flex items-start gap-6 sm:gap-10 flex-col lg:flex-row">
         <!-- Product Images -->
         <div class="flex basis-[55%] gap-2 flex-col-reverse">
-          <div class="flex items-center gap-2 basis-[100px] shrink-0 overflow-x-auto overflow-y-hidden">
+          <div class="flex items-center gap-2 basis-[100px] w-auto lg:w-[624px] overflow-x-auto overflow-y-hidden">
             <div 
-              v-for="n in 7"
+              v-for="n in 9"
               :key="n"
               class="shrink-0 bg-gray-200 p-3 flex items-center justify-center cursor-pointer w-[100px] h-[100px] lg:w-[150px] lg:h-[150px]"
             >
-              <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full h-full object-contain rounded" />
+              <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full h-full sm:w-[80%] object-contain rounded" />
             </div>
           </div>
           <!-- Main Image -->
