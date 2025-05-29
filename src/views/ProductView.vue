@@ -19,7 +19,7 @@
               <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full object-cover rounded" />
             </div>
           </div>
-          <div class="p-3 flex items-center justify-center bg-gray-200">
+          <div class="p-3 flex items-center justify-center bg-gray-200 cursor-zoom-in">
             <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-[90%] object-cover rounded" />
           </div>
         </div>
