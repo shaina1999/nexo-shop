@@ -2,10 +2,10 @@
   <section class="flex items-center justify-center w-full pt-5 md:pt-10">
     <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
       <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-base mb-8 sm:mb-16">{{ productObj?.name }}</h2>
-      <div class="flex gap-10">
+      <div class="flex gap-10 flex-col lg:flex-row">
         <!-- Product Images -->
-        <div class="flex basis-[60%] gap-2">
-          <div class="grid grid-cols-1 gap-2 basis-[100px] shrink-0">
+        <div class="flex basis-[60%] gap-2 flex-col-reverse lg:flex-row">
+          <div class="grid grid-cols-4 lg:grid-cols-1 gap-2 basis-[100px] shrink-0">
             <div class="bg-gray-200 p-3 flex items-center justify-center cursor-pointer border-[2px] border-secondary-500">
               <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full object-cover rounded" />
             </div>
@@ -19,8 +19,9 @@
               <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full object-cover rounded" />
             </div>
           </div>
-          <div class="p-3 flex items-center justify-center bg-gray-200 cursor-zoom-in">
-            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-[90%] object-cover rounded" />
+          <!-- Main Image -->
+          <div class="p-3 flex items-center justify-center bg-gray-200 cursor-zoom-in h-[250px] lg:h-auto">
+            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full lg:w-[80%] h-full object-cover rounded" />
           </div>
         </div>
         <!-- Product Details -->
