@@ -1,26 +1,21 @@
 <template>
   <section class="flex items-center justify-center w-full pt-5 md:pt-10">
     <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
-      <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-base mb-8 sm:mb-16">{{ productObj?.name }}</h2>
-      <div class="flex gap-10 flex-col lg:flex-row">
+      <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-base mb-8 sm:mb-16 font-semibold">{{ productObj?.name }}</h2>
+      <div class="flex gap-6 sm:gap-10 flex-col lg:flex-row">
         <!-- Product Images -->
         <div class="flex basis-[55%] gap-2 flex-col-reverse">
-          <div class="grid grid-cols-4 gap-2 basis-[100px] shrink-0">
-            <div class="bg-gray-200 p-3 flex items-center justify-center cursor-pointer">
-              <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full object-cover rounded" />
-            </div>
-            <div class="bg-gray-200 p-3 flex items-center justify-center cursor-pointer">
-              <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full object-cover rounded" />
-            </div>
-            <div class="bg-gray-200 p-3 flex items-center justify-center cursor-pointer">
-              <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full object-cover rounded" />
-            </div>
-            <div class="bg-gray-200 p-3 flex items-center justify-center cursor-pointer">
-              <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full object-cover rounded" />
+          <div class="flex items-center gap-2 basis-[100px] shrink-0 overflow-x-auto overflow-y-hidden">
+            <div 
+              v-for="n in 7"
+              :key="n"
+              class="shrink-0 bg-gray-200 p-3 flex items-center justify-center cursor-pointer w-[100px] h-[100px] lg:w-[150px] lg:h-[150px]"
+            >
+              <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full h-full object-contain rounded" />
             </div>
           </div>
           <!-- Main Image -->
-          <div class="p-3 flex items-center justify-center bg-gray-200 cursor-zoom-in h-[250px] lg:h-auto">
+          <div class="p-3 flex items-center justify-center bg-gray-200 cursor-zoom-in h-[200px] md:h-[350px] lg:h-auto">
             <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full lg:w-[80%] h-full object-contain rounded" />
           </div>
         </div>
