@@ -4,17 +4,22 @@
       <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-base mb-8 sm:mb-16">{{ productObj?.name }}</h2>
       <div class="flex gap-10">
         <!-- Product Images -->
-        <div class="grid grid-cols-2 gap-2 basis-[60%]">
-          <div class="bg-gray-200 p-6 flex items-center justify-center">
-            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-[90%] object-cover rounded" />
+        <div class="flex basis-[60%] gap-2">
+          <div class="grid grid-cols-1 gap-2 basis-[100px] shrink-0">
+            <div class="bg-gray-200 p-3 flex items-center justify-center cursor-pointer border-[2px] border-secondary-500">
+              <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full object-cover rounded" />
+            </div>
+            <div class="bg-gray-200 p-3 flex items-center justify-center cursor-pointer">
+              <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full object-cover rounded" />
+            </div>
+            <div class="bg-gray-200 p-3 flex items-center justify-center cursor-pointer">
+              <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full object-cover rounded" />
+            </div>
+            <div class="bg-gray-200 p-3 flex items-center justify-center cursor-pointer">
+              <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full object-cover rounded" />
+            </div>
           </div>
-          <div class="bg-gray-200 p-6 flex items-center justify-center">
-            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-[90%] object-cover rounded" />
-          </div>
-          <div class="bg-gray-200 p-6 flex items-center justify-center">
-            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-[90%] object-cover rounded" />
-          </div>
-          <div class="bg-gray-200 p-6 flex items-center justify-center">
+          <div class="p-3 flex items-center justify-center bg-gray-200">
             <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-[90%] object-cover rounded" />
           </div>
         </div>
