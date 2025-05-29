@@ -49,12 +49,12 @@
           <!-- Size Options -->
           <section>
             <h2 class="text-base font-medium mb-1">Size:</h2>
-            <div class="flex gap-2">
-              <button class="px-3 py-1 border rounded-sm cursor-pointer hover:bg-secondary-500 hover:text-white transition-all duration-200 ease-in">XS</button>
-              <button class="px-3 py-1 border rounded-sm cursor-pointer hover:bg-secondary-500 hover:text-white transition-all duration-200 ease-in">S</button>
-              <button class="px-3 py-1 border rounded-sm cursor-pointer hover:bg-secondary-500 hover:text-white transition-all duration-200 ease-in bg-secondary-500 text-white">M</button>
-              <button class="px-3 py-1 border rounded-sm cursor-pointer hover:bg-secondary-500 hover:text-white transition-all duration-200 ease-in">L</button>
-              <button class="px-3 py-1 border rounded-sm cursor-pointer hover:bg-secondary-500 hover:text-white transition-all duration-200 ease-in">XL</button>
+            <div class="flex gap-3">
+              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out text-white bg-secondary-500 border-secondary-500">XS</button>
+              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out">S</button>
+              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out">M</button>
+              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out">L</button>
+              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out">XL</button>
             </div>
           </section>
           <!-- Quantity and Action Buttons -->
@@ -86,7 +86,7 @@
               </div>
             </div>
 
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-3">
               <BaseButton class="w-full text-sm md:text-base !py-3 !px-2.5 !md:py-3.5 !md:px-4.5 flex items-center justify-center font-medium gap-x-2">
                 <span>Add to Cart</span>
                 <PhShoppingCart :size="22" />
