@@ -62,11 +62,19 @@
             <div class="flex flex-col">
               <h2 class="text-base font-medium mb-1">Quantity:</h2>
               <div class="flex items-center rounded overflow-hidden w-max h-[44px]">
-                <button class="text-lg w-[40px] cursor-pointer h-full border-r-[1px] border flex items-center justify-center rounded-tl-sm rounded-bl-sm">
+                <button 
+                  @click="decreaseQuantity"
+                  :disabled="quantity === 1"
+                  class="text-lg w-[40px] cursor-pointer h-full border-r-[1px] border flex items-center justify-center rounded-tl-sm rounded-bl-sm hover:!bg-transparent"
+                >
                   <PhMinus :size="20" weight="bold" />
                 </button>
                 <input type="text" class="w-[80px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-base font-semibold h-full" v-model="quantity">
-                <button class="text-lg w-[40px] cursor-pointer h-full border-r-[1px] text-white border-secondary-500 flex items-center justify-center bg-secondary-500 rounded-tr-sm rounded-br-sm">
+                <button 
+                  @click="increaseQuantity"
+                  :disabled="quantity === maxQuantity"
+                  class="text-lg w-[40px] cursor-pointer h-full border-r-[1px] text-white border-secondary-500 flex items-center justify-center bg-secondary-500 rounded-tr-sm rounded-br-sm"
+                >
                   <PhPlus :size="20" weight="bold" />
                 </button>
               </div>
@@ -104,6 +112,7 @@ const productObj = ref(null)
 const isLoading = ref(false)
 const { formatAmount } = useCurrencyFormat()
 const quantity = ref(1)
+const maxQuantity = ref(5)
 
 const fetchProduct = async () => {
   isLoading.value = true
@@ -111,6 +120,18 @@ const fetchProduct = async () => {
   const { data: product, error } = await supabase.from('products').select('*').eq('id', id).single();
   productObj.value = product
   isLoading.value = false
+}
+
+const increaseQuantity = () => {
+  if (quantity.value < maxQuantity.value) {
+    quantity.value++
+  }
+}
+
+const decreaseQuantity = () => {
+  if (quantity.value > 1) {
+    quantity.value--
+  }
 }
 
 onMounted(() => {
