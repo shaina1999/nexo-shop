@@ -21,7 +21,7 @@
           </div>
           <!-- Main Image -->
           <div class="p-3 flex items-center justify-center bg-gray-200 cursor-zoom-in h-[250px] lg:h-auto">
-            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full lg:w-[80%] h-full object-cover rounded" />
+            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full lg:w-[80%] h-full object-contain rounded" />
           </div>
         </div>
         <!-- Product Details -->
