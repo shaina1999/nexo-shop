@@ -33,8 +33,8 @@
               class="cursor-pointer"
             >
               <div 
-                class="bg-gray-200 flex items-center justify-center p-2 h-[90px]" 
-                :class="{ 'border-2 border-secondary-500': selectedSlideId === 'slide'+index }"
+                class="bg-gray-200 flex items-center justify-center p-2 h-[90px] border-2 border-transparent transition-colors duration-200 ease-in-out" 
+                :class="{ 'border-secondary-500!': selectedSlideId === 'slide'+index }"
               >
                 <img 
                   :src="productImage.url" 
@@ -48,11 +48,11 @@
             <div 
               v-for="(productImage, index) in productObj?.images" 
               :key="index"
-              class="bg-gray-200 flex items-center justify-center p-2 h-[90px] cursor-pointer" 
+              class="bg-gray-200 flex items-center justify-center p-2 h-[90px] cursor-pointer border-2 border-transparent transition-colors duration-200 ease-in-out" 
               @click="onSlideClick($event)"
               :slideid="'slide'+index"
               :img="productImage.url" 
-              :class="{ 'border-2 border-secondary-500': selectedSlideId === 'slide'+index }"
+              :class="{ 'border-secondary-500!': selectedSlideId === 'slide'+index }"
             >
               <img 
                 :src="productImage.url" 
