@@ -15,8 +15,8 @@
             </div>
           </div>
           <!-- Main Image -->
-          <div class="p-3 flex items-center justify-center bg-gray-200 cursor-zoom-in h-[200px] md:h-[350px] lg:h-auto">
-            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full lg:w-[80%] h-full object-contain rounded" />
+          <div class="p-3 flex items-center justify-center bg-gray-200 cursor-zoom-in h-[200px] md:h-[350px] lg:h-[450px]">
+            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-full lg:w-[80%] h-full lg:h-[80%] object-contain rounded" />
           </div>
         </div>
         <!-- Product Details -->
