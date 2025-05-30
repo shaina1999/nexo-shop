@@ -65,12 +65,21 @@
           </div>
           </div>
           <!-- Main Image -->
-          <div class="p-3 flex items-center justify-center bg-gray-200 cursor-zoom-in h-[200px] md:h-[350px] lg:h-[450px]">
-            <img 
-              :src="selectedImage || productObj?.images[0]?.url" 
-              :alt="productObj?.images[0]?.alt" 
-              class="w-[90%] lg:w-[80%] h-[90%] lg:h-[80%] object-contain rounded" 
-            />
+          <div id="gallery">
+            <a 
+              :href="selectedImage || productObj?.images[0]?.url"
+              data-pswp-width="500"
+              data-pswp-height="500"
+              target="_blank"
+              rel="noreferrer"
+              class="p-3 flex items-center justify-center bg-gray-200 h-[200px] md:h-[350px] lg:h-[450px] cursor-pointer p-3"
+            >
+              <img 
+                :src="selectedImage || productObj?.images[0]?.url" 
+                :alt="productObj?.images[0]?.alt" 
+                class="w-[90%] lg:w-[80%] h-[90%] lg:h-[80%] object-contain" 
+              />
+            </a>
           </div>
         </div>
         <!-- Product Details -->
@@ -166,6 +175,8 @@ import { watch, computed, ref, onMounted, onUnmounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
 import { supabase } from '@/supabase'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
+import PhotoSwipeLightbox from 'photoswipe/lightbox';
+import 'photoswipe/style.css';
 
 import BaseButton from '@/components/BaseButton.vue'
 
@@ -177,6 +188,7 @@ const quantity = ref(1)
 const maxQuantity = ref(50)
 const selectedImage = ref(null)
 const selectedSlideId = ref('slide0')
+const lightbox = ref(null);
 
 const fetchProduct = async () => {
   isLoading.value = true
@@ -223,6 +235,23 @@ const onSlideClick = (e) => {
 
 onMounted(() => {
   fetchProduct()
+
+  if (!lightbox.value) {
+    lightbox.value = new PhotoSwipeLightbox({
+      gallery: "#gallery",
+      children: 'a',
+      pswpModule: () => import('photoswipe'),
+      wheelToZoom: true
+    });
+    lightbox.value.init();
+  }
+})
+
+onUnmounted(() => {
+  if (lightbox.value) {
+    lightbox.value.destroy();
+    lightbox.value = null;
+  }
 })
 </script>
 
