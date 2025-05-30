@@ -9,7 +9,7 @@
             <Splide 
               @splide:click="onSplideClick"
               :options="{
-                  type: 'loop',
+                  type: 'slide',
                   perPage: 4,
                   gap: '12px',
                   arrows: true,
@@ -27,10 +27,18 @@
               v-for="(productImage, index) in productObj?.images" 
               :key="index" :img="productImage.url" 
               :alttext="productImage.alt"
+              :slideid="'slide'+index"
               class="cursor-pointer"
             >
-              <div class="bg-gray-200 flex items-center justify-center p-2 h-[90px]">
-                <img :src="productImage.url" :alt="productImage.alt" class="w-[90px] h-full object-contain rounded" /> 
+              <div 
+                class="bg-gray-200 flex items-center justify-center p-2 h-[90px]" 
+                :class="{ 'border border-2 border-secondary-500': selectedSlideId === 'slide'+index }"
+              >
+                <img 
+                  :src="productImage.url" 
+                  :alt="productImage.alt" 
+                  class="w-[90px] h-full object-contain rounded" 
+                />
               </div>
             </SplideSlide>
           </Splide>
@@ -147,6 +155,7 @@ const { formatAmount } = useCurrencyFormat()
 const quantity = ref(1)
 const maxQuantity = ref(50)
 const selectedImage = ref(null)
+const selectedSlideId = ref(0)
 
 const fetchProduct = async () => {
   isLoading.value = true
@@ -183,6 +192,7 @@ const handleQuantityInput = (e) => {
 
 const onSplideClick = (Splide, e) => {
   selectedImage.value = e.slide.attributes.img.value
+  selectedSlideId.value = e.slide.attributes.slideid.value
 }
 
 onMounted(() => {
