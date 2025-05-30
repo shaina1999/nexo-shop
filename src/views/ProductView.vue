@@ -1,5 +1,5 @@
 <template>
-  <section class="flex items-center justify-center w-full pt-5 md:pt-10">
+  <section class="flex items-center justify-center w-full pt-5 md:pt-10 product-details">
     <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
       <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg mb-5 md:mb-10 lg:mb-16 font-semibold">{{ productObj?.name }}</h2>
       <div class="flex items-start gap-6 lg:gap-8 flex-col lg:flex-row">
@@ -10,7 +10,7 @@
               :options="{
                   type: 'loop',
                   perPage: 4,
-                  gap: '16px',
+                  gap: '12px',
                   arrows: true,
                   speed: 1000,
                   perMove: 1,
@@ -174,3 +174,13 @@ onMounted(() => {
   fetchProduct()
 })
 </script>
+
+<style scoped>
+.product-details .splide__arrow--next {
+  right: 0.5em !important;
+}
+
+.product-details .splide__arrow--prev {
+  left: 0.5em !important;
+}
+</style>
