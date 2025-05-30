@@ -112,3 +112,14 @@ button:disabled:hover{
   overflow: unset !important;
   padding-right: 0px !important;
 }
+
+/* Splide arrow:focus */
+.splide.is-focus-in .splide__arrow:focus {
+  outline: 3px solid var(--color-red-500) !important;
+  outline-offset: 3px !important;
+}
+
+.splide__arrow:focus-visible {
+  outline: 3px solid var(--color-red-500) !important;
+  outline-offset: 3px !important;
+}
