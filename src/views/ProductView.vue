@@ -16,23 +16,16 @@
                   perMove: 1,
                   pagination: false,
                   breakpoints: {
-                      640: {
-                        perPage: 1,
-                      },
-                      768: {
-                        perPage: 2,
-                      },
-                      1024: {
-                        perPage: 3,
-                      },
-                      1280: {
-                        perPage: 4,
-                      },
+                    640: {
+                      perPage: 3,
+                    }
                   }
               }"
           >
             <SplideSlide v-for="(productImage, index) in productObj?.images" :key="index">
-              <img :src="productImage.url" :alt="productImage.alt" class="w-[95%] h-full sm:w-[80%] object-contain rounded" />
+              <div class="bg-gray-200 flex items-center justify-center p-2 h-[90px]">
+                <img :src="productImage.url" :alt="productImage.alt" class="w-[90px] h-full object-contain rounded" /> 
+              </div>
             </SplideSlide>
           </Splide>
           </div>
