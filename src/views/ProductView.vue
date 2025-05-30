@@ -78,7 +78,7 @@
           <section class="flex flex-col gap-8">
             <div class="flex flex-col">
               <h2 class="text-sm sm:text-base font-medium mb-1">Quantity:</h2>
-              <div class="flex items-center rounded overflow-hidden w-full sm:w-max h-[30px] sm:h-[44px]">
+              <div class="flex items-center rounded overflow-hidden w-full sm:w-max h-[35px] sm:h-[44px]">
                 <button 
                   @click="decreaseQuantity"
                   :disabled="quantity === 1"
