@@ -7,6 +7,7 @@
         <div class="flex w-full lg:w-auto basis-[55%] gap-2 flex-col-reverse">
           <div class="basis-[100px] w-auto">
             <Splide 
+              v-if="productObj?.images.length > 0 && productObj?.images.length > 4"
               @splide:click="onSplideClick"
               :options="{
                   type: 'slide',
@@ -25,14 +26,15 @@
           >
             <SplideSlide 
               v-for="(productImage, index) in productObj?.images" 
-              :key="index" :img="productImage.url" 
+              :key="index" 
+              :img="productImage.url" 
               :alttext="productImage.alt"
               :slideid="'slide'+index"
               class="cursor-pointer"
             >
               <div 
                 class="bg-gray-200 flex items-center justify-center p-2 h-[90px]" 
-                :class="{ 'border border-2 border-secondary-500': selectedSlideId === 'slide'+index }"
+                :class="{ 'border-2 border-secondary-500': selectedSlideId === 'slide'+index }"
               >
                 <img 
                   :src="productImage.url" 
@@ -42,6 +44,25 @@
               </div>
             </SplideSlide>
           </Splide>
+          <div v-else-if="productObj?.images.length > 0 && productObj?.images.length < 5" class="grid grid-cols-4 gap-3">
+            <div 
+              v-for="(productImage, index) in productObj?.images" 
+              :key="index"
+              class="bg-gray-200 flex items-center justify-center p-2 h-[90px] cursor-pointer" 
+              @click="onSlideClick($event)"
+              :slideid="'slide'+index"
+              :img="productImage.url" 
+              :class="{ 'border-2 border-secondary-500': selectedSlideId === 'slide'+index }"
+            >
+              <img 
+                :src="productImage.url" 
+                :alt="productImage.alt" 
+                :slideid="'slide'+index"
+                :img="productImage.url" 
+                class="w-[90px] h-full object-contain rounded" 
+              />
+            </div>
+          </div>
           </div>
           <!-- Main Image -->
           <div class="p-3 flex items-center justify-center bg-gray-200 cursor-zoom-in h-[200px] md:h-[350px] lg:h-[450px]">
@@ -155,7 +176,7 @@ const { formatAmount } = useCurrencyFormat()
 const quantity = ref(1)
 const maxQuantity = ref(50)
 const selectedImage = ref(null)
-const selectedSlideId = ref(0)
+const selectedSlideId = ref('slide0')
 
 const fetchProduct = async () => {
   isLoading.value = true
@@ -193,6 +214,11 @@ const handleQuantityInput = (e) => {
 const onSplideClick = (Splide, e) => {
   selectedImage.value = e.slide.attributes.img.value
   selectedSlideId.value = e.slide.attributes.slideid.value
+}
+
+const onSlideClick = (e) => {
+  selectedImage.value = e.target.attributes.img.value
+  selectedSlideId.value = e.target.attributes.slideid.value
 }
 
 onMounted(() => {
