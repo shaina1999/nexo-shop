@@ -7,6 +7,7 @@
         <div class="flex w-full lg:w-auto basis-[55%] gap-2 flex-col-reverse">
           <div class="basis-[100px] w-auto">
             <Splide 
+              @splide:click="onSplideClick"
               :options="{
                   type: 'loop',
                   perPage: 4,
@@ -22,7 +23,12 @@
                   }
               }"
           >
-            <SplideSlide v-for="(productImage, index) in productObj?.images" :key="index">
+            <SplideSlide 
+              v-for="(productImage, index) in productObj?.images" 
+              :key="index" :img="productImage.url" 
+              :alttext="productImage.alt"
+              class="cursor-pointer"
+            >
               <div class="bg-gray-200 flex items-center justify-center p-2 h-[90px]">
                 <img :src="productImage.url" :alt="productImage.alt" class="w-[90px] h-full object-contain rounded" /> 
               </div>
@@ -31,7 +37,11 @@
           </div>
           <!-- Main Image -->
           <div class="p-3 flex items-center justify-center bg-gray-200 cursor-zoom-in h-[200px] md:h-[350px] lg:h-[450px]">
-            <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-[90%] lg:w-[80%] h-[90%] lg:h-[80%] object-contain rounded" />
+            <img 
+              :src="selectedImage || productObj?.images[0]?.url" 
+              :alt="productObj?.images[0]?.alt" 
+              class="w-[90%] lg:w-[80%] h-[90%] lg:h-[80%] object-contain rounded" 
+            />
           </div>
         </div>
         <!-- Product Details -->
@@ -136,6 +146,7 @@ const isLoading = ref(false)
 const { formatAmount } = useCurrencyFormat()
 const quantity = ref(1)
 const maxQuantity = ref(50)
+const selectedImage = ref(null)
 
 const fetchProduct = async () => {
   isLoading.value = true
@@ -168,6 +179,10 @@ const handleQuantityInput = (e) => {
   }
 
   quantity.value = parsed
+}
+
+const onSplideClick = (Splide, e) => {
+  selectedImage.value = e.slide.attributes.img.value
 }
 
 onMounted(() => {
