@@ -5,14 +5,36 @@
       <div class="flex items-start gap-6 lg:gap-8 flex-col lg:flex-row">
         <!-- Product Images -->
         <div class="flex w-full lg:w-auto basis-[55%] gap-2 flex-col-reverse">
-          <div class="grid grid-cols-4 gap-2 basis-[100px] w-auto">
-            <div 
-              v-for="n in 4"
-              :key="n"
-              class="shrink-0 bg-gray-200 p-3 flex items-center justify-center cursor-pointer h-25 lg:h-auto"
-            >
-              <img :src="productObj?.images[0]?.url" :alt="productObj?.images[0]?.alt" class="w-[95%] h-full sm:w-[80%] object-contain rounded" />
-            </div>
+          <div class="basis-[100px] w-auto">
+            <Splide 
+              :options="{
+                  type: 'loop',
+                  perPage: 4,
+                  gap: '16px',
+                  arrows: true,
+                  speed: 1000,
+                  perMove: 1,
+                  pagination: false,
+                  breakpoints: {
+                      640: {
+                        perPage: 1,
+                      },
+                      768: {
+                        perPage: 2,
+                      },
+                      1024: {
+                        perPage: 3,
+                      },
+                      1280: {
+                        perPage: 4,
+                      },
+                  }
+              }"
+          >
+            <SplideSlide v-for="(productImage, index) in productObj?.images" :key="index">
+              <img :src="productImage.url" :alt="productImage.alt" class="w-[95%] h-full sm:w-[80%] object-contain rounded" />
+            </SplideSlide>
+          </Splide>
           </div>
           <!-- Main Image -->
           <div class="p-3 flex items-center justify-center bg-gray-200 cursor-zoom-in h-[200px] md:h-[350px] lg:h-[450px]">
