@@ -72,7 +72,7 @@
               data-pswp-height="500"
               target="_blank"
               rel="noreferrer"
-              class="p-3 flex items-center justify-center bg-gray-200 h-[200px] md:h-[350px] lg:h-[450px] cursor-pointer p-3"
+              class="p-3 flex items-center justify-center bg-gray-200 h-[200px] md:h-[350px] lg:h-[450px] cursor-pointer outline-none"
             >
               <img 
                 :src="selectedImage || productObj?.images[0]?.url" 
