@@ -1,6 +1,7 @@
 <template>
   <section class="flex items-center justify-center w-full pt-5 md:pt-10 product-details">
-    <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
+    <ProductDetailsSkeleton v-if="isLoading" />
+    <div v-else class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
       <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg mb-5 md:mb-10 lg:mb-16 font-semibold">{{ productObj?.name }}</h2>
       <div class="flex items-start gap-6 lg:gap-8 flex-col lg:flex-row">
         <!-- Product Images -->
@@ -179,6 +180,7 @@ import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import 'photoswipe/style.css';
 
 import BaseButton from '@/components/BaseButton.vue'
+import ProductDetailsSkeleton from '@/components/ProductDetailsSkeleton.vue'
 
 const route = useRoute()
 const productObj = ref(null)
@@ -233,8 +235,8 @@ const onSlideClick = (e) => {
   selectedSlideId.value = e.target.attributes.slideid.value
 }
 
-onMounted(() => {
-  fetchProduct()
+onMounted(async () => {
+  await fetchProduct()
 
   if (!lightbox.value) {
     lightbox.value = new PhotoSwipeLightbox({
