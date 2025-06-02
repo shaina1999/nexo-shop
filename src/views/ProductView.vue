@@ -329,6 +329,23 @@ const fetchAllData = async (id) => {
   }
 };
 
+watch(selectedOption1, (newColor) => {
+  if (!newColor) return;
+
+  const matchedVariation = variations.value.find(
+    v => v.option_1_value === newColor
+  );
+
+  if (matchedVariation && matchedVariation.image) {
+    selectedImage.value = matchedVariation.image;
+  } else if (productObj.value?.images?.length > 0) {
+    selectedImage.value = productObj.value.images[0].url;
+  }
+
+  const index = productObj.value.images.findIndex(img => img.url === selectedImage.value);
+  if(index !== -1) selectedSlideId.value = 'slide' + index;
+});
+
 onMounted(async () => {
   await fetchAllData(route.query.id);
 
