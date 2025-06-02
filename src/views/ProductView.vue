@@ -143,6 +143,23 @@
               </button>
             </div>
           </section>
+          <section v-if="option3Name && option3Values.length">
+            <h2 class="text-sm sm:text-base font-medium mb-1">{{ option3Name }}:</h2>
+            <div class="text-xs sm:text-base flex flex-wrap gap-3">
+              <button 
+                v-for="val in option3Values"
+                @click="selectedOption3 = val"
+                :key="val"
+                :class="[
+                  'px-3 py-1 rounded border text-sm transition',
+                  selectedOption3 === val ? 'bg-secondary-500 text-white border-secondary-500' : 'border-gray-300 hover:bg-secondary-100'
+                ]"
+                class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out"
+              >
+                {{ val }}
+              </button>
+            </div>
+          </section>
           <!-- Quantity and Action Buttons -->
           <section class="flex flex-col gap-8">
             <div class="flex flex-col">
@@ -220,14 +237,17 @@ const selectedSlideId = ref('slide0')
 const lightbox = ref(null);
 const selectedOption1 = ref(null)
 const selectedOption2 = ref(null)
+const selectedOption3 = ref(null)
 
 // Dynamically extract option names (e.g., "Color", "DPI")
 const option1Name = computed(() => variations.value[0]?.option_1_name || null);
 const option2Name = computed(() => variations.value[0]?.option_2_name || null);
+const option3Name = computed(() => variations.value[0]?.option_3_name || null);
 
 // Unique option values (e.g., Red, Black, 1200 DPI, etc.)
 const option1Values = computed(() => [...new Set(variations.value.map(v => v.option_1_value))])
 const option2Values = computed(() => [...new Set(variations.value.map(v => v.option_2_value))])
+const option3Values = computed(() => [...new Set(variations.value.map(v => v.option_3_value))])
 
 const increaseQuantity = () => {
   if (quantity.value < maxQuantity.value) {
