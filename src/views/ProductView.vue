@@ -209,6 +209,14 @@ const fetchProduct = async () => {
   isLoading.value = false
 }
 
+const fetchProductVariations = async () => {
+  isLoading.value = true
+  const id = route.query?.id
+  const { data: product_variations, error } = await supabase.from('product_variations').select('*').eq('product_id', id);
+  console.log('product variations:', product_variations)
+  isLoading.value = false
+}
+
 const increaseQuantity = () => {
   if (quantity.value < maxQuantity.value) {
     quantity.value++
@@ -250,6 +258,7 @@ const addToCart = () => {
 
 onMounted(async () => {
   await fetchProduct()
+  await fetchProductVariations()
 
   if (!lightbox.value) {
     lightbox.value = new PhotoSwipeLightbox({
