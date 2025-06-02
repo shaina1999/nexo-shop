@@ -109,22 +109,38 @@
           </header>
           <p class="text-gray-600 lead-[1.7]">{{ productObj?.description }}</p>
           <!-- Product Variations -->
-          <section>
-            <h2 class="text-sm sm:text-base font-medium mb-1">Colors:</h2>
+          <section v-if="option1Name && option1Values.length">
+            <h2 class="text-sm sm:text-base font-medium mb-1">{{ option1Name }}:</h2>
             <div class="text-xs sm:text-base flex flex-wrap gap-3">
-              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out text-white bg-secondary-500 border-secondary-500">Green</button>
-              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out">Pink</button>
-              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out">Yellow</button>
+              <button 
+                v-for="val in option1Values"
+                @click="selectedOption1 = val"
+                :key="val"
+                :class="[
+                  'px-3 py-1 rounded border text-sm transition',
+                  selectedOption1 === val ? 'bg-secondary-500 text-white border-secondary-500' : 'border-gray-300 hover:bg-secondary-100'
+                ]"
+                class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out"
+              >
+                {{ val }}
+              </button>
             </div>
           </section>
-          <section>
-            <h2 class="text-sm sm:text-base font-medium mb-1">Size:</h2>
+          <section v-if="option2Name && option2Values.length">
+            <h2 class="text-sm sm:text-base font-medium mb-1">{{ option2Name }}:</h2>
             <div class="text-xs sm:text-base flex flex-wrap gap-3">
-              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out text-white bg-secondary-500 border-secondary-500">XS</button>
-              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out">S</button>
-              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out">M</button>
-              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out">L</button>
-              <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out">XL</button>
+              <button 
+                v-for="val in option2Values"
+                @click="selectedOption2 = val"
+                :key="val"
+                :class="[
+                  'px-3 py-1 rounded border text-sm transition',
+                  selectedOption2 === val ? 'bg-secondary-500 text-white border-secondary-500' : 'border-gray-300 hover:bg-secondary-100'
+                ]"
+                class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out"
+              >
+                {{ val }}
+              </button>
             </div>
           </section>
           <!-- Quantity and Action Buttons -->
@@ -194,7 +210,7 @@ import ProductDetailsSkeleton from '@/components/ProductDetailsSkeleton.vue'
 const route = useRoute()
 const router = useRouter()
 const productObj = ref(null)
-const productVariations = ref([])
+const variations = ref([])
 const isLoading = ref(false)
 const { formatAmount } = useCurrencyFormat()
 const quantity = ref(1)
@@ -202,6 +218,16 @@ const maxQuantity = ref(50)
 const selectedImage = ref(null)
 const selectedSlideId = ref('slide0')
 const lightbox = ref(null);
+const selectedOption1 = ref(null)
+const selectedOption2 = ref(null)
+
+// Dynamically extract option names (e.g., "Color", "DPI")
+const option1Name = computed(() => variations.value[0]?.option_1_name || null);
+const option2Name = computed(() => variations.value[0]?.option_2_name || null);
+
+// Unique option values (e.g., Red, Black, 1200 DPI, etc.)
+const option1Values = computed(() => [...new Set(variations.value.map(v => v.option_1_value))])
+const option2Values = computed(() => [...new Set(variations.value.map(v => v.option_2_value))])
 
 const increaseQuantity = () => {
   if (quantity.value < maxQuantity.value) {
@@ -239,7 +265,9 @@ const onSlideClick = (e) => {
 };
 
 const addToCart = () => {
-  console.log('quantity:', quantity.value)
+  console.log('Quantity:', quantity.value)
+  console.log(option1Name.value + ': ' +selectedOption1.value)
+  console.log(option2Name.value + ': ' +selectedOption2.value)
 };
 
 const fetchProduct = async (id) => {
@@ -272,10 +300,11 @@ const fetchProductVariations = async (productId) => {
   try {
     const { data, error } = await supabase.from('product_variations').select('*').eq('product_id', productId);
     if (error) throw error;
-    productVariations.value = data || [];
+    variations.value = data || [];
+    console.log(variations.value)
   } catch (error) {
     console.error('Error fetching product variations:', error);
-    productVariations.value = [];
+    variations.value = [];
     Swal.fire({
       title: 'Oops...',
       html: 'Error loading variations. Please try again later',
@@ -302,6 +331,9 @@ const fetchAllData = async (id) => {
 
 onMounted(async () => {
   await fetchAllData(route.query.id);
+
+  selectedOption1.value = option1Values.value[0] ?? null
+  selectedOption2.value = option2Values.value[0] ?? null
 
   if (!lightbox.value) {
     lightbox.value = new PhotoSwipeLightbox({
