@@ -96,7 +96,7 @@
               <span class="text-gray-300 mx-2.5">&VerticalLine;</span>
               <span 
                 class="text-sm sm:text-base font-medium py-0.5 px-2.5 rounded-sm"
-                :class="{ 'text-green-600 bg-green-100' : productObj?.is_available, 'text-red-600 bg-red-300' : !productObj?.is_available }"
+                :class="{ 'text-green-600 bg-green-100' : (selectedVariation?.is_available ?? productObj?.is_available), 'text-red-600 bg-red-300' : (!selectedVariation?.is_available ?? !productObj?.is_available) }"
               >
                 {{ (selectedVariation?.is_available ?? productObj?.is_available) ? 'In Stock' : 'Out of Stock' }}
               </span>
@@ -160,6 +160,12 @@
               </button>
             </div>
           </section>
+          <p 
+            v-if="selectedVariation && !selectedVariation.is_available"
+            class="text-red-600 bg-red-100 border border-red-300 px-4 py-2 rounded text-sm font-medium"
+          >
+            This variation is <strong>out of stock</strong>. Please choose a different option.
+          </p>
           <!-- Quantity and Action Buttons -->
           <section class="flex flex-col gap-8">
             <div class="flex flex-col">
