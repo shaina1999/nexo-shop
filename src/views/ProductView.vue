@@ -94,7 +94,12 @@
               </div>
               <p class="text-gray-500 text-sm sm:text-base">(150 Reviews)</p>
               <span class="text-gray-300 mx-2.5">&VerticalLine;</span>
-              <span class="text-green-600 text-sm sm:text-base font-medium py-0.5 px-2.5 bg-green-100 rounded-sm">In Stock</span>
+              <span 
+                class="text-sm sm:text-base font-medium py-0.5 px-2.5 rounded-sm"
+                :class="{ 'text-green-600 bg-green-100' : productObj?.is_available, 'text-red-600 bg-red-300' : !productObj?.is_available }"
+              >
+                {{ productObj?.is_available ? 'In Stock' : 'Out of Stock' }}
+              </span>
             </div>
             <p class="text-lg sm:text-2xl font-semibold flex items-center gap-2">
               Php {{ formatAmount(productObj?.discount_price) }} 
@@ -153,8 +158,8 @@
             </div>
 
             <div class="flex items-center gap-3 flex-col sm:flex-row">
-              <BaseButton class="w-full text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5">
-                <span>Add to Cart</span>
+              <BaseButton :disabled="!productObj?.is_available" class="w-full text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5">
+                <span>{{ productObj?.is_available ? 'Add to Cart' : 'Unavailable' }}</span>
                 <PhShoppingCart class="text-xl" />
               </BaseButton>
               <BaseButton 

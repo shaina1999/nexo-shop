@@ -20,9 +20,10 @@
         </div>
         <footer>
             <button
-                class="shadow-xl/5 bg-black text-white w-full p-1.5 transition-all duration-300 ease-in-out cursor-pointer add-to-cart mb-2 sm:mb-4 flex items-center justify-center gap-x-2"
+                :disabled="!product.is_available"
+                class="shadow-xl/5 bg-black text-white w-full p-1.5 transition-all duration-300 ease-in-out cursor-pointer add-to-cart mb-2 sm:mb-4 flex items-center justify-center gap-x-2 hover:!bg-black"
                 @click.prevent.stop="addToCart">
-                <span class="text-sm">Add To Cart</span>
+                <span class="text-sm">{{ product.is_available ? 'Add To Cart' : 'Unavailable' }}</span>
                 <PhShoppingCart :size="18" />
                 <PhCheck :size="18" class="hidden" />
             </button>
