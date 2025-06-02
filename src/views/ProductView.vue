@@ -187,11 +187,13 @@ import { supabase } from '@/supabase'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import 'photoswipe/style.css';
+import Swal from 'sweetalert2'
 
 import BaseButton from '@/components/BaseButton.vue'
 import ProductDetailsSkeleton from '@/components/ProductDetailsSkeleton.vue'
 
 const route = useRoute()
+const router = useRouter()
 const productObj = ref(null)
 const productVariations = ref([])
 const isLoading = ref(false)
@@ -250,6 +252,18 @@ const fetchProduct = async (id) => {
   } catch (error) {
     console.error('Error fetching product:', error);
     productObj.value = null;
+
+    Swal.fire({
+      title: 'Oops...',
+      html: 'It seems the product you\'re looking for doesn\'t exist or is currently unavailable',
+      icon: 'warning',
+      confirmButtonText: 'Go to Homepage',
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.isDismissed || result.isConfirmed) {
+        router.push('/');
+      }
+    });
   } finally {
     isLoading.value = false;
   }
