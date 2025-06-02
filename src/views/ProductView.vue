@@ -98,13 +98,13 @@
                 class="text-sm sm:text-base font-medium py-0.5 px-2.5 rounded-sm"
                 :class="{ 'text-green-600 bg-green-100' : productObj?.is_available, 'text-red-600 bg-red-300' : !productObj?.is_available }"
               >
-                {{ productObj?.is_available ? 'In Stock' : 'Out of Stock' }}
+                {{ (selectedVariation?.is_available ?? productObj?.is_available) ? 'In Stock' : 'Out of Stock' }}
               </span>
             </div>
             <p class="text-lg sm:text-2xl font-semibold flex items-center gap-2">
-              Php {{ formatAmount(productObj?.discount_price) }} 
-              <del class="text-gray-500 text-xs sm:text-sm font-normal!">Php {{ formatAmount(productObj?.price) }}</del> 
-              <span class="text-xs sm:text-sm font-semibold bg-secondary-100 text-secondary-500 rounded-sm px-1">-{{ productObj?.discount }}%</span>
+              Php {{ formatAmount(selectedVariation?.discount_price || productObj?.discount_price) }} 
+              <del class="text-gray-500 text-xs sm:text-sm font-normal!">Php {{ formatAmount(selectedVariation?.price || productObj?.price) }}</del> 
+              <span class="text-xs sm:text-sm font-semibold bg-secondary-100 text-secondary-500 rounded-sm px-1">-{{ selectedVariation?.discount || productObj?.discount }}%</span>
             </p>
           </header>
           <p class="text-gray-600 lead-[1.7]">{{ productObj?.description }}</p>
@@ -191,11 +191,11 @@
 
             <div class="flex items-center gap-3 flex-col sm:flex-row">
               <BaseButton 
-                :disabled="!productObj?.is_available" 
+                :disabled="!productObj?.is_available || !selectedVariation?.is_available" 
                 class="w-full text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5"
                 @click="addToCart"
               >
-                <span>{{ productObj?.is_available ? 'Add to Cart' : 'Unavailable' }}</span>
+                <span>{{ productObj?.is_available || !selectedVariation?.is_available ? 'Add to Cart' : 'Unavailable' }}</span>
                 <PhShoppingCart class="text-xl" />
               </BaseButton>
               <BaseButton 
@@ -238,6 +238,7 @@ const lightbox = ref(null);
 const selectedOption1 = ref(null)
 const selectedOption2 = ref(null)
 const selectedOption3 = ref(null)
+const selectedVariation = ref(null)
 
 // Dynamically extract option names (e.g., "Color", "DPI")
 const option1Name = computed(() => variations.value[0]?.option_1_name || null);
@@ -349,22 +350,49 @@ const fetchAllData = async (id) => {
   }
 };
 
-watch(selectedOption1, (newColor) => {
-  if (!newColor) return;
+watch(
+  [selectedOption1, selectedOption2, selectedOption3],
+  () => {
+    // Collect all selected options that are not null
+    const selectedOptions = [
+      selectedOption1.value,
+      selectedOption2.value,
+      selectedOption3.value,
+    ].filter(opt => opt !== null)
 
-  const matchedVariation = variations.value.find(
-    v => v.option_1_value === newColor
-  );
 
-  if (matchedVariation && matchedVariation.image) {
-    selectedImage.value = matchedVariation.image;
-  } else if (productObj.value?.images?.length > 0) {
-    selectedImage.value = productObj.value.images[0].url;
-  }
+    // If no option selected, clear variation and exit
+    if (selectedOptions.length === 0) {
+      selectedVariation.value = null
+      return
+    }
 
-  const index = productObj.value.images.findIndex(img => img.url === selectedImage.value);
-  if(index !== -1) selectedSlideId.value = 'slide' + index;
-});
+    // Find a variation that matches ALL the selected options (for those options that are selected)
+    selectedVariation.value = variations.value.find(variant => {
+      // Check each option only if it is selected (not null)
+      if (
+        (selectedOption1.value !== null && variant.option_1_value !== selectedOption1.value) ||
+        (selectedOption2.value !== null && variant.option_2_value !== selectedOption2.value) ||
+        (selectedOption3.value !== null && variant.option_3_value !== selectedOption3.value)
+      ) {
+        return false
+      }
+      return true
+    }) || null
+
+    if (selectedVariation.value) {
+      quantity.value = 1
+      maxQuantity.value = selectedVariation.value.stock || 50
+
+      if (selectedVariation.value.image) {
+        selectedImage.value = selectedVariation.value.image
+        const index = productObj.value.images.findIndex(img => img.url === selectedImage.value);
+        if(index !== -1) selectedSlideId.value = 'slide' + index;
+      }
+    }
+  },
+  { immediate: true }
+)
 
 onMounted(async () => {
   await fetchAllData(route.query.id);
