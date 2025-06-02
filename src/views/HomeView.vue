@@ -324,7 +324,6 @@ const getFeaturedProducts = async () => {
     let { data: products, error } = await supabase.from('products').select('*').eq('is_featured', true);
     featuredProducts.value = products
     featuredProductsLoading.value = false
-    console.log(featuredProducts.value)
 }
 
 // Product Categories
