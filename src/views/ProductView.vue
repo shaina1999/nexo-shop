@@ -193,6 +193,7 @@ import ProductDetailsSkeleton from '@/components/ProductDetailsSkeleton.vue'
 
 const route = useRoute()
 const productObj = ref(null)
+const productVariations = ref([])
 const isLoading = ref(false)
 const { formatAmount } = useCurrencyFormat()
 const quantity = ref(1)
@@ -201,33 +202,17 @@ const selectedImage = ref(null)
 const selectedSlideId = ref('slide0')
 const lightbox = ref(null);
 
-const fetchProduct = async () => {
-  isLoading.value = true
-  const id = route.query?.id
-  const { data: product, error } = await supabase.from('products').select('*').eq('id', id).single();
-  productObj.value = product
-  isLoading.value = false
-}
-
-const fetchProductVariations = async () => {
-  isLoading.value = true
-  const id = route.query?.id
-  const { data: product_variations, error } = await supabase.from('product_variations').select('*').eq('product_id', id);
-  console.log('product variations:', product_variations)
-  isLoading.value = false
-}
-
 const increaseQuantity = () => {
   if (quantity.value < maxQuantity.value) {
     quantity.value++
   }
-}
+};
 
 const decreaseQuantity = () => {
   if (quantity.value > 1) {
     quantity.value--
   }
-}
+};
 
 const handleQuantityInput = (e) => {
   const input = e.target.value.replace(/\D/g, '')
@@ -240,25 +225,57 @@ const handleQuantityInput = (e) => {
   }
 
   quantity.value = parsed
-}
+};
 
 const onSplideClick = (Splide, e) => {
   selectedImage.value = e.slide.attributes.img.value
   selectedSlideId.value = e.slide.attributes.slideid.value
-}
+};
 
 const onSlideClick = (e) => {
   selectedImage.value = e.target.attributes.img.value
   selectedSlideId.value = e.target.attributes.slideid.value
-}
+};
 
 const addToCart = () => {
   console.log('quantity:', quantity.value)
-}
+};
+
+const fetchProduct = async (id) => {
+  isLoading.value = true;
+  try {
+    const { data: product, error } = await supabase.from('products').select('*').eq('id', id).single();
+    if (error) throw error;
+    productObj.value = product;
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    productObj.value = null;
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const fetchProductVariations = async (productId) => {
+  try {
+    const { data, error } = await supabase.from('product_variations').select('*').eq('product_id', productId);
+    if (error) throw error;
+    productVariations.value = data || [];
+  } catch (error) {
+    console.error('Error fetching product variations:', error);
+    productVariations.value = [];
+  }
+};
+
+const fetchAllData = async (id) => {
+  if (!id) return;
+  await fetchProduct(id);
+  if (productObj.value) {
+    await fetchProductVariations(id);
+  }
+};
 
 onMounted(async () => {
-  await fetchProduct()
-  await fetchProductVariations()
+  await fetchAllData(route.query.id);
 
   if (!lightbox.value) {
     lightbox.value = new PhotoSwipeLightbox({
