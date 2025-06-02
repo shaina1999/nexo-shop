@@ -96,9 +96,9 @@
               <span class="text-gray-300 mx-2.5">&VerticalLine;</span>
               <span 
                 class="text-sm sm:text-base font-medium py-0.5 px-2.5 rounded-sm"
-                :class="{ 'text-green-600 bg-green-100' : (selectedVariation?.is_available ?? productObj?.is_available), 'text-red-600 bg-red-300' : (!selectedVariation?.is_available ?? !productObj?.is_available) }"
+                :class="{ 'text-green-600 bg-green-100' : isAvailable, 'text-red-600 bg-red-300' : !isAvailable }"
               >
-                {{ (selectedVariation?.is_available ?? productObj?.is_available) ? 'In Stock' : 'Out of Stock' }}
+                {{ isAvailable ? `In Stock (${stock})` : 'Out of Stock' }}
               </span>
             </div>
             <p class="text-lg sm:text-2xl font-semibold flex items-center gap-2">
@@ -197,11 +197,11 @@
 
             <div class="flex items-center gap-3 flex-col sm:flex-row">
               <BaseButton 
-                :disabled="!productObj?.is_available || !selectedVariation?.is_available" 
+                :disabled="!isAvailable" 
                 class="w-full text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5"
                 @click="addToCart"
               >
-                <span>{{ productObj?.is_available || !selectedVariation?.is_available ? 'Add to Cart' : 'Unavailable' }}</span>
+                <span>{{ isAvailable ? 'Add to Cart' : 'Unavailable' }}</span>
                 <PhShoppingCart class="text-xl" />
               </BaseButton>
               <BaseButton 
@@ -255,6 +255,14 @@ const option3Name = computed(() => variations.value[0]?.option_3_name || null);
 const option1Values = computed(() => [...new Set(variations.value.map(v => v.option_1_value))])
 const option2Values = computed(() => [...new Set(variations.value.map(v => v.option_2_value))])
 const option3Values = computed(() => [...new Set(variations.value.map(v => v.option_3_value))])
+
+const isAvailable = computed(() => {
+  return selectedVariation.value?.is_available ?? productObj.value?.is_available;
+});
+
+const stock = computed(() => {
+  return selectedVariation.value?.stock ?? productObj.value?.stock
+})
 
 const increaseQuantity = () => {
   if (quantity.value < maxQuantity.value) {
