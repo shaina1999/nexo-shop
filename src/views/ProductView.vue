@@ -108,7 +108,7 @@
             </p>
           </header>
           <p class="text-gray-600 lead-[1.7]">{{ productObj?.description }}</p>
-          <!-- Color Options -->
+          <!-- Product Variations -->
           <section>
             <h2 class="text-sm sm:text-base font-medium mb-1">Colors:</h2>
             <div class="text-xs sm:text-base flex flex-wrap gap-3">
@@ -117,7 +117,6 @@
               <button class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out">Yellow</button>
             </div>
           </section>
-          <!-- Size Options -->
           <section>
             <h2 class="text-sm sm:text-base font-medium mb-1">Size:</h2>
             <div class="text-xs sm:text-base flex flex-wrap gap-3">
