@@ -158,7 +158,11 @@
             </div>
 
             <div class="flex items-center gap-3 flex-col sm:flex-row">
-              <BaseButton :disabled="!productObj?.is_available" class="w-full text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5">
+              <BaseButton 
+                :disabled="!productObj?.is_available" 
+                class="w-full text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5"
+                @click="addToCart"
+              >
                 <span>{{ productObj?.is_available ? 'Add to Cart' : 'Unavailable' }}</span>
                 <PhShoppingCart class="text-xl" />
               </BaseButton>
@@ -238,6 +242,10 @@ const onSplideClick = (Splide, e) => {
 const onSlideClick = (e) => {
   selectedImage.value = e.target.attributes.img.value
   selectedSlideId.value = e.target.attributes.slideid.value
+}
+
+const addToCart = () => {
+  console.log('quantity:', quantity.value)
 }
 
 onMounted(async () => {
