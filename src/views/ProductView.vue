@@ -252,7 +252,6 @@ const fetchProduct = async (id) => {
   } catch (error) {
     console.error('Error fetching product:', error);
     productObj.value = null;
-
     Swal.fire({
       title: 'Oops...',
       html: 'It seems the product you\'re looking for doesn\'t exist or is currently unavailable',
@@ -270,6 +269,7 @@ const fetchProduct = async (id) => {
 };
 
 const fetchProductVariations = async (productId) => {
+  isLoading.value = true;
   try {
     const { data, error } = await supabase.from('product_variations').select('*').eq('product_id', productId);
     if (error) throw error;
@@ -277,6 +277,19 @@ const fetchProductVariations = async (productId) => {
   } catch (error) {
     console.error('Error fetching product variations:', error);
     productVariations.value = [];
+    Swal.fire({
+      title: 'Oops...',
+      html: 'Error loading variations. Please try again later',
+      icon: 'warning',
+      confirmButtonText: 'Go to Homepage',
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.isDismissed || result.isConfirmed) {
+        router.push('/');
+      }
+    });
+  } finally {
+    isLoading.value = false;
   }
 };
 
