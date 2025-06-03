@@ -102,7 +102,7 @@
               </span>
             </div>
             <p class="text-lg sm:text-2xl font-semibold flex items-center gap-2">
-              Php {{ formatAmount(productObj?.discount_price) }} 
+              Php {{ formatAmount(productObj?.discounted_price) }} 
               <del class="text-gray-500 text-xs sm:text-sm font-normal!">Php {{ formatAmount(productObj?.price) }}</del> 
               <span class="text-xs sm:text-sm font-semibold bg-secondary-100 text-secondary-500 rounded-sm px-1">-{{ productObj?.discount }}%</span>
             </p>

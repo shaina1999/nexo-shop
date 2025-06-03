@@ -379,9 +379,9 @@ const sortProducts = () => {
         case 'Top Rated':
           return (b.rating || 0) - (a.rating || 0);
         case 'Price High to Low':
-          return (b.discount_price || 0) - (a.discount_price || 0);
+          return (b.discounted_price || 0) - (a.discounted_price || 0);
         case 'Price Low to High':
-          return (a.discount_price || 0) - (b.discount_price || 0);
+          return (a.discounted_price || 0) - (b.discounted_price || 0);
         default:
           return 0;
       }
@@ -453,8 +453,8 @@ const buildQuery = async (routeQuery, filter, hasFilters) => {
       const priceRange = parsePriceRange(selectedPrice.value);
       if (priceRange && !isNaN(priceRange.min) && !isNaN(priceRange.max)) {
         query = query
-          .gte('discount_price', priceRange.min)
-          .lte('discount_price', priceRange.max);
+          .gte('discounted_price', priceRange.min)
+          .lte('discounted_price', priceRange.max);
       }
     }
 
