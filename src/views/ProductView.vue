@@ -107,7 +107,12 @@
               <span class="text-xs sm:text-sm font-semibold bg-secondary-100 text-secondary-500 rounded-sm px-1">-{{ productObj?.discount }}%</span>
             </p>
           </header>
-          <p class="text-gray-600 lead-[1.7]">{{ productObj?.description }}</p>
+          <p class="text-gray-600 lead-[1.7] mb-2">{{ productObj?.description }}</p>
+          <div v-if="productObj?.details" class="space-y-1">
+            <div v-for="(value, key) in productObj.details" :key="key" class="text-sm sm:text-base">
+              <strong class="uppercase font-bold">{{ key }}:</strong> <span class="text-gray-600">{{ value }}</span>
+            </div>
+          </div>
           <!-- Quantity and Action Buttons -->
           <section class="flex flex-col gap-8">
             <div class="flex flex-col">
