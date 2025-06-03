@@ -30,7 +30,7 @@
                                 </RouterLink>
                             </div>
                             <div class="w-[90%] md:w-[450px] h-[160px] sm:h-[250px]">
-                                <img :src="featuredProduct.images[0].url" :alt="featuredProduct.images[0].alt" class="w-full h-full object-contain">
+                                <img :src="featuredProduct.variations[0].image" :alt="featuredProduct.name" class="w-full h-full object-contain">
                             </div>
                         </div>
                     </SplideSlide>
