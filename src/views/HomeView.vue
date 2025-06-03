@@ -2,7 +2,7 @@
     <!-- Hero Section -->
     <section class="flex items-center justify-center w-full hero">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl flex">
-            <div class="p-6 md:p-10 mt-10 bg-black text-white max-h-max w-full lg:max-h-[344px]" :class="{ 'skeleton-loader h-[330px]' : featuredProductsLoading }">
+            <div class="p-6 md:p-10 mt-8 md:mt-10 bg-black text-white max-h-max w-full lg:max-h-[344px]" :class="{ 'skeleton-loader h-[330px]' : featuredProductsLoading }">
                 <Splide 
                     v-if="!featuredProductsLoading && featuredProducts.length > 0"
                     :options="{
