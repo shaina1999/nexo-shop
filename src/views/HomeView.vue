@@ -4,12 +4,16 @@
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl flex">
             <div class="p-6 md:p-10 mt-10 bg-black text-white max-h-max w-full lg:max-h-[344px]" :class="{ 'skeleton-loader h-[330px]' : featuredProductsLoading }">
                 <Splide 
+                    v-if="!featuredProductsLoading && featuredProducts.length > 0"
                     :options="{
                         type: 'fade',
                         drag: featuredProducts.length > 1,
                         pagination: featuredProducts.length > 1,
                         autoplay: true,
                         arrows: false,
+                        interval: 4000,
+                        speed: 1000,
+                        rewind: true,
                         breakpoints: {
                             768: {
                                 arrows: true,
