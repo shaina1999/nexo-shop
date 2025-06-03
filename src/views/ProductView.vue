@@ -68,7 +68,7 @@
           <!-- Main Image -->
           <div id="gallery">
             <a 
-              :href="selectedImage || productObj?.images[0]?.url"
+              :href="productObj?.images[0]?.url"
               data-pswp-width="500"
               data-pswp-height="500"
               target="_blank"
@@ -96,76 +96,18 @@
               <span class="text-gray-300 mx-2.5">&VerticalLine;</span>
               <span 
                 class="text-sm sm:text-base font-medium py-0.5 px-2.5 rounded-sm"
-                :class="{ 'text-green-600 bg-green-100' : isAvailable, 'text-red-600 bg-red-300' : !isAvailable }"
+                :class="{ 'text-green-600 bg-green-100' : productObj?.is_available, 'text-red-600 bg-red-300' : !productObj?.is_available }"
               >
-                {{ isAvailable ? `In Stock (${stock})` : 'Out of Stock' }}
+                {{ productObj?.is_available ? `In Stock (${productObj?.stock})` : 'Out of Stock' }}
               </span>
             </div>
             <p class="text-lg sm:text-2xl font-semibold flex items-center gap-2">
-              Php {{ formatAmount(selectedVariation?.discount_price || productObj?.discount_price) }} 
-              <del class="text-gray-500 text-xs sm:text-sm font-normal!">Php {{ formatAmount(selectedVariation?.price || productObj?.price) }}</del> 
-              <span class="text-xs sm:text-sm font-semibold bg-secondary-100 text-secondary-500 rounded-sm px-1">-{{ selectedVariation?.discount || productObj?.discount }}%</span>
+              Php {{ formatAmount(productObj?.discount_price) }} 
+              <del class="text-gray-500 text-xs sm:text-sm font-normal!">Php {{ formatAmount(productObj?.price) }}</del> 
+              <span class="text-xs sm:text-sm font-semibold bg-secondary-100 text-secondary-500 rounded-sm px-1">-{{ productObj?.discount }}%</span>
             </p>
           </header>
           <p class="text-gray-600 lead-[1.7]">{{ productObj?.description }}</p>
-          <!-- Product Variations -->
-          <section v-if="option1Name && option1Values.length">
-            <h2 class="text-sm sm:text-base font-medium mb-1">{{ option1Name }}:</h2>
-            <div class="text-xs sm:text-base flex flex-wrap gap-3">
-              <button 
-                v-for="val in option1Values"
-                @click="selectedOption1 = val"
-                :key="val"
-                :class="[
-                  'px-3 py-1 rounded border text-sm transition',
-                  selectedOption1 === val ? 'bg-secondary-500 text-white border-secondary-500' : 'border-gray-300 hover:bg-secondary-100'
-                ]"
-                class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out"
-              >
-                {{ val }}
-              </button>
-            </div>
-          </section>
-          <section v-if="option2Name && option2Values.length">
-            <h2 class="text-sm sm:text-base font-medium mb-1">{{ option2Name }}:</h2>
-            <div class="text-xs sm:text-base flex flex-wrap gap-3">
-              <button 
-                v-for="val in option2Values"
-                @click="selectedOption2 = val"
-                :key="val"
-                :class="[
-                  'px-3 py-1 rounded border text-sm transition',
-                  selectedOption2 === val ? 'bg-secondary-500 text-white border-secondary-500' : 'border-gray-300 hover:bg-secondary-100'
-                ]"
-                class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out"
-              >
-                {{ val }}
-              </button>
-            </div>
-          </section>
-          <section v-if="option3Name && option3Values.length">
-            <h2 class="text-sm sm:text-base font-medium mb-1">{{ option3Name }}:</h2>
-            <div class="text-xs sm:text-base flex flex-wrap gap-3">
-              <button 
-                v-for="val in option3Values"
-                @click="selectedOption3 = val"
-                :key="val"
-                :class="[
-                  'px-3 py-1 rounded border text-sm transition',
-                  selectedOption3 === val ? 'bg-secondary-500 text-white border-secondary-500' : 'border-gray-300 hover:bg-secondary-100'
-                ]"
-                class="px-3 py-1 border-[1px] border-black rounded-sm cursor-pointer hover:border-secondary-500 hover:bg-secondary-500 hover:text-white transition-colors duration-300 ease-in-out"
-              >
-                {{ val }}
-              </button>
-            </div>
-          </section>
-          <p 
-            v-if="selectedVariation && !selectedVariation.is_available"
-            class="text-red-600 bg-red-100 border border-red-300 px-4 py-2 rounded text-sm font-medium"
-          >
-            This variation is <strong>out of stock</strong>. Please choose a different option.
-          </p>
           <!-- Quantity and Action Buttons -->
           <section class="flex flex-col gap-8">
             <div class="flex flex-col">
@@ -197,11 +139,11 @@
 
             <div class="flex items-center gap-3 flex-col sm:flex-row">
               <BaseButton 
-                :disabled="!isAvailable" 
+                :disabled="!productObj?.is_available" 
                 class="w-full text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5"
                 @click="addToCart"
               >
-                <span>{{ isAvailable ? 'Add to Cart' : 'Unavailable' }}</span>
+                <span>{{ productObj?.is_available ? 'Add to Cart' : 'Unavailable' }}</span>
                 <PhShoppingCart class="text-xl" />
               </BaseButton>
               <BaseButton 
@@ -241,28 +183,6 @@ const maxQuantity = ref(50)
 const selectedImage = ref(null)
 const selectedSlideId = ref('slide0')
 const lightbox = ref(null);
-const selectedOption1 = ref(null)
-const selectedOption2 = ref(null)
-const selectedOption3 = ref(null)
-const selectedVariation = ref(null)
-
-// Dynamically extract option names (e.g., "Color", "DPI")
-const option1Name = computed(() => variations.value[0]?.option_1_name || null);
-const option2Name = computed(() => variations.value[0]?.option_2_name || null);
-const option3Name = computed(() => variations.value[0]?.option_3_name || null);
-
-// Unique option values (e.g., Red, Black, 1200 DPI, etc.)
-const option1Values = computed(() => [...new Set(variations.value.map(v => v.option_1_value))])
-const option2Values = computed(() => [...new Set(variations.value.map(v => v.option_2_value))])
-const option3Values = computed(() => [...new Set(variations.value.map(v => v.option_3_value))])
-
-const isAvailable = computed(() => {
-  return selectedVariation.value?.is_available ?? productObj.value?.is_available;
-});
-
-const stock = computed(() => {
-  return selectedVariation.value?.stock ?? productObj.value?.stock
-})
 
 const increaseQuantity = () => {
   if (quantity.value < maxQuantity.value) {
@@ -301,8 +221,6 @@ const onSlideClick = (e) => {
 
 const addToCart = () => {
   console.log('Quantity:', quantity.value)
-  console.log(option1Name.value + ': ' +selectedOption1.value)
-  console.log(option2Name.value + ': ' +selectedOption2.value)
 };
 
 const fetchProduct = async (id) => {
@@ -364,55 +282,8 @@ const fetchAllData = async (id) => {
   }
 };
 
-watch(
-  [selectedOption1, selectedOption2, selectedOption3],
-  () => {
-    // Collect all selected options that are not null
-    const selectedOptions = [
-      selectedOption1.value,
-      selectedOption2.value,
-      selectedOption3.value,
-    ].filter(opt => opt !== null)
-
-
-    // If no option selected, clear variation and exit
-    if (selectedOptions.length === 0) {
-      selectedVariation.value = null
-      return
-    }
-
-    // Find a variation that matches ALL the selected options (for those options that are selected)
-    selectedVariation.value = variations.value.find(variant => {
-      // Check each option only if it is selected (not null)
-      if (
-        (selectedOption1.value !== null && variant.option_1_value !== selectedOption1.value) ||
-        (selectedOption2.value !== null && variant.option_2_value !== selectedOption2.value) ||
-        (selectedOption3.value !== null && variant.option_3_value !== selectedOption3.value)
-      ) {
-        return false
-      }
-      return true
-    }) || null
-
-    if (selectedVariation.value) {
-      quantity.value = 1
-      maxQuantity.value = selectedVariation.value.stock || 50
-
-      if (selectedVariation.value.image) {
-        selectedImage.value = selectedVariation.value.image
-        const index = productObj.value.images.findIndex(img => img.url === selectedImage.value);
-        if(index !== -1) selectedSlideId.value = 'slide' + index;
-      }
-    }
-  },
-  { immediate: true }
-)
-
 onMounted(async () => {
   await fetchAllData(route.query.id);
-
-  selectedOption1.value = option1Values.value[0] ?? null
-  selectedOption2.value = option2Values.value[0] ?? null
 
   if (!lightbox.value) {
     lightbox.value = new PhotoSwipeLightbox({
