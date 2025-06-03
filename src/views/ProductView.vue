@@ -175,7 +175,6 @@ import ProductDetailsSkeleton from '@/components/ProductDetailsSkeleton.vue'
 const route = useRoute()
 const router = useRouter()
 const productObj = ref(null)
-const variations = ref([])
 const isLoading = ref(false)
 const { formatAmount } = useCurrencyFormat()
 const quantity = ref(1)
@@ -248,42 +247,8 @@ const fetchProduct = async (id) => {
   }
 };
 
-const fetchProductVariations = async (productId) => {
-  isLoading.value = true;
-  try {
-    const { data, error } = await supabase.from('product_variations').select('*').eq('product_id', productId);
-    if (error) throw error;
-    variations.value = data || [];
-    console.log(variations.value)
-  } catch (error) {
-    console.error('Error fetching product variations:', error);
-    variations.value = [];
-    Swal.fire({
-      title: 'Oops...',
-      html: 'Error loading variations. Please try again later',
-      icon: 'warning',
-      confirmButtonText: 'Go to Homepage',
-      allowOutsideClick: false,
-    }).then((result) => {
-      if (result.isDismissed || result.isConfirmed) {
-        router.push('/');
-      }
-    });
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const fetchAllData = async (id) => {
-  if (!id) return;
-  await fetchProduct(id);
-  if (productObj.value) {
-    await fetchProductVariations(id);
-  }
-};
-
 onMounted(async () => {
-  await fetchAllData(route.query.id);
+  await fetchProduct(route.query.id);
 
   if (!lightbox.value) {
     lightbox.value = new PhotoSwipeLightbox({
