@@ -40,6 +40,26 @@
                         </div>
                     </SplideSlide>
                 </Splide>
+                <div v-else>
+                    <div class="p-0 md:p-8 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10">
+                        <img :src="emptyCartIllustration" alt="Empty Cart Illustration" class="w-20 h-20 md:w-30 md:h-30 object-contain">
+                        <div class="text-center md:text-left ">
+                            <h3 class="text-base md:text-lg font-semibold">
+                                No featured products available
+                            </h3>
+                            <p class="text-sm md:text-base text-white mt-1 md:mt-2">
+                                We're curating our favorites. Check back soon!
+                            </p>
+                            <BaseLinkButton 
+                                to="/products" 
+                                class="text-sm mt-4 !px-4 !py-1.5 md:!px-5 md:!py-2 mx-auto md:mx-0" 
+                                :class="{ '!transition-colors' : isDomLoaded, '!transition-none' : !isDomLoaded }"
+                            >
+                                Browse all products
+                            </BaseLinkButton>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -298,7 +318,9 @@ import ProductCard from '@/components/ProductCard.vue'
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
 import CategoriesSkeleton from '@/components/CategoriesSkeleton.vue'
 import SliderProductSkeleton from '@/components/SliderProductSkeleton.vue'
+import emptyCartIllustration from '@/assets/img/empty-cart.png'
 
+const isDomLoaded = ref(false)
 const splideInstances = ref({})
 const featuredProducts = ref([])
 const categories = ref([])
@@ -329,6 +351,11 @@ const getFeaturedProducts = async () => {
     let { data: products, error } = await supabase.from('products').select('*').eq('is_featured', true);
     featuredProducts.value = products
     featuredProductsLoading.value = false
+
+    // isDomLoaded updates BaseLinkButton’s transition to avoid fade effect on page reload
+    setTimeout(() => {
+        isDomLoaded.value = true
+    }, 500);
 }
 
 // Product Categories
