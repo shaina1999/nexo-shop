@@ -115,21 +115,22 @@
               <div class="flex items-center rounded overflow-hidden w-full sm:w-max h-[35px] sm:h-[44px]">
                 <button 
                   @click="decreaseQuantity"
-                  :disabled="quantity === 1"
+                  :disabled="quantity === 1 || !productObj?.is_available"
                   class="text-lg w-[60px] sm:w-[40px] cursor-pointer h-full border-r-[1px] border flex items-center justify-center rounded-tl-sm rounded-bl-sm hover:!bg-transparent"
                 >
                   <PhMinus :size="20" weight="bold" />
                 </button>
                 <input 
+                  :disabled="!productObj?.is_available"
                   type="text" 
-                  class="w-full sm:w-[80px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-sm sm:text-base font-semibold h-full" 
+                  class="w-full sm:w-[80px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-sm sm:text-base font-semibold h-full disabled:opacity-[0.5]" 
                   v-model="quantity"
                   @input="handleQuantityInput"
                   @paste="handleQuantityInput"
                 >
                 <button 
                   @click="increaseQuantity"
-                  :disabled="quantity === maxQuantity"
+                  :disabled="quantity === maxQuantity || !productObj?.is_available"
                   class="text-lg w-[60px] sm:w-[40px] cursor-pointer h-full border-r-[1px] text-white border-secondary-500 flex items-center justify-center bg-secondary-500 rounded-tr-sm rounded-br-sm"
                 >
                   <PhPlus :size="20" weight="bold" />
