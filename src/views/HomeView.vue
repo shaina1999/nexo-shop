@@ -5,9 +5,10 @@
             <div class="p-6 md:p-10 mt-10 bg-black text-white max-h-max w-full lg:max-h-[344px]" :class="{ 'skeleton-loader h-[330px]' : featuredProductsLoading }">
                 <Splide 
                     :options="{
-                        type: 'loop', 
-                        arrows: false, 
-                        pagination: true,
+                        type: 'fade',
+                        drag: featuredProducts.length > 1,
+                        pagination: featuredProducts.length > 1,
+                        autoplay: true,
                         arrows: false,
                         breakpoints: {
                             768: {
