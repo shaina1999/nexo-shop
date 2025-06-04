@@ -248,7 +248,7 @@
     <section class="flex items-center justify-center w-full pt-16 sm:pt-20">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <SectionHeader :label="'Our Products'" :title="'Explore Our Products'">
-                <template v-slot:buttons>
+                <template v-slot:buttons v-if="products.length > 4">
                     <div class="hidden sm:flex items-center gap-x-2">
                         <button 
                             :class="{ 'skeleton-loader' : productsLoading }"
@@ -268,44 +268,69 @@
                 </template>
             </SectionHeader>
             <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300">
-                <div class="mb-7.5 md:mb-15">
-                    <Splide 
-                        v-if="!productsLoading"
-                        :ref="el => registerSplide(el, 'products')"
-                        :options="{
-                            type: 'loop',
-                            perPage: 4,
-                            gap: '16px',
-                            arrows: false,
-                            speed: 1000,
-                            perMove: 1,
-                            pagination: false,
-                            breakpoints: {
-                                640: {
-                                    perPage: 1, arrows: true
-                                },
-                                768: {
-                                    perPage: 2, arrows: false
-                                },
-                                1024: {
-                                    perPage: 3, arrows: false
-                                },
-                                1280: {
-                                    perPage: 4, arrows: false
-                                },
-                            }
-                        }"
-                    >
-                        <SplideSlide v-for="(product, index) in products" :key="product.id">
+                <div :class="{ 'mb-7.5 md:mb-15' : products.length > 4, 'mb-0' : products.length < 5 }">
+                    <div v-if="!productsLoading">
+                        <Splide 
+                            v-if="products.length > 4"
+                            :ref="el => registerSplide(el, 'products')"
+                            :options="{
+                                type: 'loop',
+                                perPage: 4,
+                                gap: '16px',
+                                arrows: false,
+                                speed: 1000,
+                                perMove: 1,
+                                pagination: false,
+                                breakpoints: {
+                                    640: {
+                                        perPage: 1, arrows: true
+                                    },
+                                    768: {
+                                        perPage: 2, arrows: false
+                                    },
+                                    1024: {
+                                        perPage: 3, arrows: false
+                                    },
+                                    1280: {
+                                        perPage: 4, arrows: false
+                                    },
+                                }
+                            }"
+                        >
+                            <SplideSlide v-for="product in products" :key="product.id">
+                                <ProductCard 
+                                    :product="product"
+                                />
+                            </SplideSlide>
+                        </Splide>
+                        <div 
+                            v-else-if="products.length > 0 && products.length < 5"
+                            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+                        >
                             <ProductCard 
-                                :product="product"
+                                v-for="product in products" 
+                                :key="product.id"
+                                :product="product" 
                             />
-                        </SplideSlide>
-                    </Splide>
+                        </div>
+                        <div v-else>
+                            <h2 class="text-base sm:text-xl font-semibold text-gray-500">
+                                No Products Found
+                            </h2>
+                            <p class="text-sm sm:text-base mt-2 text-gray-600 max-w-md">
+                                All Products will appear here once they're available. Please check back later or explore other sections of our store.
+                            </p>
+                        </div>
+                    </div>
                     <SliderProductSkeleton v-else />
                 </div>
-                <BaseLinkButton :to="'/products'" class="mx-auto" :class="{ 'skeleton-loader pointer-events-none' : productsLoading }">
-                    <span :class="{ 'opacity-0' : bestSellingProductsLoading }">View All Products</span>
+                <BaseLinkButton 
+                    v-if="products.length > 4" 
+                    :to="'/products'" 
+                    class="mx-auto" 
+                    :class="{ 'skeleton-loader pointer-events-none' : productsLoading }"
+                >
+                    <span :class="{ 'opacity-0' : productsLoading }">View All Products</span>
                 </BaseLinkButton>
             </div>
         </div>
@@ -401,7 +426,7 @@ const getFeaturedProducts = async () => {
     }, 500);
 }
 
-// Product Categories
+// Categories
 const getCategories = async () => {
     categoriesLoading.value = true
     let { data: items, error } = await supabase.from('categories').select('*')
