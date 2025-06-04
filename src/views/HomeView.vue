@@ -22,7 +22,7 @@
                     }"
                 >
                     <SplideSlide v-for="featuredProduct in featuredProducts" :key="featuredProduct.id">
-                        <div class="flex items-baseline md:items-center gap-y-8 sm:gap-y-12 md:gap-y-0 justify-center flex-col md:flex-row">
+                        <div class="flex items-baseline md:items-center gap-y-8 sm:gap-y-12 md:gap-y-0 justify-center flex-col md:flex-row mb-8 md:mb-0">
                             <div class="shrink">
                                 <div class="flex items-center gap-x-6 mb-3 md:mb-6 font-medium">
                                     <span>{{ featuredProduct.name }}</span>
@@ -33,8 +33,8 @@
                                     <PhArrowRight :size="22" />
                                 </RouterLink>
                             </div>
-                            <div class="w-[90%] md:w-[450px] h-[160px] sm:h-[250px] mx-auto">
-                                <img :src="featuredProduct.images[0].url" :alt="featuredProduct.images[0].alt" class="w-full h-full object-contain">
+                            <div class="w-[90%] md:w-[450px] h-[150px] sm:h-[250px] mx-auto flex items-center justify-center">
+                                <img :src="featuredProduct.images[0].url" :alt="featuredProduct.images[0].alt" class="w-[90%] h-[90%] object-contain">
                             </div>
                         </div>
                     </SplideSlide>
