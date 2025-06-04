@@ -228,10 +228,10 @@
                             <img :src="emptyCartIllustration" alt="Empty Cart Illustration" class="w-18 h-18 md:w-28 md:h-28 object-contain">
                             <div>
                                 <h2 class="text-base sm:text-xl font-semibold text-gray-500">
-                                    No Best Selling Products Found
+                                    No Best-Selling Products Yet
                                 </h2>
                                 <p class="text-sm sm:text-base mt-2 text-gray-600 max-w-md">
-                                    Best Selling Products will appear here once they're available. Please check back later or explore other sections of our store.
+                                    Our best-selling products will appear here once available. Please check back soon or explore other items in our store.
                                 </p>
                             </div>
                         </div>
