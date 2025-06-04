@@ -28,7 +28,7 @@
                                     <span>{{ featuredProduct.name }}</span>
                                 </div>
                                 <div class="font-semibold text-[26px] sm:text-[38px] md:text-[46px]/14 mb-3 md:mb-6 whitespace-normal lg:whitespace-nowrap">{{ featuredProduct.featured_description }}</div>
-                                <RouterLink class="flex items-center gap-x-2 font-medium" to="/product">
+                                <RouterLink class="flex items-center gap-x-2 font-medium" :to="{ path: '/product', query: { id: featuredProduct.id } }">
                                     <span class="border-b-[1px] border-white text-white bg-transparent">Get this now</span>
                                     <PhArrowRight :size="22" />
                                 </RouterLink>
