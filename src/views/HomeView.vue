@@ -13,12 +13,7 @@
                         interval: 4000,
                         speed: 1000,
                         rewind: true,
-                        breakpoints: {
-                            768: {
-                                arrows: true,
-                                pagination: false
-                            },
-                        }
+                        arrows: featuredProducts.length > 1,
                     }"
                 >
                     <SplideSlide v-for="featuredProduct in featuredProducts" :key="featuredProduct.id">
@@ -411,3 +406,17 @@ onMounted(async () => {
     getProducts()
 })
 </script>
+
+<style>
+@media (min-width: 768px) {
+  .hero .splide__arrow {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero .splide__arrow {
+    display: flex !important;
+  }
+}
+</style>
