@@ -1,6 +1,6 @@
 <template>
     <!-- Hero Section -->
-    <section class="flex items-center justify-center w-full hero">
+    <section class="flex items-center justify-center w-full hero-section">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl flex">
             <div class="p-6 md:p-10 mt-8 md:mt-10 bg-black text-white max-h-max w-full lg:max-h-[344px]" :class="{ 'skeleton-loader h-[330px]' : featuredProductsLoading }">
                 <Splide 
@@ -409,13 +409,13 @@ onMounted(async () => {
 
 <style>
 @media (min-width: 768px) {
-  .hero .splide__arrow {
+  .hero-section .splide__arrow {
     display: none !important;
   }
 }
 
 @media (max-width: 767px) {
-  .hero .splide__arrow {
+  .hero-section .splide__arrow {
     display: flex !important;
   }
 }
