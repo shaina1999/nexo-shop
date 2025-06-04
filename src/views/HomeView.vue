@@ -10,7 +10,6 @@
                         drag: featuredProducts.length > 1,
                         pagination: featuredProducts.length > 1,
                         autoplay: true,
-                        arrows: false,
                         interval: 4000,
                         speed: 1000,
                         rewind: true,
@@ -34,7 +33,7 @@
                                     <PhArrowRight :size="22" />
                                 </RouterLink>
                             </div>
-                            <div class="w-[90%] md:w-[450px] h-[160px] sm:h-[250px]">
+                            <div class="w-[90%] md:w-[450px] h-[160px] sm:h-[250px] mx-auto">
                                 <img :src="featuredProduct.images[0].url" :alt="featuredProduct.images[0].alt" class="w-full h-full object-contain">
                             </div>
                         </div>
@@ -68,7 +67,7 @@
     <section class="flex items-center justify-center w-full pt-16 sm:pt-20">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <SectionHeader :label="'Categories'" :title="'Browse By Category'">
-                <template v-slot:buttons>
+                <template v-slot:buttons v-if="categories.length > 5">
                     <div class="hidden sm:flex items-center gap-x-2">
                         <button 
                             :class="{ 'skeleton-loader' : categoriesLoading }"
@@ -88,47 +87,70 @@
                 </template>
             </SectionHeader>
             <div class="pb-7.5 px-0.5 md:pb-15 border-b-[1px] border-b-gray-300 categories">
-                <Splide 
-                    v-if="!categoriesLoading"
-                    :ref="el => registerSplide(el, 'categories')"
-                    :options="{
-                        perPage: 5,
-                        autoplay: true,
-                        gap: '1rem',
-                        type: 'loop',
-                        interval: 2500,
-                        arrows: false,
-                        speed: 1000,
-                        perMove: 1,
-                        pagination: false,
-                        breakpoints: {
-                            640: {
-                                perPage: 2,
-                                arrows: true,
-                                gap: '0.5rem',
+                <div v-if="!categoriesLoading">
+                    <Splide 
+                        v-if="categories.length > 5"
+                        :ref="el => registerSplide(el, 'categories')"
+                        :options="{
+                            perPage: 5,
+                            autoplay: true,
+                            gap: '1rem',
+                            type: 'loop',
+                            interval: 2500,
+                            arrows: false,
+                            speed: 1000,
+                            perMove: 1,
+                            pagination: false,
+                            breakpoints: {
+                                640: {
+                                    perPage: 2,
+                                    arrows: true,
+                                    gap: '0.5rem',
+                                },
+                                768: {
+                                    perPage: 3,
+                                },
+                                1024: {
+                                    perPage: 4,
+                                },
+                                1280: {
+                                    perPage: 5,
+                                },
                             },
-                            768: {
-                                perPage: 3,
-                            },
-                            1024: {
-                                perPage: 4,
-                            },
-                            1280: {
-                                perPage: 5,
-                            },
-                        },
-                    }"
-                >
-                    <SplideSlide v-for="(category, index) in categories" :key="index">
-                        <RouterLink 
-                            :to="`/products?category=${category.slug}`"
-                            class="text-sm text-center font-medium flex flex-col items-center justify-center space-y-3 rounded-sm border-[1px] border-gray-300 px-2 py-4 sm:px-4 sm:py-8 cursor-pointer category-item transition-all duration-300 ease-in-out hover:bg-secondary-500 hover:text-white"
-                        >
-                            <component :is="category.icon" :size="38" />
-                            <span>{{ category.label }}</span>
-                        </RouterLink>
-                    </SplideSlide>
-                </Splide>
+                        }"
+                    >
+                        <SplideSlide v-for="(category, index) in categories" :key="index">
+                            <RouterLink 
+                                :to="`/products?category=${category.slug}`"
+                                class="text-sm text-center font-medium flex flex-col items-center justify-center space-y-3 rounded-sm border-[1px] border-gray-300 px-2 py-4 sm:px-4 sm:py-8 cursor-pointer category-item transition-all duration-300 ease-in-out hover:bg-secondary-500 hover:text-white"
+                            >
+                                <component :is="category.icon" :size="38" />
+                                <span>{{ category.label }}</span>
+                            </RouterLink>
+                        </SplideSlide>
+                    </Splide>
+                    <div 
+                        v-else-if="categories.length > 0 && categories.length < 6"
+                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
+                    >
+                    <RouterLink 
+                        v-for="(category, index) in categories" :key="index"
+                        :to="`/products?category=${category.slug}`"
+                        class="text-sm text-center font-medium flex flex-col items-center justify-center space-y-3 rounded-sm border-[1px] border-gray-300 px-2 py-4 sm:px-4 sm:py-8 cursor-pointer category-item transition-all duration-300 ease-in-out hover:bg-secondary-500 hover:text-white"
+                    >
+                        <component :is="category.icon" :size="38" />
+                        <span>{{ category.label }}</span>
+                    </RouterLink>
+                    </div>
+                    <div v-else>
+                        <h2 class="text-base sm:text-xl font-semibold text-gray-500">
+                            No Categories Found
+                        </h2>
+                        <p class="text-sm sm:text-base mt-2 text-gray-600 max-w-md">
+                            Categories will appear here once they're available. Please check back later or explore other sections of our store.
+                        </p>
+                    </div>
+                </div>
                 <CategoriesSkeleton v-else />
             </div>
         </div>

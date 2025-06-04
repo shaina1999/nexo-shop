@@ -19,7 +19,6 @@
             breakpoints: {
                 640: {
                     perPage: 2,
-                    arrows: true,
                     gap: '0.5rem',
                 },
                 768: {
