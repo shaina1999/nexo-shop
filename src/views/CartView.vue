@@ -88,21 +88,21 @@
                 <!-- Cart Total -->
                 <div class="border p-6 rounded-md w-full md:w-1/2 lg:w-1/3">
                     <h3 class="text-lg font-medium mb-4">Cart Total</h3>
-                    <div class="flex justify-between mb-2 text-sm">
+                    <div class="flex justify-between mb-3.5 text-sm">
                         <span>Subtotal:</span>
-                        <span>$1750</span>
+                        <span>Php {{ formatAmount(1300) }}</span>
                     </div>
-                    <div class="flex justify-between mb-2 text-sm">
+                    <div class="flex justify-between mb-3.5 text-sm">
                         <span>Shipping:</span>
                         <span class="text-green-600 font-medium">Free</span>
                     </div>
-                    <div class="flex justify-between font-semibold text-base border-t pt-2 mt-2">
+                    <div class="flex justify-between font-semibold text-base border-t pt-3.5 mt-3.5">
                         <span>Total:</span>
-                        <span>$1750</span>
+                        <span>Php {{ formatAmount(1300) }}</span>
                     </div>
-                    <button class="w-full mt-4 bg-red-600 text-white py-2 rounded hover:bg-red-700 transition">
+                    <BaseButton class="w-full mt-4">
                         Proceed to Checkout
-                    </button>
+                    </BaseButton>
                 </div>
             </div>
         </div>
@@ -111,8 +111,11 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useCurrencyFormat } from '@/composables/currencyFormat'
+
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
 import BaseButton from '@/components/BaseButton.vue'
 
+const { formatAmount } = useCurrencyFormat()
 const disableRemoveButton = ref(true)
 </script>
