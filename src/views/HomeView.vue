@@ -411,36 +411,3 @@ onMounted(async () => {
     getProducts()
 })
 </script>
-
-<style scoped>
-@media (max-width: 1023px) {
-    .new-arrival-grid {
-        grid-template-columns: 1fr 1fr;
-        grid-template-areas: none;
-        grid-template-rows: 270px 270px;
-    }
-}
-
-@media (max-width: 640px) {
-    .new-arrival-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (min-width: 1024px) {
-    .item1{ grid-area: item1; }
-    .item2{ grid-area: item2; }
-    .item3{ grid-area: item3; }
-    .item4{ grid-area: item4; }
-
-    .new-arrival-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-areas:
-            'item1 item1 item2 item2'
-            'item1 item1 item2 item2'
-            'item1 item1 item3 item4'
-            'item1 item1 item3 item4'
-        ;
-    }
-}
-</style>
