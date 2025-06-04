@@ -15,7 +15,7 @@
             wheel: false,
             breakpoints: {
                 640: {
-                    perPage: 1, arrows: true
+                    perPage: 1, arrows: false
                 },
                 768: {
                     perPage: 2, arrows: false

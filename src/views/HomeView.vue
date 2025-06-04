@@ -155,7 +155,7 @@
     <section class="flex items-center justify-center w-full pt-16 sm:pt-20">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <SectionHeader :label="'This Month'" :title="'Best Selling Products'">
-                <template v-slot:buttons>
+                <template v-slot:buttons v-if="bestSellingProducts.length > 4">
                     <div class="hidden sm:flex items-center gap-x-2">
                         <button 
                             :class="{ 'skeleton-loader' : bestSellingProductsLoading }"
@@ -175,43 +175,69 @@
                 </template>
             </SectionHeader>
             <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300">
-                <div class="mb-7.5 md:mb-15">
-                    <Splide 
-                        v-if="!bestSellingProductsLoading"
-                        :ref="el => registerSplide(el, 'best-selling')"
-                        :options="{
-                            type: 'loop',
-                            perPage: bestSellingProducts.length < 4 ?  bestSellingProducts.length : 4,
-                            gap: '16px',
-                            arrows: false,
-                            speed: 1000,
-                            perMove: 1,
-                            pagination: false,
-                            breakpoints: {
-                                640: {
-                                    perPage: 1, arrows: true
-                                },
-                                768: {
-                                    perPage: 2, arrows: false
-                                },
-                                1024: {
-                                    perPage: 3, arrows: false
-                                },
-                                1280: {
-                                    perPage: bestSellingProducts.length < 4 ?  bestSellingProducts.length : 4, arrows: false
-                                },
-                            }
-                        }"
-                    >
-                        <SplideSlide v-for="(bestSellingProduct, index) in bestSellingProducts" :key="bestSellingProduct.id">
+                <div :class="{ 'mb-7.5 md:mb-15' : bestSellingProducts.length > 4, 'mb-0' : bestSellingProducts.length < 5 }">
+                    <div v-if="!bestSellingProductsLoading">
+                        <Splide 
+                            v-if="bestSellingProducts.length > 4"
+                            :ref="el => registerSplide(el, 'best-selling')"
+                            :options="{
+                                type: 'loop',
+                                perPage: 4,
+                                gap: '16px',
+                                arrows: false,
+                                speed: 1000,
+                                perMove: 1,
+                                pagination: false,
+                                breakpoints: {
+                                    640: {
+                                        perPage: 1, arrows: true
+                                    },
+                                    768: {
+                                        perPage: 2, arrows: false
+                                    },
+                                    1024: {
+                                        perPage: 3, arrows: false
+                                    },
+                                    1280: {
+                                        perPage: 4,
+                                        arrows: false
+                                    },
+                                }
+                            }"
+                        >
+                            <SplideSlide v-for="bestSellingProduct in bestSellingProducts" :key="bestSellingProduct.id">
+                                <ProductCard 
+                                    :product="bestSellingProduct"
+                                />
+                            </SplideSlide>
+                        </Splide>
+                        <div 
+                            v-else-if="bestSellingProducts.length > 0 && bestSellingProducts.length < 5"
+                            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+                        >
                             <ProductCard 
-                                :product="bestSellingProduct"
+                                v-for="bestSellingProduct in bestSellingProducts" 
+                                :key="bestSellingProduct.id"
+                                :product="bestSellingProduct" 
                             />
-                        </SplideSlide>
-                    </Splide>
+                        </div>
+                        <div v-else>
+                            <h2 class="text-base sm:text-xl font-semibold text-gray-500">
+                                No Best Selling Products Found
+                            </h2>
+                            <p class="text-sm sm:text-base mt-2 text-gray-600 max-w-md">
+                                Best Selling Products will appear here once they're available. Please check back later or explore other sections of our store.
+                            </p>
+                        </div>
+                    </div>
                     <SliderProductSkeleton v-else />
                 </div>
-                <BaseLinkButton :to="'/products?tag=best-selling'" class="mx-auto" :class="{ 'skeleton-loader pointer-events-none' : bestSellingProductsLoading }">
+                <BaseLinkButton 
+                    v-if="bestSellingProducts.length > 4" 
+                    :to="'/products?tag=best-selling'" 
+                    class="mx-auto" 
+                    :class="{ 'skeleton-loader pointer-events-none' : bestSellingProductsLoading }"
+                >
                     <span :class="{ 'opacity-0' : bestSellingProductsLoading }">View All Products</span>
                 </BaseLinkButton>
             </div>
