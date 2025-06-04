@@ -35,7 +35,7 @@
                     </SplideSlide>
                 </Splide>
                 <div v-else>
-                    <div class="p-0 md:p-8 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10">
+                        <div class="p-0 md:p-8 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10">
                         <img :src="emptyCartIllustration" alt="Empty Cart Illustration" class="w-20 h-20 md:w-30 md:h-30 object-contain">
                         <div class="text-center md:text-left ">
                             <h3 class="text-base md:text-lg font-semibold">
@@ -137,13 +137,16 @@
                         <span>{{ category.label }}</span>
                     </RouterLink>
                     </div>
-                    <div v-else>
-                        <h2 class="text-base sm:text-xl font-semibold text-gray-500">
-                            No Categories Found
-                        </h2>
-                        <p class="text-sm sm:text-base mt-2 text-gray-600 max-w-md">
-                            Categories will appear here once they're available. Please check back later or explore other sections of our store.
-                        </p>
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10">
+                        <img :src="folderRemoveIllustration" alt="Folder Illustration" class="w-16 h-16 md:w-25 md:h-25 object-contain">
+                        <div>
+                            <h2 class="text-base sm:text-xl font-semibold text-gray-500">
+                                No Categories Found
+                            </h2>
+                            <p class="text-sm sm:text-base mt-2 text-gray-600 max-w-md">
+                                Categories will appear here once they're available. Please check back later or explore other sections of our store.
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <CategoriesSkeleton v-else />
@@ -221,13 +224,16 @@
                                 :product="bestSellingProduct" 
                             />
                         </div>
-                        <div v-else>
-                            <h2 class="text-base sm:text-xl font-semibold text-gray-500">
-                                No Best Selling Products Found
-                            </h2>
-                            <p class="text-sm sm:text-base mt-2 text-gray-600 max-w-md">
-                                Best Selling Products will appear here once they're available. Please check back later or explore other sections of our store.
-                            </p>
+                        <div v-else class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10">
+                            <img :src="emptyCartIllustration" alt="Empty Cart Illustration" class="w-18 h-18 md:w-28 md:h-28 object-contain">
+                            <div>
+                                <h2 class="text-base sm:text-xl font-semibold text-gray-500">
+                                    No Best Selling Products Found
+                                </h2>
+                                <p class="text-sm sm:text-base mt-2 text-gray-600 max-w-md">
+                                    Best Selling Products will appear here once they're available. Please check back later or explore other sections of our store.
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <SliderProductSkeleton v-else />
@@ -244,7 +250,7 @@
         </div>
     </section>
 
-    <!-- Explore Our Products Section -->
+    <!-- All Products Section -->
     <section class="flex items-center justify-center w-full pt-16 sm:pt-20">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <SectionHeader :label="'Our Products'" :title="'Explore Our Products'">
@@ -313,13 +319,16 @@
                                 :product="product" 
                             />
                         </div>
-                        <div v-else>
-                            <h2 class="text-base sm:text-xl font-semibold text-gray-500">
-                                No Products Found
-                            </h2>
-                            <p class="text-sm sm:text-base mt-2 text-gray-600 max-w-md">
-                                All Products will appear here once they're available. Please check back later or explore other sections of our store.
-                            </p>
+                        <div class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10">
+                            <img :src="emptyCartIllustration" alt="Empty Cart Illustration" class="w-18 h-18 md:w-28 md:h-28 object-contain">
+                            <div>
+                                <h2 class="text-base sm:text-xl font-semibold text-gray-500">
+                                    No Products Found
+                                </h2>
+                                <p class="text-sm sm:text-base mt-2 text-gray-600 max-w-md">
+                                    All Products will appear here once they're available. Please check back later or explore other sections of our store.
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <SliderProductSkeleton v-else />
@@ -387,6 +396,7 @@ import BaseLinkButton from '@/components/BaseLinkButton.vue'
 import CategoriesSkeleton from '@/components/CategoriesSkeleton.vue'
 import SliderProductSkeleton from '@/components/SliderProductSkeleton.vue'
 import emptyCartIllustration from '@/assets/img/empty-cart.png'
+import folderRemoveIllustration from '@/assets/img/folder-remove.png'
 
 const isDomLoaded = ref(false)
 const splideInstances = ref({})
