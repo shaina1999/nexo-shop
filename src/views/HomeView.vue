@@ -157,7 +157,7 @@
     <!-- Best Selling Products Section -->
     <section class="flex items-center justify-center w-full pt-16 sm:pt-20">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
-            <SectionHeader :label="'This Month'" :title="'Best Selling Products'">
+            <SectionHeader :label="'This Month'" :title="'Best-Selling Products'">
                 <template v-slot:buttons v-if="bestSellingProducts.length > 4">
                     <div class="hidden sm:flex items-center gap-x-2">
                         <button 
