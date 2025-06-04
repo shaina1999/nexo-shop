@@ -137,7 +137,7 @@
                         <span>{{ category.label }}</span>
                     </RouterLink>
                     </div>
-                    <div class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10">
+                    <div v-else class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
                         <img :src="folderRemoveIllustration" alt="Folder Illustration" class="w-16 h-16 md:w-25 md:h-25 object-contain">
                         <div>
                             <h2 class="text-base sm:text-xl font-semibold text-gray-500">
@@ -224,7 +224,7 @@
                                 :product="bestSellingProduct" 
                             />
                         </div>
-                        <div v-else class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10">
+                        <div v-else class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
                             <img :src="emptyCartIllustration" alt="Empty Cart Illustration" class="w-18 h-18 md:w-28 md:h-28 object-contain">
                             <div>
                                 <h2 class="text-base sm:text-xl font-semibold text-gray-500">
@@ -319,7 +319,7 @@
                                 :product="product" 
                             />
                         </div>
-                        <div class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10">
+                        <div v-else class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
                             <img :src="emptyCartIllustration" alt="Empty Cart Illustration" class="w-18 h-18 md:w-28 md:h-28 object-contain">
                             <div>
                                 <h2 class="text-base sm:text-xl font-semibold text-gray-500">
