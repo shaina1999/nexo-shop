@@ -5,7 +5,7 @@
                 <span class="font-semibold">My Cart 🛒</span><span class="font-regular text-gray-500">(2 items)</span>
             </h2>
             <!-- Cart List -->
-            <div class="space-y-3 md:space-y-5">
+            <div class="space-y-2.5 md:space-y-5">
                 <!-- Cart Item -->
                 <div
                     v-for="item in cartItems" 
@@ -14,7 +14,18 @@
                 >
                     <!-- Checkbox + Product Info -->
                     <div class="flex items-start gap-4">
-                        <input type="checkbox" class="mt-1" />
+                        <label class="relative cursor-pointer">
+                            <input 
+                                name="cartitem1" 
+                                type="checkbox" 
+                                class="absolute left-0 right-0 top-0 bottom-0 w-full h-full opacity-0 cursor-pointer" 
+                            >
+                            <span 
+                                class="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-sm border-[1px] border-black flex items-center justify-center text-white relative"
+                            >
+                            <PhCheckFat :size="12" weight="fill" class="absolute top-[50%] -translate-x-1/2 left-1/2 -translate-y-1/2 text-transparent" />
+                            </span>
+                        </label>
                         <img :src="item.image" :alt="item.name" class="w-18 h-18 sm:w-20sm: sm:h-20 object-cover rounded" />
                         <div>
                             <p class="font-medium text-gray-800">{{ item.name }}</p>
