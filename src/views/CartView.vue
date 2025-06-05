@@ -106,6 +106,19 @@
                     </BaseButton>
                 </div>
             </div>
+
+            <div class="flex flex-col items-center justify-center text-center pt-8 hidden">
+                <img :src="emptyCartIllustration" alt="Empty Cart" class="w-20 h-20 mb-6 md:w-24 md:h-24 object-contain" />
+                <h2 class="text-s sm:text-lg font-semibold text-black mb-1">Your cart is empty</h2>
+                <p class="text-sm sm:text-base text-gray-500 mb-6 max-w-md">Looks like you haven't added anything to your cart yet.</p>
+                <BaseLinkButton 
+                    to="/products"
+                    class="!flex items-center gap-x-1.5 text-sm sm:text-base !px-4.5 !py-2.5 md:!px-6 md:!py-3 text-center w-auto bg-white !text-black border border-black/50 hover:!bg-gray-200 transition"
+                >
+                    Continue Shopping
+                    <PhBag :size="18" />
+                </BaseLinkButton>
+            </div>
         </div>
     </section>
 </template>
@@ -116,6 +129,7 @@ import { useCurrencyFormat } from '@/composables/currencyFormat'
 
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
 import BaseButton from '@/components/BaseButton.vue'
+import emptyCartIllustration from '@/assets/img/empty-cart.png'
 
 const { formatAmount } = useCurrencyFormat()
 const disableRemoveButton = ref(true)
