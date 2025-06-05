@@ -4,66 +4,36 @@
             <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-5 md:pb-10">
                 <span class="font-semibold">My Cart 🛒</span><span class="font-regular text-gray-500">(2 items)</span>
             </h2>
-            <!-- Cart Table -->
-            <div class="overflow-x-auto pb-1">
-                <table class="min-w-full bg-white text-left rounded-lg">
-                    <thead class="text-black text-sm shadow">
-                        <tr>
-                            <th class="px-4 py-3">
-                                <input type="checkbox" />
-                            </th>
-                            <th class="px-4 py-3">Product</th>
-                            <th class="px-4 py-3">Price</th>
-                            <th class="px-4 py-3">Quantity</th>
-                            <th class="px-4 py-3">Subtotal</th>
-                            <th class="px-4 py-3"></th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-700 text-sm">
-                        <tr class="shadow">
-                            <td class="px-4 py-4">
-                                <input type="checkbox" />
-                            </td>
-                            <td class="px-4 py-4 flex items-center gap-4">
-                                <img src="" alt="LCD Monitor" class="w-16 h-16 object-cover">
-                                <span>LCD Monitor</span>
-                            </td>
-                            <td class="px-4 py-4">$650</td>
-                            <td class="px-4 py-4">
-                                <select class="border rounded px-2 py-1">
-                                    <option>01</option>
-                                    <option>02</option>
-                                    <option>03</option>
-                                </select>
-                            </td>
-                            <td class="px-4 py-4">$650</td>
-                            <td class="px-4 py-4">
-                                <button class="text-red-500 hover:underline">Remove</button>
-                            </td>
-                        </tr>
-                        <tr class="!shadow">
-                            <td class="px-4 py-4">
-                                <input type="checkbox" />
-                            </td>
-                            <td class="px-4 py-4 flex items-center gap-4">
-                                <img src="" alt="Gamepad" class="w-16 h-16 object-cover">
-                                <span>H1 Gamepad</span>
-                            </td>
-                            <td class="px-4 py-4">$550</td>
-                            <td class="px-4 py-4">
-                                <select class="border rounded px-2 py-1">
-                                    <option>01</option>
-                                    <option selected>02</option>
-                                    <option>03</option>
-                                </select>
-                            </td>
-                            <td class="px-4 py-4">$1100</td>
-                            <td class="px-4 py-4">
-                                <button class="text-red-500 hover:underline">Remove</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- Cart List -->
+            <div class="space-y-3 md:space-y-5">
+                <!-- Cart Item -->
+                <div
+                    v-for="item in cartItems" 
+                    :key="item.id"
+                    class="bg-white rounded-lg shadow p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+                >
+                    <!-- Checkbox + Product Info -->
+                    <div class="flex items-start gap-4">
+                        <input type="checkbox" class="mt-1" />
+                        <img :src="item.image" :alt="item.name" class="w-18 h-18 sm:w-20sm: sm:h-20 object-cover rounded" />
+                        <div>
+                            <p class="font-medium text-gray-800">{{ item.name }}</p>
+                            <p class="text-sm text-gray-500">Price: Php {{ formatAmount(650) }}</p>
+                            <p class="text-sm text-gray-500">Subtotal: Php {{ formatAmount(650) }}</p>
+                        </div>
+                    </div>
+                    <!-- Quantity + Remove -->
+                    <div class="flex items-center justify-between sm:justify-end sm:gap-4 w-full sm:w-auto">
+                        <select class="border rounded px-2 py-1 text-sm">
+                            <option v-for="n in 10" :key="n" :value="n">
+                                {{ n.toString().padStart(2, '0') }}
+                            </option>
+                        </select>
+                        <BaseButton class="ml-4 sm:ml-0 !p-1.5 sm:!p-2">
+                            <PhTrash class="w-4.5 h-4.5 sm:w-5 sm:h-5" />
+                        </BaseButton>
+                    </div>
+                </div>
             </div>
 
             <!-- Actions -->
@@ -118,4 +88,21 @@ import BaseButton from '@/components/BaseButton.vue'
 
 const { formatAmount } = useCurrencyFormat()
 const disableRemoveButton = ref(true)
+
+const cartItems = [
+  {
+    id: 1,
+    name: 'LCD Monitor',
+    price: 650,
+    quantity: 1,
+    image: 'https://jquwasnrxbzlhmtwnrit.supabase.co/storage/v1/object/public/product-images//c08186083_1_1.avif',
+  },
+  {
+    id: 2,
+    name: 'H1 Gamepad',
+    price: 550,
+    quantity: 2,
+    image: 'https://jquwasnrxbzlhmtwnrit.supabase.co/storage/v1/object/public/product-images//Bluetooth-Smartwatch-PNG-Picture.png',
+  },
+];
 </script>
