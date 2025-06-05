@@ -19,11 +19,19 @@
                                 name="cartitem1" 
                                 type="checkbox" 
                                 class="absolute left-0 right-0 top-0 bottom-0 w-full h-full opacity-0 cursor-pointer" 
+                                @change="(event) => handleCheckboxChange(event, item)"
+                                v-model="checkedItems[item.id]"
                             >
                             <span 
-                                class="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-sm border-[1px] border-black flex items-center justify-center text-white relative"
+                                class="w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-sm border-[1px] border-black flex items-center justify-center text-white relative"
+                                :class="{'bg-black': checkedItems[item.id]}"
                             >
-                            <PhCheckFat :size="12" weight="fill" class="absolute top-[50%] -translate-x-1/2 left-1/2 -translate-y-1/2 text-transparent" />
+                                <PhCheckFat 
+                                    :size="12" 
+                                    weight="fill" 
+                                    class="absolute top-[50%] -translate-x-1/2 left-1/2 -translate-y-1/2 text-transparent"
+                                    :class="{'text-white': checkedItems[item.id], 'text-transparent': !checkedItems[item.id]}" 
+                                />
                             </span>
                         </label>
                         <img :src="item.image" :alt="item.name" class="w-18 h-18 sm:w-20sm: sm:h-20 object-cover rounded" />
@@ -91,7 +99,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref, reactive } from 'vue'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
 
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
@@ -99,6 +107,7 @@ import BaseButton from '@/components/BaseButton.vue'
 
 const { formatAmount } = useCurrencyFormat()
 const disableRemoveButton = ref(true)
+const checkedItems = reactive({})
 
 const cartItems = [
   {
@@ -116,4 +125,18 @@ const cartItems = [
     image: 'https://jquwasnrxbzlhmtwnrit.supabase.co/storage/v1/object/public/product-images//Bluetooth-Smartwatch-PNG-Picture.png',
   },
 ];
+
+const handleCheckboxChange = (event, item) => {
+    if (checkedItems[item.id]) {
+        console.log(`${item.name} is checked`)
+    } else {
+        console.log(`${item.name} is unchecked`)
+    }
+}
+
+onMounted(() => {
+    cartItems.forEach(item => {
+        checkedItems[item.id] = false
+    })
+})
 </script>
