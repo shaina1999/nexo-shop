@@ -5,12 +5,12 @@
                 <span class="font-semibold">My Cart 🛒</span><span class="font-regular text-gray-500">(2 items)</span>
             </h2>
             <!-- Cart List -->
-            <div class="space-y-2.5 md:space-y-5">
+            <div class="space-y-5">
                 <!-- Cart Item -->
                 <div
                     v-for="item in cartItems" 
                     :key="item.id"
-                    class="bg-white rounded-lg shadow p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+                    class="bg-white rounded-lg shadow p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8 sm:gap-12"
                 >
                     <!-- Checkbox + Product Info -->
                     <div class="flex items-start gap-4">
@@ -43,11 +43,23 @@
                     </div>
                     <!-- Quantity + Remove -->
                     <div class="flex items-center justify-between sm:justify-end sm:gap-4 w-full sm:w-auto">
-                        <select class="border rounded px-2 py-1 text-sm">
-                            <option v-for="n in 10" :key="n" :value="n">
-                                {{ n.toString().padStart(2, '0') }}
-                            </option>
-                        </select>
+                        <div class="flex items-center rounded overflow-hidden w-full sm:w-max h-[30px] sm:h-[36px]">
+                            <button 
+                                class="text-lg w-[40px] cursor-pointer h-full border-r-[1px] border flex items-center justify-center rounded-tl-sm rounded-bl-sm hover:!bg-transparent"
+                            >
+                                <PhMinus :size="18" />
+                            </button>
+                            <input 
+                                v-model="quantity"
+                                type="text" 
+                                class="w-[60px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-sm sm:text-base h-full disabled:opacity-[0.5]" 
+                            >
+                            <button 
+                                class="text-lg w-[40px] cursor-pointer h-full border-r-[1px] text-white border-secondary-500 flex items-center justify-center bg-secondary-500 rounded-tr-sm rounded-br-sm"
+                            >
+                                <PhPlus :size="18" />
+                            </button>
+                        </div>
                         <BaseButton class="ml-4 sm:ml-0 !p-1.5 sm:!p-2">
                             <PhTrash class="w-4.5 h-4.5 sm:w-5 sm:h-5" />
                         </BaseButton>
@@ -108,6 +120,7 @@ import BaseButton from '@/components/BaseButton.vue'
 const { formatAmount } = useCurrencyFormat()
 const disableRemoveButton = ref(true)
 const checkedItems = reactive({})
+const quantity = ref(1)
 
 const cartItems = [
   {
