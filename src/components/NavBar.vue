@@ -57,7 +57,18 @@
                     </ul>
                 </div>
                 <RouterLink to="/wishlist" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"><PhHeart :size="26" /></RouterLink>
-                <RouterLink to="/cart" class="hover:text-secondary-500 transition-all duration-300 ease-in-out"> <PhShoppingCart :size="26" /></RouterLink>
+                <RouterLink
+                    to="/cart"
+                    class="relative hover:text-secondary-500 transition-all duration-300 ease-in-out"
+                >
+                    <PhShoppingCart :size="26" />
+                    
+                    <span
+                        class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full"
+                    >
+                        12
+                    </span>
+                </RouterLink>
                 <div v-if="auth.user" class="flex items-center relative" ref="profileDropdownContainer">
                     <button 
                         class="cursor-pointer transition-colors duration-300 ease-in-out" @click.prevent.stop="toggleProfileDropdown"
