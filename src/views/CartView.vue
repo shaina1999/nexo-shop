@@ -36,13 +36,13 @@
                         </label>
                         <img :src="item.image" :alt="item.name" class="w-18 h-18 sm:w-20sm: sm:h-20 object-cover rounded" />
                         <div>
-                            <p class="font-medium text-gray-800">{{ item.name }}</p>
-                            <p class="text-sm text-gray-500">Price: Php {{ formatAmount(650) }}</p>
-                            <p class="text-sm text-gray-500">Subtotal: Php {{ formatAmount(650) }}</p>
+                            <p class="text-sm sm:text-base font-semibold text-gray-800">{{ item.name }}</p>
+                            <p class="text-sm sm:text-base text-gray-500">Price: Php {{ formatAmount(650) }}</p>
+                            <p class="text-sm sm:text-base text-gray-500">Subtotal: Php {{ formatAmount(650) }}</p>
                         </div>
                     </div>
                     <!-- Quantity + Remove -->
-                    <div class="flex items-center justify-between sm:justify-end sm:gap-4 w-full sm:w-auto">
+                    <div class="flex items-center justify-between sm:justify-end sm:gap-2.5 w-full sm:w-auto">
                         <div class="flex items-center rounded overflow-hidden w-full sm:w-max h-[30px] sm:h-[36px]">
                             <button 
                                 class="text-lg w-[40px] cursor-pointer h-full border-r-[1px] border flex items-center justify-center rounded-tl-sm rounded-bl-sm hover:!bg-transparent"
@@ -52,7 +52,7 @@
                             <input 
                                 v-model="quantity"
                                 type="text" 
-                                class="w-[60px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-sm sm:text-base h-full disabled:opacity-[0.5]" 
+                                class="w-[60px] sm:w-[66px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-sm sm:text-base h-full disabled:opacity-[0.5]" 
                             >
                             <button 
                                 class="text-lg w-[40px] cursor-pointer h-full border-r-[1px] text-white border-secondary-500 flex items-center justify-center bg-secondary-500 rounded-tr-sm rounded-br-sm"
@@ -69,7 +69,7 @@
 
             <!-- Actions -->
             <div class="flex items-start flex-col md:flex-row justify-between mt-6 gap-4">
-                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">
                     <BaseLinkButton 
                         to="/products" 
                         class="!flex items-center gap-x-1.5 text-sm !px-4.5 !py-2.5 md:!px-6 md:!py-3 md:mx-0 text-center !w-full md:!w-auto bg-white !text-black border-[1px] border-black/50 hover:!bg-gray-200"
@@ -81,23 +81,23 @@
                         :disabled="disableRemoveButton"
                         class="!flex items-center justify-center gap-x-1.5 text-sm !px-4.5 !py-2.5 md:!px-6 md:!py-3 mx-auto md:mx-0 w-full md:w-auto !bg-red-500 !text-white border-[1px] border-red/50 hover:!bg-red-600"
                     >
-                        Remove
+                        Remove Selected
                         <PhTrash :size="18" />
                     </BaseButton>
                 </div>
 
                 <!-- Cart Total -->
-                <div class="border p-6 rounded-md w-full md:w-1/2 lg:w-1/3">
-                    <h3 class="text-lg font-medium mb-4">Cart Total</h3>
-                    <div class="flex justify-between mb-3.5 text-sm">
+                <div class="shrink-1 border p-6 rounded-md w-full md:w-1/2 lg:w-1/3">
+                    <h3 class="text-base sm:text-lg font-medium mb-4">Cart Total</h3>
+                    <div class="flex justify-between mb-2.5 text-sm sm:text-base">
                         <span>Subtotal:</span>
                         <span>Php {{ formatAmount(1300) }}</span>
                     </div>
-                    <div class="flex justify-between mb-3.5 text-sm">
+                    <div class="flex justify-between mb-2.5 text-sm sm:text-base">
                         <span>Shipping:</span>
                         <span class="text-green-600 font-medium">Free</span>
                     </div>
-                    <div class="flex justify-between font-semibold text-base border-t pt-3.5 mt-3.5">
+                    <div class="flex justify-between font-semibold text-base sm:text-lg border-t pt-4 mt-3.5">
                         <span>Total:</span>
                         <span>Php {{ formatAmount(1300) }}</span>
                     </div>
