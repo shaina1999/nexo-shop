@@ -11,6 +11,14 @@ export const useCartStore = defineStore('cart', () => {
     const user = auth.user
     const cartCount = computed(() => cartItems.value.length)
 
+    function showErrorAlert(title, error) {
+        Swal.fire({
+          title,
+          html: error?.message || 'Something went wrong. Please try again.',
+          icon: 'error',
+        })
+    }
+
     async function fetchCart() {
         try {
           isLoading.value = true
@@ -20,12 +28,7 @@ export const useCartStore = defineStore('cart', () => {
     
           cartItems.value = items ?? []
         } catch (error) {
-            Swal.fire({
-                title: 'Failed to Load Cart Items',
-                html: error?.message || 'Something went wrong. Please try again.',
-                icon: 'error',
-                confirmButtonText: 'Ok',
-            })
+            showErrorAlert('Failed to Load Cart Items', error)
             console.error('Error fetching cart:', error)
         }  finally {
           isLoading.value = false
@@ -40,15 +43,7 @@ export const useCartStore = defineStore('cart', () => {
 
             if (error) throw error
         } catch (error) { 
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                timer: 2000,
-                title: 'Failed to Add to Cart',
-                html: error?.message || 'Something went wrong. Please try again.',
-                icon: 'error',
-                confirmButtonText: 'Ok',
-            })
+            showErrorAlert('Failed to Add to Cart', error)
             console.error('Add to cart failed:', error)
         }
     }
