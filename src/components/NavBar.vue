@@ -64,9 +64,10 @@
                     <PhShoppingCart :size="26" />
                     
                     <span
-                        class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full"
+                        v-if="cart.cartCount"
+                        class="!absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full"
                     >
-                        12
+                        {{ cart.cartCount }}
                     </span>
                 </RouterLink>
                 <div v-if="auth.user" class="flex items-center relative" ref="profileDropdownContainer">
@@ -136,6 +137,7 @@ import { computed, ref, watch, useTemplateRef, onMounted, onUnmounted } from 'vu
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 import { onClickOutside } from '@vueuse/core'
+import { useCartStore } from '@/stores/cartStore'
 
 import BaseButtonIcon from '@/components/BaseButtonIcon.vue'
 import NavLinks from '@/components/NavLinks.vue'
@@ -153,6 +155,7 @@ const auth = useAuthStore()
 const dropdownShow = ref(false)
 const profileDropdownContainer = useTemplateRef('profileDropdownContainer')
 let debounceTimeout = null
+const cart = useCartStore()
 
 const profileOptions = ref([
     {
@@ -302,6 +305,7 @@ onClickOutside(profileDropdownContainer, event => dropdownShow.value = false)
 
 onMounted(() => {
   window.addEventListener('resize', handleResize)
+  cart.fetchCart()
 })
 
 onUnmounted(() => {
