@@ -20,11 +20,11 @@
         </div>
         <footer>
             <button
-                :disabled="!product.is_available || isAdding"
+                :disabled="!product.is_available || isAddingToCart"
                 class="shadow-xl/5 bg-black text-white w-full p-1.5 transition-all duration-300 ease-in-out cursor-pointer add-to-cart mb-2 sm:mb-4 flex items-center justify-center gap-x-2 hover:!bg-black"
                 @click.prevent.stop="addToCart">
-                <span class="text-sm">{{ isAdding ? 'Adding...' : (product.is_available ? 'Add To Cart' : 'Unavailable') }}</span>
-                <PhShoppingCart :size="18" v-if="!isAdding" />
+                <span class="text-sm">{{ isAddingToCart ? 'Adding...' : (product.is_available ? 'Add To Cart' : 'Unavailable') }}</span>
+                <PhShoppingCart :size="18" v-if="!isAddingToCart" />
                 <PhCircleNotch :size="18" v-else class="animate-spin" />
             </button>
             <div>
@@ -60,7 +60,7 @@ import { useCartStore } from '@/stores/cartStore'
 const router = useRouter()
 const { formatAmount } = useCurrencyFormat()
 const cart = useCartStore()
-const isAdding = ref(false)
+const isAddingToCart = ref(false)
 
 const props = defineProps({
     product: Object
@@ -75,9 +75,9 @@ const addToWishList = () => {
 }
 
 const addToCart = async () => {
-    isAdding.value = true
+    isAddingToCart.value = true
     const cartItem = { product_id: props.product.id, quantity: 1, }
     await cart.addToCart(cartItem)
-    isAdding.value = false
+    isAddingToCart.value = false
 }
 </script>
