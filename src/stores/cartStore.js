@@ -47,6 +47,15 @@ export const useCartStore = defineStore('cart', () => {
                 if (insertError) throw insertError
             }
 
+            Swal.fire({
+                toast: true,
+                timer: 2000,
+                title: 'Success',
+                position: 'bottom-end',
+                html: "Added to bag successfully",
+                icon: 'success'
+            })
+            
             await fetchCart()
         } catch (error) { 
             console.error('Add to cart failed:', error)
