@@ -26,7 +26,7 @@ export const useCartStore = defineStore('cart', () => {
                 icon: 'error',
                 confirmButtonText: 'Ok',
             })
-            console.error('Error fetching cart:', err)
+            console.error('Error fetching cart:', error)
         }  finally {
           isLoading.value = false
         }
@@ -49,7 +49,7 @@ export const useCartStore = defineStore('cart', () => {
                 icon: 'error',
                 confirmButtonText: 'Ok',
             })
-            console.error('Add to cart failed:', err)
+            console.error('Add to cart failed:', error)
         }
     }
 
