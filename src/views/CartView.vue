@@ -7,7 +7,7 @@
             <!-- Cart List -->
             <div class="space-y-5">
                 <!-- Cart Item -->
-                <CartItem v-for="item in cartItems" :key="item.id" :product="item" />
+                <CartItem v-for="cartItem in cart.cartItems" :key="cartItem.id" :cartItem="cartItem" />
             </div>
 
             <!-- Actions -->
@@ -67,8 +67,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
+import { useCartStore } from '@/stores/cartStore'
 
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
 import CartItem from '@/components/CartItem.vue'
@@ -77,21 +78,9 @@ import emptyCartIllustration from '@/assets/img/empty-cart.png'
 
 const { formatAmount } = useCurrencyFormat()
 const disableRemoveButton = ref(true)
+const cart = useCartStore()
 
-const cartItems = [
-  {
-    id: 1,
-    name: 'LCD Monitor',
-    price: 650,
-    quantity: 1,
-    image: 'https://jquwasnrxbzlhmtwnrit.supabase.co/storage/v1/object/public/product-images//c08186083_1_1.avif',
-  },
-  {
-    id: 2,
-    name: 'H1 Gamepad',
-    price: 550,
-    quantity: 2,
-    image: 'https://jquwasnrxbzlhmtwnrit.supabase.co/storage/v1/object/public/product-images//Bluetooth-Smartwatch-PNG-Picture.png',
-  },
-];
+onMounted(async () => {
+    cart.fetchCart()
+})
 </script>

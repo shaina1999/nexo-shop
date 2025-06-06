@@ -22,7 +22,7 @@ export const useCartStore = defineStore('cart', () => {
     async function fetchCart() {
         try {
           isLoading.value = true
-          const { data: items, error } = await supabase.from('cart_items').select('*').eq('user_id', user.id)
+          const { data: items, error } = await supabase.from('cart_items').select('id, quantity, products:product_id(id, name, discounted_price, images, stock, is_available)').eq('user_id', user.id)
     
           if (error) throw error
     

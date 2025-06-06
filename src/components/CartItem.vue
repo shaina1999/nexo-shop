@@ -6,26 +6,26 @@
                 <input 
                     type="checkbox" 
                     class="absolute left-0 right-0 top-0 bottom-0 w-full h-full opacity-0 cursor-pointer" 
-                    @change="(event) => handleCheckboxChange(event, product)"
-                    v-model="checkedItems[product?.id]"
+                    @change="(event) => handleCheckboxChange(event, cartItem)"
+                    v-model="checkedItems[cartItem?.id]"
                 >
                 <span 
                     class="w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-sm border-[1px] border-black flex items-center justify-center text-white relative"
-                    :class="{'bg-black': checkedItems[product?.id]}"
+                    :class="{'bg-black': checkedItems[cartItem?.id]}"
                 >
                     <PhCheckFat 
                         :size="12" 
                         weight="fill" 
                         class="absolute top-[50%] -translate-x-1/2 left-1/2 -translate-y-1/2 text-transparent"
-                        :class="{'text-white': checkedItems[product?.id], 'text-transparent': !checkedItems[product?.id]}" 
+                        :class="{'text-white': checkedItems[cartItem?.id], 'text-transparent': !checkedItems[cartItem?.id]}" 
                     />
                 </span>
             </label>
-            <img :src="product?.image" :alt="product?.name" class="w-18 h-18 sm:w-20sm: sm:h-20 object-cover rounded" />
+            <img :src="cartItem?.products?.images[0].url" :alt="cartItem?.products?.name" class="w-18 h-18 sm:w-20sm: sm:h-20 object-cover rounded" />
             <div>
-                <p class="text-sm sm:text-base font-semibold text-gray-800">{{ product?.name }}</p>
-                <p class="text-sm sm:text-base text-gray-500">Price: Php {{ formatAmount(650) }}</p>
-                <p class="text-sm sm:text-base text-gray-500">Subtotal: Php {{ formatAmount(650) }}</p>
+                <p class="text-sm sm:text-base font-semibold text-gray-800">{{ cartItem?.products?.name }}</p>
+                <p class="text-sm sm:text-base text-gray-500">Price: Php {{ formatAmount(cartItem?.products?.discounted_price) }}</p>
+                <p class="text-sm sm:text-base text-gray-500">Subtotal: Php {{ formatAmount(cartItem?.products?.discounted_price) }}</p>
             </div>
         </div>
         <!-- Quantity + Remove -->
@@ -64,7 +64,7 @@ const { formatAmount } = useCurrencyFormat()
 const quantity = ref(1)
 
 defineProps({
-    product: Object
+    cartItem: Object
 })
 
 const checkedItems = reactive({})
