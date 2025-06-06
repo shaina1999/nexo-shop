@@ -26,5 +26,10 @@ export const useCartStore = defineStore('cart', () => {
         }
     }
 
-    return { isLoading, fetchCart, cartItems, cartCount }
+    async function addToCart(cartItem) {
+        cartItem.user_id = user.id
+        const { data, error } = await supabase.from('cart_items').insert([cartItem])
+    }
+
+    return { isLoading, fetchCart, addToCart, cartItems, cartCount }
 })

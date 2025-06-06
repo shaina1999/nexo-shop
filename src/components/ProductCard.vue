@@ -20,12 +20,12 @@
         </div>
         <footer>
             <button
-                :disabled="!product.is_available"
+                :disabled="!product.is_available || isAdding"
                 class="shadow-xl/5 bg-black text-white w-full p-1.5 transition-all duration-300 ease-in-out cursor-pointer add-to-cart mb-2 sm:mb-4 flex items-center justify-center gap-x-2 hover:!bg-black"
                 @click.prevent.stop="addToCart">
-                <span class="text-sm">{{ product.is_available ? 'Add To Cart' : 'Unavailable' }}</span>
-                <PhShoppingCart :size="18" />
-                <PhCheck :size="18" class="hidden" />
+                <span class="text-sm">{{ isAdding ? 'Adding...' : (product.is_available ? 'Add To Cart' : 'Unavailable') }}</span>
+                <PhShoppingCart :size="18" v-if="!isAdding" />
+                <PhCircleNotch :size="18" v-else class="animate-spin" />
             </button>
             <div>
                 <button 
@@ -52,13 +52,17 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
+import { useCartStore } from '@/stores/cartStore'
 
 const router = useRouter()
 const { formatAmount } = useCurrencyFormat()
+const cart = useCartStore()
+const isAdding = ref(false)
 
-defineProps({
+const props = defineProps({
     product: Object
 })
 
@@ -70,7 +74,10 @@ const addToWishList = () => {
     console.log('add to wish list')
 }
 
-const addToCart = () => {
-    console.log('add to cart')
+const addToCart = async () => {
+    isAdding.value = true
+    const cartItem = { product_id: props.product.id, quantity: 1, }
+    await cart.addToCart(cartItem)
+    isAdding.value = false
 }
 </script>
