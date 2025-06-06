@@ -1,6 +1,6 @@
 <template>
     <section class="flex items-center justify-center w-full pt-5 md:pt-10 product-details">
-        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
+        <div v-if="!cart.isLoading" class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
             <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-5 md:pb-10">
                 <span class="font-semibold">My Cart 🛒</span><span class="font-regular text-gray-500">(2 items)</span>
             </h2>
@@ -63,6 +63,7 @@
                 </BaseLinkButton>
             </div>
         </div>
+        <CartSkeleton v-else />
     </section>
 </template>
 
@@ -74,6 +75,7 @@ import { useCartStore } from '@/stores/cartStore'
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
 import CartItem from '@/components/CartItem.vue'
 import BaseButton from '@/components/BaseButton.vue'
+import CartSkeleton from '@/components/CartSkeleton.vue'
 import emptyCartIllustration from '@/assets/img/empty-cart.png'
 
 const { formatAmount } = useCurrencyFormat()
