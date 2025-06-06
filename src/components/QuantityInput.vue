@@ -3,7 +3,7 @@
     <button 
       :class="minusButtonClass"
       @click="decrease"
-      :disabled="modelValue <= min"
+      :disabled="modelValue <= min || disableButton"
     >
       <PhMinus :size="18" />
     </button>
@@ -18,7 +18,7 @@
     <button 
       :class="plusButtonClass"
       @click="increase"
-      :disabled="modelValue >= max"
+      :disabled="modelValue >= max || disableButton"
     >
       <PhPlus :size="18" />
     </button>
@@ -40,6 +40,10 @@ const props = defineProps({
     required: true,
   },
   disabled: {
+    type: Boolean,
+    default: false,
+  },
+  disableButton: {
     type: Boolean,
     default: false,
   },

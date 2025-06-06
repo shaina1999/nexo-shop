@@ -115,30 +115,17 @@
           <section class="flex flex-col gap-8">
             <div class="flex flex-col">
               <h2 class="text-sm sm:text-base font-medium mb-1">Quantity:</h2>
-              <div class="flex items-center rounded overflow-hidden w-full sm:w-max h-[35px] sm:h-[44px]">
-                <button 
-                  @click="decreaseQuantity"
-                  :disabled="quantity === 1 || !productObj?.is_available || isAddingToCart"
-                  class="text-lg w-[60px] sm:w-[40px] cursor-pointer h-full border-r-[1px] border flex items-center justify-center rounded-tl-sm rounded-bl-sm hover:!bg-transparent"
-                >
-                  <PhMinus :size="20" weight="bold" />
-                </button>
-                <input 
-                  :disabled="!productObj?.is_available || isAddingToCart"
-                  type="text" 
-                  class="w-full sm:w-[80px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-sm sm:text-base font-semibold h-full disabled:opacity-[0.5]" 
-                  v-model="quantity"
-                  @input="handleQuantityInput"
-                  @paste="handleQuantityInput"
-                >
-                <button 
-                  @click="increaseQuantity"
-                  :disabled="quantity === maxQuantity || !productObj?.is_available || isAddingToCart"
-                  class="text-lg w-[60px] sm:w-[40px] cursor-pointer h-full border-r-[1px] text-white border-secondary-500 flex items-center justify-center bg-secondary-500 rounded-tr-sm rounded-br-sm"
-                >
-                  <PhPlus :size="20" weight="bold" />
-                </button>
-              </div>
+              <QuantityInput
+                :min="1"
+                :max="maxQuantity"
+                v-model="quantity"
+                :disabled="!productObj?.is_available || isAddingToCart"
+                :disable-button="!productObj?.is_available || isAddingToCart"
+                :wrapper-class="'flex items-center rounded overflow-hidden w-full sm:w-max h-[35px] sm:h-[44px]'"
+                :input-class="'w-full sm:w-[80px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-sm sm:text-base font-semibold h-full disabled:opacity-[0.5]'"
+                :minus-button-class="'text-lg w-[60px] sm:w-[40px] cursor-pointer h-full border-r-[1px] border flex items-center justify-center rounded-tl-sm rounded-bl-sm hover:!bg-transparent'"
+                :plus-button-class="'text-lg w-[60px] sm:w-[40px] cursor-pointer h-full border-r-[1px] text-white border-secondary-500 flex items-center justify-center bg-secondary-500 rounded-tr-sm rounded-br-sm'"
+              />
             </div>
 
             <div class="flex items-center gap-3 flex-col sm:flex-row">
@@ -175,6 +162,7 @@ import { useCartStore } from '@/stores/cartStore'
 
 import BaseButton from '@/components/BaseButton.vue'
 import ProductDetailsSkeleton from '@/components/ProductDetailsSkeleton.vue'
+import QuantityInput from '@/components/QuantityInput.vue'
 
 const route = useRoute()
 const router = useRouter()
