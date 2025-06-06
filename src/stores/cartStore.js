@@ -21,7 +21,6 @@ export const useCartStore = defineStore('cart', () => {
           }
     
           cartItems.value = items ?? []
-          console.log(cartItems.value)
         } finally {
           isLoading.value = false
         }
