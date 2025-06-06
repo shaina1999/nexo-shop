@@ -60,13 +60,13 @@ import { useCurrencyFormat } from '@/composables/currencyFormat'
 
 import BaseButton from '@/components/BaseButton.vue'
 
-const { formatAmount } = useCurrencyFormat()
-const quantity = ref(1)
-
-defineProps({
+const props = defineProps({
     cartItem: Object
 })
 
+const { formatAmount } = useCurrencyFormat()
+const quantity = props.cartItem?.quantity
+const maxQuantity = props.cartItem?.products?.stock
 const checkedItems = reactive({})
 
 const handleCheckboxChange = (event, item) => {
