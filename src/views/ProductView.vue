@@ -170,8 +170,6 @@ import { watch, computed, ref, onMounted, onUnmounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
 import { supabase } from '@/supabase'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
-import PhotoSwipeLightbox from 'photoswipe/lightbox';
-import 'photoswipe/style.css';
 import Swal from 'sweetalert2'
 import { useCartStore } from '@/stores/cartStore'
 
@@ -187,7 +185,6 @@ const quantity = ref(1)
 const maxQuantity = ref(0)
 const selectedImage = ref(null)
 const selectedSlideId = ref('slide0')
-const lightbox = ref(null);
 const isAddingToCart = ref(false)
 const cart = useCartStore()
 const visible = ref(false)
@@ -266,23 +263,6 @@ const fetchProduct = async (id) => {
 
 onMounted(async () => {
   await fetchProduct(route.query.id);
-
-  if (!lightbox.value) {
-    lightbox.value = new PhotoSwipeLightbox({
-      gallery: "#gallery",
-      children: 'a',
-      pswpModule: () => import('photoswipe'),
-      wheelToZoom: true
-    });
-    lightbox.value.init();
-  }
-})
-
-onUnmounted(() => {
-  if (lightbox.value) {
-    lightbox.value.destroy();
-    lightbox.value = null;
-  }
 })
 </script>
 
