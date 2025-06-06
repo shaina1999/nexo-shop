@@ -123,3 +123,13 @@ button:disabled:hover{
   outline: 3px solid var(--color-red-500) !important;
   outline-offset: 3px !important;
 }
+
+/* vue-easy-lightbox */
+.vel-img{
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.vel-toolbar .toolbar-btn__resize {
+  display: none !important;
+}

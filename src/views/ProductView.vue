@@ -66,21 +66,19 @@
           </div>
           </div>
           <!-- Main Image -->
-          <div id="gallery">
-            <a 
-              :href="productObj?.images[0]?.url"
-              data-pswp-width="500"
-              data-pswp-height="500"
-              target="_blank"
-              rel="noreferrer"
-              class="p-3 flex items-center justify-center bg-gray-200 h-[200px] md:h-[350px] lg:h-[450px] cursor-pointer outline-none"
-            >
-              <img 
-                :src="selectedImage || productObj?.images[0]?.url" 
-                :alt="productObj?.images[0]?.alt" 
-                class="w-[90%] lg:w-[80%] h-[90%] lg:h-[80%] object-contain" 
-              />
-            </a>
+          <div class="p-3 flex items-center justify-center bg-gray-200 h-[200px] md:h-[350px] lg:h-[450px] cursor-pointer outline-none">
+            <img 
+              :src="selectedImage || productObj?.images[0]?.url" 
+              :alt="productObj?.images[0]?.alt" 
+              class="w-[90%] lg:w-[80%] h-[90%] lg:h-[80%] object-contain" 
+              @click="openImageViewer()"
+            />
+            <vue-easy-lightbox 
+              :visible="visible"
+              :imgs="selectedImage || productObj?.images[0]?.url"
+              @hide="visible = false"
+              :pinchDisabled="true"
+            />
           </div>
         </div>
         <!-- Product Details -->
@@ -192,6 +190,11 @@ const selectedSlideId = ref('slide0')
 const lightbox = ref(null);
 const isAddingToCart = ref(false)
 const cart = useCartStore()
+const visible = ref(false)
+
+const openImageViewer = (i) => {
+  visible.value = true
+}
 
 const increaseQuantity = () => {
   if (quantity.value < maxQuantity.value) {

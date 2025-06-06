@@ -10,6 +10,7 @@ import router from '@/router'
 import PhosphorIcons from '@phosphor-icons/vue'
 import VueCountdown from '@chenfengyuan/vue-countdown'
 import VueSplide from '@splidejs/vue-splide'
+import VueEasyLightbox from 'vue-easy-lightbox'
 
 const pinia = createPinia()
 const app = createApp(App)
@@ -17,6 +18,7 @@ const app = createApp(App)
 app.use(router)
 app.use(PhosphorIcons)
 app.use(pinia)
+app.use(VueEasyLightbox)
 app.use(VueSplide)
 app.component(VueCountdown.name, VueCountdown)
 app.mount('#app')
