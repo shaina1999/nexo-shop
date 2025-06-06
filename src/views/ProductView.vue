@@ -120,13 +120,13 @@
               <div class="flex items-center rounded overflow-hidden w-full sm:w-max h-[35px] sm:h-[44px]">
                 <button 
                   @click="decreaseQuantity"
-                  :disabled="quantity === 1 || !productObj?.is_available"
+                  :disabled="quantity === 1 || !productObj?.is_available || isAddingToCart"
                   class="text-lg w-[60px] sm:w-[40px] cursor-pointer h-full border-r-[1px] border flex items-center justify-center rounded-tl-sm rounded-bl-sm hover:!bg-transparent"
                 >
                   <PhMinus :size="20" weight="bold" />
                 </button>
                 <input 
-                  :disabled="!productObj?.is_available"
+                  :disabled="!productObj?.is_available || isAddingToCart"
                   type="text" 
                   class="w-full sm:w-[80px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-sm sm:text-base font-semibold h-full disabled:opacity-[0.5]" 
                   v-model="quantity"
@@ -135,7 +135,7 @@
                 >
                 <button 
                   @click="increaseQuantity"
-                  :disabled="quantity === maxQuantity || !productObj?.is_available"
+                  :disabled="quantity === maxQuantity || !productObj?.is_available || isAddingToCart"
                   class="text-lg w-[60px] sm:w-[40px] cursor-pointer h-full border-r-[1px] text-white border-secondary-500 flex items-center justify-center bg-secondary-500 rounded-tr-sm rounded-br-sm"
                 >
                   <PhPlus :size="20" weight="bold" />
@@ -145,12 +145,13 @@
 
             <div class="flex items-center gap-3 flex-col sm:flex-row">
               <BaseButton 
-                :disabled="!productObj?.is_available" 
+                :disabled="!productObj?.is_available || isAddingToCart" 
                 class="w-full text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5"
                 @click="addToCart"
               >
-                <span>{{ productObj?.is_available ? 'Add to Cart' : 'Unavailable' }}</span>
-                <PhShoppingCart class="text-xl" />
+                <span>{{ isAddingToCart ? 'Adding...' : (productObj?.is_available ? 'Add To Cart' : 'Unavailable') }}</span>
+                <PhShoppingCart class="text-xl" v-if="!isAddingToCart" />
+                <PhCircleNotch class="text-xl animate-spin" v-else />
               </BaseButton>
               <BaseButton 
                 class="w-full text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5 bg-white text-secondary-500! border-[1px] border-secondary-500 hover:!bg-secondary-100"
@@ -174,6 +175,7 @@ import { useCurrencyFormat } from '@/composables/currencyFormat'
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import 'photoswipe/style.css';
 import Swal from 'sweetalert2'
+import { useCartStore } from '@/stores/cartStore'
 
 import BaseButton from '@/components/BaseButton.vue'
 import ProductDetailsSkeleton from '@/components/ProductDetailsSkeleton.vue'
@@ -184,10 +186,12 @@ const productObj = ref(null)
 const isLoading = ref(false)
 const { formatAmount } = useCurrencyFormat()
 const quantity = ref(1)
-const maxQuantity = ref(50)
+const maxQuantity = ref(0)
 const selectedImage = ref(null)
 const selectedSlideId = ref('slide0')
 const lightbox = ref(null);
+const isAddingToCart = ref(false)
+const cart = useCartStore()
 
 const increaseQuantity = () => {
   if (quantity.value < maxQuantity.value) {
@@ -224,8 +228,11 @@ const onSlideClick = (e) => {
   selectedSlideId.value = e.target.attributes.slideid.value
 };
 
-const addToCart = () => {
-  console.log('Quantity:', quantity.value)
+const addToCart = async () => {
+    isAddingToCart.value = true
+    const cartItem = { product_id: productObj.value?.id, quantity: quantity.value, }
+    await cart.addToCart(cartItem)
+    isAddingToCart.value = false
 };
 
 const fetchProduct = async (id) => {
@@ -234,6 +241,7 @@ const fetchProduct = async (id) => {
     const { data: product, error } = await supabase.from('products').select('*').eq('id', id).single();
     if (error) throw error;
     productObj.value = product;
+    maxQuantity.value = productObj.value.stock
   } catch (error) {
     console.error('Error fetching product:', error);
     productObj.value = null;
