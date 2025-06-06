@@ -9,15 +9,7 @@ export const useCartStore = defineStore('cart', () => {
     const cartItems = ref([])
     const auth = useAuthStore()
     const user = auth.user
-    const cartCount = computed(() => cartItems.value.length)
-
-    function showErrorAlert(title, error) {
-        Swal.fire({
-          title,
-          html: error?.message || 'Something went wrong. Please try again.',
-          icon: 'error',
-        })
-    }
+    const cartCount = computed(() => cartItems.value.reduce((total, item) => total + item.quantity, 0))
 
     async function fetchCart() {
         try {
@@ -28,7 +20,6 @@ export const useCartStore = defineStore('cart', () => {
     
           cartItems.value = items ?? []
         } catch (error) {
-            showErrorAlert('Failed to Load Cart Items', error)
             console.error('Error fetching cart:', error)
         }  finally {
           isLoading.value = false
@@ -38,12 +29,26 @@ export const useCartStore = defineStore('cart', () => {
     async function addToCart(cartItem) {
         try {
             cartItem.user_id = user.id
-            const { data, error } = await supabase.from('cart_items').insert([cartItem])
-            await fetchCart()
 
-            if (error) throw error
+            // 1. Check if the item already exists in the cart
+            const { data: existingItems, error: fetchError } = await supabase.from('cart_items').select('id, quantity').eq('user_id', user.id).eq('product_id', cartItem.product_id).limit(1)
+            if (fetchError) throw fetchError
+
+            const existingItem = existingItems?.[0]
+
+            if (existingItem) {
+                // 2. If item exists, update the quantity
+                const updatedQuantity = existingItem.quantity + (cartItem.quantity || 1)
+                const { error: updateError } = await supabase.from('cart_items').update({ quantity: updatedQuantity }).eq('id', existingItem.id)
+                if (updateError) throw updateError
+            } else {
+                // 3. If item does not exist, insert new
+                const { error: insertError } = await supabase.from('cart_items').insert([cartItem])
+                if (insertError) throw insertError
+            }
+
+            await fetchCart()
         } catch (error) { 
-            showErrorAlert('Failed to Add to Cart', error)
             console.error('Add to cart failed:', error)
         }
     }
