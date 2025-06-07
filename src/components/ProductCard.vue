@@ -56,7 +56,6 @@ import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
 import { useCartStore } from '@/stores/cartStore'
-import Swal from 'sweetalert2'
 
 const router = useRouter()
 const { formatAmount } = useCurrencyFormat()
@@ -77,20 +76,8 @@ const addToWishList = () => {
 
 const addToCart = async () => {
     isAddingToCart.value = true
-
-    try {
-        const cartItem = { product_id: props.product.id, quantity: 1 }
-        await cart.addToCart(cartItem)
-    } catch (err) {
-        console.error('Failed to add item to cart:', err)
-         Swal.fire({
-            icon: 'error',
-            title: 'Oops!',
-            text: 'Failed to add item to your bag. Please try again.',
-            confirmButtonText: 'OK'
-        })
-    } finally {
-        isAddingToCart.value = false
-    }
+    const cartItem = { product_id: props.product.id, quantity: 1, }
+    await cart.addToCart(cartItem)
+    isAddingToCart.value = false
 }
 </script>
