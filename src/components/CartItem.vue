@@ -6,18 +6,18 @@
                 <input 
                     type="checkbox" 
                     class="absolute left-0 right-0 top-0 bottom-0 w-full h-full opacity-0 cursor-pointer" 
-                    @change="(event) => handleCheckboxChange(event, cartItem)"
-                    v-model="checkedItems[cartItem?.id]"
+                    @change="(event) => handleCheckboxChange(cartItem)"
+                    v-model="cartItem.is_selected"
                 >
                 <span 
                     class="w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-sm border-[1px] border-black flex items-center justify-center text-white relative"
-                    :class="{'bg-black': checkedItems[cartItem?.id]}"
+                    :class="{ 'bg-black': cartItem.is_selected }"
                 >
                     <PhCheckFat 
                         :size="12" 
                         weight="fill" 
                         class="absolute top-[50%] -translate-x-1/2 left-1/2 -translate-y-1/2 text-transparent"
-                        :class="{'text-white': checkedItems[cartItem?.id], 'text-transparent': !checkedItems[cartItem?.id]}" 
+                        :class="{ 'text-white': cartItem.is_selected, 'text-transparent': !cartItem.is_selected }" 
                     />
                 </span>
             </label>
@@ -66,13 +66,31 @@ const spinner = useSpinner()
 
 const quantity = ref(props.cartItem?.quantity)
 const maxQuantity = props.cartItem?.products?.stock
-const checkedItems = reactive({})
 
-const handleCheckboxChange = (event, item) => {
-    if (checkedItems[item.id]) {
-        console.log(`${item.name} is checked`)
-    } else {
-        console.log(`${item.name} is unchecked`)
+const handleCheckboxChange = async (item) => {
+    spinner.start();
+
+    try {
+        const isSelected = item.is_selected
+        const { error } = await supabase
+            .from('cart_items')
+            .update({ is_selected: isSelected })
+            .eq('id', item.id)
+
+        if(error) throw error
+
+        item.is_selected = isSelected
+        await cart.fetchCartTotal()
+    } catch {
+        Swal.fire({
+            title: 'Error',
+            html: 'Failed to update cart item selection. Please try again shortly.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+        })
+        console.error('handleCheckboxChange error:', err)
+    } finally {
+        spinner.stop();
     }
 }
 

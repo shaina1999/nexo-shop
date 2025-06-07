@@ -17,7 +17,7 @@ export const useCartStore = defineStore('cart', () => {
           isLoading.value = true
           const { data: items, error } = await supabase
             .from('cart_items')
-            .select('id, quantity, products:product_id(id, name, discounted_price, images, stock, is_available)')
+            .select('id, quantity, is_selected, products:product_id(id, name, discounted_price, images, stock, is_available)')
             .eq('user_id', user.id)
             .order('created_at', { ascending: true })
     
@@ -79,13 +79,24 @@ export const useCartStore = defineStore('cart', () => {
 
     async function fetchCartTotal() {
         try {
-          const { data, error } = await supabase.from('cart_totals').select('total_amount').eq('user_id', user.id).single()
-      
-          if (error && error.code !== 'PGRST116') throw error
-          cartTotal.value = data?.total_amount ?? 0
+            const { data, error } = await supabase
+            .from('cart_totals')
+            .select('total_amount')
+            .eq('user_id', user.id)
+            .single()
+
+            if (error) {
+                if (error.code === 'PGRST116') {
+                    cartTotal.value = 0
+                } else {
+                    throw error
+                }
+            } else {
+                cartTotal.value = data?.total_amount ?? 0
+            }
         } catch (error) {
-          console.error('Error fetching cart total:', error)
-          cartTotal.value = 0
+            console.error('Error fetching cart total:', error)
+            cartTotal.value = 0
         }
     }
 
