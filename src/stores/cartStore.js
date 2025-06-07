@@ -89,6 +89,12 @@ export const useCartStore = defineStore('cart', () => {
             await fetchCart()
         } catch (error) { 
             console.error('Add to cart failed:', error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops!',
+                text: 'Failed to add item to your bag. Please try again.',
+                confirmButtonText: 'OK'
+            })
         }
     }
 
