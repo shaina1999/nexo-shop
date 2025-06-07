@@ -100,5 +100,9 @@ export const useCartStore = defineStore('cart', () => {
         }
     }
 
-    return { isLoading, fetchCart, addToCart, cartItems, cartCount, cartTotal, fetchCartTotal }
+    function removeCartItemLocally(itemId) {
+        cartItems.value = cartItems.value.filter(item => item.id !== itemId)
+    }
+
+    return { isLoading, fetchCart, addToCart, cartItems, cartCount, cartTotal, fetchCartTotal, removeCartItemLocally }
 })

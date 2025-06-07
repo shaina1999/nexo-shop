@@ -120,6 +120,7 @@ const deleteCartItem = async () => {
 
         if(error) throw error
 
+        cart.removeCartItemLocally(id)
         await cart.fetchCartTotal()
     } catch (error) {
         Swal.fire({
