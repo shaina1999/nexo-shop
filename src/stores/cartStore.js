@@ -15,21 +15,34 @@ export const useCartStore = defineStore('cart', () => {
 
     async function fetchCart() {
         try {
-          isLoading.value = true
-          const { data: items, error } = await supabase
-            .from('cart_items')
-            .select('id, quantity, is_selected, products:product_id(id, name, discounted_price, images, stock, is_available)')
-            .eq('user_id', auth?.user?.id)
-            .order('created_at', { ascending: true })
+            if(!auth?.user){
+                Swal.fire({
+                    toast: true,
+                    timer: 4000,
+                    title: 'Please Log In',
+                    position: 'bottom-end',
+                    html: "You need to sign in to view items in your bag.",
+                    icon: 'info'
+                })
+                router.push('/login')
+                return
+            }
+            
+            isLoading.value = true
+            const { data: items, error } = await supabase
+                .from('cart_items')
+                .select('id, quantity, is_selected, products:product_id(id, name, discounted_price, images, stock, is_available)')
+                .eq('user_id', auth?.user?.id)
+                .order('created_at', { ascending: true })
+        
+            if (error) throw error
     
-          if (error) throw error
-    
-          cartItems.value = items ?? []
-          await fetchCartTotal()
+            cartItems.value = items ?? []
+            await fetchCartTotal()
         } catch (error) {
             console.error('Error fetching cart:', error)
         }  finally {
-          isLoading.value = false
+            isLoading.value = false
         }
     }
 
@@ -38,7 +51,7 @@ export const useCartStore = defineStore('cart', () => {
             if(!auth?.user){
                 Swal.fire({
                     toast: true,
-                    timer: 5000,
+                    timer: 4000,
                     title: 'Please Log In',
                     position: 'bottom-end',
                     html: "You need to sign in to add items to your bag.",

@@ -4,6 +4,7 @@ import { computed, useTemplateRef, ref, onMounted, watch } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import { useSpinner } from '@/stores/spinnerStore'
 import { useRoute } from 'vue-router'
+import { useCartStore } from '@/stores/cartStore'
 
 import NotificationBar from '@/components/NotificationBar.vue'
 import Header from '@/components/Header.vue'
@@ -20,6 +21,7 @@ const spinner = useSpinner()
 const showScrollTopButton = ref(false)
 const mainContainerRef = ref(null)
 const route = useRoute()
+const cart = useCartStore()
 
 const handleScroll = () => {
     showScrollTopButton.value = mainContainerRef.value?.scrollTop > 500
@@ -32,6 +34,18 @@ const scrollToTop = () => {
 watch(route, () => {
     mainContainerRef.value?.scrollTo({ top: 0 })
 })
+
+watch(
+  () => auth.user,
+  (newUser) => {
+    if (newUser) {
+       cart.fetchCart()
+    } else {
+        cart.cartItems = []
+    }
+  },
+  { immediate: true }
+)
 
 onMounted(async () => {
     await auth.initAuth()

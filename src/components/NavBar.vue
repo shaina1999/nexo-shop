@@ -305,10 +305,6 @@ onClickOutside(profileDropdownContainer, event => dropdownShow.value = false)
 
 onMounted(() => {
   window.addEventListener('resize', handleResize)
-
-  if(auth?.user) {
-    cart.fetchCart()
-  }
 })
 
 onUnmounted(() => {
