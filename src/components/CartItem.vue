@@ -47,8 +47,11 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
+import { useCartStore } from '@/stores/cartStore'
+import { supabase } from '@/supabase'
+import { useSpinner } from '@/stores/spinnerStore'
 
 import BaseButton from '@/components/BaseButton.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
@@ -58,6 +61,9 @@ const props = defineProps({
 })
 
 const { formatAmount } = useCurrencyFormat()
+const cart = useCartStore()
+const spinner = useSpinner()
+
 const quantity = ref(props.cartItem?.quantity)
 const maxQuantity = props.cartItem?.products?.stock
 const checkedItems = reactive({})
@@ -69,4 +75,31 @@ const handleCheckboxChange = (event, item) => {
         console.log(`${item.name} is unchecked`)
     }
 }
+
+watch(quantity, async (newQty, oldQty) => {
+  if (newQty !== oldQty && newQty > 0) {
+    spinner.start();
+
+    try {
+      const { error } = await supabase
+        .from('cart_items')
+        .update({ quantity: newQty })
+        .eq('id', props.cartItem.id)
+
+      if (error) throw error
+
+      await cart.fetchCartTotal()
+    } catch (err) {
+        Swal.fire({
+            title: 'Update Failed',
+            html: 'We were unable to update the item quantity in your cart. Please try again shortly.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+        })
+        console.error('Failed to update cart quantity:', err)
+    } finally {
+        spinner.stop();
+    }
+  }
+})
 </script>

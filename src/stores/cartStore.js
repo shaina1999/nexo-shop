@@ -15,7 +15,11 @@ export const useCartStore = defineStore('cart', () => {
     async function fetchCart() {
         try {
           isLoading.value = true
-          const { data: items, error } = await supabase.from('cart_items').select('id, quantity, products:product_id(id, name, discounted_price, images, stock, is_available)').eq('user_id', user.id)
+          const { data: items, error } = await supabase
+            .from('cart_items')
+            .select('id, quantity, products:product_id(id, name, discounted_price, images, stock, is_available)')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: true })
     
           if (error) throw error
     
@@ -33,7 +37,11 @@ export const useCartStore = defineStore('cart', () => {
             cartItem.user_id = user.id
 
             // 1. Check if the item already exists in the cart
-            const { data: existingItems, error: fetchError } = await supabase.from('cart_items').select('id, quantity').eq('user_id', user.id).eq('product_id', cartItem.product_id).limit(1)
+            const { data: existingItems, error: fetchError } = await supabase
+                .from('cart_items')
+                .select('id, quantity')
+                .eq('user_id', user.id).
+                eq('product_id', cartItem.product_id).limit(1)
             if (fetchError) throw fetchError
 
             const existingItem = existingItems?.[0]
@@ -41,11 +49,16 @@ export const useCartStore = defineStore('cart', () => {
             if (existingItem) {
                 // 2. If item exists, update the quantity
                 const updatedQuantity = existingItem.quantity + (cartItem.quantity || 1)
-                const { error: updateError } = await supabase.from('cart_items').update({ quantity: updatedQuantity }).eq('id', existingItem.id)
+                const { error: updateError } = await supabase
+                    .from('cart_items')
+                    .update({ quantity: updatedQuantity })
+                    .eq('id', existingItem.id)
                 if (updateError) throw updateError
             } else {
                 // 3. If item does not exist, insert new
-                const { error: insertError } = await supabase.from('cart_items').insert([cartItem])
+                const { error: insertError } = await supabase
+                    .from('cart_items')
+                    .insert([cartItem])
                 if (insertError) throw insertError
             }
 
@@ -76,5 +89,5 @@ export const useCartStore = defineStore('cart', () => {
         }
     }
 
-    return { isLoading, fetchCart, addToCart, cartItems, cartCount, cartTotal }
+    return { isLoading, fetchCart, addToCart, cartItems, cartCount, cartTotal, fetchCartTotal }
 })
