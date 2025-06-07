@@ -110,8 +110,8 @@ watch(quantity, async (newQty, oldQty) => {
       if (item) {
         item.quantity = newQty
       }
-
-      if(props.cartItem?.isSelected) {
+      
+      if(props.cartItem?.is_selected) {
         await cart.fetchCartTotal()
       }
     } catch (err) {
