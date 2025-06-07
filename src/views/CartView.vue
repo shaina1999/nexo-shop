@@ -66,6 +66,7 @@
 import { ref, onMounted } from 'vue'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
 import { useCartStore } from '@/stores/cartStore'
+import { useRouter, useRoute } from 'vue-router'
 
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
 import CartItem from '@/components/CartItem.vue'
@@ -75,9 +76,10 @@ import emptyCartIllustration from '@/assets/img/empty-cart.png'
 
 const { formatAmount } = useCurrencyFormat()
 const cart = useCartStore()
+const router = useRouter()
 
 const checkout = () => {
-    console.log('checkout', cart.cartItems)
+    router.push('/checkout')
 }
 
 onMounted(async () => {

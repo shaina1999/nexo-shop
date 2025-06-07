@@ -10,6 +10,7 @@ import ResetPasswordView from '@/views/ResetPasswordView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import ProductView from '@/views/ProductView.vue'
 import CartView from '@/views/CartView.vue'
+import CheckoutView from '@/views/CheckoutView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 
 const routes = [
@@ -17,6 +18,7 @@ const routes = [
   { path: '/products', name:'products', component: ProductsView },
   { path: '/product', name:'product', component: ProductView },
   { path: '/cart', name:'cart', component: CartView },
+  { path: '/checkout', name:'checkout', component: CheckoutView },
   { path: '/login', name:'login', component: LoginView },
   { path: '/sign-up', name:'sign-up', component: SignUpView },
   { path: '/forgot-password', name:'forgot-password', component: ForgotPasswordView },
