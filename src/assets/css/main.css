@@ -112,6 +112,9 @@ button:disabled:hover{
   overflow: unset !important;
   padding-right: 0px !important;
 }
+.swal2-confirm{
+  background-color: var(--color-secondary-500) !important;
+}
 
 /* Splide arrow:focus */
 .splide.is-focus-in .splide__arrow:focus {

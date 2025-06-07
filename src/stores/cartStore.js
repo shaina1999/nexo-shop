@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { supabase } from '@/supabase'
 import { useAuthStore } from '@/stores/authStore'
 import Swal from 'sweetalert2'
+import { useRouter } from 'vue-router'
 
 export const useCartStore = defineStore('cart', () => {
     const isLoading = ref(false)
@@ -11,6 +12,7 @@ export const useCartStore = defineStore('cart', () => {
     const user = auth.user
     const cartCount = computed(() => cartItems.value.reduce((total, item) => total + item.quantity, 0))
     const cartTotal = ref(0)
+    const router = useRouter()
 
     async function fetchCart() {
         try {
@@ -34,6 +36,19 @@ export const useCartStore = defineStore('cart', () => {
 
     async function addToCart(cartItem) {
         try {
+            if(!user){
+                Swal.fire({
+                    toast: true,
+                    timer: 5000,
+                    title: 'Please Log In',
+                    position: 'bottom-end',
+                    html: "You need to sign in to add items to your bag.",
+                    icon: 'info'
+                })
+                router.push('/login')
+                return
+            }
+
             cartItem.user_id = user.id
 
             // 1. Check if the item already exists in the cart
