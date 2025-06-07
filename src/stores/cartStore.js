@@ -10,6 +10,7 @@ export const useCartStore = defineStore('cart', () => {
     const auth = useAuthStore()
     const user = auth.user
     const cartCount = computed(() => cartItems.value.reduce((total, item) => total + item.quantity, 0))
+    const cartTotal = ref(0)
 
     async function fetchCart() {
         try {
@@ -19,6 +20,7 @@ export const useCartStore = defineStore('cart', () => {
           if (error) throw error
     
           cartItems.value = items ?? []
+          await fetchCartTotal()
         } catch (error) {
             console.error('Error fetching cart:', error)
         }  finally {
@@ -62,5 +64,17 @@ export const useCartStore = defineStore('cart', () => {
         }
     }
 
-    return { isLoading, fetchCart, addToCart, cartItems, cartCount }
+    async function fetchCartTotal() {
+        try {
+          const { data, error } = await supabase.from('cart_totals').select('total_amount').eq('user_id', user.id).single()
+      
+          if (error && error.code !== 'PGRST116') throw error
+          cartTotal.value = data?.total_amount ?? 0
+        } catch (error) {
+          console.error('Error fetching cart total:', error)
+          cartTotal.value = 0
+        }
+    }
+
+    return { isLoading, fetchCart, addToCart, cartItems, cartCount, cartTotal }
 })

@@ -35,7 +35,7 @@
                         <h3 class="text-base sm:text-lg font-medium mb-4">Cart Total</h3>
                         <div class="flex justify-between mb-2.5 text-sm sm:text-base">
                             <span>Subtotal:</span>
-                            <span>Php {{ formatAmount(1300) }}</span>
+                            <span>Php {{ formatAmount(cart.cartTotal) }}</span>
                         </div>
                         <div class="flex justify-between mb-2.5 text-sm sm:text-base">
                             <span>Shipping:</span>
@@ -43,7 +43,7 @@
                         </div>
                         <div class="flex justify-between font-semibold text-base sm:text-lg border-t pt-4 mt-3.5">
                             <span>Total:</span>
-                            <span>Php {{ formatAmount(1300) }}</span>
+                            <span>Php {{ formatAmount(cart.cartTotal) }}</span>
                         </div>
                         <BaseButton class="w-full mt-4">
                             Proceed to Checkout
@@ -85,6 +85,6 @@ const disableRemoveButton = ref(true)
 const cart = useCartStore()
 
 onMounted(async () => {
-    cart.fetchCart()
+    await cart.fetchCart()
 })
 </script>
