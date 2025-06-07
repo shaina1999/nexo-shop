@@ -8,6 +8,7 @@
       <PhMinus :size="18" />
     </button>
     <input 
+      name="quantity"
       :value="modelValue.toString()"
       type="text" 
       :class="inputClass" 

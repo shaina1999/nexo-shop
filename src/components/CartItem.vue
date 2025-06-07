@@ -25,20 +25,23 @@
             <div>
                 <p class="text-sm sm:text-base font-semibold text-gray-800">{{ cartItem?.products?.name }}</p>
                 <p class="text-sm sm:text-base text-gray-500">Price: Php {{ formatAmount(cartItem?.products?.discounted_price) }}</p>
-                <p class="text-sm sm:text-base text-gray-500">Subtotal: Php {{ formatAmount(cartItem?.products?.discounted_price) }}</p>
+                <p class="text-sm sm:text-base text-gray-500">Subtotal: Php {{ formatAmount(cartItem?.products?.discounted_price * quantity) }}</p>
             </div>
         </div>
         <!-- Quantity + Remove -->
-        <div class="flex items-center justify-between sm:justify-end sm:gap-2.5 w-full sm:w-auto">
-            <QuantityInput
-                :min="1"
-                :max="maxQuantity"
-                v-model="quantity"
-                :wrapper-class="'flex items-center rounded overflow-hidden w-full sm:w-max h-[30px] sm:h-[36px]'"
-                :input-class="'w-[60px] sm:w-[66px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-sm sm:text-base h-full disabled:opacity-[0.5]'"
-                :minus-button-class="'text-lg w-[40px] cursor-pointer h-full border-r-[1px] border flex items-center justify-center rounded-tl-sm rounded-bl-sm hover:!bg-transparent'"
-                :plus-button-class="'text-lg w-[40px] cursor-pointer h-full border-r-[1px] text-white border-secondary-500 flex items-center justify-center bg-secondary-500 rounded-tr-sm rounded-br-sm'"
-            />
+        <div class="flex items-end justify-between sm:justify-end sm:gap-2.5 w-full sm:w-auto">
+            <div class="flex flex-col">
+                <label for="quantity" class="text-sm sm:text-base mb-0.5">Quantity:</label>
+                <QuantityInput
+                    :min="1"
+                    :max="maxQuantity"
+                    v-model="quantity"
+                    :wrapper-class="'flex items-center rounded overflow-hidden w-full sm:w-max h-[30px] sm:h-[36px]'"
+                    :input-class="'w-[60px] sm:w-[66px] border-t-[1px] border-t-black border-b-[1px] border-b-black outline-none text-center text-sm sm:text-base h-full disabled:opacity-[0.5]'"
+                    :minus-button-class="'text-lg w-[40px] cursor-pointer h-full border-r-[1px] border flex items-center justify-center rounded-tl-sm rounded-bl-sm hover:!bg-transparent'"
+                    :plus-button-class="'text-lg w-[40px] cursor-pointer h-full border-r-[1px] text-white border-secondary-500 flex items-center justify-center bg-secondary-500 rounded-tr-sm rounded-br-sm'"
+                />
+            </div>
             <BaseButton class="ml-4 sm:ml-0 !p-1.5 sm:!p-2" @click="deleteCartItem">
                 <PhTrash class="w-4.5 h-4.5 sm:w-5 sm:h-5" />
             </BaseButton>
