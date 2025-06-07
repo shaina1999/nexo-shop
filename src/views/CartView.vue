@@ -21,13 +21,6 @@
                             Back to Shop
                             <PhArrowUDownLeft :size="18" />
                         </BaseLinkButton>
-                        <BaseButton 
-                            :disabled="disableRemoveButton"
-                            class="!flex items-center justify-center gap-x-1.5 text-sm !px-4.5 !py-2.5 md:!px-6 md:!py-3 mx-auto md:mx-0 w-full md:w-auto !bg-red-500 !text-white border-[1px] border-red/50 hover:!bg-red-600"
-                        >
-                            Remove Selected
-                            <PhTrash :size="18" />
-                        </BaseButton>
                     </div>
 
                     <!-- Cart Total -->
@@ -81,7 +74,6 @@ import CartSkeleton from '@/components/CartSkeleton.vue'
 import emptyCartIllustration from '@/assets/img/empty-cart.png'
 
 const { formatAmount } = useCurrencyFormat()
-const disableRemoveButton = ref(true)
 const cart = useCartStore()
 
 onMounted(async () => {
