@@ -4,7 +4,7 @@
            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <!-- Billing Details -->
                 <div class="order-2 lg:order-1">
-                    <h2 class="text-xl font-semibold mb-4">Billing Details</h2>
+                    <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-5 md:pb-10">Billing Details</h2>
                     <form class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium">Full Name<span class="text-red-500">*</span></label>
@@ -39,7 +39,7 @@
 
                 <!-- Order Summary -->
                 <div class="space-y-6 order-1 lg:order-2">
-                    <h2 class="text-xl font-semibold mb-4">Order Summary</h2>
+                    <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-5 md:pb-10 mb-0">Order Summary</h2>
                     <div class="border border-gray-300 p-6 rounded-lg space-y-4">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">

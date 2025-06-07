@@ -24,7 +24,7 @@
                     </div>
 
                     <!-- Cart Total -->
-                    <div class="shrink-1 border p-6 rounded-md w-full md:w-1/2 lg:w-1/3">
+                    <div class="shrink-1 border border-gray-300 p-6 rounded-md w-full md:w-1/2 lg:w-1/3">
                         <h3 class="text-base sm:text-lg font-medium mb-4">Cart Total</h3>
                         <div class="flex justify-between mb-2.5 text-sm sm:text-base">
                             <span>Subtotal:</span>
