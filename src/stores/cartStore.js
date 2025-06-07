@@ -113,6 +113,15 @@ export const useCartStore = defineStore('cart', () => {
 
     function removeCartItemLocally(itemId) {
         cartItems.value = cartItems.value.filter(item => item.id !== itemId)
+
+        Swal.fire({
+            toast: true,
+            timer: 2000,
+            title: 'Removed',
+            position: 'bottom-end',
+            html: "Item removed from your cart successfully",
+            icon: 'success'
+        })
     }
 
     return { isLoading, fetchCart, addToCart, cartItems, cartCount, cartTotal, fetchCartTotal, removeCartItemLocally }
