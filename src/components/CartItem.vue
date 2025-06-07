@@ -88,6 +88,11 @@ watch(quantity, async (newQty, oldQty) => {
 
       if (error) throw error
 
+      const item = cart.cartItems.find(i => i.id === props.cartItem.id)
+      if (item) {
+        item.quantity = newQty
+      }
+
       await cart.fetchCartTotal()
     } catch (err) {
         Swal.fire({
