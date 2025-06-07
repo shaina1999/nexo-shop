@@ -9,7 +9,6 @@ export const useCartStore = defineStore('cart', () => {
     const isLoading = ref(false)
     const cartItems = ref([])
     const auth = useAuthStore()
-    const user = auth.user
     const cartCount = computed(() => cartItems.value.reduce((total, item) => total + item.quantity, 0))
     const cartTotal = ref(0)
     const router = useRouter()
@@ -20,7 +19,7 @@ export const useCartStore = defineStore('cart', () => {
           const { data: items, error } = await supabase
             .from('cart_items')
             .select('id, quantity, is_selected, products:product_id(id, name, discounted_price, images, stock, is_available)')
-            .eq('user_id', user.id)
+            .eq('user_id', auth?.user?.id)
             .order('created_at', { ascending: true })
     
           if (error) throw error
@@ -36,7 +35,7 @@ export const useCartStore = defineStore('cart', () => {
 
     async function addToCart(cartItem) {
         try {
-            if(!user){
+            if(!auth?.user){
                 Swal.fire({
                     toast: true,
                     timer: 5000,
@@ -49,13 +48,13 @@ export const useCartStore = defineStore('cart', () => {
                 return
             }
 
-            cartItem.user_id = user.id
+            cartItem.user_id = auth?.user?.id
 
             // 1. Check if the item already exists in the cart
             const { data: existingItems, error: fetchError } = await supabase
                 .from('cart_items')
                 .select('id, quantity')
-                .eq('user_id', user.id).
+                .eq('user_id', auth?.user?.id).
                 eq('product_id', cartItem.product_id).limit(1)
             if (fetchError) throw fetchError
 
@@ -114,7 +113,7 @@ export const useCartStore = defineStore('cart', () => {
             const { data, error } = await supabase
             .from('cart_totals')
             .select('total_amount')
-            .eq('user_id', user.id)
+            .eq('user_id', auth?.user?.id)
             .single()
 
             if (error) {
