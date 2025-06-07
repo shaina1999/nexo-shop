@@ -38,7 +38,7 @@
                             <span>Total:</span>
                             <span>Php {{ formatAmount(cart.cartTotal) }}</span>
                         </div>
-                        <BaseButton class="w-full mt-4">
+                        <BaseButton class="w-full mt-4" @click="checkout">
                             Proceed to Checkout
                         </BaseButton>
                     </div>
@@ -75,6 +75,10 @@ import emptyCartIllustration from '@/assets/img/empty-cart.png'
 
 const { formatAmount } = useCurrencyFormat()
 const cart = useCartStore()
+
+const checkout = () => {
+    console.log('checkout', cart.cartItems)
+}
 
 onMounted(async () => {
     await cart.fetchCart()
