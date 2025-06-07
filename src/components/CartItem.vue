@@ -39,7 +39,7 @@
                 :minus-button-class="'text-lg w-[40px] cursor-pointer h-full border-r-[1px] border flex items-center justify-center rounded-tl-sm rounded-bl-sm hover:!bg-transparent'"
                 :plus-button-class="'text-lg w-[40px] cursor-pointer h-full border-r-[1px] text-white border-secondary-500 flex items-center justify-center bg-secondary-500 rounded-tr-sm rounded-br-sm'"
             />
-            <BaseButton class="ml-4 sm:ml-0 !p-1.5 sm:!p-2">
+            <BaseButton class="ml-4 sm:ml-0 !p-1.5 sm:!p-2" @click="deleteCartItem">
                 <PhTrash class="w-4.5 h-4.5 sm:w-5 sm:h-5" />
             </BaseButton>
         </div>
@@ -52,6 +52,7 @@ import { useCurrencyFormat } from '@/composables/currencyFormat'
 import { useCartStore } from '@/stores/cartStore'
 import { supabase } from '@/supabase'
 import { useSpinner } from '@/stores/spinnerStore'
+import Swal from 'sweetalert2'
 
 import BaseButton from '@/components/BaseButton.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
@@ -94,6 +95,45 @@ const handleCheckboxChange = async (item) => {
     }
 }
 
+const deleteCartItem = async () => {
+    const id = props.cartItem.id
+    const result = await Swal.fire({
+        title: 'Are you sure?',
+        html: 'Do you really want to remove this item from your cart?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it',
+        cancelButtonText: 'Cancel',
+    })
+
+    if (!result.isConfirmed) {
+        return
+    }
+
+    spinner.start();
+
+    try {
+        const { error } = await supabase
+            .from('cart_items')
+            .delete()
+            .eq('id', id)
+
+        if(error) throw error
+
+        await cart.fetchCartTotal()
+    } catch (error) {
+        Swal.fire({
+            title: 'Error',
+            html: 'Failed to delete cart item. Please try again shortly.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+        })
+        console.error('deleteCartItem error:', error)
+    } finally {
+        spinner.stop();
+    }
+}
+
 watch(quantity, async (newQty, oldQty) => {
   if (newQty !== oldQty && newQty > 0) {
     spinner.start();
@@ -110,7 +150,7 @@ watch(quantity, async (newQty, oldQty) => {
       if (item) {
         item.quantity = newQty
       }
-      
+
       if(props.cartItem?.is_selected) {
         await cart.fetchCartTotal()
       }
