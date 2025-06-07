@@ -79,6 +79,17 @@ export const useCartStore = defineStore('cart', () => {
 
     async function fetchCartTotal() {
         try {
+            /*
+            * Check if any cart item is selected
+            * - We only want to calculate the total if at least one item is selected
+            * - This avoids making an unnecessary database query
+            */
+            const hasSelectedItems = cartItems.value.some(item => item.is_selected)
+            if (!hasSelectedItems) {
+                cartTotal.value = 0
+                return
+            }
+
             const { data, error } = await supabase
             .from('cart_totals')
             .select('total_amount')
