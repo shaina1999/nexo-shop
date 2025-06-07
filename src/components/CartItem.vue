@@ -111,7 +111,9 @@ watch(quantity, async (newQty, oldQty) => {
         item.quantity = newQty
       }
 
-      await cart.fetchCartTotal()
+      if(props.cartItem?.isSelected) {
+        await cart.fetchCartTotal()
+      }
     } catch (err) {
         Swal.fire({
             title: 'Update Failed',
