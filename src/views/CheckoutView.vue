@@ -107,7 +107,7 @@
                         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                             <!-- Cash on Delivery -->
                             <label
-                                class="group block cursor-pointer border rounded-lg p-4 transition-all hover:shadow"
+                                class="group block cursor-pointer border rounded-lg p-4 transition-all hover:shadow relative"
                                 :class="payment === 'cod' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300'"
                             >
                                 <input
@@ -125,7 +125,7 @@
 
                             <!-- Bank -->
                             <label
-                                class="group block cursor-pointer border rounded-lg p-4 transition-all hover:shadow"
+                                class="group block cursor-pointer border rounded-lg p-4 transition-all hover:shadow relative"
                                 :class="payment === 'bank' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300'"
                             >
                                 <input
