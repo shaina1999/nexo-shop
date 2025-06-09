@@ -1,5 +1,5 @@
 <template>
-    <section class="flex items-center justify-center w-full pt-5 md:pt-10 product-details">
+    <section class="flex items-center justify-center w-full pt-5 md:pt-10">
         <div v-if="!cart.isLoading" class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
             <div v-if="cart.cartCount">
                 <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-5 md:pb-10">
