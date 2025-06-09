@@ -79,15 +79,19 @@
                             <label class="relative cursor-pointer flex items-center gap-1.5">
                                 <input 
                                     type="checkbox" 
-                                    class="absolute left-0 right-0 top-0 bottom-0 w-full h-full opacity-0 cursor-pointer" 
+                                    v-model="saveBillingInfo"
+                                    class="absolute left-0 right-0 top-0 bottom-0 opacity-0 z-10 cursor-pointer"
                                 >
                                 <span 
                                     class="w-4.5 h-4.5 rounded-sm border-[1px] border-black flex items-center justify-center text-white relative"
                                 >
-                                    <PhCheckFat 
+                                   <PhCheckFat 
                                         :size="12" 
                                         weight="fill" 
-                                        class="absolute top-[50%] -translate-x-1/2 left-1/2 -translate-y-1/2 text-transparent"
+                                        :class="[
+                                            'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-colors duration-150',
+                                            saveBillingInfo ? 'text-black' : 'text-transparent'
+                                        ]"
                                     />
                                 </span>
                                 <span class="text-sm">Save info for faster checkout next time</span>
@@ -219,6 +223,7 @@ import BaseButton from '@/components/BaseButton.vue'
 const payment = ref('cod')
 const isMobile = ref(false)
 const showForm = ref(false)
+const saveBillingInfo = ref(false)
 
 const billing = ref({
   fullname: 'Shaina De Guzman',
