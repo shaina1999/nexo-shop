@@ -1,7 +1,8 @@
 <template>
     <section class="flex items-center justify-center w-full pt-5 md:pt-10">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
-           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+            <CheckoutSkeleton v-if="isLoading" />
+            <div v-if="!isLoading" class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
                 <!-- Billing Details -->
                 <div>
                     <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-2.5 lg:pb-6">Billing Details</h2>
@@ -94,7 +95,7 @@
                                         ]"
                                     />
                                 </span>
-                                <span class="text-sm">Save info for faster checkout next time</span>
+                                <span class="text-sm">Save details for faster checkout next time</span>
                             </label>
                         </div>
 
@@ -219,22 +220,24 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
 import BaseButton from '@/components/BaseButton.vue'
+import CheckoutSkeleton from '@/components/CheckoutSkeleton.vue'
 
 const payment = ref('cod')
 const isMobile = ref(false)
 const showForm = ref(false)
 const saveBillingInfo = ref(false)
+const isLoading = ref(false)
 
 const billing = ref({
-  fullname: 'Shaina De Guzman',
-  phone: '097676767',
-  address: 'J.P Rizal Street',
-  city: 'Jalajala, Rizal',
-  apartment: '3245 Apartment',
+    fullname: 'Shaina De Guzman',
+    phone: '097676767',
+    address: 'J.P Rizal Street',
+    city: 'Jalajala, Rizal',
+    apartment: '3245 Apartment',
 })
 
 const hasBillingDetails = computed(() => {
-  return billing.value.fullname && billing.value.phone && billing.value.address && billing.value.city
+    return billing.value.fullname && billing.value.phone && billing.value.address && billing.value.city
 })
 
 const checkViewport = () => {
@@ -243,11 +246,16 @@ const checkViewport = () => {
 }
 
 onMounted(() => {
-  checkViewport()
-  window.addEventListener('resize', checkViewport)
+    checkViewport()
+    window.addEventListener('resize', checkViewport)
+    isLoading.value = true
+
+    setTimeout(() => {
+    // isLoading.value = false
+    }, 2000);
 })
 
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', checkViewport)
+    window.removeEventListener('resize', checkViewport)
 })
 </script>
