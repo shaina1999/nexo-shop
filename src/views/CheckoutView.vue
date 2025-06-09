@@ -5,41 +5,70 @@
                 <!-- Billing Details -->
                 <div>
                     <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-2.5 lg:pb-6">Billing Details</h2>
-                    <div class="border border-gray-300 p-4 sm:p-6 rounded-lg shadow w-full text-left flex justify-between gap-4 items-start text-sm sm:text-base">
-                        <div class="flex flex-col">
-                            <span class="inline-block mb-0.5">Shaina De Guzman</span>
-                            <span class="inline-block mb-0.5">09703498334</span>
-                            <span class="inline-block mb-0.5">182 J.P Rizal Street, Barangay 2nd District Jalajala, Rizal</span>
+                    <div 
+                        v-if="isMobile"
+                        class="border border-gray-300 p-4 sm:p-6 rounded-lg shadow w-full text-left flex justify-between gap-4 items-start text-sm sm:text-base"
+                    >
+                        <div class="flex flex-col" v-if="isMobile && hasBillingDetails">
+                            <span class="inline-block mb-0.5">{{ billing.fullname }}</span>
+                            <span class="inline-block mb-0.5">{{ billing.phone }}</span>
+                            <span class="inline-block mb-0.5">
+                                {{ billing.apartment ? billing.apartment+', ' : '' }}
+                                {{ billing.address ? billing.address+', ' : '' }} {{ billing.city }}
+                            </span>
                         </div>
-                        <button class="text-secondary-500 cursor-pointer flex items-center gap-1 text-sm sm:text-base">
+                        <button class="text-secondary-500 cursor-pointer flex items-center gap-1 text-sm sm:text-base" v-if="isMobile && hasBillingDetails">
                             Edit
                             <PhPencilSimple :size="16" />
                         </button>
-                        <button class="text-secondary-500 cursor-pointer flex items-center gap-1 self-center text-sm sm:text-base mx-auto hidden">
+                        <button 
+                            v-if="isMobile && !hasBillingDetails"
+                            class="text-secondary-500 cursor-pointer flex items-center gap-1 self-center text-sm sm:text-base mx-auto"
+                        >
                             Add Billing Details
                             <PhPlus :size="16" />
                         </button>
                     </div>
-                    <form class="space-y-4 hidden">
+                    <form class="space-y-4" v-if="!isMobile">
                         <div>
                             <label class="block text-sm font-medium">Full Name<span class="text-red-500">*</span></label>
-                            <input type="text" class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" />
+                            <input 
+                                v-model="billing.fullname"
+                                type="text" 
+                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                            />
                         </div>
                         <div>
                             <label class="block text-sm font-medium">Street Address<span class="text-red-500">*</span></label>
-                            <input type="text" class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" />
+                            <input 
+                                v-model="billing.address"
+                                type="text" 
+                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                            />
                         </div>
                         <div>
                             <label class="block text-sm font-medium">Apartment, floor, etc. <span class="text-gray-500 text-xs">(Optional)</span></label>
-                            <input type="text" class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" />
+                            <input 
+                                v-model="billing.address"
+                                type="text" 
+                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                            />
                         </div>
                         <div>
                             <label class="block text-sm font-medium">Town/City<span class="text-red-500">*</span></label>
-                            <input type="text" class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" />
+                            <input 
+                                v-model="billing.city"
+                                type="text" 
+                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                            />
                         </div>
                         <div>
                             <label class="block text-sm font-medium">Phone Number<span class="text-red-500">*</span></label>
-                            <input type="text" class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" />
+                            <input 
+                                v-model="billing.phone"
+                                type="text" 
+                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                            />
                         </div>
                         <div class="flex items-center">
                             <label class="relative cursor-pointer flex items-center gap-1.5">
@@ -161,9 +190,36 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
 import BaseButton from '@/components/BaseButton.vue'
 
 const payment = ref('cod')
+const isMobile = ref(false)
+
+const billing = ref({
+  fullname: 'Shaina De Guzman',
+  phone: '097676767',
+  address: 'J.P Rizal Street',
+  city: 'Jalajala, Rizal',
+  apartment: '3245 Apartment',
+})
+
+const hasBillingDetails = computed(() => {
+  return billing.value.fullname && billing.value.phone && billing.value.address && billing.value.city
+})
+
+const checkViewport = () => {
+    isMobile.value = window.innerWidth < 1024
+    console.log(isMobile.value)
+}
+
+onMounted(() => {
+  checkViewport()
+  window.addEventListener('resize', checkViewport)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', checkViewport)
+})
 </script>
