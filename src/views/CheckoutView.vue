@@ -11,8 +11,13 @@
                             <span class="inline-block mb-0.5">09703498334</span>
                             <span class="inline-block mb-0.5">182 J.P Rizal Street, Barangay 2nd District Jalajala, Rizal</span>
                         </div>
-                        <button class="text-secondary-500 cursor-pointer">
+                        <button class="text-secondary-500 cursor-pointer flex items-center gap-1 text-sm sm:text-base">
                             Edit
+                            <PhPencilSimple :size="16" />
+                        </button>
+                        <button class="text-secondary-500 cursor-pointer flex items-center gap-1 self-center text-sm sm:text-base mx-auto hidden">
+                            Add Billing Details
+                            <PhPlus :size="16" />
                         </button>
                     </div>
                     <form class="space-y-4 hidden">
