@@ -67,6 +67,7 @@ import { ref, onMounted } from 'vue'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
 import { useCartStore } from '@/stores/cartStore'
 import { useRouter, useRoute } from 'vue-router'
+import Swal from 'sweetalert2'
 
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
 import CartItem from '@/components/CartItem.vue'
@@ -79,6 +80,17 @@ const cart = useCartStore()
 const router = useRouter()
 
 const checkout = () => {
+    const hasSelectedItem = cart.cartItems.some(item => item.is_selected)
+
+    if (!hasSelectedItem) {
+        Swal.fire({
+            title: 'No items selected',
+            html: "Please select at least one item before proceeding to checkout.",
+            icon: 'warning'
+        })
+        return
+    }
+
     router.push('/checkout')
 }
 
