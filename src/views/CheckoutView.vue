@@ -3,7 +3,7 @@
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <!-- Billing Details -->
-                <div class="order-2 lg:order-1">
+                <div>
                     <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-5 lg:pb-10">Billing Details</h2>
                     <form class="space-y-4">
                     <div>
@@ -52,7 +52,7 @@
                 </div>
 
                 <!-- Order Summary -->
-                <div class="space-y-6 order-1 lg:order-2">
+                <div class="space-y-6">
                     <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-5 lg:pb-10 mb-0">Order Summary</h2>
                     <div class="border border-gray-300 p-6 rounded-lg space-y-8 lg:space-y-6 shadow">
                         <div class="flex items-baseline md:items-center lg:items-center justify-between gap-2 lg:gap-12 flex-col md:flex-row">
