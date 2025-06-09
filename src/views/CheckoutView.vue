@@ -1,16 +1,20 @@
 <template>
     <section class="flex items-center justify-center w-full pt-5 md:pt-10">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
-           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-8">
+           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
                 <!-- Billing Details -->
                 <div>
                     <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-2.5 lg:pb-6">Billing Details</h2>
-                    <button class="border border-gray-300 p-4 sm:p-6 rounded-lg shadow w-full text-left flex flex-col items-start text-sm sm:text-base">
-                        <span class="inline-block mb-0.5">Shaina De Guzman</span>
-                        <span class="inline-block mb-0.5">09703498334</span>
-                        <span class="inline-block mb-0.5">shaina@gmail.com</span>
-                        <span class="inline-block mb-0.5">182 J.P Rizal Street, Barangay 2nd District Jalajala, Rizal</span>
-                    </button>
+                    <div class="border border-gray-300 p-4 sm:p-6 rounded-lg shadow w-full text-left flex justify-between gap-4 items-start text-sm sm:text-base">
+                        <div class="flex flex-col">
+                            <span class="inline-block mb-0.5">Shaina De Guzman</span>
+                            <span class="inline-block mb-0.5">09703498334</span>
+                            <span class="inline-block mb-0.5">182 J.P Rizal Street, Barangay 2nd District Jalajala, Rizal</span>
+                        </div>
+                        <button class="text-secondary-500 cursor-pointer">
+                            Edit
+                        </button>
+                    </div>
                     <form class="space-y-4 hidden">
                         <div>
                             <label class="block text-sm font-medium">Full Name<span class="text-red-500">*</span></label>
@@ -31,10 +35,6 @@
                         <div>
                             <label class="block text-sm font-medium">Phone Number<span class="text-red-500">*</span></label>
                             <input type="text" class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium">Email Address <span class="text-gray-500 text-xs">(Optional)</span></label>
-                            <input type="email" class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" />
                         </div>
                         <div class="flex items-center">
                             <label class="relative cursor-pointer flex items-center gap-1.5">
@@ -113,7 +113,7 @@
                         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                             <!-- Cash on Delivery -->
                             <label
-                                class="group block cursor-pointer border rounded-lg p-4 transition-all hover:shadow relative"
+                                class="group block cursor-pointer border rounded-lg p-2.5 sm:p-3 transition-all hover:shadow relative"
                                 :class="payment === 'cod' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300'"
                             >
                                 <input
@@ -123,7 +123,7 @@
                                     v-model="payment"
                                     class="sr-only"
                                 />
-                                <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-3 text-sm sm:text-base">
                                     <PhMoney :size="20" :weight="'regular'" :class="payment === 'cod' ? 'text-secondary-500' : 'text-gray-500'" />
                                     <span :class="payment === 'cod' ? 'text-secondary-600 font-medium' : 'text-gray-700'">Cash on Delivery</span>
                                 </div>
@@ -131,7 +131,7 @@
 
                             <!-- Bank -->
                             <label
-                                class="group block cursor-pointer border rounded-lg p-4 transition-all hover:shadow relative"
+                                class="group block cursor-pointer border rounded-lg p-2.5 sm:p-3 transition-all hover:shadow relative"
                                 :class="payment === 'bank' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300'"
                             >
                                 <input
@@ -141,7 +141,7 @@
                                     v-model="payment"
                                     class="sr-only"
                                 />
-                                <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-3 text-sm sm:text-base">
                                     <PhBank :size="20" :weight="'regular'" :class="payment === 'bank' ? 'text-secondary-500' : 'text-gray-500'" />
                                     <span :class="payment === 'bank' ? 'text-secondary-600 font-medium' : 'text-gray-700'">Bank</span>
                                 </div>
