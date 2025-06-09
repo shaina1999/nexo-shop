@@ -90,7 +90,7 @@
                                         class="absolute top-[50%] -translate-x-1/2 left-1/2 -translate-y-1/2 text-transparent"
                                     />
                                 </span>
-                                <span class="text-sm">Save this information for faster check-out next time </span>
+                                <span class="text-sm">Save info for faster checkout next time</span>
                             </label>
                         </div>
 
