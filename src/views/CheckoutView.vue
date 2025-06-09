@@ -101,19 +101,44 @@
                         </div>
                     </div>
 
-                    <!-- Payment Method -->
+                    <!-- Payment Options -->
                     <div class="space-y-2">
                         <h2>Payment Options:</h2>
-                        <div>
-                            <label class="flex items-center gap-2">
-                                <input type="radio" name="payment" class="accent-red-500" />
-                                <span>Cash on delivery</span>
+                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <!-- Cash on Delivery -->
+                            <label
+                                class="group block cursor-pointer border rounded-lg p-4 transition-all hover:shadow"
+                                :class="payment === 'cod' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300'"
+                            >
+                                <input
+                                    type="radio"
+                                    name="payment"
+                                    value="cod"
+                                    v-model="payment"
+                                    class="sr-only"
+                                />
+                                <div class="flex items-center gap-3">
+                                    <PhMoney :size="20" :weight="'regular'" :class="payment === 'cod' ? 'text-secondary-500' : 'text-gray-500'" />
+                                    <span :class="payment === 'cod' ? 'text-secondary-600 font-medium' : 'text-gray-700'">Cash on Delivery</span>
+                                </div>
                             </label>
-                        </div>
-                        <div>
-                            <label class="flex items-center gap-2">
-                                <input type="radio" name="payment" class="accent-red-500" />
-                                <span>Bank</span>
+
+                            <!-- Bank -->
+                            <label
+                                class="group block cursor-pointer border rounded-lg p-4 transition-all hover:shadow"
+                                :class="payment === 'bank' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300'"
+                            >
+                                <input
+                                    type="radio"
+                                    name="payment"
+                                    value="bank"
+                                    v-model="payment"
+                                    class="sr-only"
+                                />
+                                <div class="flex items-center gap-3">
+                                    <PhBank :size="20" :weight="'regular'" :class="payment === 'bank' ? 'text-secondary-500' : 'text-gray-500'" />
+                                    <span :class="payment === 'bank' ? 'text-secondary-600 font-medium' : 'text-gray-700'">Bank</span>
+                                </div>
                             </label>
                         </div>
                     </div>
@@ -125,5 +150,9 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
 import BaseButton from '@/components/BaseButton.vue'
+
+const payment = ref('cod')
 </script>
