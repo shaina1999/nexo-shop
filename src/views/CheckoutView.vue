@@ -6,7 +6,7 @@
                 <div>
                     <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-2.5 lg:pb-6">Billing Details</h2>
                     <div 
-                        v-if="isMobile"
+                        v-if="isMobile && !showForm"
                         class="border border-gray-300 p-4 sm:p-6 rounded-lg shadow w-full text-left flex justify-between gap-4 items-start text-sm sm:text-base"
                     >
                         <div class="flex flex-col" v-if="isMobile && hasBillingDetails">
@@ -17,19 +17,24 @@
                                 {{ billing.address ? billing.address+', ' : '' }} {{ billing.city }}
                             </span>
                         </div>
-                        <button class="text-secondary-500 cursor-pointer flex items-center gap-1 text-sm sm:text-base" v-if="isMobile && hasBillingDetails">
+                        <button 
+                            @click="showForm = true"
+                            class="text-secondary-500 cursor-pointer flex items-center gap-1 text-sm sm:text-base" 
+                            v-if="isMobile && hasBillingDetails"
+                        >
                             Edit
                             <PhPencilSimple :size="16" />
                         </button>
                         <button 
-                            v-if="isMobile && !hasBillingDetails"
+                            v-if="isMobile && !hasBillingDetails && !showForm"
+                            @click="showForm = true"
                             class="text-secondary-500 cursor-pointer flex items-center gap-1 self-center text-sm sm:text-base mx-auto"
                         >
                             Add Billing Details
                             <PhPlus :size="16" />
                         </button>
                     </div>
-                    <form class="space-y-4" v-if="!isMobile">
+                    <form class="space-y-4" v-if="!isMobile || showForm">
                         <div>
                             <label class="block text-sm font-medium">Full Name<span class="text-red-500">*</span></label>
                             <input 
@@ -87,6 +92,23 @@
                                 </span>
                                 <span class="text-sm">Save this information for faster check-out next time </span>
                             </label>
+                        </div>
+
+                        <div v-if="isMobile" class="flex gap-3">
+                            <BaseButton
+                                type="button"
+                                class="text-sm md:text-base !py-1.5 !px-4 !md:py-2 !md:px-4.5 flex items-center justify-center gap-x-1 bg-white !text-black border-[1px] border-black/50 hover:!bg-gray-200"
+                                @click="showForm = false"
+                            >
+                                Cancel
+                            </BaseButton>
+                            <BaseButton
+                                type="submit"
+                                class="text-sm md:text-base !py-1.5 !px-4 !md:py-2 !md:px-4.5 flex items-center justify-center"
+                                @click.prevent="showForm = false"
+                            >
+                                Save
+                            </BaseButton>
                         </div>
                     </form>
                 </div>
@@ -196,6 +218,7 @@ import BaseButton from '@/components/BaseButton.vue'
 
 const payment = ref('cod')
 const isMobile = ref(false)
+const showForm = ref(false)
 
 const billing = ref({
   fullname: 'Shaina De Guzman',
