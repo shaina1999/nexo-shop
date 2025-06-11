@@ -8,6 +8,7 @@ import { useRouter } from 'vue-router'
 export const useCartStore = defineStore('cart', () => {
     const isLoading = ref(false)
     const cartItems = ref([])
+    const cartSelectedItems = ref([])
     const auth = useAuthStore()
     const cartCount = computed(() => cartItems.value.reduce((total, item) => total + item.quantity, 0))
     const cartTotal = ref(0)
@@ -43,6 +44,32 @@ export const useCartStore = defineStore('cart', () => {
             console.error('Error fetching cart:', error)
         }  finally {
             isLoading.value = false
+        }
+    }
+
+    async function fetchSelectedCartItems() {
+        try {
+            if (!auth?.user) return
+    
+            const { data: selectedItems, error } = await supabase
+                .from('cart_items')
+                .select('id, quantity, is_selected, products:product_id(id, name, discounted_price, images, stock, is_available)')
+                .eq('user_id', auth?.user?.id)
+                .eq('is_selected', true)
+                .order('created_at', { ascending: true })
+    
+            if (error) throw error
+    
+            cartSelectedItems.value = selectedItems ?? []
+        } catch (error) {
+            console.error('Error fetching selected cart items:', error)
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops!',
+                text: 'Failed to fetch selected cart items. Please try again.',
+                confirmButtonText: 'OK'
+            })
         }
     }
 
@@ -157,5 +184,16 @@ export const useCartStore = defineStore('cart', () => {
         })
     }
 
-    return { isLoading, fetchCart, addToCart, cartItems, cartCount, cartTotal, fetchCartTotal, removeCartItemLocally }
+    return {
+        isLoading,
+        fetchCart,
+        fetchSelectedCartItems,
+        addToCart,
+        cartItems,
+        cartSelectedItems,
+        cartCount,
+        cartTotal,
+        fetchCartTotal,
+        removeCartItemLocally
+    }
 })

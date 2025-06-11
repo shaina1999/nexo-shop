@@ -122,40 +122,29 @@
                 <div class="space-y-5">
                     <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-2.5 lg:pb-6 mb-0">Order Summary</h2>
                     <div class="border border-gray-300 p-6 rounded-lg space-y-8 lg:space-y-6 shadow">
-                        <div class="flex items-baseline md:items-center lg:items-center justify-between gap-2 lg:gap-12 flex-col md:flex-row">
+                        <div
+                            v-for="(cartItem, index) in cart.cartSelectedItems" :key="cartItem.id"
+                            :class="[
+                                'flex items-baseline md:items-center justify-between gap-2 lg:gap-12 flex-col md:flex-row',
+                                index !== cart.cartSelectedItems.length - 1 ? 'border-b border-b-gray-300 pb-6' : ''
+                            ]"
+                        >
                             <div class="flex items-center gap-3 grow-0">
-                                <img src="https://jquwasnrxbzlhmtwnrit.supabase.co/storage/v1/object/public/product-images//c08186083_1_1.avif" alt="LCD Monitor" class="w-10 h-10 object-contain"/>
-                                <span class="line-clamp-2 text-sm sm:text-base font-semibold text-gray-800">Gaming Laptop</span>
+                                <img :src="cartItem?.products?.images[0]?.url" :alt="cartItem?.products?.name" class="w-10 h-10 object-contain"/>
+                                <div>
+                                    <span class="line-clamp-2 text-sm sm:text-base font-semibold text-gray-800">{{ cartItem?.products?.name }}</span>
+                                    <span class="text-sm sm:text-base text-gray-500">Php {{ formatAmount(cartItem?.products?.discounted_price) }}</span>
+                                </div>
                             </div>
                             <div class="shrink-0 flex flex-col gap-0.5 text-sm sm:text-base text-gray-500">
-                                <span>Php 100,00.00</span>
-                                <span>Qty: 12</span>
+                                <span class="text-left md:text-right">Quantity: {{ cartItem?.quantity }}</span>
+                                <span>Php {{ formatAmount(cartItem?.products?.discounted_price * cartItem?.quantity) }}</span>
                             </div>
                         </div>
-                        <div class="flex items-baseline md:items-center lg:items-center justify-between gap-2 lg:gap-12 flex-col md:flex-row">
-                            <div class="flex items-center gap-3 grow-0">
-                                <img src="https://jquwasnrxbzlhmtwnrit.supabase.co/storage/v1/object/public/product-images//c08186083_1_1.avif" alt="LCD Monitor" class="w-10 h-10 object-contain"/>
-                                <span class="line-clamp-2 text-sm sm:text-base font-semibold text-gray-800">5G Android Phone</span>
-                            </div>
-                            <div class="shrink-0 flex flex-col gap-0.5 text-sm sm:text-base text-gray-500">
-                                <span>Php 100,00.00</span>
-                                <span>Qty: 12</span>
-                            </div>
-                        </div>
-                        <div class="flex items-baseline md:items-center lg:items-center justify-between gap-2 lg:gap-12 flex-col md:flex-row">
-                            <div class="flex items-center gap-3 grow-0">
-                                <img src="https://jquwasnrxbzlhmtwnrit.supabase.co/storage/v1/object/public/product-images//c08186083_1_1.avif" alt="LCD Monitor" class="w-10 h-10 object-contain"/>
-                                <span class="line-clamp-2 text-sm sm:text-base font-semibold text-gray-800">Gaming Laptop</span>
-                            </div>
-                            <div class="shrink-0 flex flex-col gap-0.5 text-sm sm:text-base text-gray-500">
-                                <span>Php 100,00.00</span>
-                                <span>Qty: 12</span>
-                            </div>
-                        </div>
-                        <div class="border-t pt-6 mt-6 space-y-2.5">
+                        <div class="border-t border-t-gray-300 pt-6 mt-6 space-y-2.5">
                             <div class="flex justify-between text-sm sm:text-base">
                                 <span>Subtotal:</span>
-                                <span>Php 100,00.00</span>
+                                <span>Php {{ formatAmount(cart.cartTotal) }}</span>
                             </div>
                             <div class="flex justify-between text-sm sm:text-base">
                                 <span>Shipping:</span>
@@ -163,7 +152,7 @@
                             </div>
                             <div class="flex justify-between font-bold text-base sm:text-lg">
                                 <span>Total:</span>
-                                <span>Php 100,00.00</span>
+                                <span>Php {{ formatAmount(cart.cartTotal) }}</span>
                             </div>
                         </div>
                     </div>
@@ -218,6 +207,8 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useCartStore } from '@/stores/cartStore'
+import { useCurrencyFormat } from '@/composables/currencyFormat'
 
 import BaseButton from '@/components/BaseButton.vue'
 import CheckoutSkeleton from '@/components/CheckoutSkeleton.vue'
@@ -227,6 +218,8 @@ const isMobile = ref(false)
 const showForm = ref(false)
 const saveBillingInfo = ref(false)
 const isLoading = ref(false)
+const cart = useCartStore()
+const { formatAmount } = useCurrencyFormat()
 
 const billing = ref({
     fullname: 'Shaina De Guzman',
@@ -247,11 +240,12 @@ const checkViewport = () => {
 onMounted(() => {
     checkViewport()
     window.addEventListener('resize', checkViewport)
-    isLoading.value = true
+})
 
-    setTimeout(() => {
+onMounted(async () => {
+    isLoading.value = true
+    await cart.fetchSelectedCartItems()
     isLoading.value = false
-    }, 2000);
 })
 
 onBeforeUnmount(() => {
