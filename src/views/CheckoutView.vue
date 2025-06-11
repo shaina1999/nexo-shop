@@ -242,7 +242,6 @@ const hasBillingDetails = computed(() => {
 
 const checkViewport = () => {
     isMobile.value = window.innerWidth < 1024
-    console.log(isMobile.value)
 }
 
 onMounted(() => {
@@ -251,7 +250,7 @@ onMounted(() => {
     isLoading.value = true
 
     setTimeout(() => {
-    // isLoading.value = false
+    isLoading.value = false
     }, 2000);
 })
 
