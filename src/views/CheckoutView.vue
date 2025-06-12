@@ -55,6 +55,16 @@
                             />
                         </div>
                         <div>
+                            <label class="block text-sm font-medium">Region<span class="text-red-500">*</span></label>
+                            <v-select
+                                v-model="billing.region"
+                                :options="regions"
+                                :reduce="r => r.name"
+                                label="name"
+                                placeholder="Select Region"
+                            />
+                        </div>
+                        <div v-if="!hideProvince">
                             <label class="block text-sm font-medium">Province<span class="text-red-500">*</span></label>
                             <v-select
                                 v-model="billing.province"
@@ -62,18 +72,20 @@
                                 :reduce="province => province.name"
                                 label="name"
                                 placeholder="Select Province"
+                                :loading="provinceLoading"
+                                :disabled="!billing.region"
                             />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium">Municipality<span class="text-red-500">*</span></label>
+                            <label class="block text-sm font-medium">City / Municipality<span class="text-red-500">*</span></label>
                             <v-select
                                 v-model="billing.municipality"
                                 :options="municipalities"
                                 :reduce="m => m.name"
                                 label="name"
-                                placeholder="Select Municipality"
+                                placeholder="Select City / Municipality"
                                 :loading="municipalityLoading"
-                                :disabled="!billing.province"
+                                :disabled="hideProvince ? !billing.region : !billing.province"
                             />
                         </div>
                         <div>
@@ -230,6 +242,7 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useCartStore } from '@/stores/cartStore'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
+import Swal from 'sweetalert2'
 
 import BaseButton from '@/components/BaseButton.vue'
 import CheckoutSkeleton from '@/components/CheckoutSkeleton.vue'
@@ -242,13 +255,16 @@ const saveBillingInfo = ref(false)
 const isLoading = ref(false)
 const cart = useCartStore()
 const { formatAmount } = useCurrencyFormat()
-const billing = ref({ fullname: '', phone: '', province: '', municipality: '', barangay: '', })
+const billing = ref({ fullname: '', phone: '', region: '', province: '', municipality: '', barangay: '', })
+const regions = ref([])
 const provinces = ref([])
 const municipalities = ref([])
 const barangays = ref([])
+const regionLoading = ref(false)
 const provinceLoading = ref(false)
 const municipalityLoading = ref(false)
 const barangayLoading = ref(false)
+const hideProvince = ref(false)
 
 const hasBillingDetails = computed(() => {
     return billing.value.fullname && billing.value.phone && billing.value.address && billing.value.city
@@ -258,18 +274,54 @@ const checkViewport = () => {
     isMobile.value = window.innerWidth < 1024
 }
 
-const fetchProvinces = async () => {
-    provinceLoading.value = true
+const fetchRegions = async () => {
+    regionLoading.value = true
     try {
-      const res = await fetch('https://psgc.gitlab.io/api/provinces/')
+      const res = await fetch('https://psgc.gitlab.io/api/regions/')
       if (!res.ok) throw new Error()
-      provinces.value = await res.json()
+      regions.value = await res.json()
     } catch {
-      Swal.fire('Error', 'Failed to load provinces.', 'error')
+      Swal.fire('Error', 'Failed to load regions.', 'error')
     } finally {
-      provinceLoading.value = false
+        regionLoading.value = false
     }
 }
+
+watch(() => billing.value.region, async (regionName) => {
+    const selectedRegion = regions.value.find(r => r.name === regionName)
+    if (!selectedRegion) return
+
+    billing.value.province = ''
+    billing.value.municipality = ''
+    billing.value.barangay = ''
+    provinces.value = []
+    municipalities.value = []
+    barangays.value = []
+
+    if (selectedRegion.code === '130000000') { // NCR region code
+        // NCR doesn't have provinces — fetch cities/municipalities directly
+        hideProvince.value = true
+        municipalityLoading.value = true
+        try {
+            const res = await fetch(`https://psgc.gitlab.io/api/regions/${selectedRegion.code}/cities-municipalities/`)
+            municipalities.value = await res.json()
+        } catch {
+            Swal.fire('Error', 'Failed to load municipalities.', 'error')
+        } finally {
+            municipalityLoading.value = false
+        }
+    } else { // Get Provinces
+        provinceLoading.value = true
+        try {
+            const res = await fetch(`https://psgc.gitlab.io/api/regions/${selectedRegion.code}/provinces/`)
+            provinces.value = await res.json()
+        } catch {
+            Swal.fire('Error', 'Failed to load provinces.', 'error')
+        } finally {
+            provinceLoading.value = false
+        }
+    }
+})
 
 watch(() => billing.value.province, async (provinceName) => {
   const selectedProvince = provinces.value.find(p => p.name === provinceName)
@@ -316,7 +368,7 @@ onMounted(async () => {
     isLoading.value = true
     await Promise.all([
       cart.fetchSelectedCartItems(),
-      fetchProvinces()
+      fetchRegions()
     ])
     isLoading.value = false
 })
