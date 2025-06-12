@@ -9,7 +9,6 @@ import App from './App.vue'
 
 import router from '@/router'
 import PhosphorIcons from '@phosphor-icons/vue'
-import VueCountdown from '@chenfengyuan/vue-countdown'
 import VueSplide from '@splidejs/vue-splide'
 import VueEasyLightbox from 'vue-easy-lightbox'
 import vSelect from 'vue-select'
@@ -23,5 +22,4 @@ app.use(pinia)
 app.use(VueEasyLightbox)
 app.use(VueSplide)
 app.component('v-select', vSelect)
-app.component(VueCountdown.name, VueCountdown)
 app.mount('#app')
