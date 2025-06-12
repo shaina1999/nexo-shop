@@ -10,23 +10,23 @@
   <div class="bg-mint-500">div with bg mint</div>
 */
 @theme {
-  --color-gray-200: #F5F5F5;
-  --color-zinc-300: #C1C0C1;
+  --color-gray-200: #f5f5f5;
+  --color-zinc-300: #c1c0c1;
   --color-secondary-100: #db444414;
-  --color-secondary-300: #E07575;
-  --color-secondary-500: #DB4444;
+  --color-secondary-300: #e07575;
+  --color-secondary-500: #db4444;
   --color-secondary-600: #d32d2d;
   --color-secondary-700: #cc2020;
   --color-secondary-800: #c11616;
   --color-secondary-900: #ac0909;
-  --color-placeholder: #A0A3BD;
+  --color-placeholder: #a0a3bd;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
-#nprogress .bar{
+#nprogress .bar {
   background-color: var(--color-secondary-500) !important;
   height: 5px !important;
 }
@@ -82,28 +82,29 @@ body {
   }
 }
 
-input::placeholder, textarea:::placeholder{
-  color: var(--color-placeholder)
+input::placeholder,
+textarea:::placeholder {
+  color: var(--color-placeholder);
 }
 
 /* Vue Splide */
-.splide__pagination__page{
+.splide__pagination__page {
   width: 12px !important;
   height: 12px !important;
 }
 
-.splide__pagination__page.is-active{
+.splide__pagination__page.is-active {
   border: 2px solid #fff !important;
   transform: scale(1.2) !important;
   background-color: var(--color-secondary-500) !important;
 }
 
-button:disabled{
-  opacity: .5;
+button:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-button:disabled:hover{
+button:disabled:hover {
   background: var(--color-secondary-500);
 }
 
@@ -112,7 +113,7 @@ button:disabled:hover{
   overflow: unset !important;
   padding-right: 0px !important;
 }
-.swal2-confirm{
+.swal2-confirm {
   background-color: var(--color-secondary-500) !important;
 }
 
@@ -128,11 +129,36 @@ button:disabled:hover{
 }
 
 /* vue-easy-lightbox */
-.vel-img{
+.vel-img {
   background-color: transparent !important;
   box-shadow: none !important;
 }
 
 .vel-toolbar .toolbar-btn__resize {
   display: none !important;
+}
+
+/* Override vue-select Styling */
+.v-select {
+  margin-top: 4px;
+  height: 42px !important;
+}
+
+.vs__dropdown-toggle {
+  padding: 8px !important;
+  height: 42px !important;
+  border-radius: 6px !impo;
+}
+
+.vs__dropdown-option--highlight {
+  background-color: var(--color-secondary-500) !important;
+}
+
+.vs__selected,
+.vs__actions,
+.vs__search {
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #000 !important;
+  font-size: 16px !important;
 }

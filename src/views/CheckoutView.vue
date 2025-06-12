@@ -46,33 +46,6 @@
                             />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium">Street Address<span class="text-red-500">*</span></label>
-                            <input 
-                                v-model="billing.address"
-                                type="text" 
-                                placeholder="e.g., 123 Main St"
-                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
-                            />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium">Apartment, floor, etc. <span class="text-gray-500 text-xs">(Optional)</span></label>
-                            <input 
-                                v-model="billing.address"
-                                type="text" 
-                                placeholder="e.g., Apt 2B, 3rd Floor"
-                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
-                            />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium">Town/City<span class="text-red-500">*</span></label>
-                            <input 
-                                v-model="billing.city"
-                                type="text" 
-                                placeholder="e.g., New York"
-                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
-                            />
-                        </div>
-                        <div>
                             <label class="block text-sm font-medium">Phone Number<span class="text-red-500">*</span></label>
                             <input 
                                 v-model="billing.phone"
@@ -80,6 +53,10 @@
                                 placeholder="e.g., (123) 456-7890"
                                 class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
                             />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium">Province<span class="text-red-500">*</span></label>
+                            <v-select placeholder="Select Province" :options="['Canada', 'United States']"></v-select>
                         </div>
                         <div class="flex items-center">
                             <label class="relative cursor-pointer flex items-center gap-1.5">
@@ -238,10 +215,7 @@ const { formatAmount } = useCurrencyFormat()
 
 const billing = ref({
     fullname: '',
-    phone: '',
-    address: '',
-    city: '',
-    apartment: '',
+    phone: ''
 })
 
 const hasBillingDetails = computed(() => {
