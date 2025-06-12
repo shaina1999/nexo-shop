@@ -56,7 +56,37 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium">Province<span class="text-red-500">*</span></label>
-                            <v-select placeholder="Select Province" :options="['Canada', 'United States']"></v-select>
+                            <v-select
+                                v-model="billing.province"
+                                :options="provinces"
+                                :reduce="province => province.name"
+                                label="name"
+                                placeholder="Select Province"
+                            />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium">Municipality<span class="text-red-500">*</span></label>
+                            <v-select
+                                v-model="billing.municipality"
+                                :options="municipalities"
+                                :reduce="m => m.name"
+                                label="name"
+                                placeholder="Select Municipality"
+                                :loading="municipalityLoading"
+                                :disabled="!billing.province"
+                            />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium">Barangay<span class="text-red-500">*</span></label>
+                            <v-select
+                                v-model="billing.barangay"
+                                :options="barangays"
+                                :reduce="b => b.name"
+                                label="name"
+                                placeholder="Select Barangay"
+                                :loading="barangayLoading"
+                                :disabled="!billing.municipality"
+                            />
                         </div>
                         <div class="flex items-center">
                             <label class="relative cursor-pointer flex items-center gap-1.5">
@@ -197,7 +227,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useCartStore } from '@/stores/cartStore'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
 
@@ -212,11 +242,13 @@ const saveBillingInfo = ref(false)
 const isLoading = ref(false)
 const cart = useCartStore()
 const { formatAmount } = useCurrencyFormat()
-
-const billing = ref({
-    fullname: '',
-    phone: ''
-})
+const billing = ref({ fullname: '', phone: '', province: '', municipality: '', barangay: '', })
+const provinces = ref([])
+const municipalities = ref([])
+const barangays = ref([])
+const provinceLoading = ref(false)
+const municipalityLoading = ref(false)
+const barangayLoading = ref(false)
 
 const hasBillingDetails = computed(() => {
     return billing.value.fullname && billing.value.phone && billing.value.address && billing.value.city
@@ -226,6 +258,55 @@ const checkViewport = () => {
     isMobile.value = window.innerWidth < 1024
 }
 
+const fetchProvinces = async () => {
+    provinceLoading.value = true
+    try {
+      const res = await fetch('https://psgc.gitlab.io/api/provinces/')
+      if (!res.ok) throw new Error()
+      provinces.value = await res.json()
+    } catch {
+      Swal.fire('Error', 'Failed to load provinces.', 'error')
+    } finally {
+      provinceLoading.value = false
+    }
+}
+
+watch(() => billing.value.province, async (provinceName) => {
+  const selectedProvince = provinces.value.find(p => p.name === provinceName)
+  if (!selectedProvince) return
+
+  municipalityLoading.value = true
+  billing.value.municipality = ''
+  billing.value.barangay = ''
+  barangays.value = []
+  try {
+    const res = await fetch(`https://psgc.gitlab.io/api/provinces/${selectedProvince.code}/cities-municipalities/`)
+    if (!res.ok) throw new Error()
+    municipalities.value = await res.json()
+  } catch {
+    Swal.fire('Error', 'Failed to load municipalities.', 'error')
+  } finally {
+    municipalityLoading.value = false
+  }
+})
+
+watch(() => billing.value.municipality, async (municipalityName) => {
+  const selectedMunicipality = municipalities.value.find(m => m.name === municipalityName)
+  if (!selectedMunicipality) return
+
+  barangayLoading.value = true
+  billing.value.barangay = ''
+  try {
+    const res = await fetch(`https://psgc.gitlab.io/api/cities-municipalities/${selectedMunicipality.code}/barangays/`)
+    if (!res.ok) throw new Error()
+    barangays.value = await res.json()
+  } catch {
+    Swal.fire('Error', 'Failed to load barangays.', 'error')
+  } finally {
+    barangayLoading.value = false
+  }
+})
+
 onMounted(() => {
     checkViewport()
     window.addEventListener('resize', checkViewport)
@@ -233,7 +314,10 @@ onMounted(() => {
 
 onMounted(async () => {
     isLoading.value = true
-    await cart.fetchSelectedCartItems()
+    await Promise.all([
+      cart.fetchSelectedCartItems(),
+      fetchProvinces()
+    ])
     isLoading.value = false
 })
 
