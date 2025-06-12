@@ -41,7 +41,8 @@
                             <input 
                                 v-model="billing.fullname"
                                 type="text" 
-                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                                placeholder="e.g., John Doe"
+                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
                             />
                         </div>
                         <div>
@@ -49,7 +50,8 @@
                             <input 
                                 v-model="billing.address"
                                 type="text" 
-                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                                placeholder="e.g., 123 Main St"
+                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
                             />
                         </div>
                         <div>
@@ -57,7 +59,8 @@
                             <input 
                                 v-model="billing.address"
                                 type="text" 
-                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                                placeholder="e.g., Apt 2B, 3rd Floor"
+                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
                             />
                         </div>
                         <div>
@@ -65,7 +68,8 @@
                             <input 
                                 v-model="billing.city"
                                 type="text" 
-                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                                placeholder="e.g., New York"
+                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
                             />
                         </div>
                         <div>
@@ -73,7 +77,8 @@
                             <input 
                                 v-model="billing.phone"
                                 type="text" 
-                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                                placeholder="e.g., (123) 456-7890"
+                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
                             />
                         </div>
                         <div class="flex items-center">
@@ -232,11 +237,11 @@ const cart = useCartStore()
 const { formatAmount } = useCurrencyFormat()
 
 const billing = ref({
-    fullname: 'Shaina De Guzman',
-    phone: '097676767',
-    address: 'J.P Rizal Street',
-    city: 'Jalajala, Rizal',
-    apartment: '3245 Apartment',
+    fullname: '',
+    phone: '',
+    address: '',
+    city: '',
+    apartment: '',
 })
 
 const hasBillingDetails = computed(() => {
