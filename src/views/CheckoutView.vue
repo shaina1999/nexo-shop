@@ -160,7 +160,7 @@
                     <!-- Payment Options -->
                     <div class="space-y-2">
                         <h2>Payment Options:</h2>
-                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                        <div class="grid grid-cols-1 gap-3">
                             <!-- Cash on Delivery -->
                             <label
                                 class="group block cursor-pointer border rounded-lg p-2.5 sm:p-3 transition-all hover:shadow relative"
@@ -198,7 +198,16 @@
                             </label>
                         </div>
                     </div>
-                    <BaseButton class="w-full">Place Order</BaseButton>
+                   <div class="flex items-center gap-3 mt-6 flex-col sm:flex-row">
+                        <BaseButton class="w-full">Place Order</BaseButton>
+                        <BaseLinkButton 
+                            to="/cart" 
+                            class="flex items-center gap-x-1.5 text-sm !px-4.5 !py-2.5 md:!px-6 md:!py-3 md:mx-0 text-center !w-full bg-white !text-black border-[1px] border-black/50 hover:!bg-gray-200"
+                        >
+                            Back to Cart
+                            <PhArrowUDownLeft :size="18" />
+                        </BaseLinkButton>
+                   </div>
                 </div>
             </div>
         </div>
@@ -212,6 +221,7 @@ import { useCurrencyFormat } from '@/composables/currencyFormat'
 
 import BaseButton from '@/components/BaseButton.vue'
 import CheckoutSkeleton from '@/components/CheckoutSkeleton.vue'
+import BaseLinkButton from '@/components/BaseLinkButton.vue'
 
 const payment = ref('cod')
 const isMobile = ref(false)
