@@ -11,16 +11,16 @@ export function useFetch() {
         try {
             const response = await fetch(url)
             if (!response.ok) {
-                throw new Error('Network response was not ok')
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`)
             }
             data.value = await response.json()
         }
         catch (error) {
             Swal.fire({
                 title: 'Error',
-                text: 'Something went wrong. Please try again later.',
+                text: error.message || 'Something went wrong. Please try again later.',
                 icon: 'error',
-                confirmButtonText: 'Ok'
+                confirmButtonText: 'OK'
             })
         }
         finally {
