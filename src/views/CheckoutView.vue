@@ -20,7 +20,7 @@
                         </div>
                         <button 
                             @click="showForm = true"
-                            class="text-secondary-500 cursor-pointer flex items-center gap-1 text-sm sm:text-base" 
+                            class="text-secondary-500 cursor-pointer flex items-center gap-1 text-sm sm:text-base hover:!bg-transparent" 
                             :class="{ 'opacity-50 cursor-not-allowed' : isPlacingOrder, 'opacity-100 cursor-auto' : !isPlacingOrder }"
                             v-if="isMobile && hasBillingDetails"
                             :disabled="isPlacingOrder"
@@ -31,7 +31,7 @@
                         <button 
                             v-if="isMobile && !hasBillingDetails && !showForm"
                             @click="showForm = true"
-                            class="text-secondary-500 cursor-pointer flex items-center gap-1 self-center text-sm sm:text-base mx-auto"
+                            class="text-secondary-500 cursor-pointer flex items-center gap-1 self-center text-sm sm:text-base mx-auto hover:!bg-transparent"
                         >
                             Add Billing Details
                             <PhPlus :size="16" />
@@ -405,8 +405,8 @@ const placeOrder = () => {
         if (result.isConfirmed) {
             isPlacingOrder.value = true
             setTimeout(() => {
-                isPlacingOrder.value = false
-                router.push('/checkout-success')
+                // isPlacingOrder.value = false
+                // router.push('/checkout-success')
             }, 2000);
         }
     });
