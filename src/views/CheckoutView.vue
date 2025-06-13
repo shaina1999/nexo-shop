@@ -314,6 +314,7 @@ watch(() => billing.value.region, async (regionName) => {
             municipalityLoading.value = false
         }
     } else { // Get Provinces
+        hideProvince.value = false
         provinceLoading.value = true
         try {
             const res = await fetch(`https://psgc.gitlab.io/api/regions/${selectedRegion.code}/provinces/`)
