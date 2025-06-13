@@ -100,6 +100,26 @@
                                 :disabled="!billing.municipality"
                             />
                         </div>
+                        <div>
+                            <label class="block text-sm font-medium">House No. & Street Name<span class="text-red-500">*</span></label>
+                            <input 
+                                v-model="billing.streetAddress"
+                                type="text" 
+                                placeholder="e.g., Unit 5B, 123 Maginhawa Street"
+                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                            />
+                        </div>
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium">
+                                Additional Instructions (Optional)
+                            </label>
+                            <textarea 
+                                v-model="billing.instructions"
+                                rows="2"
+                                placeholder="e.g., Gate is green, 3rd floor, leave with guard if not available"
+                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out resize-none"
+                            ></textarea>
+                        </div>
                         <div class="flex items-center">
                             <label class="relative cursor-pointer flex items-center gap-1.5">
                                 <input 
@@ -255,7 +275,7 @@ const saveBillingInfo = ref(false)
 const isLoading = ref(false)
 const cart = useCartStore()
 const { formatAmount } = useCurrencyFormat()
-const billing = ref({ fullname: '', phone: '', region: '', province: '', municipality: '', barangay: '', })
+const billing = ref({ fullname: '', phone: '', region: '', province: '', municipality: '', barangay: '', streetAddress: '', instructions: '' })
 const regions = ref([])
 const provinces = ref([])
 const municipalities = ref([])
@@ -267,7 +287,7 @@ const barangayLoading = ref(false)
 const hideProvince = ref(false)
 
 const hasBillingDetails = computed(() => {
-    return billing.value.fullname && billing.value.phone && billing.value.address && billing.value.city
+    return billing.value.fullname && billing.value.phone
 })
 
 const checkViewport = () => {
