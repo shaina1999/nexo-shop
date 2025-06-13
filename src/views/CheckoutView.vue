@@ -405,8 +405,8 @@ const placeOrder = () => {
         if (result.isConfirmed) {
             isPlacingOrder.value = true
             setTimeout(() => {
-                // isPlacingOrder.value = false
-                // router.push('/checkout-success')
+                isPlacingOrder.value = false
+                router.push('/checkout-success')
             }, 2000);
         }
     });
