@@ -12,7 +12,7 @@
                     >
                         <div class="flex flex-col" v-if="isMobile && hasBillingDetails">
                             <span class="inline-block mb-0.5">{{ billing.fullname }}</span>
-                            <span class="inline-block mb-0.5">{{ billing.phone }}</span>
+                            <span class="inline-block mb-0.5">{{ billing.mobile_number }}</span>
                             <span class="inline-block mb-0.5">
                                 {{ billing.apartment ? billing.apartment+', ' : '' }}
                                 {{ billing.address ? billing.address+', ' : '' }} {{ billing.city }}
@@ -49,14 +49,14 @@
                             />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium">Phone Number<span class="text-red-500">*</span></label>
+                            <label class="block text-sm font-medium">Mobile Number<span class="text-red-500">*</span></label>
                             <input 
-                                v-model="billing.phone"
+                                v-model="billing.mobile_number"
                                 type="text" 
                                 placeholder="e.g., (123) 456-7890"
                                 :class="[
                                     'placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out',
-                                    hasError.phone ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500'
+                                    hasError.mobile_number ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500'
                                 ]"
                             />
                         </div>
@@ -288,7 +288,7 @@ const saveBillingInfo = ref(false)
 const isLoading = ref(false)
 const cart = useCartStore()
 const { formatAmount } = useCurrencyFormat()
-const billing = ref({ fullname: '', phone: '', region: '', province: '', municipality: '', barangay: '', streetAddress: '', instructions: '' })
+const billing = ref({ fullname: '', mobile_number: '', region: '', province: '', municipality: '', barangay: '', streetAddress: '', instructions: '' })
 const regions = ref([])
 const provinces = ref([])
 const municipalities = ref([])
@@ -300,7 +300,7 @@ const barangayLoading = ref(false)
 const hideProvince = ref(false)
 const hasError = ref({
   fullname: false,
-  phone: false,
+  mobile_number: false,
   region: false,
   province: false,
   municipality: false,
@@ -309,7 +309,7 @@ const hasError = ref({
 })
 
 const hasBillingDetails = computed(() => {
-    return billing.value.fullname && billing.value.phone
+    return billing.value.fullname && billing.value.mobile_number
 })
 
 const checkViewport = () => {
@@ -332,7 +332,7 @@ const fetchRegions = async () => {
 const placeOrder = () => {
     const requiredFields = [
         { key: 'fullname', label: 'Full Name' },
-        { key: 'phone', label: 'Phone Number' },
+        { key: 'mobile_number', label: 'Mobile Number' },
         { key: 'region', label: 'Region' },
         { key: 'municipality', label: 'City / Municipality' },
         { key: 'barangay', label: 'Barangay' },
