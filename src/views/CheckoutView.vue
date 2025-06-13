@@ -288,15 +288,18 @@ const fetchRegions = async () => {
 }
 
 watch(() => billing.value.region, async (regionName) => {
-    const selectedRegion = regions.value.find(r => r.name === regionName)
-    if (!selectedRegion) return
-
+    // Always reset all lower-level fields and their options
     billing.value.province = ''
     billing.value.municipality = ''
     billing.value.barangay = ''
     provinces.value = []
     municipalities.value = []
     barangays.value = []
+
+    if (!regionName) return
+    
+    const selectedRegion = regions.value.find(r => r.name === regionName)
+    if (!selectedRegion) return
 
     if (selectedRegion.code === '130000000') { // NCR region code
         // NCR doesn't have provinces — fetch cities/municipalities directly
@@ -324,13 +327,19 @@ watch(() => billing.value.region, async (regionName) => {
 })
 
 watch(() => billing.value.province, async (provinceName) => {
+  // Always reset all lower-level fields and their options  
+  billing.value.municipality = ''
+  billing.value.barangay = ''
+  municipalities.value = []
+  barangays.value = []
+
+  if (!provinceName) return
+
   const selectedProvince = provinces.value.find(p => p.name === provinceName)
   if (!selectedProvince) return
 
   municipalityLoading.value = true
-  billing.value.municipality = ''
-  billing.value.barangay = ''
-  barangays.value = []
+  
   try {
     const res = await fetch(`https://psgc.gitlab.io/api/provinces/${selectedProvince.code}/cities-municipalities/`)
     if (!res.ok) throw new Error()
@@ -343,11 +352,15 @@ watch(() => billing.value.province, async (provinceName) => {
 })
 
 watch(() => billing.value.municipality, async (municipalityName) => {
+  // Always reset all lower-level fields and their options  
+  billing.value.barangay = ''
+  barangays.value = []
+    
   const selectedMunicipality = municipalities.value.find(m => m.name === municipalityName)
   if (!selectedMunicipality) return
 
   barangayLoading.value = true
-  billing.value.barangay = ''
+
   try {
     const res = await fetch(`https://psgc.gitlab.io/api/cities-municipalities/${selectedMunicipality.code}/barangays/`)
     if (!res.ok) throw new Error()
