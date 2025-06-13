@@ -303,6 +303,7 @@ import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useCartStore } from '@/stores/cartStore'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
 import Swal from 'sweetalert2'
+import { useRouter } from 'vue-router'
 
 import BaseButton from '@/components/BaseButton.vue'
 import CheckoutSkeleton from '@/components/CheckoutSkeleton.vue'
@@ -335,6 +336,7 @@ const hasError = ref({
   barangay: false,
   streetAddress: false,
 })
+const router = useRouter()
 
 const hasBillingDetails = computed(() => {
     return billing.value.fullname && billing.value.mobile_number
@@ -387,18 +389,27 @@ const placeOrder = () => {
             icon: 'error',
             title: 'Missing Required Fields',
             html: `<div class="text-center">${missingFields.join('<br>')}</div>`,
-            confirmButtonColor: '#ef4444',
         })
         return
     }
 
     // All valid
-    isPlacingOrder.value = true
-    setTimeout(() => {
-        isPlacingOrder.value = false
-    }, 2000);
-
-    console.log('Billing details:', billing.value)
+    Swal.fire({
+        icon: 'question',
+        title: 'Place Order?',
+        html: `<div class="text-center text-sm sm:text-base text-gray-700">Please confirm that all details are correct before placing your order.</div>`,
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Place Order',
+        cancelButtonText: 'Review Details',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            isPlacingOrder.value = true
+            setTimeout(() => {
+                isPlacingOrder.value = false
+                router.push('/checkout-success')
+            }, 2000);
+        }
+    });
 }
 
 watch(() => billing.value.region, async (regionName) => {
