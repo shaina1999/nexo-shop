@@ -42,7 +42,10 @@
                                 v-model="billing.fullname"
                                 type="text" 
                                 placeholder="e.g., John Doe"
-                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                                :class="[
+                                    'placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out',
+                                    hasError.fullname ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500'
+                                ]"
                             />
                         </div>
                         <div>
@@ -51,7 +54,10 @@
                                 v-model="billing.phone"
                                 type="text" 
                                 placeholder="e.g., (123) 456-7890"
-                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                                :class="[
+                                    'placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out',
+                                    hasError.phone ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500'
+                                ]"
                             />
                         </div>
                         <div>
@@ -62,6 +68,7 @@
                                 :reduce="r => r.name"
                                 label="name"
                                 placeholder="Select Region"
+                                :class="hasError.region ? 'v-select-error' : ''"
                             />
                         </div>
                         <div v-if="!hideProvince">
@@ -74,6 +81,7 @@
                                 placeholder="Select Province"
                                 :loading="provinceLoading"
                                 :disabled="!billing.region"
+                                :class="hasError.province ? 'v-select-error' : ''"
                             />
                         </div>
                         <div>
@@ -86,6 +94,7 @@
                                 placeholder="Select City / Municipality"
                                 :loading="municipalityLoading"
                                 :disabled="hideProvince ? !billing.region : !billing.province"
+                                :class="hasError.municipality ? 'v-select-error' : ''"
                             />
                         </div>
                         <div>
@@ -98,6 +107,7 @@
                                 placeholder="Select Barangay"
                                 :loading="barangayLoading"
                                 :disabled="!billing.municipality"
+                                :class="hasError.barangay ? 'v-select-error' : ''"
                             />
                         </div>
                         <div>
@@ -106,7 +116,10 @@
                                 v-model="billing.streetAddress"
                                 type="text" 
                                 placeholder="e.g., Unit 5B, 123 Maginhawa Street"
-                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out" 
+                                :class="[
+                                    'placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out',
+                                    hasError.streetAddress ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500'
+                                ]"
                             />
                         </div>
                         <div class="mt-4">
@@ -243,7 +256,7 @@
                         </div>
                     </div>
                    <div class="flex items-center gap-3 mt-6 flex-col sm:flex-row">
-                        <BaseButton class="w-full">Place Order</BaseButton>
+                        <BaseButton class="w-full" @click="placeOrder">Place Order</BaseButton>
                         <BaseLinkButton 
                             to="/cart" 
                             class="flex items-center gap-x-1.5 text-sm !px-4.5 !py-2.5 md:!px-6 md:!py-3 md:mx-0 text-center !w-full bg-white !text-black border-[1px] border-black/50 hover:!bg-gray-200"
@@ -285,6 +298,15 @@ const provinceLoading = ref(false)
 const municipalityLoading = ref(false)
 const barangayLoading = ref(false)
 const hideProvince = ref(false)
+const hasError = ref({
+  fullname: false,
+  phone: false,
+  region: false,
+  province: false,
+  municipality: false,
+  barangay: false,
+  streetAddress: false,
+})
 
 const hasBillingDetails = computed(() => {
     return billing.value.fullname && billing.value.phone
@@ -305,6 +327,52 @@ const fetchRegions = async () => {
     } finally {
         regionLoading.value = false
     }
+}
+
+const placeOrder = () => {
+    const requiredFields = [
+        { key: 'fullname', label: 'Full Name' },
+        { key: 'phone', label: 'Phone Number' },
+        { key: 'region', label: 'Region' },
+        { key: 'municipality', label: 'City / Municipality' },
+        { key: 'barangay', label: 'Barangay' },
+        { key: 'streetAddress', label: 'Street Address' },
+    ]
+
+    if (!hideProvince.value) {
+        requiredFields.splice(3, 0, { key: 'province', label: 'Province' })
+    }
+
+    const missingFields = []
+
+    requiredFields.forEach(field => {
+        const value = billing.value[field.key]
+        const isMissing = !value || (typeof value === 'string' && value.trim() === '')
+        hasError.value[field.key] = isMissing
+        if (isMissing) {
+            missingFields.push(`• ${field.label}`)
+        }
+    })
+
+    if (missingFields.length > 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Missing Required Fields',
+            html: `<div class="text-center">${missingFields.join('<br>')}</div>`,
+            confirmButtonColor: '#ef4444',
+        })
+        return
+    }
+
+    // All valid
+    Swal.fire({
+        icon: 'success',
+        title: 'All good!',
+        text: 'Billing details are valid.',
+        confirmButtonColor: '#22c55e',
+    })
+
+    console.log('Billing details:', billing.value)
 }
 
 watch(() => billing.value.region, async (regionName) => {
@@ -392,6 +460,12 @@ watch(() => billing.value.municipality, async (municipalityName) => {
     barangayLoading.value = false
   }
 })
+
+watch(billing, (val) => {
+  for (const key in hasError.value) {
+    if (val[key]) hasError.value[key] = false
+  }
+}, { deep: true })
 
 onMounted(() => {
     checkViewport()

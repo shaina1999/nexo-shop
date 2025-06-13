@@ -162,3 +162,7 @@ button:disabled:hover {
   color: #000 !important;
   font-size: 16px !important;
 }
+
+.v-select-error > .vs__dropdown-toggle {
+  border-color: red !important;
+}
