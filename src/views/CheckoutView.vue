@@ -21,7 +21,9 @@
                         <button 
                             @click="showForm = true"
                             class="text-secondary-500 cursor-pointer flex items-center gap-1 text-sm sm:text-base" 
+                            :class="{ 'opacity-50 cursor-not-allowed' : isPlacingOrder, 'opacity-100 cursor-auto' : !isPlacingOrder }"
                             v-if="isMobile && hasBillingDetails"
+                            :disabled="isPlacingOrder"
                         >
                             Edit
                             <PhPencilSimple :size="16" />
@@ -42,9 +44,11 @@
                                 v-model="billing.fullname"
                                 type="text" 
                                 placeholder="e.g., John Doe"
+                                :disabled="isPlacingOrder"
                                 :class="[
                                     'placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out',
-                                    hasError.fullname ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500'
+                                    hasError.fullname ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500',
+                                    isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto'
                                 ]"
                             />
                         </div>
@@ -54,9 +58,11 @@
                                 v-model="billing.mobile_number"
                                 type="text" 
                                 placeholder="e.g., (123) 456-7890"
+                                :disabled="isPlacingOrder"
                                 :class="[
                                     'placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out',
-                                    hasError.mobile_number ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500'
+                                    hasError.mobile_number ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500',
+                                    isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto'
                                 ]"
                             />
                         </div>
@@ -68,7 +74,8 @@
                                 :reduce="r => r.name"
                                 label="name"
                                 placeholder="Select Region"
-                                :class="hasError.region ? 'v-select-error' : ''"
+                                :disabled="isPlacingOrder"
+                                :class="[hasError.region ? 'v-select-error' : '', isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto']"
                             />
                         </div>
                         <div v-if="!hideProvince">
@@ -80,8 +87,8 @@
                                 label="name"
                                 placeholder="Select Province"
                                 :loading="provinceLoading"
-                                :disabled="!billing.region"
-                                :class="hasError.province ? 'v-select-error' : ''"
+                                :disabled="!billing.region || isPlacingOrder"
+                                :class="[hasError.province ? 'v-select-error' : '', isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto']"
                             />
                         </div>
                         <div>
@@ -93,8 +100,8 @@
                                 label="name"
                                 placeholder="Select City / Municipality"
                                 :loading="municipalityLoading"
-                                :disabled="hideProvince ? !billing.region : !billing.province"
-                                :class="hasError.municipality ? 'v-select-error' : ''"
+                                :disabled="hideProvince ? !billing.region : !billing.province || isPlacingOrder"
+                                :class="[hasError.municipality ? 'v-select-error' : '', isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto']"
                             />
                         </div>
                         <div>
@@ -106,8 +113,8 @@
                                 label="name"
                                 placeholder="Select Barangay"
                                 :loading="barangayLoading"
-                                :disabled="!billing.municipality"
-                                :class="hasError.barangay ? 'v-select-error' : ''"
+                                :disabled="!billing.municipality || isPlacingOrder"
+                                :class="[hasError.barangay ? 'v-select-error' : '', isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto']"
                             />
                         </div>
                         <div>
@@ -116,9 +123,11 @@
                                 v-model="billing.streetAddress"
                                 type="text" 
                                 placeholder="e.g., Unit 5B, 123 Maginhawa Street"
+                                :disabled="isPlacingOrder"
                                 :class="[
                                     'placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out',
-                                    hasError.streetAddress ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500'
+                                    hasError.streetAddress ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500',
+                                    isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto'
                                 ]"
                             />
                         </div>
@@ -131,14 +140,19 @@
                                 rows="2"
                                 placeholder="e.g., Gate is green, 3rd floor, leave with guard if not available"
                                 class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out resize-none"
-                            ></textarea>
+                                :class="isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto'"
+                                :disabled="isPlacingOrder"
+                            >
+                            </textarea>
                         </div>
                         <div class="flex items-center">
-                            <label class="relative cursor-pointer flex items-center gap-1.5">
+                            <label class="relative flex items-center gap-1.5" :class="isPlacingOrder ? 'cursor-not-allowed opacity-50' : 'cursor-pointer opacity-100'">
                                 <input 
                                     type="checkbox" 
                                     v-model="saveBillingInfo"
-                                    class="absolute left-0 right-0 top-0 bottom-0 opacity-0 z-10 cursor-pointer"
+                                    class="absolute left-0 right-0 top-0 bottom-0 opacity-0 z-10"
+                                    :class="isPlacingOrder ? 'cursor-not-allowed' : 'cursor-pointer'"
+                                    :disabled="isPlacingOrder"
                                 >
                                 <span 
                                     class="w-4.5 h-4.5 rounded-sm border-[1px] border-black flex items-center justify-center text-white relative"
@@ -160,14 +174,18 @@
                             <BaseButton
                                 type="button"
                                 class="text-sm md:text-base !py-1.5 !px-4 !md:py-2 !md:px-4.5 flex items-center justify-center gap-x-1 bg-white !text-black border-[1px] border-black/50 hover:!bg-gray-200"
+                                :class="isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto'"
                                 @click="showForm = false"
+                                :disabled="isPlacingOrder"
                             >
                                 Cancel
                             </BaseButton>
                             <BaseButton
                                 type="submit"
                                 class="text-sm md:text-base !py-1.5 !px-4 !md:py-2 !md:px-4.5 flex items-center justify-center"
+                                :class="isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto'"
                                 @click.prevent="showForm = false"
+                                :disabled="isPlacingOrder"
                             >
                                 Save
                             </BaseButton>
@@ -220,8 +238,11 @@
                         <div class="grid grid-cols-1 gap-3">
                             <!-- Cash on Delivery -->
                             <label
-                                class="group block cursor-pointer border rounded-lg p-2.5 sm:p-3 transition-all hover:shadow relative"
-                                :class="payment === 'cod' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300'"
+                                class="group block border rounded-lg p-2.5 sm:p-3 transition-all hover:shadow relative"
+                                :class="[
+                                    payment === 'cod' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300', 
+                                    isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-pointer'
+                                ]"
                             >
                                 <input
                                     type="radio"
@@ -229,6 +250,7 @@
                                     value="cod"
                                     v-model="payment"
                                     class="sr-only"
+                                    :disabled="isPlacingOrder"
                                 />
                                 <div class="flex items-center gap-3 text-sm sm:text-base">
                                     <PhMoney :size="20" :weight="'regular'" :class="payment === 'cod' ? 'text-secondary-500' : 'text-gray-500'" />
@@ -238,8 +260,11 @@
 
                             <!-- Bank -->
                             <label
-                                class="group block cursor-pointer border rounded-lg p-2.5 sm:p-3 transition-all hover:shadow relative"
-                                :class="payment === 'bank' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300'"
+                                class="group block border rounded-lg p-2.5 sm:p-3 transition-all hover:shadow relative"
+                                :class="[
+                                    payment === 'bank' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300', 
+                                    isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-pointer'
+                                ]"
                             >
                                 <input
                                     type="radio"
@@ -247,6 +272,7 @@
                                     value="bank"
                                     v-model="payment"
                                     class="sr-only"
+                                    :disabled="isPlacingOrder"
                                 />
                                 <div class="flex items-center gap-3 text-sm sm:text-base">
                                     <PhBank :size="20" :weight="'regular'" :class="payment === 'bank' ? 'text-secondary-500' : 'text-gray-500'" />
@@ -256,10 +282,11 @@
                         </div>
                     </div>
                    <div class="flex items-center gap-3 mt-6 flex-col sm:flex-row">
-                        <BaseButton class="w-full" @click="placeOrder">Place Order</BaseButton>
+                        <BaseButton class="w-full" @click="placeOrder" :disabled="isPlacingOrder">{{ isPlacingOrder ? 'Placing' : 'Place' }} Order{{ isPlacingOrder ? '...' : '' }}</BaseButton>
                         <BaseLinkButton 
                             to="/cart" 
                             class="flex items-center gap-x-1.5 text-sm !px-4.5 !py-2.5 md:!px-6 md:!py-3 md:mx-0 text-center !w-full bg-white !text-black border-[1px] border-black/50 hover:!bg-gray-200"
+                            :class="{ '!cursor-not-allowed opacity-50 pointer-events-none' : isPlacingOrder, '!cursor-pointer opacity-100 pointer-events-all' : !isPlacingOrder }"
                         >
                             Back to Cart
                             <PhArrowUDownLeft :size="18" />
@@ -298,6 +325,7 @@ const provinceLoading = ref(false)
 const municipalityLoading = ref(false)
 const barangayLoading = ref(false)
 const hideProvince = ref(false)
+const isPlacingOrder = ref(false)
 const hasError = ref({
   fullname: false,
   mobile_number: false,
@@ -365,12 +393,10 @@ const placeOrder = () => {
     }
 
     // All valid
-    Swal.fire({
-        icon: 'success',
-        title: 'All good!',
-        text: 'Billing details are valid.',
-        confirmButtonColor: '#22c55e',
-    })
+    isPlacingOrder.value = true
+    setTimeout(() => {
+        isPlacingOrder.value = false
+    }, 2000);
 
     console.log('Billing details:', billing.value)
 }
