@@ -421,7 +421,7 @@ const placeOrder =  async () => {
         await cart.fetchSelectedCartItems()
 
         // 7. Done
-        router.push(`/checkout-success?order_id=${orderData.id}`)
+        router.push('checkout-success')
     } catch(error) {
         console.error('Order error:', error)
         Swal.fire({

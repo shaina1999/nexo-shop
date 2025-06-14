@@ -11,12 +11,12 @@
         </p>
   
         <div class="flex flex-col sm:flex-row justify-center gap-3 pt-4">
-          <BaseButton
-            to="/"
+          <BaseLinkButton
+            to="/products"
             class="!w-full sm:w-auto !px-5 !py-2.5 border border-secondary-500"
           >
             Continue Shopping
-          </BaseButton>
+          </BaseLinkButton>
           <BaseLinkButton
             to="/orders"
             class="!w-full sm:w-auto !px-5 !py-2.5 border border-black/50 bg-white !text-black hover:!bg-gray-200"
