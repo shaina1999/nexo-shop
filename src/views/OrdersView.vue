@@ -56,11 +56,11 @@
             <div
               v-for="order in paginatedOrders"
               :key="order.id"
-              class="bg-white border border-gray-200 rounded-md shadow-sm"
+              class="bg-white border border-gray-300 rounded-md shadow-sm"
             >
               <!-- Accordion Header -->
               <div
-                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4 cursor-pointer hover:bg-gray-50"
+                class="rounded-md flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4 cursor-pointer hover:bg-gray-50"
                 @click="toggleAccordion(order.id)"
               >
                 <div>
@@ -78,7 +78,7 @@
               <!-- Accordion Body -->
               <div
                 v-if="expandedOrder === order.id"
-                class="border-t border-gray-200 px-4 py-4 space-y-3"
+                class="border-t border-gray-300 px-4 py-4 space-y-3"
               >
                 <div
                   class="text-sm text-gray-700"
@@ -86,23 +86,26 @@
                   :key="item.id"
                 >
                   <div class="flex justify-between items-center">
-                    <span>
-                      {{ item.products?.name || 'Unknown Product' }}
-                      <span class="text-gray-400">x{{ item.quantity }}</span>
-                    </span>
-                    <span class="font-medium">₱{{ item.discounted_price.toFixed(2) }}</span>
+                    <div class="flex items-center gap-x-2">
+                      <img class="w-10 h-10 object-contain" :src="item.products?.images[0]?.url" :alt="item.products?.name">
+                      <span>
+                        {{ item.products?.name }}
+                        <span class="text-gray-400">x{{ item.quantity }}</span>
+                      </span>
+                    </div>
+                    <span class="font-medium">Php {{ formatAmount(item.discounted_price) }}</span>
                   </div>
                 </div>
     
                 <!-- Footer -->
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-4 border-t">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-4">
                   <div class="font-semibold text-base">
-                    Total: ₱{{ order.total.toFixed(2) }}
+                    Total: Php {{ formatAmount(order.total) }}
                   </div>
                   <button
                     v-if="order.status === 'pending'"
                     @click.stop="cancelOrder(order.id)"
-                    class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-600 text-sm rounded transition"
+                    class="px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer bg-red-100 hover:bg-red-200 text-red-600 text-sm rounded transition"
                   >
                     Cancel Order
                   </button>
@@ -148,6 +151,7 @@ import { supabase } from '@/supabase'
 import { useAuthStore } from '@/stores/authStore'
 import Swal from 'sweetalert2'
 import dayjs from 'dayjs'
+import { useCurrencyFormat } from '@/composables/currencyFormat'
 
 const auth = useAuthStore()
 const orders = ref([])
@@ -156,6 +160,7 @@ const selectedStatus = ref('all')
 const isDropdownOpen = ref(false)
 const currentPage = ref(1)
 const perPage = 5
+const { formatAmount } = useCurrencyFormat()
 
 const statuses = ['all', 'pending', 'completed', 'cancelled']
   
@@ -164,7 +169,7 @@ const fetchOrders = async () => {
 
   const { data, error } = await supabase
     .from('orders')
-    .select(`id, created_at, status, total, readable_id, order_items(id, quantity, discounted_price, products(id, name))`)
+    .select(`id, created_at, status, total, readable_id, order_items(id, quantity, discounted_price, products(id, name, images))`)
     .eq('user_id', auth.user.id)
     .order('created_at', { ascending: false })
 
