@@ -419,6 +419,18 @@ const placeOrder =  async () => {
         const { error: itemError } = await supabase.from('order_items').insert(orderItems)
         if (itemError) throw itemError
 
+        // 5. Delete selected cart items
+        const { error: deleteError } = await supabase
+            .from('cart_items')
+            .delete()
+            .eq('user_id', auth?.user?.id)
+            .eq('is_selected', true)
+
+        if (deleteError) throw deleteError
+
+        await cart.fetchCart()
+        await cart.fetchSelectedCartItems()
+
         // 5. Done
         router.push(`/checkout-success?order_id=${orderData.id}`)
     } catch(error) {
