@@ -167,7 +167,7 @@ const profileOptions = ref([
     {
         label: 'My Orders',
         icon: 'PhBag',
-        to: '/my-orders',
+        to: '/orders',
         type: 'link',
     },
     {
