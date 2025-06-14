@@ -428,10 +428,23 @@ const placeOrder =  async () => {
 
         if (deleteError) throw deleteError
 
+        // 6. Decrease product stock
+        for (const item of cart.cartSelectedItems) {
+            const newStock = item.products.stock - item.quantity
+            const updatedStock = newStock < 0 ? 0 : newStock
+
+            const { error: updateError } = await supabase
+                .from('products')
+                .update({ stock: updatedStock })
+                .eq('id', item.products.id)
+
+            if (updateError) throw updateError
+        }
+
         await cart.fetchCart()
         await cart.fetchSelectedCartItems()
 
-        // 5. Done
+        // 7. Done
         router.push(`/checkout-success?order_id=${orderData.id}`)
     } catch(error) {
         console.error('Order error:', error)
