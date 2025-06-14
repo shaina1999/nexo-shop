@@ -273,7 +273,6 @@ const hasError = ref({
 })
 const router = useRouter()
 const auth = useAuthStore()
-const isPopulatingBilling = ref(false)
 
 const fetchRegions = async () => {
     regionLoading.value = true
@@ -405,8 +404,6 @@ const placeOrder =  async () => {
 }
 
 watch(() => billing.value.region, async (regionName) => {
-    if (isPopulatingBilling.value) return
-
     // Always reset all lower-level fields and their options
     billing.value.province = ''
     billing.value.municipality = ''
@@ -447,8 +444,6 @@ watch(() => billing.value.region, async (regionName) => {
 })
 
 watch(() => billing.value.province, async (provinceName) => {
-    if (isPopulatingBilling.value) return
-
     // Always reset all lower-level fields and their options  
     billing.value.municipality = ''
     billing.value.barangay = ''
@@ -474,8 +469,6 @@ watch(() => billing.value.province, async (provinceName) => {
 })
 
 watch(() => billing.value.municipality, async (municipalityName) => {
-    if (isPopulatingBilling.value) return
-
     // Always reset all lower-level fields and their options  
     billing.value.barangay = ''
     barangays.value = []
@@ -514,17 +507,9 @@ onMounted(async () => {
         .single()
 
     if (data && !error) {
-        isPopulatingBilling.value = true
-
         billing.value = {
             fullname: data.fullname || '',
             mobile_number: data.mobile_number || '',
-            region: data.region || '',
-            province: data.province || '',
-            municipality: data.municipality || '',
-            barangay: data.barangay || '',
-            streetAddress: data.street_address || '',
-            instructions: data.additional_instructions || '',
         }
     }
       
@@ -533,10 +518,6 @@ onMounted(async () => {
       fetchRegions()
     ])
     isLoading.value = false
-
-    setTimeout(() => {
-        isPopulatingBilling.value = false
-  }, 300)
 })
 
 onMounted(() => {
