@@ -4,14 +4,15 @@
         <h2 class="inline-block md:flex items-center gap-x-3 text-base md:text-lg pb-2.5 lg:pb-4 mb-0 font-medium">Orders</h2>
         <!-- Status Filter (Mobile: Custom Select | Desktop: Sidebar) -->
         <div class="mb-6 block md:hidden">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Status</label>
+          <label class="block text-sm font-medium text-black mb-1">Filter by Status</label>
           <div class="relative">
             <button
               @click="isDropdownOpen = !isDropdownOpen"
-              class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-left focus:ring-primary-500 focus:border-primary-500 flex items-center justify-between"
+              class="cursor-pointer w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-left focus:ring-primary-500 focus:border-primary-500 flex items-center justify-between"
+              ref="dropdownButtonRef"
             >
               {{ selectedStatus.charAt(0).toUpperCase() + selectedStatus.slice(1) }}
-              <PhCaretDown :size="16" class="ml-2" />
+              <PhCaretDown :size="16" class="ml-2" :class="{ 'rotate-180': isDropdownOpen, 'transition-transform': true }" />
             </button>
             <ul
               v-if="isDropdownOpen"
@@ -21,7 +22,7 @@
                 v-for="status in statuses"
                 :key="status"
                 @click="selectedStatus = status; isDropdownOpen = false"
-                class="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                class="px-4 py-2 text-sm hover:bg-secondary-500 hover:text-white cursor-pointer"
               >
                 {{ status.charAt(0).toUpperCase() + status.slice(1) }}
               </li>
@@ -64,7 +65,7 @@
                 @click="toggleAccordion(order.id)"
               >
                 <div>
-                  <div class="font-medium text-gray-800">Order <span class="uppercase">{{ order.readable_id }}</span></div>
+                  <div class="font-medium text-black">Order <span class="uppercase">{{ order.readable_id }}</span></div>
                   <div class="text-sm text-gray-500">
                     Placed: {{ formatDate(order.created_at)}}
                   </div>
@@ -81,7 +82,7 @@
                 class="border-t border-gray-300 px-4 py-4 space-y-3"
               >
                 <div
-                  class="text-sm text-gray-700"
+                  class="text-sm text-black"
                   v-for="item in order.order_items"
                   :key="item.id"
                 >
@@ -146,12 +147,13 @@
 </template>
   
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, useTemplateRef } from 'vue'
 import { supabase } from '@/supabase'
 import { useAuthStore } from '@/stores/authStore'
 import Swal from 'sweetalert2'
 import dayjs from 'dayjs'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
+import { onClickOutside } from '@vueuse/core'
 
 const auth = useAuthStore()
 const orders = ref([])
@@ -161,8 +163,30 @@ const isDropdownOpen = ref(false)
 const currentPage = ref(1)
 const perPage = 5
 const { formatAmount } = useCurrencyFormat()
+const dropdownButtonRef = useTemplateRef('dropdownButtonRef')
 
 const statuses = ['all', 'pending', 'completed', 'cancelled']
+
+const statusColor = (status) => {
+  switch (status) {
+    case 'pending': return 'bg-yellow-500'
+    case 'completed': return 'bg-green-500'
+    case 'cancelled': return 'bg-gray-500'
+    default: return 'bg-secondary-500'
+  }
+}
+
+const filteredOrders = computed(() => {
+  if (selectedStatus.value === 'all') return orders.value
+  return orders.value.filter(order => order.status === selectedStatus.value)
+})
+  
+const totalPages = computed(() => Math.ceil(filteredOrders.value.length / perPage))
+  
+const paginatedOrders = computed(() => {
+  const start = (currentPage.value - 1) * perPage
+  return filteredOrders.value.slice(start, start + perPage)
+})
   
 const fetchOrders = async () => {
   if (!auth?.user?.id) return
@@ -183,18 +207,6 @@ const fetchOrders = async () => {
 const toggleAccordion = (orderId) => {
   expandedOrder.value = expandedOrder.value === orderId ? null : orderId
 }
-  
-const filteredOrders = computed(() => {
-  if (selectedStatus.value === 'all') return orders.value
-  return orders.value.filter(order => order.status === selectedStatus.value)
-})
-  
-const totalPages = computed(() => Math.ceil(filteredOrders.value.length / perPage))
-  
-const paginatedOrders = computed(() => {
-  const start = (currentPage.value - 1) * perPage
-  return filteredOrders.value.slice(start, start + perPage)
-})
 
 const formatDate = (date, format = 'MMMM DD, YYYY hh:mm A') => {
   return dayjs(date).format(format)
@@ -225,18 +237,11 @@ const cancelOrder = async (orderId) => {
     fetchOrders()
   }
 }
-  
-const statusColor = (status) => {
-  switch (status) {
-    case 'pending': return 'bg-yellow-500'
-    case 'completed': return 'bg-green-500'
-    case 'cancelled': return 'bg-gray-500'
-    default: return 'bg-secondary-500'
-  }
-}
+
+onClickOutside(dropdownButtonRef, event => isDropdownOpen.value = false)
   
 watch(selectedStatus, () => {
-    currentPage.value = 1
+  currentPage.value = 1
 })
 
 onMounted(fetchOrders)
