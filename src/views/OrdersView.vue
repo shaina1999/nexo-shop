@@ -53,7 +53,7 @@
           </aside>
     
           <!-- Orders List -->
-          <div class="flex-1 space-y-4">
+          <div class="flex-1 space-y-4 h-[522px]">
             <div
               v-for="order in paginatedOrders"
               :key="order.id"
