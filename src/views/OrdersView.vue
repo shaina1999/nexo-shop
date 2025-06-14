@@ -30,8 +30,8 @@
       <div class="flex flex-col md:flex-row gap-8">
         <!-- Sidebar (desktop only) -->
         <aside class="hidden md:block w-full md:w-1/4">
-          <div class="bg-white p-4 rounded-lg shadow">
-            <h2 class="font-semibold text-lg mb-4">Filter by Status</h2>
+          <div class="bg-white p-4 rounded-lg shadow-lg">
+            <h2 class="font-semibold text-base sm:text-lg mb-2">My Orders</h2>
             <ul class="space-y-2">
               <li
                 v-for="status in statuses"
@@ -39,14 +39,12 @@
                 :class="[
                   'cursor-pointer px-3 py-2 rounded-md transition-all flex justify-between items-center',
                   selectedStatus === status
-                    ? 'bg-primary-100 text-primary-600 font-semibold'
-                    : 'hover:bg-gray-100'
+                    ? 'bg-secondary-500 text-white'
+                    : 'hover:text-secondary-500'
                 ]"
                 @click="selectedStatus = status"
               >
                 {{ status.charAt(0).toUpperCase() + status.slice(1) }}
-                <PhCaretRight v-if="selectedStatus !== status" :size="16" />
-                <PhCaretDown v-else :size="16" />
               </li>
             </ul>
           </div>
