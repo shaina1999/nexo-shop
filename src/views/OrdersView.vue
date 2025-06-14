@@ -66,11 +66,11 @@
                 <div>
                   <div class="font-medium text-gray-800">Order #NS-1928</div>
                   <div class="text-sm text-gray-500">
-                    Placed: {{ new Date(order.created_at).toLocaleString() }}
+                    Placed: {{ formatDate(order.created_at)}}
                   </div>
                 </div>
                 <div class="flex items-center gap-2 text-sm font-medium text-gray-600 capitalize">
-                  <span :class="statusColor(order.status)">{{ order.status }}</span>
+                  <span class="text-white px-3 py-1 rounded-full inline-block" :class="statusColor(order.status)">{{ order.status }}</span>
                   <PhCaretDown :size="16" :class="{ 'rotate-180': expandedOrder === order.id, 'transition-transform': true }" />
                 </div>
               </div>
@@ -147,6 +147,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { supabase } from '@/supabase'
 import { useAuthStore } from '@/stores/authStore'
 import Swal from 'sweetalert2'
+import dayjs from 'dayjs'
 
 const auth = useAuthStore()
 const orders = ref([])
@@ -159,75 +160,79 @@ const perPage = 5
 const statuses = ['all', 'pending', 'completed', 'cancelled']
   
 const fetchOrders = async () => {
-    if (!auth?.user?.id) return
-  
-    const { data, error } = await supabase
-      .from('orders')
-      .select(`id, created_at, status, total, order_items(id, quantity, discounted_price, products(id, name))`)
-      .eq('user_id', auth.user.id)
-      .order('created_at', { ascending: false })
-  
-    if (!error) {
-      orders.value = data
-    } else {
-      console.error('Failed to fetch orders:', error)
-    }
+  if (!auth?.user?.id) return
+
+  const { data, error } = await supabase
+    .from('orders')
+    .select(`id, created_at, status, total, order_items(id, quantity, discounted_price, products(id, name))`)
+    .eq('user_id', auth.user.id)
+    .order('created_at', { ascending: false })
+
+  if (!error) {
+    orders.value = data
+  } else {
+    console.error('Failed to fetch orders:', error)
+  }
 }
   
 const toggleAccordion = (orderId) => {
-    expandedOrder.value = expandedOrder.value === orderId ? null : orderId
+  expandedOrder.value = expandedOrder.value === orderId ? null : orderId
 }
   
 const filteredOrders = computed(() => {
-    if (selectedStatus.value === 'all') return orders.value
-    return orders.value.filter(order => order.status === selectedStatus.value)
+  if (selectedStatus.value === 'all') return orders.value
+  return orders.value.filter(order => order.status === selectedStatus.value)
 })
   
 const totalPages = computed(() => Math.ceil(filteredOrders.value.length / perPage))
   
-  const paginatedOrders = computed(() => {
-    const start = (currentPage.value - 1) * perPage
-    return filteredOrders.value.slice(start, start + perPage)
+const paginatedOrders = computed(() => {
+  const start = (currentPage.value - 1) * perPage
+  return filteredOrders.value.slice(start, start + perPage)
 })
+
+const formatDate = (date, format = 'MMMM DD, YYYY hh:mm A') => {
+  return dayjs(date).format(format)
+}
+
+const cancelOrder = async (orderId) => {
+  const confirm = await Swal.fire({
+      title: 'Cancel this order?',
+      text: 'This action cannot be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it',
+      cancelButtonText: 'No',
+      confirmButtonColor: '#ef4444',
+  })
+
+  if (!confirm.isConfirmed) return
+
+  const { error } = await supabase
+    .from('orders')
+    .update({ status: 'cancelled' })
+    .eq('id', orderId)
+
+  if (error) {
+    Swal.fire('Failed', 'Could not cancel order. Try again.', 'error')
+  } else {
+    Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success')
+    fetchOrders()
+  }
+}
+  
+const statusColor = (status) => {
+  switch (status) {
+    case 'pending': return 'bg-yellow-500'
+    case 'completed': return 'bg-green-500'
+    case 'cancelled': return 'bg-gray-500'
+    default: return 'bg-secondary-500'
+  }
+}
   
 watch(selectedStatus, () => {
     currentPage.value = 1
 })
-  
-const cancelOrder = async (orderId) => {
-    const confirm = await Swal.fire({
-        title: 'Cancel this order?',
-        text: 'This action cannot be undone.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, cancel it',
-        cancelButtonText: 'No',
-        confirmButtonColor: '#ef4444',
-    })
-  
-    if (!confirm.isConfirmed) return
-  
-    const { error } = await supabase
-      .from('orders')
-      .update({ status: 'cancelled' })
-      .eq('id', orderId)
-  
-    if (error) {
-      Swal.fire('Failed', 'Could not cancel order. Try again.', 'error')
-    } else {
-      Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success')
-      fetchOrders()
-    }
-}
-  
-const statusColor = (status) => {
-    switch (status) {
-      case 'pending': return 'text-yellow-600'
-      case 'completed': return 'text-green-600'
-      case 'cancelled': return 'text-red-600'
-      default: return 'text-gray-600'
-    }
-}
-  
+
 onMounted(fetchOrders)
 </script>

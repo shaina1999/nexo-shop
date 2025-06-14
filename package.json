@@ -16,6 +16,7 @@
     "@tailwindcss/vite": "^4.1.4",
     "@vueuse/components": "^13.1.0",
     "@vueuse/core": "^13.1.0",
+    "dayjs": "^1.11.13",
     "nprogress": "^0.2.0",
     "pinia": "^3.0.2",
     "sweetalert2": "^11.21.0",
