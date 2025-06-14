@@ -2,10 +2,10 @@
     <section class="flex items-center justify-center w-full pt-5 md:pt-10">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
             <CheckoutSkeleton v-if="isLoading" />
-            <div v-if="!isLoading" class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+            <div v-if="!isLoading" class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                 <!-- Billing Details -->
-                <div>
-                    <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-2.5 lg:pb-6">Billing Details</h2>
+                <div class="order-2 lg:order-1">
+                    <h2 class="inline-block md:flex items-center gap-x-3 text-base md:text-lg pb-2.5 lg:pb-4 mb-0 font-medium">Billing Details</h2>
                     <form class="space-y-3 sm:space-y-4">
                         <div>
                             <label class="block text-sm font-medium">Full Name<span class="text-red-500">*</span></label>
@@ -142,8 +142,8 @@
                 </div>
 
                 <!-- Order Summary -->
-                <div class="space-y-5">
-                    <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-2.5 lg:pb-6 mb-0">Order Summary</h2>
+                <div class="space-y-6 sm:space-y-5 order-1 lg:order-2">
+                    <h2 class="inline-block md:flex items-center gap-x-3 text-base md:text-lg pb-2.5 lg:pb-4 mb-0 font-medium">Order Summary</h2>
                     <div class="border border-gray-300 p-6 rounded-lg space-y-8 lg:space-y-6 shadow">
                         <div
                             v-for="(cartItem, index) in cart.cartSelectedItems" :key="cartItem.id"
@@ -182,7 +182,7 @@
 
                     <!-- Payment Options -->
                     <div class="space-y-2">
-                        <h2>Payment Options:</h2>
+                        <h2 class="inline-block md:flex items-center gap-x-3 text-base md:text-lg pb-2.5 lg:pb-4 mb-0 font-medium">Payment Options:</h2>
                         <div class="grid grid-cols-1 gap-3">
                             <!-- Cash on Delivery -->
                             <label
@@ -229,7 +229,7 @@
                             </label>
                         </div>
                     </div>
-                   <div class="flex items-center gap-3 mt-6 flex-col sm:flex-row">
+                   <div class="flex items-center gap-3 mt-6 flex-col sm:flex-row" v-if="!isMobile">
                         <BaseButton class="w-full" @click="placeOrder" :disabled="isPlacingOrder">{{ isPlacingOrder ? 'Placing' : 'Place' }} Order{{ isPlacingOrder ? '...' : '' }}</BaseButton>
                         <BaseLinkButton 
                             to="/cart" 
@@ -240,6 +240,17 @@
                             <PhArrowUDownLeft :size="18" />
                         </BaseLinkButton>
                    </div>
+                </div>
+                <div class="flex items-center gap-3 mt-6 flex-col sm:flex-row order-3" v-if="isMobile">
+                    <BaseButton class="w-full" @click="placeOrder" :disabled="isPlacingOrder">{{ isPlacingOrder ? 'Placing' : 'Place' }} Order{{ isPlacingOrder ? '...' : '' }}</BaseButton>
+                    <BaseLinkButton 
+                        to="/cart" 
+                        class="flex items-center gap-x-1.5 text-sm !px-4.5 !py-2.5 md:!px-6 md:!py-3 md:mx-0 text-center !w-full bg-white !text-black border-[1px] border-black/50 hover:!bg-gray-200"
+                        :class="{ '!cursor-not-allowed opacity-50 pointer-events-none' : isPlacingOrder, '!cursor-pointer opacity-100 pointer-events-all' : !isPlacingOrder }"
+                    >
+                        Back to Cart
+                        <PhArrowUDownLeft :size="18" />
+                    </BaseLinkButton>
                 </div>
             </div>
         </div>
@@ -273,6 +284,7 @@ const municipalityLoading = ref(false)
 const barangayLoading = ref(false)
 const hideProvince = ref(false)
 const isPlacingOrder = ref(false)
+const isMobile = ref(false)
 const hasError = ref({
   fullname: false,
   mobile_number: false,
@@ -295,6 +307,10 @@ const fetchRegions = async () => {
     } finally {
         regionLoading.value = false
     }
+}
+
+const checkViewport = () => {
+    isMobile.value = window.innerWidth < 1024
 }
 
 const placeOrder = () => {
@@ -449,5 +465,14 @@ onMounted(async () => {
       fetchRegions()
     ])
     isLoading.value = false
+})
+
+onMounted(() => {
+    checkViewport()
+    window.addEventListener('resize', checkViewport)
+})
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', checkViewport)
 })
 </script>
