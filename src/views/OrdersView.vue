@@ -126,11 +126,11 @@
             </div>
     
             <!-- Pagination -->
-            <div v-if="totalPages > 1" class="flex justify-center items-center gap-2 pt-6">
+            <div v-if="totalPages > 1" class="flex justify-center items-center gap-4 pt-6">
               <button
                 :disabled="currentPage === 1"
                 @click="currentPage--"
-                class="px-3 py-1 text-sm border rounded disabled:opacity-50"
+                class="px-3 py-1 text-sm cursor-pointer bg-secondary-500 text-white rounded disabled:opacity-50 hover:bg-secondary-300 transition-colors duration-300 ease-in-out"
               >
                 Prev
               </button>
@@ -138,7 +138,7 @@
               <button
                 :disabled="currentPage === totalPages"
                 @click="currentPage++"
-                class="px-3 py-1 text-sm border rounded disabled:opacity-50"
+                class="px-3 py-1 text-sm cursor-pointer bg-secondary-500 text-white rounded disabled:opacity-50 hover:bg-secondary-300 transition-colors duration-300 ease-in-out"
               >
                 Next
               </button>
