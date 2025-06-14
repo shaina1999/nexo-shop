@@ -29,7 +29,7 @@
           </div>
         </div>
     
-        <div class="flex flex-col md:flex-row gap-8">
+        <div class="flex flex-col md:flex-row gap-6">
           <!-- Sidebar (desktop only) -->
           <aside class="hidden md:block w-full md:w-1/4">
             <div class="bg-white px-3 py-2 rounded-md shadow-md">
@@ -60,17 +60,16 @@
             >
               <!-- Accordion Header -->
               <div
-                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-4 py-3 cursor-pointer hover:bg-gray-50"
+                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4 cursor-pointer hover:bg-gray-50"
                 @click="toggleAccordion(order.id)"
               >
                 <div>
-                  <div class="font-medium text-gray-800">Order #{{ order.id }}</div>
+                  <div class="font-medium text-gray-800">Order #NS-1928</div>
                   <div class="text-sm text-gray-500">
                     Placed: {{ new Date(order.created_at).toLocaleString() }}
                   </div>
                 </div>
                 <div class="flex items-center gap-2 text-sm font-medium text-gray-600 capitalize">
-                  <span>Status:</span>
                   <span :class="statusColor(order.status)">{{ order.status }}</span>
                   <PhCaretDown :size="16" :class="{ 'rotate-180': expandedOrder === order.id, 'transition-transform': true }" />
                 </div>
