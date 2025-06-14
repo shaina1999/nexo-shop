@@ -1,5 +1,6 @@
 <template>
     <section class="max-w-6xl mx-auto py-6 px-4 sm:px-6">
+      <h2 class="inline-block md:flex items-center gap-x-3 text-base md:text-lg pb-2.5 lg:pb-4 mb-0 font-medium">Orders</h2>
       <!-- Status Filter (Mobile: Custom Select | Desktop: Sidebar) -->
       <div class="mb-6 block md:hidden">
         <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Status</label>
@@ -30,14 +31,13 @@
       <div class="flex flex-col md:flex-row gap-8">
         <!-- Sidebar (desktop only) -->
         <aside class="hidden md:block w-full md:w-1/4">
-          <div class="bg-white p-4 rounded-lg shadow-lg">
-            <h2 class="font-semibold text-base sm:text-lg mb-2">My Orders</h2>
+          <div class="bg-white px-3 py-2 rounded-md shadow-md">
             <ul class="space-y-2">
               <li
                 v-for="status in statuses"
                 :key="status"
                 :class="[
-                  'cursor-pointer px-3 py-2 rounded-md transition-all flex justify-between items-center',
+                  'cursor-pointer px-3 py-2 rounded-sm transition-all flex justify-between items-center',
                   selectedStatus === status
                     ? 'bg-secondary-500 text-white'
                     : 'hover:text-secondary-500'
@@ -55,7 +55,7 @@
           <div
             v-for="order in paginatedOrders"
             :key="order.id"
-            class="bg-white border border-gray-200 rounded-lg shadow-sm"
+            class="bg-white border border-gray-200 rounded-md shadow-sm"
           >
             <!-- Accordion Header -->
             <div
