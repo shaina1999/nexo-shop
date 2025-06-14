@@ -341,8 +341,11 @@ const placeOrder = () => {
     if (missingFields.length > 0) {
         Swal.fire({
             icon: 'error',
-            title: 'Missing Required Fields',
-            html: `<div class="text-center">${missingFields.join('<br>')}</div>`,
+            title: 'Incomplete Billing Details',
+            html: `<div class="text-center">
+                Please fill in all required billing information to proceed with your order.<br><br>
+                ${missingFields.join('<br>')}
+            </div>`,
         })
         return
     }
