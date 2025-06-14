@@ -113,7 +113,7 @@
           <!-- Empty State -->
           <div
             v-if="paginatedOrders.length === 0"
-            class="text-center text-gray-500 text-sm pt-12"
+            class="text-center text-gray-500 text-sm sm:text-base pt-12"
           >
             No orders found.
           </div>
