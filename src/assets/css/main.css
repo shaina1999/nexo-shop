@@ -166,3 +166,18 @@ button:disabled:hover {
 .v-select-error > .vs__dropdown-toggle {
   border-color: red !important;
 }
+
+@media (max-width: 639px) {
+  .v-select {
+    height: 34px !important;
+  }
+
+  .vs__dropdown-toggle {
+    padding: 6px 8px !important;
+    height: 34px !important;
+  }
+
+  .vs__dropdown-toggle input {
+    font-size: 14px !important;
+  }
+}

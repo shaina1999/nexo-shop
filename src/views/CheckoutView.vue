@@ -6,38 +6,7 @@
                 <!-- Billing Details -->
                 <div>
                     <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-2.5 lg:pb-6">Billing Details</h2>
-                    <div 
-                        v-if="isMobile && !showForm"
-                        class="border border-gray-300 p-4 sm:p-6 rounded-lg shadow w-full text-left flex justify-between gap-4 items-start text-sm sm:text-base"
-                    >
-                        <div class="flex flex-col" v-if="isMobile && hasBillingDetails">
-                            <span class="inline-block mb-0.5">{{ billing.fullname }}</span>
-                            <span class="inline-block mb-0.5">{{ billing.mobile_number }}</span>
-                            <span class="inline-block mb-0.5">
-                                {{ billing.apartment ? billing.apartment+', ' : '' }}
-                                {{ billing.address ? billing.address+', ' : '' }} {{ billing.city }}
-                            </span>
-                        </div>
-                        <button 
-                            @click="showForm = true"
-                            class="text-secondary-500 cursor-pointer flex items-center gap-1 text-sm sm:text-base hover:!bg-transparent" 
-                            :class="{ 'opacity-50 cursor-not-allowed' : isPlacingOrder, 'opacity-100 cursor-auto' : !isPlacingOrder }"
-                            v-if="isMobile && hasBillingDetails"
-                            :disabled="isPlacingOrder"
-                        >
-                            Edit
-                            <PhPencilSimple :size="16" />
-                        </button>
-                        <button 
-                            v-if="isMobile && !hasBillingDetails && !showForm"
-                            @click="showForm = true"
-                            class="text-secondary-500 cursor-pointer flex items-center gap-1 self-center text-sm sm:text-base mx-auto hover:!bg-transparent"
-                        >
-                            Add Billing Details
-                            <PhPlus :size="16" />
-                        </button>
-                    </div>
-                    <form class="space-y-4" v-if="!isMobile || showForm">
+                    <form class="space-y-3 sm:space-y-4">
                         <div>
                             <label class="block text-sm font-medium">Full Name<span class="text-red-500">*</span></label>
                             <input 
@@ -46,7 +15,7 @@
                                 placeholder="e.g., John Doe"
                                 :disabled="isPlacingOrder"
                                 :class="[
-                                    'placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out',
+                                    'text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out',
                                     hasError.fullname ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500',
                                     isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto'
                                 ]"
@@ -60,7 +29,7 @@
                                 placeholder="e.g., (123) 456-7890"
                                 :disabled="isPlacingOrder"
                                 :class="[
-                                    'placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out',
+                                    'text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out',
                                     hasError.mobile_number ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500',
                                     isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto'
                                 ]"
@@ -125,7 +94,7 @@
                                 placeholder="e.g., Unit 5B, 123 Maginhawa Street"
                                 :disabled="isPlacingOrder"
                                 :class="[
-                                    'placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out',
+                                    'text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out',
                                     hasError.streetAddress ? 'border-red-500' : 'border-gray-300 focus-visible:!border-secondary-500',
                                     isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto'
                                 ]"
@@ -139,7 +108,7 @@
                                 v-model="billing.instructions"
                                 rows="2"
                                 placeholder="e.g., Gate is green, 3rd floor, leave with guard if not available"
-                                class="placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out resize-none"
+                                class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out resize-none"
                                 :class="isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto'"
                                 :disabled="isPlacingOrder"
                             >
@@ -168,27 +137,6 @@
                                 </span>
                                 <span class="text-sm">Save details for faster checkout next time</span>
                             </label>
-                        </div>
-
-                        <div v-if="isMobile" class="flex gap-3">
-                            <BaseButton
-                                type="button"
-                                class="text-sm md:text-base !py-1.5 !px-4 !md:py-2 !md:px-4.5 flex items-center justify-center gap-x-1 bg-white !text-black border-[1px] border-black/50 hover:!bg-gray-200"
-                                :class="isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto'"
-                                @click="showForm = false"
-                                :disabled="isPlacingOrder"
-                            >
-                                Cancel
-                            </BaseButton>
-                            <BaseButton
-                                type="submit"
-                                class="text-sm md:text-base !py-1.5 !px-4 !md:py-2 !md:px-4.5 flex items-center justify-center"
-                                :class="isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-auto'"
-                                @click.prevent="showForm = false"
-                                :disabled="isPlacingOrder"
-                            >
-                                Save
-                            </BaseButton>
                         </div>
                     </form>
                 </div>
@@ -238,7 +186,7 @@
                         <div class="grid grid-cols-1 gap-3">
                             <!-- Cash on Delivery -->
                             <label
-                                class="group block border rounded-lg p-2.5 sm:p-3 transition-all hover:shadow relative"
+                                class="group block border rounded-lg p-3 py-2 sm:p-3 transition-all hover:shadow relative"
                                 :class="[
                                     payment === 'cod' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300', 
                                     isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-pointer'
@@ -260,7 +208,7 @@
 
                             <!-- Bank -->
                             <label
-                                class="group block border rounded-lg p-2.5 sm:p-3 transition-all hover:shadow relative"
+                                class="group block border rounded-lg p-3 py-2 sm:p-3 transition-all hover:shadow relative"
                                 :class="[
                                     payment === 'bank' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300', 
                                     isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-pointer'
@@ -310,8 +258,6 @@ import CheckoutSkeleton from '@/components/CheckoutSkeleton.vue'
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
 
 const payment = ref('cod')
-const isMobile = ref(false)
-const showForm = ref(false)
 const saveBillingInfo = ref(false)
 const isLoading = ref(false)
 const cart = useCartStore()
@@ -337,14 +283,6 @@ const hasError = ref({
   streetAddress: false,
 })
 const router = useRouter()
-
-const hasBillingDetails = computed(() => {
-    return billing.value.fullname && billing.value.mobile_number
-})
-
-const checkViewport = () => {
-    isMobile.value = window.innerWidth < 1024
-}
 
 const fetchRegions = async () => {
     regionLoading.value = true
@@ -504,11 +442,6 @@ watch(billing, (val) => {
   }
 }, { deep: true })
 
-onMounted(() => {
-    checkViewport()
-    window.addEventListener('resize', checkViewport)
-})
-
 onMounted(async () => {
     isLoading.value = true
     await Promise.all([
@@ -516,9 +449,5 @@ onMounted(async () => {
       fetchRegions()
     ])
     isLoading.value = false
-})
-
-onBeforeUnmount(() => {
-    window.removeEventListener('resize', checkViewport)
 })
 </script>
