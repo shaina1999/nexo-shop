@@ -12,6 +12,7 @@ import ProductView from '@/views/ProductView.vue'
 import CartView from '@/views/CartView.vue'
 import CheckoutView from '@/views/CheckoutView.vue'
 import CheckoutSuccessView from '@/views/CheckoutSuccessView.vue'
+import OrdersView from '@/views/OrdersView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 
 const routes = [
@@ -21,6 +22,7 @@ const routes = [
   { path: '/cart', name:'cart', component: CartView },
   { path: '/checkout', name:'checkout', component: CheckoutView },
   { path: '/checkout-success', name:'checkout-success', component: CheckoutSuccessView },
+  { path: '/orders', name:'orders', component: OrdersView },
   { path: '/login', name:'login', component: LoginView },
   { path: '/sign-up', name:'sign-up', component: SignUpView },
   { path: '/forgot-password', name:'forgot-password', component: ForgotPasswordView },
