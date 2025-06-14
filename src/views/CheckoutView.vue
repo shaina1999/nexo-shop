@@ -343,6 +343,7 @@ const placeOrder =  async () => {
     isPlacingOrder.value = true
 
     try {
+        let billingData
         const cleanBilling = {
             user_id: auth?.user?.id,
             fullname: billing.value.fullname,
@@ -355,41 +356,14 @@ const placeOrder =  async () => {
             additional_instructions: billing.value.instructions,
         }
 
-        // Check if billing already exists for this user
-        const { data: existingBilling, error: checkError } = await supabase
+        const { data, error } = await supabase
             .from('billing_details')
-            .select('*')
-            .eq('user_id', auth?.user?.id)
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .maybeSingle()
+            .insert([cleanBilling])
+            .select()
+            .single()
 
-        if (checkError) throw checkError
-        let billingData
-
-        if (existingBilling) {
-            // Update the existing billing record
-            const { data, error } = await supabase
-                .from('billing_details')
-                .update(cleanBilling)
-                .eq('id', existingBilling.id)
-                .select()
-                .maybeSingle()
-
-            if (error) throw error
-            billingData = data
-        } else {
-            // Insert new billing record
-            const { data, error } = await supabase
-                .from('billing_details')
-                .insert([cleanBilling])
-                .select()
-                .single()
-
-            if (error) throw error
-            billingData = data
-        }
-
+        if (error) throw error
+        billingData = data
 
         // 2. Insert order
         const randomReadableId = `ns-${Math.floor(1000 + Math.random() * 9000)}`;
