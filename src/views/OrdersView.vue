@@ -194,16 +194,26 @@ const paginatedOrders = computed(() => {
 const fetchOrders = async () => {
   if (!auth?.user?.id) return
 
-  const { data, error } = await supabase
-    .from('orders')
-    .select(`id, created_at, status, total, readable_id, order_items(id, quantity, discounted_price, products(id, name, images))`)
-    .eq('user_id', auth.user.id)
-    .order('created_at', { ascending: false })
+  try {
+    const { data, error } = await supabase
+      .from('orders')
+      .select(`id, created_at, status, total, readable_id, order_items(id, quantity, discounted_price, products(id, name, images))`)
+      .eq('user_id', auth.user.id)
+      .order('created_at', { ascending: false })
 
-  if (!error) {
+    if (error) {
+      throw error
+    }
+
     orders.value = data
-  } else {
-    console.error('Failed to fetch orders:', error)
+  } catch (err) {
+    console.error('Failed to fetch orders:', err)
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Failed to Load Orders',
+      text: 'Something went wrong while fetching your orders. Please try again later.',
+    })
   }
 }
   
