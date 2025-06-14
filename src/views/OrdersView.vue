@@ -69,8 +69,8 @@
                     Placed: {{ formatDate(order.created_at)}}
                   </div>
                 </div>
-                <div class="flex items-center gap-2 text-sm font-medium text-gray-600 capitalize">
-                  <span class="text-white px-3 py-1 rounded-full inline-block" :class="statusColor(order.status)">{{ order.status }}</span>
+                <div class="text-white flex items-center gap-2 text-sm font-medium capitalize">
+                  <span class="px-3 py-[2px] rounded-full inline-block" :class="statusColor(order.status)">{{ order.status }}</span>
                   <PhCaretDown :size="16" :class="{ 'rotate-180': expandedOrder === order.id, 'transition-transform': true }" />
                 </div>
               </div>
