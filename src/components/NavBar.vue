@@ -171,18 +171,6 @@ const profileOptions = ref([
         type: 'link',
     },
     {
-        label: 'My Reviews',
-        icon: 'PhStar',
-        to: '/my-reviews',
-        type: 'link',
-    },
-    {
-        label: 'My Cancellations',
-        icon: 'PhCalendarX',
-        to: '/my-cancellations',
-        type: 'link',
-    },
-    {
         label: 'Logout',
         icon: 'PhSignOut',
         action: 'logout',
