@@ -343,7 +343,6 @@ const placeOrder =  async () => {
     isPlacingOrder.value = true
 
     try {
-        // 1. Insert billing_details
         const cleanBilling = {
             user_id: auth?.user?.id,
             fullname: billing.value.fullname,
@@ -355,11 +354,42 @@ const placeOrder =  async () => {
             street_address: billing.value.streetAddress,
             additional_instructions: billing.value.instructions,
         }
-        const { data: billingData, error: billingError } = await supabase.from('billing_details').insert([cleanBilling]).select().single()
 
-        console.log(billingData)
+        // Check if billing already exists for this user
+        const { data: existingBilling, error: checkError } = await supabase
+            .from('billing_details')
+            .select('*')
+            .eq('user_id', auth?.user?.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle()
 
-        if (billingError) throw billingError
+        if (checkError) throw checkError
+        let billingData
+
+        if (existingBilling) {
+            // Update the existing billing record
+            const { data, error } = await supabase
+                .from('billing_details')
+                .update(cleanBilling)
+                .eq('id', existingBilling.id)
+                .select()
+                .maybeSingle()
+
+            if (error) throw error
+            billingData = data
+        } else {
+            // Insert new billing record
+            const { data, error } = await supabase
+                .from('billing_details')
+                .insert([cleanBilling])
+                .select()
+                .single()
+
+            if (error) throw error
+            billingData = data
+        }
+
 
         // 2. Insert order
         const { data: orderData, error: orderError } = await supabase
@@ -505,6 +535,7 @@ onMounted(async () => {
         .order('created_at', { ascending: false })
         .limit(1)
         .single()
+        .maybeSingle()
 
     if (data && !error) {
         billing.value = {
