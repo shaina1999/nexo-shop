@@ -1,140 +1,142 @@
 <template>
-    <section class="max-w-6xl mx-auto py-6 px-4 sm:px-6">
-      <h2 class="inline-block md:flex items-center gap-x-3 text-base md:text-lg pb-2.5 lg:pb-4 mb-0 font-medium">Orders</h2>
-      <!-- Status Filter (Mobile: Custom Select | Desktop: Sidebar) -->
-      <div class="mb-6 block md:hidden">
-        <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Status</label>
-        <div class="relative">
-          <button
-            @click="isDropdownOpen = !isDropdownOpen"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-left focus:ring-primary-500 focus:border-primary-500 flex items-center justify-between"
-          >
-            {{ selectedStatus.charAt(0).toUpperCase() + selectedStatus.slice(1) }}
-            <PhCaretDown :size="16" class="ml-2" />
-          </button>
-          <ul
-            v-if="isDropdownOpen"
-            class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md"
-          >
-            <li
-              v-for="status in statuses"
-              :key="status"
-              @click="selectedStatus = status; isDropdownOpen = false"
-              class="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+    <section class="flex items-center justify-center w-full pt-5 md:pt-10">
+      <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
+        <h2 class="inline-block md:flex items-center gap-x-3 text-base md:text-lg pb-2.5 lg:pb-4 mb-0 font-medium">Orders</h2>
+        <!-- Status Filter (Mobile: Custom Select | Desktop: Sidebar) -->
+        <div class="mb-6 block md:hidden">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Status</label>
+          <div class="relative">
+            <button
+              @click="isDropdownOpen = !isDropdownOpen"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-left focus:ring-primary-500 focus:border-primary-500 flex items-center justify-between"
             >
-              {{ status.charAt(0).toUpperCase() + status.slice(1) }}
-            </li>
-          </ul>
-        </div>
-      </div>
-  
-      <div class="flex flex-col md:flex-row gap-8">
-        <!-- Sidebar (desktop only) -->
-        <aside class="hidden md:block w-full md:w-1/4">
-          <div class="bg-white px-3 py-2 rounded-md shadow-md">
-            <ul class="space-y-2">
+              {{ selectedStatus.charAt(0).toUpperCase() + selectedStatus.slice(1) }}
+              <PhCaretDown :size="16" class="ml-2" />
+            </button>
+            <ul
+              v-if="isDropdownOpen"
+              class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md"
+            >
               <li
                 v-for="status in statuses"
                 :key="status"
-                :class="[
-                  'cursor-pointer px-3 py-2 rounded-sm transition-all flex justify-between items-center',
-                  selectedStatus === status
-                    ? 'bg-secondary-500 text-white'
-                    : 'hover:text-secondary-500'
-                ]"
-                @click="selectedStatus = status"
+                @click="selectedStatus = status; isDropdownOpen = false"
+                class="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
               >
                 {{ status.charAt(0).toUpperCase() + status.slice(1) }}
               </li>
             </ul>
           </div>
-        </aside>
-  
-        <!-- Orders List -->
-        <div class="flex-1 space-y-4">
-          <div
-            v-for="order in paginatedOrders"
-            :key="order.id"
-            class="bg-white border border-gray-200 rounded-md shadow-sm"
-          >
-            <!-- Accordion Header -->
-            <div
-              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-4 py-3 cursor-pointer hover:bg-gray-50"
-              @click="toggleAccordion(order.id)"
-            >
-              <div>
-                <div class="font-medium text-gray-800">Order #{{ order.id }}</div>
-                <div class="text-sm text-gray-500">
-                  Placed: {{ new Date(order.created_at).toLocaleString() }}
-                </div>
-              </div>
-              <div class="flex items-center gap-2 text-sm font-medium text-gray-600 capitalize">
-                <span>Status:</span>
-                <span :class="statusColor(order.status)">{{ order.status }}</span>
-                <PhCaretDown :size="16" :class="{ 'rotate-180': expandedOrder === order.id, 'transition-transform': true }" />
-              </div>
-            </div>
-  
-            <!-- Accordion Body -->
-            <div
-              v-if="expandedOrder === order.id"
-              class="border-t border-gray-200 px-4 py-4 space-y-3"
-            >
-              <div
-                class="text-sm text-gray-700"
-                v-for="item in order.order_items"
-                :key="item.id"
-              >
-                <div class="flex justify-between items-center">
-                  <span>
-                    {{ item.products?.name || 'Unknown Product' }}
-                    <span class="text-gray-400">x{{ item.quantity }}</span>
-                  </span>
-                  <span class="font-medium">₱{{ item.discounted_price.toFixed(2) }}</span>
-                </div>
-              </div>
-  
-              <!-- Footer -->
-              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-4 border-t">
-                <div class="font-semibold text-base">
-                  Total: ₱{{ order.total.toFixed(2) }}
-                </div>
-                <button
-                  v-if="order.status === 'pending'"
-                  @click.stop="cancelOrder(order.id)"
-                  class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-600 text-sm rounded transition"
+        </div>
+    
+        <div class="flex flex-col md:flex-row gap-8">
+          <!-- Sidebar (desktop only) -->
+          <aside class="hidden md:block w-full md:w-1/4">
+            <div class="bg-white px-3 py-2 rounded-md shadow-md">
+              <ul class="space-y-2">
+                <li
+                  v-for="status in statuses"
+                  :key="status"
+                  :class="[
+                    'cursor-pointer px-3 py-2 rounded-sm transition-all flex justify-between items-center',
+                    selectedStatus === status
+                      ? 'bg-secondary-500 text-white'
+                      : 'hover:text-secondary-500'
+                  ]"
+                  @click="selectedStatus = status"
                 >
-                  Cancel Order
-                </button>
+                  {{ status.charAt(0).toUpperCase() + status.slice(1) }}
+                </li>
+              </ul>
+            </div>
+          </aside>
+    
+          <!-- Orders List -->
+          <div class="flex-1 space-y-4">
+            <div
+              v-for="order in paginatedOrders"
+              :key="order.id"
+              class="bg-white border border-gray-200 rounded-md shadow-sm"
+            >
+              <!-- Accordion Header -->
+              <div
+                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-4 py-3 cursor-pointer hover:bg-gray-50"
+                @click="toggleAccordion(order.id)"
+              >
+                <div>
+                  <div class="font-medium text-gray-800">Order #{{ order.id }}</div>
+                  <div class="text-sm text-gray-500">
+                    Placed: {{ new Date(order.created_at).toLocaleString() }}
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 text-sm font-medium text-gray-600 capitalize">
+                  <span>Status:</span>
+                  <span :class="statusColor(order.status)">{{ order.status }}</span>
+                  <PhCaretDown :size="16" :class="{ 'rotate-180': expandedOrder === order.id, 'transition-transform': true }" />
+                </div>
+              </div>
+    
+              <!-- Accordion Body -->
+              <div
+                v-if="expandedOrder === order.id"
+                class="border-t border-gray-200 px-4 py-4 space-y-3"
+              >
+                <div
+                  class="text-sm text-gray-700"
+                  v-for="item in order.order_items"
+                  :key="item.id"
+                >
+                  <div class="flex justify-between items-center">
+                    <span>
+                      {{ item.products?.name || 'Unknown Product' }}
+                      <span class="text-gray-400">x{{ item.quantity }}</span>
+                    </span>
+                    <span class="font-medium">₱{{ item.discounted_price.toFixed(2) }}</span>
+                  </div>
+                </div>
+    
+                <!-- Footer -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-4 border-t">
+                  <div class="font-semibold text-base">
+                    Total: ₱{{ order.total.toFixed(2) }}
+                  </div>
+                  <button
+                    v-if="order.status === 'pending'"
+                    @click.stop="cancelOrder(order.id)"
+                    class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-600 text-sm rounded transition"
+                  >
+                    Cancel Order
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-  
-          <!-- Empty State -->
-          <div
-            v-if="paginatedOrders.length === 0"
-            class="text-center text-gray-500 text-sm sm:text-base pt-12"
-          >
-            No orders found.
-          </div>
-  
-          <!-- Pagination -->
-          <div v-if="totalPages > 1" class="flex justify-center items-center gap-2 pt-6">
-            <button
-              :disabled="currentPage === 1"
-              @click="currentPage--"
-              class="px-3 py-1 text-sm border rounded disabled:opacity-50"
+    
+            <!-- Empty State -->
+            <div
+              v-if="paginatedOrders.length === 0"
+              class="text-center text-gray-500 text-sm sm:text-base pt-12"
             >
-              Prev
-            </button>
-            <span class="text-sm">Page {{ currentPage }} of {{ totalPages }}</span>
-            <button
-              :disabled="currentPage === totalPages"
-              @click="currentPage++"
-              class="px-3 py-1 text-sm border rounded disabled:opacity-50"
-            >
-              Next
-            </button>
+              No orders found.
+            </div>
+    
+            <!-- Pagination -->
+            <div v-if="totalPages > 1" class="flex justify-center items-center gap-2 pt-6">
+              <button
+                :disabled="currentPage === 1"
+                @click="currentPage--"
+                class="px-3 py-1 text-sm border rounded disabled:opacity-50"
+              >
+                Prev
+              </button>
+              <span class="text-sm">Page {{ currentPage }} of {{ totalPages }}</span>
+              <button
+                :disabled="currentPage === totalPages"
+                @click="currentPage++"
+                class="px-3 py-1 text-sm border rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       </div>
