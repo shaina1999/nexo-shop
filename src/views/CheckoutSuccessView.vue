@@ -1,17 +1,19 @@
 <template>
     <section class="flex items-center justify-center min-h-[70vh] px-6 py-16">
-      <div class="max-w-xl w-full text-center space-y-6">
+      <div class="max-w-xl w-full text-center space-y-4 md:space-y-6">
         <PhCheckCircle class="mx-auto text-green-500" :size="72" weight="duotone" />
   
-        <h1 class="text-2xl md:text-3xl font-semibold text-gray-900">Thank you for your order!</h1>
-        <p class="text-gray-600 text-sm md:text-base">
-          Your order has been successfully placed. A confirmation email has been sent to you.
+        <h1 class="text-xl md:text-3xl font-semibold text-gray-900">Thank you for your order!</h1>
+        <p class="text-gray-600 text-sm/6 md:text-base/6">
+          Your order has been successfully placed <br>
+          You can track your order status in <strong>My Orders</strong> under your account dropdown.<br>
+          Thank you for shopping with us!
         </p>
   
         <div class="flex flex-col sm:flex-row justify-center gap-3 pt-4">
           <BaseButton
             to="/"
-            class="w-full sm:w-auto !px-5 !py-2.5 border border-secondary-500"
+            class="!w-full sm:w-auto !px-5 !py-2.5 border border-secondary-500"
           >
             Continue Shopping
           </BaseButton>
