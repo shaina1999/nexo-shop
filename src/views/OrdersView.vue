@@ -1,5 +1,5 @@
 <template>
-    <section class="flex items-center justify-center w-full pt-5 md:pt-10">
+    <section class="flex items-center justify-center w-full pt-5 md:pt-10" ref="ordersSection">
       <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
         <h2 class="inline-block md:flex items-center gap-x-3 text-base md:text-lg pb-2.5 lg:pb-4 mb-0 font-medium">Orders</h2>
         <!-- Status Filter (Mobile: Custom Select | Desktop: Sidebar) -->
@@ -194,6 +194,7 @@ const currentPage = ref(1)
 const perPage = 5
 const { formatAmount } = useCurrencyFormat()
 const dropdownButtonRef = useTemplateRef('dropdownButtonRef')
+const ordersSection = ref(null)
 
 const statuses = ['all', 'pending', 'completed', 'cancelled']
 
@@ -305,10 +306,21 @@ const cancelOrder = async (orderId) => {
   }
 }
 
+const scrollToOrdersTop = () => {
+  if (ordersSection.value) {
+    ordersSection.value.scrollIntoView({ block: 'start' })
+  }
+}
+
 onClickOutside(dropdownButtonRef, event => isDropdownOpen.value = false)
   
 watch(selectedStatus, () => {
   currentPage.value = 1
+  scrollToOrdersTop()
+})
+
+watch(currentPage, () => {
+  scrollToOrdersTop()
 })
 
 onMounted(fetchOrders)
