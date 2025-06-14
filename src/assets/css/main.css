@@ -181,3 +181,13 @@ button:disabled:hover {
     font-size: 14px !important;
   }
 }
+
+@media (max-width: 639px) {
+  .swal2-title {
+    font-size: 18px !important;
+  }
+
+  .swal2-html-container {
+    font-size: 16px !important;
+  }
+}
