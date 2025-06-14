@@ -273,6 +273,7 @@ const hasError = ref({
 })
 const router = useRouter()
 const auth = useAuthStore()
+const isPopulatingBilling = ref(false)
 
 const fetchRegions = async () => {
     regionLoading.value = true
@@ -404,6 +405,8 @@ const placeOrder =  async () => {
 }
 
 watch(() => billing.value.region, async (regionName) => {
+    if (isPopulatingBilling.value) return
+
     // Always reset all lower-level fields and their options
     billing.value.province = ''
     billing.value.municipality = ''
@@ -444,49 +447,53 @@ watch(() => billing.value.region, async (regionName) => {
 })
 
 watch(() => billing.value.province, async (provinceName) => {
-  // Always reset all lower-level fields and their options  
-  billing.value.municipality = ''
-  billing.value.barangay = ''
-  municipalities.value = []
-  barangays.value = []
+    if (isPopulatingBilling.value) return
 
-  if (!provinceName) return
+    // Always reset all lower-level fields and their options  
+    billing.value.municipality = ''
+    billing.value.barangay = ''
+    municipalities.value = []
+    barangays.value = []
 
-  const selectedProvince = provinces.value.find(p => p.name === provinceName)
-  if (!selectedProvince) return
+    if (!provinceName) return
 
-  municipalityLoading.value = true
-  
-  try {
-    const res = await fetch(`https://psgc.gitlab.io/api/provinces/${selectedProvince.code}/cities-municipalities/`)
-    if (!res.ok) throw new Error()
-    municipalities.value = await res.json()
-  } catch {
-    Swal.fire('Error', 'Failed to load municipalities.', 'error')
-  } finally {
-    municipalityLoading.value = false
+    const selectedProvince = provinces.value.find(p => p.name === provinceName)
+    if (!selectedProvince) return
+
+    municipalityLoading.value = true
+    
+    try {
+        const res = await fetch(`https://psgc.gitlab.io/api/provinces/${selectedProvince.code}/cities-municipalities/`)
+        if (!res.ok) throw new Error()
+        municipalities.value = await res.json()
+    } catch {
+        Swal.fire('Error', 'Failed to load municipalities.', 'error')
+    } finally {
+        municipalityLoading.value = false
   }
 })
 
 watch(() => billing.value.municipality, async (municipalityName) => {
-  // Always reset all lower-level fields and their options  
-  billing.value.barangay = ''
-  barangays.value = []
-    
-  const selectedMunicipality = municipalities.value.find(m => m.name === municipalityName)
-  if (!selectedMunicipality) return
+    if (isPopulatingBilling.value) return
 
-  barangayLoading.value = true
+    // Always reset all lower-level fields and their options  
+    billing.value.barangay = ''
+    barangays.value = []
+        
+    const selectedMunicipality = municipalities.value.find(m => m.name === municipalityName)
+    if (!selectedMunicipality) return
 
-  try {
-    const res = await fetch(`https://psgc.gitlab.io/api/cities-municipalities/${selectedMunicipality.code}/barangays/`)
-    if (!res.ok) throw new Error()
-    barangays.value = await res.json()
-  } catch {
-    Swal.fire('Error', 'Failed to load barangays.', 'error')
-  } finally {
-    barangayLoading.value = false
-  }
+    barangayLoading.value = true
+
+    try {
+        const res = await fetch(`https://psgc.gitlab.io/api/cities-municipalities/${selectedMunicipality.code}/barangays/`)
+        if (!res.ok) throw new Error()
+        barangays.value = await res.json()
+    } catch {
+        Swal.fire('Error', 'Failed to load barangays.', 'error')
+    } finally {
+        barangayLoading.value = false
+    }
 })
 
 watch(billing, (val) => {
@@ -497,11 +504,39 @@ watch(billing, (val) => {
 
 onMounted(async () => {
     isLoading.value = true
+
+    const { data, error } = await supabase
+        .from('billing_details')
+        .select('*')
+        .eq('user_id', auth?.user?.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single()
+
+    if (data && !error) {
+        isPopulatingBilling.value = true
+
+        billing.value = {
+            fullname: data.fullname || '',
+            mobile_number: data.mobile_number || '',
+            region: data.region || '',
+            province: data.province || '',
+            municipality: data.municipality || '',
+            barangay: data.barangay || '',
+            streetAddress: data.street_address || '',
+            instructions: data.additional_instructions || '',
+        }
+    }
+      
     await Promise.all([
       cart.fetchSelectedCartItems(),
       fetchRegions()
     ])
     isLoading.value = false
+
+    setTimeout(() => {
+        isPopulatingBilling.value = false
+  }, 300)
 })
 
 onMounted(() => {
