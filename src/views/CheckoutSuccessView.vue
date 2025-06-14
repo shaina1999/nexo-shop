@@ -18,7 +18,7 @@
             Continue Shopping
           </BaseButton>
           <BaseLinkButton
-            to="/account/orders"
+            to="/orders"
             class="!w-full sm:w-auto !px-5 !py-2.5 border border-black/50 bg-white !text-black hover:!bg-gray-200"
           >
             View My Orders
