@@ -114,30 +114,6 @@
                             >
                             </textarea>
                         </div>
-                        <div class="flex items-center">
-                            <label class="relative flex items-center gap-1.5" :class="isPlacingOrder ? 'cursor-not-allowed opacity-50' : 'cursor-pointer opacity-100'">
-                                <input 
-                                    type="checkbox" 
-                                    v-model="saveBillingInfo"
-                                    class="absolute left-0 right-0 top-0 bottom-0 opacity-0 z-10"
-                                    :class="isPlacingOrder ? 'cursor-not-allowed' : 'cursor-pointer'"
-                                    :disabled="isPlacingOrder"
-                                >
-                                <span 
-                                    class="w-4.5 h-4.5 rounded-sm border-[1px] border-black flex items-center justify-center text-white relative"
-                                >
-                                   <PhCheckFat 
-                                        :size="12" 
-                                        weight="fill" 
-                                        :class="[
-                                            'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-colors duration-150',
-                                            saveBillingInfo ? 'text-black' : 'text-transparent'
-                                        ]"
-                                    />
-                                </span>
-                                <span class="text-sm">Save details for faster checkout next time</span>
-                            </label>
-                        </div>
                     </form>
                 </div>
 
@@ -188,21 +164,21 @@
                             <label
                                 class="group block border rounded-lg p-3 py-2 sm:p-3 transition-all hover:shadow relative"
                                 :class="[
-                                    payment === 'cod' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300', 
+                                    paymentMethod === 'cod' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300', 
                                     isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-pointer'
                                 ]"
                             >
                                 <input
                                     type="radio"
-                                    name="payment"
+                                    name="payment-method"
                                     value="cod"
-                                    v-model="payment"
+                                    v-model="paymentMethod"
                                     class="sr-only"
                                     :disabled="isPlacingOrder"
                                 />
                                 <div class="flex items-center gap-3 text-sm sm:text-base">
-                                    <PhMoney :size="20" :weight="'regular'" :class="payment === 'cod' ? 'text-secondary-500' : 'text-gray-500'" />
-                                    <span :class="payment === 'cod' ? 'text-secondary-600 font-medium' : 'text-gray-700'">Cash on Delivery</span>
+                                    <PhMoney :size="20" :weight="'regular'" :class="paymentMethod === 'cod' ? 'text-secondary-500' : 'text-gray-500'" />
+                                    <span :class="paymentMethod === 'cod' ? 'text-secondary-600 font-medium' : 'text-gray-700'">Cash on Delivery</span>
                                 </div>
                             </label>
 
@@ -210,21 +186,21 @@
                             <label
                                 class="group block border rounded-lg p-3 py-2 sm:p-3 transition-all hover:shadow relative"
                                 :class="[
-                                    payment === 'bank' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300', 
+                                    paymentMethod === 'bank' ? 'border-secondary-500 ring-2 ring-secondary-100' : 'border-gray-300', 
                                     isPlacingOrder ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-pointer'
                                 ]"
                             >
                                 <input
                                     type="radio"
-                                    name="payment"
+                                    name="payment-method"
                                     value="bank"
-                                    v-model="payment"
+                                    v-model="paymentMethod"
                                     class="sr-only"
                                     :disabled="isPlacingOrder"
                                 />
                                 <div class="flex items-center gap-3 text-sm sm:text-base">
-                                    <PhBank :size="20" :weight="'regular'" :class="payment === 'bank' ? 'text-secondary-500' : 'text-gray-500'" />
-                                    <span :class="payment === 'bank' ? 'text-secondary-600 font-medium' : 'text-gray-700'">Bank</span>
+                                    <PhBank :size="20" :weight="'regular'" :class="paymentMethod === 'bank' ? 'text-secondary-500' : 'text-gray-500'" />
+                                    <span :class="paymentMethod === 'bank' ? 'text-secondary-600 font-medium' : 'text-gray-700'">Bank</span>
                                 </div>
                             </label>
                         </div>
@@ -241,7 +217,7 @@
                         </BaseLinkButton>
                    </div>
                 </div>
-                <div class="flex items-center gap-3 mt-6 flex-col sm:flex-row order-3" v-if="isMobile">
+                <div class="flex items-center gap-3 flex-col sm:flex-row order-3" v-if="isMobile">
                     <BaseButton class="w-full" @click="placeOrder" :disabled="isPlacingOrder">{{ isPlacingOrder ? 'Placing' : 'Place' }} Order{{ isPlacingOrder ? '...' : '' }}</BaseButton>
                     <BaseLinkButton 
                         to="/cart" 
@@ -263,13 +239,14 @@ import { useCartStore } from '@/stores/cartStore'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
 import Swal from 'sweetalert2'
 import { useRouter } from 'vue-router'
+import { supabase } from '@/supabase'
+import { useAuthStore } from '@/stores/authStore'
 
 import BaseButton from '@/components/BaseButton.vue'
 import CheckoutSkeleton from '@/components/CheckoutSkeleton.vue'
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
 
-const payment = ref('cod')
-const saveBillingInfo = ref(false)
+const paymentMethod = ref('cod')
 const isLoading = ref(false)
 const cart = useCartStore()
 const { formatAmount } = useCurrencyFormat()
@@ -295,6 +272,7 @@ const hasError = ref({
   streetAddress: false,
 })
 const router = useRouter()
+const auth = useAuthStore()
 
 const fetchRegions = async () => {
     regionLoading.value = true
@@ -313,7 +291,7 @@ const checkViewport = () => {
     isMobile.value = window.innerWidth < 1024
 }
 
-const placeOrder = () => {
+const placeOrder =  async () => {
     const requiredFields = [
         { key: 'fullname', label: 'Full Name' },
         { key: 'mobile_number', label: 'Mobile Number' },
@@ -350,23 +328,79 @@ const placeOrder = () => {
         return
     }
 
-    // All valid
-    Swal.fire({
+    // Confirm order
+    const result = await Swal.fire({
         icon: 'question',
         title: 'Place Order?',
         html: `<div class="text-center text-sm sm:text-base text-gray-700">Please confirm that all details are correct before placing your order.</div>`,
         showCancelButton: true,
         confirmButtonText: 'Yes, Place Order',
         cancelButtonText: 'Review Details',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            isPlacingOrder.value = true
-            setTimeout(() => {
-                isPlacingOrder.value = false
-                router.push('/checkout-success')
-            }, 2000);
+    })
+
+    if (!result.isConfirmed) return
+
+    isPlacingOrder.value = true
+
+    try {
+        // 1. Insert billing_details
+        const cleanBilling = {
+            user_id: auth?.user?.id,
+            fullname: billing.value.fullname,
+            mobile_number: billing.value.mobile_number,
+            region: billing.value.region,
+            province: billing.value.province,
+            municipality: billing.value.municipality,
+            barangay: billing.value.barangay,
+            street_address: billing.value.streetAddress,
+            additional_instructions: billing.value.instructions,
         }
-    });
+        const { data: billingData, error: billingError } = await supabase.from('billing_details').insert([cleanBilling]).select().single()
+
+        console.log(billingData)
+
+        if (billingError) throw billingError
+
+        // 2. Insert order
+        const { data: orderData, error: orderError } = await supabase
+            .from('orders')
+            .insert({
+                user_id: auth?.user?.id,
+                billing_id: billingData.id,
+                payment_method: paymentMethod.value,
+                subtotal: cart.cartTotal,
+                shipping_fee: 0,
+                total: cart.cartTotal,
+                status: 'pending',
+            })
+            .select()
+            .single()
+
+        if (orderError) throw orderError
+
+        // 4. Insert order_items
+        const orderItems = cart.cartSelectedItems.map(item => ({
+            order_id: orderData.id,
+            product_id: item.products.id,
+            discounted_price: item.products.discounted_price,
+            quantity: item.quantity,
+        }))
+
+        const { error: itemError } = await supabase.from('order_items').insert(orderItems)
+        if (itemError) throw itemError
+
+        // 5. Done
+        router.push(`/checkout-success?order_id=${orderData.id}`)
+    } catch(error) {
+        console.error('Order error:', error)
+        Swal.fire({
+            icon: 'error',
+            title: 'Order Failed',
+            text: 'There was a problem placing your order. Please try again.',
+        })
+    } finally {
+        isPlacingOrder.value = false
+    }
 }
 
 watch(() => billing.value.region, async (regionName) => {
