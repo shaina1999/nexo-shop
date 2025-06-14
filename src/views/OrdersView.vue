@@ -121,7 +121,7 @@
           </div>
   
           <!-- Pagination -->
-          <div class="flex justify-center items-center gap-2 pt-6">
+          <div v-if="totalPages > 1" class="flex justify-center items-center gap-2 pt-6">
             <button
               :disabled="currentPage === 1"
               @click="currentPage--"
