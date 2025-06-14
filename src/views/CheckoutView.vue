@@ -392,6 +392,7 @@ const placeOrder =  async () => {
 
 
         // 2. Insert order
+        const randomReadableId = `ns-${Math.floor(1000 + Math.random() * 9000)}`;
         const { data: orderData, error: orderError } = await supabase
             .from('orders')
             .insert({
@@ -402,6 +403,7 @@ const placeOrder =  async () => {
                 shipping_fee: 0,
                 total: cart.cartTotal,
                 status: 'pending',
+                readable_id: randomReadableId,
             })
             .select()
             .single()

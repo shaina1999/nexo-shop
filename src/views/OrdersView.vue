@@ -64,7 +64,7 @@
                 @click="toggleAccordion(order.id)"
               >
                 <div>
-                  <div class="font-medium text-gray-800">Order #NS-1928</div>
+                  <div class="font-medium text-gray-800">Order <span class="uppercase">{{ order.readable_id }}</span></div>
                   <div class="text-sm text-gray-500">
                     Placed: {{ formatDate(order.created_at)}}
                   </div>
@@ -164,7 +164,7 @@ const fetchOrders = async () => {
 
   const { data, error } = await supabase
     .from('orders')
-    .select(`id, created_at, status, total, order_items(id, quantity, discounted_price, products(id, name))`)
+    .select(`id, created_at, status, total, readable_id, order_items(id, quantity, discounted_price, products(id, name))`)
     .eq('user_id', auth.user.id)
     .order('created_at', { ascending: false })
 
