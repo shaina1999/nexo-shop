@@ -64,42 +64,45 @@
                 class="rounded-md flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4 cursor-pointer hover:bg-gray-50"
                 @click="toggleAccordion(order.id)"
               >
-                <div>
-                  <div class="font-medium text-black">Order <span class="uppercase">{{ order.readable_id }}</span></div>
-                  <div class="text-sm text-gray-500">
-                    Placed: {{ formatDate(order.created_at)}}
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="font-medium text-black">Order <span class="uppercase">{{ order.readable_id }}</span></div>
+                    <div class="text-sm text-gray-500">
+                      Placed: {{ formatDate(order.created_at)}}
+                    </div>
                   </div>
+                  <PhCaretDown class="text-gray-500 block sm:hidden" :size="20" :class="{ 'rotate-180': expandedOrder === order.id, 'transition-transform': true }" />
                 </div>
                 <div class="flex items-center gap-2.5 text-sm font-medium capitalize">
                   <span class="px-3 py-[2px] rounded-full inline-block text-white" :class="statusColor(order.status)">{{ order.status }}</span>
-                  <PhCaretDown class="text-gray-500" :size="20" :class="{ 'rotate-180': expandedOrder === order.id, 'transition-transform': true }" />
+                  <PhCaretDown class="text-gray-500 hidden sm:block" :size="20" :class="{ 'rotate-180': expandedOrder === order.id, 'transition-transform': true }" />
                 </div>
               </div>
     
               <!-- Accordion Body -->
               <div
                 v-if="expandedOrder === order.id"
-                class="border-t border-gray-300 px-4 py-4 space-y-3"
+                class="border-t border-gray-300 px-4 py-4 space-y-7 sm:space-y-3"
               >
                 <div
                   class="text-sm text-black"
                   v-for="item in order.order_items"
                   :key="item.id"
                 >
-                  <div class="flex justify-between items-center">
+                  <div class="flex justify-between items-baseline sm:items-center gap-y-0.5 sm:gap-y-0 flex-col sm:flex-row">
                     <div class="flex items-center gap-x-2">
                       <img class="w-10 h-10 object-contain" :src="item.products?.images[0]?.url" :alt="item.products?.name">
-                      <span>
-                        {{ item.products?.name }}
+                      <div class="flex flex-col sm:flex-row">
+                        <span class="line-clamp-2">{{ item.products?.name }}</span>
                         <span class="text-gray-400">x{{ item.quantity }}</span>
-                      </span>
+                      </div>
                     </div>
                     <span class="font-medium">Php {{ formatAmount(item.discounted_price) }}</span>
                   </div>
                 </div>
     
                 <!-- Footer -->
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-2 sm:pt-4">
                   <div class="font-semibold text-base">
                     Total: Php {{ formatAmount(order.total) }}
                   </div>

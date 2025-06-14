@@ -23,7 +23,7 @@
             </label>
             <img :src="cartItem?.products?.images[0].url" :alt="cartItem?.products?.name" class="w-18 h-18 sm:w-20sm: sm:h-20 object-cover rounded" />
             <div>
-                <p class="text-sm sm:text-base font-semibold text-gray-800">{{ cartItem?.products?.name }}</p>
+                <p class="text-sm sm:text-base font-semibold text-gray-800 line-clamp-2">{{ cartItem?.products?.name }}</p>
                 <p class="text-sm sm:text-base text-gray-500">Price: Php {{ formatAmount(cartItem?.products?.discounted_price) }}</p>
                 <p class="text-sm sm:text-base text-gray-500">Subtotal: Php {{ formatAmount(cartItem?.products?.discounted_price * quantity) }}</p>
             </div>
