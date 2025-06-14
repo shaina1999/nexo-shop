@@ -1,6 +1,7 @@
 <template>
     <section class="flex items-center justify-center w-full pt-5 md:pt-10" ref="ordersSection">
-      <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
+      <OrdersSkeleton v-if="loading" />
+      <div v-else class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
         <h2 class="inline-block md:flex items-center gap-x-3 text-base md:text-lg pb-2.5 lg:pb-4 mb-0 font-medium">Orders</h2>
         <!-- Status Filter (Mobile: Custom Select | Desktop: Sidebar) -->
         <div class="mb-6 block md:hidden">
@@ -185,6 +186,8 @@ import dayjs from 'dayjs'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
 import { onClickOutside } from '@vueuse/core'
 
+import OrdersSkeleton from '@/components/OrdersSkeleton.vue'
+
 const auth = useAuthStore()
 const orders = ref([])
 const expandedOrder = ref(null)
@@ -195,6 +198,7 @@ const perPage = 5
 const { formatAmount } = useCurrencyFormat()
 const dropdownButtonRef = useTemplateRef('dropdownButtonRef')
 const ordersSection = ref(null)
+const loading = ref(true)
 
 const statuses = ['all', 'pending', 'completed', 'cancelled']
 
@@ -221,6 +225,8 @@ const paginatedOrders = computed(() => {
   
 const fetchOrders = async () => {
   if (!auth?.user?.id) return
+
+  loading.value = true
 
   try {
     const { data, error } = await supabase
@@ -269,6 +275,8 @@ const fetchOrders = async () => {
       title: 'Failed to Load Orders',
       text: 'Something went wrong while fetching your orders. Please try again later.',
     })
+  } finally {
+    loading.value = false
   }
 }
   
