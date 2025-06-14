@@ -53,7 +53,7 @@
           </aside>
     
           <!-- Orders List -->
-          <div class="flex-1 space-y-4 h-[522px]">
+          <div class="flex-1 space-y-4 min-h-[522px]">
             <div
               v-for="order in paginatedOrders"
               :key="order.id"
@@ -82,27 +82,54 @@
               <!-- Accordion Body -->
               <div
                 v-if="expandedOrder === order.id"
-                class="border-t border-gray-300 px-4 py-4 space-y-7 sm:space-y-3"
+                class="border-t border-gray-300 px-4 py-4 space-y-6 sm:space-y-3"
               >
                 <div
                   class="text-sm text-black"
                   v-for="item in order.order_items"
                   :key="item.id"
                 >
-                  <div class="flex justify-between items-baseline sm:items-center gap-y-0.5 sm:gap-y-0 flex-col sm:flex-row">
+                  <div class="flex justify-between items-baseline sm:items-center gap-y-1 sm:gap-y-0 flex-col sm:flex-row">
                     <div class="flex items-center gap-x-2">
                       <img class="w-10 h-10 object-contain" :src="item.products?.images[0]?.url" :alt="item.products?.name">
-                      <div class="flex flex-col sm:flex-row">
+                      <div class="flex flex-col">
                         <span class="line-clamp-2">{{ item.products?.name }}</span>
-                        <span class="text-gray-400">x{{ item.quantity }}</span>
+                        <span class="text-gray-400">Qty: {{ item.quantity }}</span>
                       </div>
                     </div>
                     <span class="font-medium">Php {{ formatAmount(item.discounted_price) }}</span>
                   </div>
                 </div>
+
+                <div class="pt-6 mt-6 border-t border-t-gray-300">
+                  <!-- Payment Method -->
+                  <div class="mb-1 text-sm text-black">
+                    <span class="text-black font-semibold">Payment Method: </span>
+                    <span class="capitalize" :class="{ 'uppercase' : order.payment_method === 'cod' }">{{ order.payment_method || 'N/A' }}</span>
+                  </div>
+
+                  <!-- Billing Details -->
+                  <div class="text-sm text-gray-700">
+                    <p>
+                      {{ [
+                          order.billing_details?.fullname,
+                          order.billing_details?.mobile_number,
+                          order.billing_details?.streetAddress,
+                          order.billing_details?.barangay,
+                          order.billing_details?.municipality,
+                          order.billing_details?.province,
+                          order.billing_details?.region
+                        ].filter(Boolean).join(', ') 
+                      }}
+                    </p>
+                    <p v-if="order.billing_details?.additional_instructions" class="italic text-gray-500">
+                      Note: {{ order.billing_details.additional_instructions }}
+                    </p>
+                  </div>
+                </div>
     
                 <!-- Footer -->
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-2 sm:pt-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-0 sm:pt-2">
                   <div class="font-semibold text-base">
                     Total: Php {{ formatAmount(order.total) }}
                   </div>
@@ -197,7 +224,34 @@ const fetchOrders = async () => {
   try {
     const { data, error } = await supabase
       .from('orders')
-      .select(`id, created_at, status, total, readable_id, order_items(id, quantity, discounted_price, products(id, name, images))`)
+      .select(`
+        id,
+        created_at,
+        status,
+        total,
+        readable_id,
+        payment_method,
+        billing_details:billing_id (
+          fullname,
+          mobile_number,
+          region,
+          province,
+          municipality,
+          barangay,
+          street_address,
+          additional_instructions
+        ),
+        order_items (
+          id,
+          quantity,
+          discounted_price,
+          products (
+            id,
+            name,
+            images
+          )
+        )
+      `)
       .eq('user_id', auth.user.id)
       .order('created_at', { ascending: false })
 
