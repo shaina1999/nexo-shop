@@ -411,7 +411,7 @@ const placeOrder =  async () => {
 
             const { error: updateError } = await supabase
                 .from('products')
-                .update({ stock: updatedStock })
+                .update({ stock: updatedStock, is_available: newStock === 0 ? false : true })
                 .eq('id', item.products.id)
 
             if (updateError) throw updateError
