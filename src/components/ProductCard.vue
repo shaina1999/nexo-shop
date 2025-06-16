@@ -29,21 +29,20 @@
             </button>
             <div>
                 <button 
-                    class="font-semibold text-sm sm:text-base mb-1 sm:mb-2.5 cursor-pointer hover:text-secondary-500 transition-colors duration-300 ease-in-out text-left" 
+                    class="font-semibold text-sm sm:text-base mb-1 sm:mb-2 cursor-pointer hover:text-secondary-500 transition-colors duration-300 ease-in-out text-left" 
                     @click="goToProductPage(product.id)"
                 >
                     {{ product.name }}
                 </button>
-                <div class="flex items-center gap-x-2.5 mb-1 sm:mb-2.5 text-sm sm:text-base">
+                <div class="flex items-center gap-x-2.5 mb-1 sm:mb-2 text-sm sm:text-base">
                     <span class="text-secondary-500">Php {{ formatAmount(product.discounted_price) }}</span>
                 </div>
+                <div class="mb-1 sm:mb-2">{{ product.sales_count }} sold</div>
                 <div class="flex items-center text-sm sm:text-base gap-2">
-                    <div>{{ product.sales_count }} sold</div>
-                    <span class="text-gray-300">&VerticalLine;</span>
                     <div class="flex items-center gap-x-1">
                         <PhStar class="text-yellow-500" weight="fill" />
                         <span class="font-medium">{{ product.rating }}</span>
-                        <span class="text-gray-500">{{ `(591)` }}</span>
+                        <span class="text-gray-500">{{ `(591 ratings)` }}</span>
                     </div>
                 </div>
             </div>
