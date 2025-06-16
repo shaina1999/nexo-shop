@@ -53,7 +53,7 @@ export const useCartStore = defineStore('cart', () => {
     
             const { data: selectedItems, error } = await supabase
                 .from('cart_items')
-                .select('id, quantity, is_selected, products:product_id(id, name, discounted_price, images, stock, is_available)')
+                .select('id, quantity, is_selected, products:product_id(id, name, discounted_price, sales_count, images, stock, is_available)')
                 .eq('user_id', auth?.user?.id)
                 .eq('is_selected', true)
                 .order('created_at', { ascending: true })

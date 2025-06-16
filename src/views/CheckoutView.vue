@@ -404,14 +404,18 @@ const placeOrder =  async () => {
 
         if (deleteError) throw deleteError
 
-        // 6. Decrease product stock
+        // 6. Decrease product stock, update if it still available and the number of sold
         for (const item of cart.cartSelectedItems) {
             const newStock = item.products.stock - item.quantity
             const updatedStock = newStock < 0 ? 0 : newStock
 
+            const quantity = item.quantity
+            const currentSold = item.products.sales_count || 0
+            const newSold = currentSold + quantity
+
             const { error: updateError } = await supabase
                 .from('products')
-                .update({ stock: updatedStock, is_available: newStock === 0 ? false : true })
+                .update({ stock: updatedStock, is_available: newStock === 0 ? false : true, sales_count: newSold })
                 .eq('id', item.products.id)
 
             if (updateError) throw updateError
