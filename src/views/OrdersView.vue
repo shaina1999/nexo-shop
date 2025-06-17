@@ -4,32 +4,12 @@
       <div v-else class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
         <h2 class="inline-block md:flex items-center gap-x-3 text-base md:text-lg pb-2.5 lg:pb-4 mb-0 font-medium">Orders</h2>
         <!-- Status Filter (Mobile: Custom Select | Desktop: Sidebar) -->
-        <div class="mb-6 block md:hidden">
-          <label class="block text-sm font-medium text-black mb-1">Filter by Status</label>
-          <div class="relative">
-            <button
-              @click="isDropdownOpen = !isDropdownOpen"
-              class="gap-x-4 cursor-pointer w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-left focus:ring-primary-500 focus:border-primary-500 flex items-center justify-between"
-              ref="dropdownButtonRef"
-            >
-              {{ selectedStatus.charAt(0).toUpperCase() + selectedStatus.slice(1) }}
-              <PhCaretDown :size="16" class="ml-2" :class="{ 'rotate-180': isDropdownOpen, 'transition-transform': true }" />
-            </button>
-            <ul
-              v-if="isDropdownOpen"
-              class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md"
-            >
-              <li
-                v-for="status in statuses"
-                :key="status"
-                @click="selectedStatus = status; isDropdownOpen = false"
-                class="px-4 py-2 text-sm hover:bg-secondary-500 hover:text-white cursor-pointer"
-              >
-                {{ status.charAt(0).toUpperCase() + status.slice(1) }}
-              </li>
-            </ul>
-          </div>
-        </div>
+        <BaseDropdown
+          wrapper-class="mb-6 block md:hidden"
+          v-model="selectedStatus"
+          :options="statuses"
+          label="Filter by Status"
+        />
     
         <div class="flex flex-col md:flex-row gap-6">
           <!-- Sidebar (desktop only) -->
@@ -184,19 +164,17 @@ import { useAuthStore } from '@/stores/authStore'
 import Swal from 'sweetalert2'
 import dayjs from 'dayjs'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
-import { onClickOutside } from '@vueuse/core'
 
 import OrdersSkeleton from '@/components/OrdersSkeleton.vue'
+import BaseDropdown from '@/components/BaseDropdown.vue'
 
 const auth = useAuthStore()
 const orders = ref([])
 const expandedOrder = ref(null)
 const selectedStatus = ref('all')
-const isDropdownOpen = ref(false)
 const currentPage = ref(1)
 const perPage = 5
 const { formatAmount } = useCurrencyFormat()
-const dropdownButtonRef = useTemplateRef('dropdownButtonRef')
 const ordersSection = ref(null)
 const loading = ref(true)
 
@@ -320,8 +298,6 @@ const scrollToOrdersTop = () => {
   }
 }
 
-onClickOutside(dropdownButtonRef, event => isDropdownOpen.value = false)
-  
 watch(selectedStatus, () => {
   currentPage.value = 1
   scrollToOrdersTop()

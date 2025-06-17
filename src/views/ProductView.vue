@@ -166,31 +166,10 @@
             <p class="text-2xl text-gray-700 font-bold">4.9 out of 5</p>
           </div>
         </div>
-        <div class="relative">
-          <button
-            @click="isDropdownOpen = !isDropdownOpen"
-            class="gap-x-4 cursor-pointer w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-left focus:ring-primary-500 focus:border-primary-500 flex items-center justify-between"
-          >
-            Sort by: Highest to lowest
-            <PhCaretDown class="w-4 h-4 text-gray-500" />
-          </button>
-
-          <ul
-            v-if="isDropdownOpen"
-            class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md"
-          >
-            <li
-              class="px-4 py-2 text-sm hover:bg-secondary-500 hover:text-white cursor-pointer"
-            >
-              Highest to lowest
-            </li>
-            <li
-              class="px-4 py-2 text-sm hover:bg-secondary-500 hover:text-white cursor-pointer"
-            >
-              Highest to lowest
-            </li>
-          </ul>
-        </div>
+        <BaseDropdown
+          v-model="selectedSort"
+          :options="sortOptions"
+        />
       </div>
 
       <!-- Reviews List -->
@@ -236,6 +215,7 @@ import { useCartStore } from '@/stores/cartStore'
 import BaseButton from '@/components/BaseButton.vue'
 import ProductDetailsSkeleton from '@/components/ProductDetailsSkeleton.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
+import BaseDropdown from '@/components/BaseDropdown.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -249,7 +229,8 @@ const selectedSlideId = ref('slide0')
 const isAddingToCart = ref(false)
 const cart = useCartStore()
 const visible = ref(false)
-const isDropdownOpen = ref(false)
+const selectedSort = ref('Highest to Lowest')
+const sortOptions = [ 'Highest to Lowest', 'Lowest to Highest' ]
 
 const openImageViewer = () => {
   visible.value = true
