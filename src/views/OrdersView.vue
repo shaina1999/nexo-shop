@@ -9,7 +9,7 @@
           <div class="relative">
             <button
               @click="isDropdownOpen = !isDropdownOpen"
-              class="cursor-pointer w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-left focus:ring-primary-500 focus:border-primary-500 flex items-center justify-between"
+              class="gap-x-4 cursor-pointer w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-left focus:ring-primary-500 focus:border-primary-500 flex items-center justify-between"
               ref="dropdownButtonRef"
             >
               {{ selectedStatus.charAt(0).toUpperCase() + selectedStatus.slice(1) }}

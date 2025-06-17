@@ -1,7 +1,7 @@
 <template>
-  <section class="flex items-center justify-center w-full pt-5 md:pt-10 product-details">
+  <section class="flex flex-col items-center justify-center w-full pt-5 md:pt-10 product-details">
     <ProductDetailsSkeleton v-if="isLoading" />
-    <div v-else class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
+    <div v-else class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-12">
       <h2 class="inline-block md:flex items-center gap-x-3 text sm sm:text-base md:text-lg pb-5 md:pb-10 font-semibold">{{ productObj?.name }}</h2>
       <div class="flex items-start gap-6 lg:gap-8 flex-col lg:flex-row">
         <!-- Product Images -->
@@ -149,6 +149,79 @@
         </article>
       </div>
     </div>
+
+    <!-- Customer Reviews Here -->
+    <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-t border-gray-300 pt-12 mb-6">
+        <div>
+          <h3 class="text-xl font-semibold text-muted-800 mb-2">Customer Reviews <span class="text-sm text-gray-500 font-normal">(100 reviews)</span></h3>
+          <div class="flex items-center gap-x-2">
+            <div class="flex items-center gap-1 text-yellow-400">
+              <PhStar size="25" weight="fill" />
+              <PhStar size="25" weight="fill" />
+              <PhStar size="25" weight="fill" />
+              <PhStar size="25" weight="fill" />
+              <PhStar size="25" weight="fill" />
+            </div>
+            <p class="text-2xl text-gray-700 font-bold">4.9 out of 5</p>
+          </div>
+        </div>
+        <div class="relative">
+          <button
+            @click="isDropdownOpen = !isDropdownOpen"
+            class="gap-x-4 cursor-pointer w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-left focus:ring-primary-500 focus:border-primary-500 flex items-center justify-between"
+          >
+            Sort by: Highest to lowest
+            <PhCaretDown class="w-4 h-4 text-gray-500" />
+          </button>
+
+          <ul
+            v-if="isDropdownOpen"
+            class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md"
+          >
+            <li
+              class="px-4 py-2 text-sm hover:bg-secondary-500 hover:text-white cursor-pointer"
+            >
+              Highest to lowest
+            </li>
+            <li
+              class="px-4 py-2 text-sm hover:bg-secondary-500 hover:text-white cursor-pointer"
+            >
+              Highest to lowest
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Reviews List -->
+      <div class="space-y-6">
+        <div
+          class="bg-white p-5 rounded-lg shadow-sm border border-gray-200"
+        >
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2 gap-1">
+            <p class="text-sm sm:text-base font-semibold text-black">Shaina De Guzman</p>
+            <div class="flex items-center gap-1 text-yellow-400">
+              <PhStar size="18" weight="fill" />
+              <PhStar size="18" weight="fill" />
+              <PhStar size="18" weight="fill" />
+              <PhStar size="18" weight="fill" />
+              <PhStar size="18" />
+            </div>
+          </div>
+          <p class="text-sm sm:text-base text-black leading-relaxed mb-2">
+            Amazing quality and fast shipping!
+          </p>
+          <p class="text-sm text-gray-500 mt-2">Reviewed on June 01, 2024 10:01 PM</p>
+        </div>
+      </div>
+
+      <!-- Load More Button -->
+      <div class="text-center">
+        <BaseButton size="sm" class="mt-6 md:mt-12">
+          Load more reviews
+        </BaseButton>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -176,35 +249,11 @@ const selectedSlideId = ref('slide0')
 const isAddingToCart = ref(false)
 const cart = useCartStore()
 const visible = ref(false)
+const isDropdownOpen = ref(false)
 
-const openImageViewer = (i) => {
+const openImageViewer = () => {
   visible.value = true
 }
-
-const increaseQuantity = () => {
-  if (quantity.value < maxQuantity.value) {
-    quantity.value++
-  }
-};
-
-const decreaseQuantity = () => {
-  if (quantity.value > 1) {
-    quantity.value--
-  }
-};
-
-const handleQuantityInput = (e) => {
-  const input = e.target.value.replace(/\D/g, '')
-  let parsed = parseInt(input)
-
-  if (isNaN(parsed) || parsed < 1) {
-    parsed = 1
-  } else if (parsed > maxQuantity.value) {
-    parsed = maxQuantity.value
-  }
-
-  quantity.value = parsed
-};
 
 const onSplideClick = (Splide, e) => {
   selectedImage.value = e.slide.attributes.img.value
