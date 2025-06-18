@@ -117,9 +117,16 @@
                   <button
                     v-if="order.status === 'pending'"
                     @click.stop="cancelOrder(order.id)"
-                    class="px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer bg-red-100 hover:bg-red-200 text-red-600 text-sm rounded transition"
+                    class="px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer bg-red-100 hover:bg-red-200 text-red-600 text-sm rounded transition-colors duration-300 ease-in-out"
                   >
                     Cancel Order
+                  </button>
+                  <button
+                    v-if="order.status === 'completed'"
+                    @click="addReview(order.id)"
+                    class="px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer bg-secondary-500 hover:bg-secondary-300 text-white text-sm rounded transition-colors duration-300 ease-in-out"
+                  >
+                    Add Review
                   </button>
                 </div>
               </div>
@@ -268,13 +275,12 @@ const formatDate = (date, format = 'MMMM DD, YYYY hh:mm A') => {
 
 const cancelOrder = async (orderId) => {
   const confirm = await Swal.fire({
-      title: 'Cancel this order?',
-      text: 'This action cannot be undone.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, cancel it',
-      cancelButtonText: 'No',
-      confirmButtonColor: '#ef4444',
+    title: 'Cancel this order?',
+    text: 'This action cannot be undone.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, cancel it',
+    cancelButtonText: 'No',
   })
 
   if (!confirm.isConfirmed) return
@@ -290,6 +296,10 @@ const cancelOrder = async (orderId) => {
     Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success')
     fetchOrders()
   }
+}
+
+const addReview = async (orderId) => {
+  console.log(orderId)
 }
 
 const scrollToOrdersTop = () => {
