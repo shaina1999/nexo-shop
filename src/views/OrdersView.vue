@@ -172,11 +172,9 @@
         <template #header>
           <div class="flex items-center justify-between w-full p-5 border-b gap-3">
             <span>Add Review</span>
-            <!-- <BaseButtonClose 
-              size="md" 
-              rounded="full" 
-              color="muted"
-            /> -->
+            <button @click="showAddReviewModal = false">
+              Close
+            </button>
           </div>
         </template>
 
@@ -188,9 +186,9 @@
 
         <template #footer>
           <div class="p-5 flex items-center justify-end">
-            <BaseButton @click="showAddReviewModal = false">
+            <button @click="showAddReviewModal = false">
               Close
-            </BaseButton>
+            </button>
           </div>
         </template>
       </BaseModal>
