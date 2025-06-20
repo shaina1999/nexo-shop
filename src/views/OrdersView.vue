@@ -162,6 +162,38 @@
         </div>
       </div>
     </section>
+
+    <!-- Add review modal -->
+    <BaseModal
+        v-model="showAddReviewModal"
+        :size="'md'"
+        :closableViaBackdrop="true"
+      >
+        <template #header>
+          <div class="flex items-center justify-between w-full p-5 border-b gap-3">
+            <span>Add Review</span>
+            <!-- <BaseButtonClose 
+              size="md" 
+              rounded="full" 
+              color="muted"
+            /> -->
+          </div>
+        </template>
+
+        <template #body>
+          <div class="p-5">
+            test
+          </div>
+        </template>
+
+        <template #footer>
+          <div class="p-5 flex items-center justify-end">
+            <BaseButton @click="showAddReviewModal = false">
+              Close
+            </BaseButton>
+          </div>
+        </template>
+      </BaseModal>
 </template>
   
 <script setup>
@@ -174,6 +206,8 @@ import { useCurrencyFormat } from '@/composables/currencyFormat'
 
 import OrdersSkeleton from '@/components/OrdersSkeleton.vue'
 import BaseDropdown from '@/components/BaseDropdown.vue'
+import BaseModal from '@/components/BaseModal.vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 const auth = useAuthStore()
 const orders = ref([])
@@ -184,6 +218,7 @@ const perPage = 5
 const { formatAmount } = useCurrencyFormat()
 const ordersSection = ref(null)
 const loading = ref(true)
+const showAddReviewModal = ref(false)
 
 const statuses = ['all', 'pending', 'completed', 'cancelled']
 
@@ -299,7 +334,7 @@ const cancelOrder = async (orderId) => {
 }
 
 const addReview = async (orderId) => {
-  console.log(orderId)
+  showAddReviewModal.value = true
 }
 
 const scrollToOrdersTop = () => {

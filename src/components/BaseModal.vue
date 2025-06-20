@@ -5,7 +5,7 @@
         <Transition name="fade" appear @after-leave="onAfterLeave">
           <div
             v-if="show"
-            class="fixed inset-0 bg-black bg-opacity-50"
+            class="fixed inset-0 bg-black opacity-50"
             @click="handleBackdropClick"
           ></div>
         </Transition>
@@ -34,6 +34,7 @@
 </template>
   
 <script setup>
+import { ref, watch, onUnmounted } from 'vue'
 import { useModalTracker } from '@/composables/modalTracker'
 
 const props = defineProps({

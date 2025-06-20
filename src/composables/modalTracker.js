@@ -1,3 +1,5 @@
+import { ref } from 'vue'
+
 const openModalCount = ref(0)
 
 export function useModalTracker() {   
