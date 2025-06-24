@@ -167,12 +167,12 @@
     <BaseModal
         v-model="showAddReviewModal"
         :size="'lg'"
-        :closableViaBackdrop="true"
+        :closableViaBackdrop="!isSubmitting"
       >
         <template #header>
           <div class="flex items-center justify-between w-full p-5 border-b border-b-gray-300 gap-3">
             <h2 class="text-base sm:text-md font-semibold">Add Review</h2>
-            <button @click="showAddReviewModal = false" class="cursor-pointer">
+            <button @click="showAddReviewModal = false" :disabled="isSubmitting" class="cursor-pointer hover:!bg-transparent">
               <PhX :size="18" weight="bold" />
             </button>
           </div>
@@ -186,13 +186,16 @@
               <div class="flex gap-1">
                 <template v-for="n in 5" :key="n">
                   <button
+                    :disabled="isSubmitting"
                     @click="rating = n"
-                    @mouseover="hoverRating = n"
+                    @mouseover="isSubmitting ? hoverRating = hoverRating : hoverRating = n"
                     @mouseleave="hoverRating = 0"
-                    class="transition hover:scale-110 cursor-pointer"
+                    class="transition cursor-pointer hover:!bg-transparent"
                     :class="{
                       'text-yellow-400': n <= (hoverRating || rating),
-                      'text-gray-300': n > (hoverRating || rating)
+                      'text-gray-300': n > (hoverRating || rating),
+                      'cursor-not-allowed opacity-50' : isSubmitting,
+                      'cursor-not-allowed opacity-100 hover:scale-110' : !isSubmitting
                     }"
                   >
                     <PhStar :size="28" weight="fill" />
@@ -205,10 +208,12 @@
             <div>
               <label class="block mb-2 text-sm font-medium">Your Review</label>
               <textarea
+                :disabled="isSubmitting"
                 v-model="reviewMessage"
                 rows="4"
                 maxlength="100"
                 placeholder="Write your thoughts about the product..."
+                :class="{ 'cursor-not-allowed !opacity-50' : isSubmitting }"
                 class="resize-none text-sm sm:text-base placeholder:text-sm placeholder-gray-400 w-full border rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none transition-colors duration-300 ease-in-out border-gray-300 focus-visible:!border-secondary-500 opacity-100 cursor-auto"
               ></textarea>
               <p class="text-right text-xs text-gray-500 mt-1" :class="reviewMessageClass">
@@ -221,12 +226,14 @@
         <template #footer>
           <div class="p-5 flex flex-col sm:flex-row items-center justify-end gap-2 sm:gap-3">
             <button 
+              :disabled="isSubmitting"
               @click="submitReview" 
               class="w-full sm:w-max text-sm text-white bg-secondary-500 hover:bg-secondary-300 !px-4.5 !py-2.5 cursor-pointer rounded-md transition-colors duration-300 ease-in-out"
             >
               Submit
             </button>
             <button 
+              :disabled="isSubmitting"
               @click="showAddReviewModal = false" 
               class="w-full sm:w-max text-sm text-white bg-gray-500 hover:bg-gray-600 !px-4.5 !py-2.5 cursor-pointer rounded-md transition-colors duration-300 ease-in-out"
             >
@@ -248,7 +255,6 @@ import { useCurrencyFormat } from '@/composables/currencyFormat'
 import OrdersSkeleton from '@/components/OrdersSkeleton.vue'
 import BaseDropdown from '@/components/BaseDropdown.vue'
 import BaseModal from '@/components/BaseModal.vue'
-import BaseButton from '@/components/BaseButton.vue'
 
 const auth = useAuthStore()
 const orders = ref([])
@@ -263,6 +269,7 @@ const showAddReviewModal = ref(false)
 const rating = ref(5)
 const hoverRating = ref(5)
 const reviewMessage = ref('')
+const isSubmitting = ref(false)
 
 const statuses = ['all', 'pending', 'completed', 'cancelled']
 
@@ -386,9 +393,37 @@ const addReview = async () => {
   showAddReviewModal.value = true
 }
 
-const submitReview = () => {
-  console.log('rating', rating.value)
-  console.log('reviewMessage', reviewMessage.value)
+const submitReview = async () => {
+  const confirm = await Swal.fire({
+    title: 'Submit Review?',
+    text: 'Are you sure you want to submit your rating and feedback?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, submit it',
+    cancelButtonText: 'Cancel',
+    reverseButtons: true,
+  })
+
+  if (!confirm.isConfirmed) return
+
+  isSubmitting.value = true
+  console.log('Submitting review:', {
+    rating: rating.value,
+    message: reviewMessage.value,
+  })
+
+  setTimeout(() => {
+    showAddReviewModal.value = false
+    rating.value = 5
+    reviewMessage.value = ''
+    isSubmitting.value = false
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Thank you!',
+      text: 'Your review has been submitted successfully.',
+    })
+  }, 5000);
 }
 
 const scrollToOrdersTop = () => {
