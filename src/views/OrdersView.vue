@@ -261,7 +261,7 @@ const ordersSection = ref(null)
 const loading = ref(true)
 const showAddReviewModal = ref(false)
 const rating = ref(5)
-const hoverRating = ref(0)
+const hoverRating = ref(5)
 const reviewMessage = ref('')
 
 const statuses = ['all', 'pending', 'completed', 'cancelled']
