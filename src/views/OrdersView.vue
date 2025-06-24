@@ -166,27 +166,61 @@
     <!-- Add review modal -->
     <BaseModal
         v-model="showAddReviewModal"
-        :size="'md'"
+        :size="'lg'"
         :closableViaBackdrop="true"
       >
         <template #header>
-          <div class="flex items-center justify-between w-full p-5 border-b gap-3">
-            <span>Add Review</span>
-            <button @click="showAddReviewModal = false">
-              Close
+          <div class="flex items-center justify-between w-full p-5 border-b border-b-gray-300 gap-3">
+            <h2 class="text-base sm:text-md font-semibold">Add Review</h2>
+            <button @click="showAddReviewModal = false" class="cursor-pointer">
+              <PhX :size="18" weight="bold" />
             </button>
           </div>
         </template>
 
         <template #body>
-          <div class="p-5">
-            test
+          <div class="p-5 space-y-6">
+            <!-- Star rating -->
+            <div class="flex flex-col items-baseline gap-2">
+              <span class="text-sm font-medium">Your Rating:</span>
+              <div class="flex gap-1">
+                <template v-for="n in 5" :key="n">
+                  <button
+                    @click="rating = n"
+                    class="text-yellow-400 transition hover:scale-110 cursor-pointer"
+                    :class="{ 'text-gray-300': n > rating }"
+                  >
+                    <PhStar :size="26" weight="fill" />
+                  </button>
+                </template>
+              </div>
+            </div>
+
+            <!-- Review message -->
+            <div>
+              <label class="block mb-2 text-sm font-medium">Your Review</label>
+              <textarea
+                v-model="reviewMessage"
+                rows="4"
+                size
+                placeholder="Write your thoughts about the product..."
+                class="resize-none text-sm sm:text-base placeholder:text-sm placeholder-gray-400 w-full border rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none transition-colors duration-300 ease-in-out border-gray-300 focus-visible:!border-secondary-500 opacity-100 cursor-auto"
+              ></textarea>
+            </div>
           </div>
         </template>
 
         <template #footer>
-          <div class="p-5 flex items-center justify-end">
-            <button @click="showAddReviewModal = false">
+          <div class="p-5 flex flex-col sm:flex-row items-center justify-end gap-2 sm:gap-3">
+            <button 
+              class="w-full sm:w-max text-sm text-white bg-secondary-500 hover:bg-secondary-300 !px-4.5 !py-2.5 cursor-pointer rounded-md transition-colors duration-300 ease-in-out"
+            >
+              Submit
+            </button>
+            <button 
+              @click="showAddReviewModal = false" 
+              class="w-full sm:w-max text-sm text-white bg-gray-500 hover:bg-gray-600 !px-4.5 !py-2.5 cursor-pointer rounded-md transition-colors duration-300 ease-in-out"
+            >
               Close
             </button>
           </div>
@@ -217,6 +251,8 @@ const { formatAmount } = useCurrencyFormat()
 const ordersSection = ref(null)
 const loading = ref(true)
 const showAddReviewModal = ref(false)
+const rating = ref(0)
+const reviewMessage = ref('')
 
 const statuses = ['all', 'pending', 'completed', 'cancelled']
 
