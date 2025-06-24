@@ -123,7 +123,7 @@
                   </button>
                   <button
                     v-if="order.status === 'completed'"
-                    @click="addReview(order.id)"
+                    @click="addReview"
                     class="px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer bg-secondary-500 hover:bg-secondary-300 text-white text-sm rounded transition-colors duration-300 ease-in-out"
                   >
                     Add Review
@@ -190,7 +190,7 @@
                     class="text-yellow-400 transition hover:scale-110 cursor-pointer"
                     :class="{ 'text-gray-300': n > rating }"
                   >
-                    <PhStar :size="26" weight="fill" />
+                    <PhStar :size="28" weight="fill" />
                   </button>
                 </template>
               </div>
@@ -202,10 +202,13 @@
               <textarea
                 v-model="reviewMessage"
                 rows="4"
-                size
+                maxlength="100"
                 placeholder="Write your thoughts about the product..."
                 class="resize-none text-sm sm:text-base placeholder:text-sm placeholder-gray-400 w-full border rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none transition-colors duration-300 ease-in-out border-gray-300 focus-visible:!border-secondary-500 opacity-100 cursor-auto"
               ></textarea>
+              <p class="text-right text-xs text-gray-500 mt-1" :class="reviewMessageClass">
+                {{ reviewMessage.length }}/100 characters
+              </p>
             </div>
           </div>
         </template>
@@ -213,6 +216,7 @@
         <template #footer>
           <div class="p-5 flex flex-col sm:flex-row items-center justify-end gap-2 sm:gap-3">
             <button 
+              @click="submitReview" 
               class="w-full sm:w-max text-sm text-white bg-secondary-500 hover:bg-secondary-300 !px-4.5 !py-2.5 cursor-pointer rounded-md transition-colors duration-300 ease-in-out"
             >
               Submit
@@ -264,6 +268,11 @@ const statusColor = (status) => {
     default: return 'bg-secondary-500'
   }
 }
+
+const reviewMessageClass = computed(() => {
+  if (reviewMessage.value.length >= 100) return 'text-red-500'
+  return 'text-gray-500'
+})
 
 const filteredOrders = computed(() => {
   if (selectedStatus.value === 'all') return orders.value
@@ -367,8 +376,12 @@ const cancelOrder = async (orderId) => {
   }
 }
 
-const addReview = async (orderId) => {
+const addReview = async () => {
   showAddReviewModal.value = true
+}
+
+const submitReview = () => {
+  console.log('submit review')
 }
 
 const scrollToOrdersTop = () => {
