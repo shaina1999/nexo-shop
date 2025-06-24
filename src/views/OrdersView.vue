@@ -187,8 +187,13 @@
                 <template v-for="n in 5" :key="n">
                   <button
                     @click="rating = n"
-                    class="text-yellow-400 transition hover:scale-110 cursor-pointer"
-                    :class="{ 'text-gray-300': n > rating }"
+                    @mouseover="hoverRating = n"
+                    @mouseleave="hoverRating = 0"
+                    class="transition hover:scale-110 cursor-pointer"
+                    :class="{
+                      'text-yellow-400': n <= (hoverRating || rating),
+                      'text-gray-300': n > (hoverRating || rating)
+                    }"
                   >
                     <PhStar :size="28" weight="fill" />
                   </button>
@@ -255,7 +260,8 @@ const { formatAmount } = useCurrencyFormat()
 const ordersSection = ref(null)
 const loading = ref(true)
 const showAddReviewModal = ref(false)
-const rating = ref(0)
+const rating = ref(5)
+const hoverRating = ref(0)
 const reviewMessage = ref('')
 
 const statuses = ['all', 'pending', 'completed', 'cancelled']
@@ -381,7 +387,8 @@ const addReview = async () => {
 }
 
 const submitReview = () => {
-  console.log('submit review')
+  console.log('rating', rating.value)
+  console.log('reviewMessage', reviewMessage.value)
 }
 
 const scrollToOrdersTop = () => {
