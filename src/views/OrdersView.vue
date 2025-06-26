@@ -121,13 +121,18 @@
                   >
                     Cancel Order
                   </button>
-                  <button
-                    v-if="order.status === 'completed'"
-                    @click="addReview"
-                    class="px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer bg-secondary-500 hover:bg-secondary-300 text-white text-sm rounded transition-colors duration-300 ease-in-out"
-                  >
-                    Add Review
-                  </button>
+                  <div v-if="order.status === 'completed'" class="flex items-baseline sm:items-center flex-col sm:flex-row gap-2">
+                    <div v-if="isReviewed" class="text-green-600 text-xs font-medium bg-green-50 border border-green-200 px-3 py-1 sm:py-1.5 rounded-full flex items-center gap-2">
+                      <PhCheckCircle :size="18" class="text-green-600" />
+                      Reviewed
+                    </div>
+                    <button
+                      @click="isReviewed ? editReview() : addReview()"
+                      class="px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer bg-secondary-500 hover:bg-secondary-300 text-white text-sm rounded transition-colors duration-300 ease-in-out"
+                    >
+                      {{ isReviewed ? 'Edit Review' : 'Add Review ' }}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -171,7 +176,7 @@
       >
         <template #header>
           <div class="flex items-center justify-between w-full p-5 border-b border-b-gray-300 gap-3">
-            <h2 class="text-base sm:text-md font-semibold">Add Review</h2>
+            <h2 class="text-base sm:text-md font-semibold">{{ isReviewed ? 'Edit Review' : 'Add Review' }}</h2>
             <button @click="showAddReviewModal = false" :disabled="isSubmitting" class="cursor-pointer hover:!bg-transparent">
               <PhX :size="18" weight="bold" />
             </button>
@@ -270,6 +275,7 @@ const rating = ref(5)
 const hoverRating = ref(5)
 const reviewMessage = ref('')
 const isSubmitting = ref(false)
+const isReviewed = ref(false)
 
 const statuses = ['all', 'pending', 'completed', 'cancelled']
 
@@ -390,6 +396,11 @@ const cancelOrder = async (orderId) => {
 }
 
 const addReview = async () => {
+  showAddReviewModal.value = true
+}
+
+const editReview = () => {
+  console.log('edit')
   showAddReviewModal.value = true
 }
 
