@@ -181,7 +181,7 @@
       >
         <template #header>
           <div class="flex items-center justify-between w-full p-5 border-b border-b-gray-300 gap-3">
-            <h2 class="text-base sm:text-md font-semibold">Add Review'</h2>
+            <h2 class="text-base sm:text-md font-semibold">{{ isEditingReview ? 'Edit Review' : 'Add Review' }}</h2>
             <button @click="showAddReviewModal = false" :disabled="isSubmitting" class="cursor-pointer hover:!bg-transparent">
               <PhX :size="18" weight="bold" />
             </button>
@@ -240,7 +240,7 @@
               @click="submitReview" 
               class="w-full sm:w-max text-sm text-white bg-secondary-500 hover:bg-secondary-300 !px-4.5 !py-2.5 cursor-pointer rounded-md transition-colors duration-300 ease-in-out"
             >
-              Submit
+            {{ isEditingReview ? 'Update' : 'Submit' }}
             </button>
             <button 
               :disabled="isSubmitting"
@@ -313,6 +313,19 @@ const paginatedOrders = computed(() => {
   const start = (currentPage.value - 1) * perPage
   return filteredOrders.value.slice(start, start + perPage)
 })
+
+const hasReview = (orderId, productId) => {
+  return userReviews.value.some(
+    review =>
+      review.order_id === orderId &&
+      review.product_id === productId
+  )
+}
+
+const isEditingReview = computed(() => {
+  if (!selectedOrderId.value || !selectedProductId.value) return false
+  return hasReview(selectedOrderId.value, selectedProductId.value)
+})
   
 const fetchOrders = async () => {
   if (!auth?.user?.id) return
@@ -381,14 +394,6 @@ const fetchReviews = async () => {
   if (error) throw error
 
   return data
-}
-
-const hasReview = (orderId, productId) => {
-  return userReviews.value.some(
-    review =>
-      review.order_id === orderId &&
-      review.product_id === productId
-  )
 }
 
 const toggleAccordion = (orderId) => {
