@@ -29,7 +29,7 @@
             </button>
             <div>
                 <button 
-                    class="font-semibold text-sm sm:text-base mb-1 sm:mb-2 cursor-pointer hover:text-secondary-500 transition-colors duration-300 ease-in-out text-left" 
+                    class="line-clamp-2 font-semibold text-sm sm:text-base mb-1 sm:mb-2 cursor-pointer hover:text-secondary-500 transition-colors duration-300 ease-in-out text-left" 
                     @click="goToProductPage(product.id)"
                 >
                     {{ product.name }}
