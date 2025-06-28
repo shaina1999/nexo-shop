@@ -197,7 +197,7 @@
           <p v-if="review.review?.trim()" class="text-sm sm:text-base text-black leading-relaxed mb-2">
             {{ review.review?.trim() }}
           </p>
-          <p class="text-sm sm:text-base text-gray-400 mb-2">
+          <p v-else class="text-sm sm:text-base text-gray-400 mb-2">
             This user left a rating only
           </p>
           <p class="text-sm text-gray-500 mt-2">
