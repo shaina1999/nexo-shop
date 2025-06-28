@@ -74,7 +74,12 @@
                     <div class="flex items-center gap-x-2">
                       <img class="w-10 h-10 object-contain" :src="item.products?.images[0]?.url" :alt="item.products?.name">
                       <div class="flex flex-col">
-                        <span class="line-clamp-2 font-semibold mb-0.5 max-w-[250px] sm:max-w-[300px]">{{ item.products?.name }}</span>
+                        <button 
+                          class="line-clamp-2 font-semibold mb-0.5 max-w-[250px] sm:max-w-[300px] cursor-pointer hover:text-secondary-500 transition-colors duration-300 ease-in-out" 
+                          @click="goToProductPage(item.products?.id)"
+                        >
+                          {{ item.products?.name }}
+                        </button>
                         <span class="font-medium mb-0.5">Php {{ formatAmount(item.discounted_price) }}</span>
                         <span class="text-gray-400">Qty: {{ item.quantity }}</span>
                       </div>
@@ -256,6 +261,7 @@ import { useAuthStore } from '@/stores/authStore'
 import Swal from 'sweetalert2'
 import dayjs from 'dayjs'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
+import { useRouter, useRoute } from 'vue-router'
 
 import OrdersSkeleton from '@/components/OrdersSkeleton.vue'
 import BaseDropdown from '@/components/BaseDropdown.vue'
@@ -276,6 +282,7 @@ const hoverRating = ref(5)
 const reviewMessage = ref('')
 const isSubmitting = ref(false)
 const isReviewed = ref(false)
+const router = useRouter()
 
 const statuses = ['all', 'pending', 'completed', 'cancelled']
 
@@ -441,6 +448,10 @@ const scrollToOrdersTop = () => {
   if (ordersSection.value) {
     ordersSection.value.scrollIntoView({ block: 'start' })
   }
+}
+
+const goToProductPage = (id) => {
+  router.push({ path: '/product', query: { id: id} } ); 
 }
 
 watch(selectedStatus, () => {
