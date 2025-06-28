@@ -86,7 +86,7 @@
                     </div>
                     <div v-if="order.status === 'completed'" class="flex flex-row sm:flex-col items-center gap-2 mt-1 shrink-0">
                       <button
-                        @click="isReviewed ? editReview() : addReview()"
+                        @click="isReviewed ? editReview(order.id, item.products?.id) : addReview(order.id, item.products?.id)"
                         class="px-3 py-1 sm:px-4 sm:py-1.5 cursor-pointer bg-secondary-500 hover:bg-secondary-300 text-white text-sm rounded transition-colors duration-300 ease-in-out"
                       >
                         {{ isReviewed ? 'Edit Review' : 'Add Review ' }}
@@ -283,6 +283,8 @@ const reviewMessage = ref('')
 const isSubmitting = ref(false)
 const isReviewed = ref(false)
 const router = useRouter()
+const selectedOrderId = ref(null)
+const selectedProductId = ref(null)
 
 const statuses = ['all', 'pending', 'completed', 'cancelled']
 
@@ -402,7 +404,9 @@ const cancelOrder = async (orderId) => {
   }
 }
 
-const addReview = async () => {
+const addReview = (orderId, productId) => {
+  selectedOrderId.value = orderId
+  selectedProductId.value = productId
   showAddReviewModal.value = true
 }
 
@@ -425,23 +429,34 @@ const submitReview = async () => {
   if (!confirm.isConfirmed) return
 
   isSubmitting.value = true
-  console.log('Submitting review:', {
-    rating: rating.value,
-    message: reviewMessage.value,
-  })
 
-  setTimeout(() => {
+  try {
+    const { data, error } = await supabase.from('reviews').insert({
+      user_id: auth.user.id,
+      order_id: selectedOrderId.value,
+      product_id: selectedProductId.value,
+      rating: rating.value,
+      review: reviewMessage.value
+    })
+
+    if (error) throw error
+
     showAddReviewModal.value = false
     rating.value = 5
     reviewMessage.value = ''
-    isSubmitting.value = false
+    isReviewed.value = true
 
     Swal.fire({
       icon: 'success',
       title: 'Thank you!',
       text: 'Your review has been submitted successfully.',
     })
-  }, 5000);
+  } catch (err) {
+    console.error('Submit review failed:', err)
+    Swal.fire('Error', 'Failed to submit review. Try again later.', 'error')
+  } finally {
+    isSubmitting.value = false
+  }
 }
 
 const scrollToOrdersTop = () => {
