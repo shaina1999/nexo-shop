@@ -244,7 +244,7 @@
             </button>
             <button 
               :disabled="isSubmitting"
-              @click="showAddReviewModal = false" 
+              @click="closeReviewModal" 
               class="w-full sm:w-max text-sm text-white bg-gray-500 hover:bg-gray-600 !px-4.5 !py-2.5 cursor-pointer rounded-md transition-colors duration-300 ease-in-out"
             >
               Close
@@ -431,9 +431,40 @@ const addReview = (orderId, productId) => {
   showAddReviewModal.value = true
 }
 
-const editReview = () => {
-  console.log('edit')
-  showAddReviewModal.value = true
+const closeReviewModal = () => {
+  showAddReviewModal.value = false
+  rating.value = 5
+  hoverRating.value = 5
+  reviewMessage.value = ''
+  isReviewed.value = false
+}
+
+const editReview = async (orderId, productId) => {
+  selectedOrderId.value = orderId
+  selectedProductId.value = productId
+  isReviewed.value = true
+  isSubmitting.value = true
+
+  try {
+    const { data, error } = await supabase
+      .from('reviews')
+      .select('rating, review')
+      .eq('user_id', auth.user.id)
+      .eq('order_id', orderId)
+      .eq('product_id', productId)
+      .single()
+
+    if (error) throw error
+
+    rating.value = data.rating
+    reviewMessage.value = data.review
+    showAddReviewModal.value = true
+  } catch (err) {
+    console.error('Failed to load review for editing:', err)
+    Swal.fire('Error', 'Could not load your review. Try again later.', 'error')
+  } finally {
+    isSubmitting.value = false
+  }
 }
 
 const submitReview = async () => {
@@ -462,7 +493,13 @@ const submitReview = async () => {
 
     if (error) throw error
 
-    showAddReviewModal.value = false
+    // Update local state
+    userReviews.value.push({
+      order_id: selectedOrderId.value,
+      product_id: selectedProductId.value
+    })
+
+    closeReviewModal()
     rating.value = 5
     reviewMessage.value = ''
     isReviewed.value = true
