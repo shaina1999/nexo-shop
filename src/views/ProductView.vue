@@ -88,7 +88,7 @@
             <div class="flex items-center mb-2">
               <div class="flex items-center text-yellow-400 gap-1 mr-1">
                 <PhStar class="text-yellow-500" weight="fill" />
-                <p class="text-gray-500 text-sm sm:text-base">{{ productObj?.rating }}</p>
+                <p class="text-gray-500 text-sm sm:text-base">{{ productObj?.rating.toFixed(1) }}</p>
               </div>
               <p class="text-gray-500 text-sm sm:text-base">{{ `(${productObj?.reviews_count} review${productObj?.reviews_count <= 1 ? '' : 's'})` }}</p>
               <span class="text-gray-300 mx-2.5">&VerticalLine;</span>
@@ -164,7 +164,7 @@
                 :weight="n <= productObj?.rating ? 'fill' : 'regular'"
               />
             </div>
-            <p class="text-xl sm:text-2xl text-gray-700 font-bold">{{ productObj?.rating }} out of 5</p>
+            <p class="text-xl sm:text-2xl text-gray-700 font-bold">{{ productObj?.rating?.toFixed(1) }} out of 5</p>
           </div>
         </div>
         <BaseDropdown
