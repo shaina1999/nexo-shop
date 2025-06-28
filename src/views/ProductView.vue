@@ -157,11 +157,12 @@
           <h3 class="text-lg sm:text-xl font-semibold text-muted-800 mb-2">Customer Reviews <span class="text-sm text-gray-500 font-normal">{{ `(${productObj?.reviews_count} review${productObj?.reviews_count <= 1 ? '' : 's'})` }}</span></h3>
           <div class="flex items-center gap-x-2">
             <div class="flex items-center gap-1 text-yellow-400">
-              <PhStar class="w-5 h-5 sm:w-6 sm:h-6" weight="fill" />
-              <PhStar class="w-5 h-5 sm:w-6 sm:h-6" weight="fill" />
-              <PhStar class="w-5 h-5 sm:w-6 sm:h-6" weight="fill" />
-              <PhStar class="w-5 h-5 sm:w-6 sm:h-6" weight="fill" />
-              <PhStar class="w-5 h-5 sm:w-6 sm:h-6" weight="fill" />
+              <PhStar
+                v-for="n in 5"
+                :key="n"
+                class="w-4 h-4 sm:w-5 sm:h-5"
+                :weight="n <= productObj?.rating ? 'fill' : 'regular'"
+              />
             </div>
             <p class="text-xl sm:text-2xl text-gray-700 font-bold">{{ productObj?.rating }} out of 5</p>
           </div>
@@ -193,8 +194,11 @@
               />
             </div>
           </div>
-          <p class="text-sm sm:text-base text-black leading-relaxed mb-2">
-            {{ review.review }}
+          <p v-if="review.review?.trim()" class="text-sm sm:text-base text-black leading-relaxed mb-2">
+            {{ review.review?.trim() }}
+          </p>
+          <p class="text-sm sm:text-base text-gray-400 mb-2">
+            This user left a rating only
           </p>
           <p class="text-sm text-gray-500 mt-2">
             Reviewed on {{ formatDate(review.created_at) }}
