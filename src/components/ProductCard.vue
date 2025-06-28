@@ -42,7 +42,7 @@
                     <div class="flex items-center gap-x-1">
                         <PhStar class="text-yellow-500" weight="fill" />
                         <span class="font-medium">{{ product.rating }}</span>
-                        <span class="text-gray-500">{{ `(591 reviews)` }}</span>
+                        <span class="text-gray-500">{{ `(${product.reviews_count} review${product.reviews_count <= 1 ? '' : 's'})` }}</span>
                     </div>
                 </div>
             </div>
