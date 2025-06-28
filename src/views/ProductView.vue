@@ -90,7 +90,7 @@
                 <PhStar class="text-yellow-500" weight="fill" />
                 <p class="text-gray-500 text-sm sm:text-base">{{ productObj?.rating }}</p>
               </div>
-              <p class="text-gray-500 text-sm sm:text-base">(150 Reviews)</p>
+              <p class="text-gray-500 text-sm sm:text-base">{{ `(${productObj?.reviews_count} review${productObj?.reviews_count <= 1 ? '' : 's'})` }}</p>
               <span class="text-gray-300 mx-2.5">&VerticalLine;</span>
               <span 
                 class="text-sm sm:text-base font-medium py-0.5 px-2.5 rounded-sm"
