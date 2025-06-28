@@ -171,6 +171,8 @@
           label="Filter by Rating"
           v-model="selectedSort"
           :options="sortOptions"
+          option-label-key="label"
+          option-value-key="value"
         />
       </div>
 
@@ -239,9 +241,17 @@ const selectedSlideId = ref('slide0')
 const isAddingToCart = ref(false)
 const cart = useCartStore()
 const visible = ref(false)
-const selectedSort = ref('5 Star')
-const sortOptions = ['5 Star', '4 Star', '3 Star', '2 Star', '1 Star']
+const selectedSort = ref(null)
 const reviews = ref([])
+
+const sortOptions = [
+  { label: 'All', value: null },
+  { label: '5 Star', value: 5 },
+  { label: '4 Star', value: 4 },
+  { label: '3 Star', value: 3 },
+  { label: '2 Star', value: 2 },
+  { label: '1 Star', value: 1 },
+]
 
 const openImageViewer = () => {
   visible.value = true
@@ -291,11 +301,18 @@ const fetchProduct = async (id) => {
 };
 
 const fetchReviews = async (productId) => {
-  const { data, error } = await supabase
+  const selectedRating = parseInt(selectedSort.value)
+  let query = supabase
     .from('reviews')
     .select('*')
     .eq('product_id', productId)
     .order('created_at', { ascending: false })
+
+  if (!isNaN(selectedRating)) {
+    query = query.eq('rating', selectedRating)
+  }
+
+  const { data, error } = await query
 
   if (error) {
     console.error('Error fetching reviews:', error)
@@ -308,6 +325,10 @@ const fetchReviews = async (productId) => {
 const formatDate = (dateStr) => {
   return dayjs(dateStr).format('MMMM DD, YYYY [at] hh:mm A')
 }
+
+watch(selectedSort, async () => {
+  await fetchReviews(route.query.id)
+})
 
 onMounted(async () => {
   await fetchProduct(route.query.id)
