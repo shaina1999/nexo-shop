@@ -181,7 +181,7 @@
       >
         <template #header>
           <div class="flex items-center justify-between w-full p-5 border-b border-b-gray-300 gap-3">
-            <h2 class="text-base sm:text-md font-semibold">{{ isReviewed ? 'Edit Review' : 'Add Review' }}</h2>
+            <h2 class="text-base sm:text-md font-semibold">Add Review'</h2>
             <button @click="showAddReviewModal = false" :disabled="isSubmitting" class="cursor-pointer hover:!bg-transparent">
               <PhX :size="18" weight="bold" />
             </button>
@@ -281,7 +281,6 @@ const rating = ref(5)
 const hoverRating = ref(5)
 const reviewMessage = ref('')
 const isSubmitting = ref(false)
-const isReviewed = ref(false)
 const router = useRouter()
 const selectedOrderId = ref(null)
 const selectedProductId = ref(null)
@@ -436,13 +435,11 @@ const closeReviewModal = () => {
   rating.value = 5
   hoverRating.value = 5
   reviewMessage.value = ''
-  isReviewed.value = false
 }
 
 const editReview = async (orderId, productId) => {
   selectedOrderId.value = orderId
   selectedProductId.value = productId
-  isReviewed.value = true
   isSubmitting.value = true
 
   try {
@@ -502,7 +499,6 @@ const submitReview = async () => {
     closeReviewModal()
     rating.value = 5
     reviewMessage.value = ''
-    isReviewed.value = true
 
     Swal.fire({
       icon: 'success',
