@@ -430,6 +430,9 @@ const cancelOrder = async (orderId) => {
 }
 
 const addReview = (orderId, productId) => {
+  rating.value = 5
+  hoverRating.value = 5
+  reviewMessage.value = ''
   selectedOrderId.value = orderId
   selectedProductId.value = productId
   showAddReviewModal.value = true
@@ -460,6 +463,7 @@ const editReview = async (orderId, productId) => {
 
     rating.value = data.rating
     reviewMessage.value = data.review
+    hoverRating.value = 0  
     showAddReviewModal.value = true
   } catch (err) {
     console.error('Failed to load review for editing:', err)
@@ -471,11 +475,13 @@ const editReview = async (orderId, productId) => {
 
 const submitReview = async () => {
   const confirm = await Swal.fire({
-    title: 'Submit Review?',
-    text: 'Are you sure you want to submit your rating and feedback?',
+    title: isEditingReview.value ? 'Update Review?' : 'Submit Review?',
+    text: isEditingReview.value
+      ? 'Are you sure you want to update your review and rating?'
+      : 'Are you sure you want to submit your rating and feedback?',
     icon: 'question',
     showCancelButton: true,
-    confirmButtonText: 'Yes, submit it',
+    confirmButtonText: isEditingReview.value ? 'Yes, update it' : 'Yes, submit it',
     cancelButtonText: 'Cancel',
     reverseButtons: true,
   })
@@ -485,31 +491,51 @@ const submitReview = async () => {
   isSubmitting.value = true
 
   try {
-    const { data, error } = await supabase.from('reviews').insert({
-      user_id: auth.user.id,
-      order_id: selectedOrderId.value,
-      product_id: selectedProductId.value,
-      rating: rating.value,
-      review: reviewMessage.value
-    })
+    if (isEditingReview.value) {
+      // Update existing review
+      const { error } = await supabase
+        .from('reviews')
+        .update({
+          rating: rating.value,
+          review: reviewMessage.value
+        })
+        .eq('user_id', auth.user.id)
+        .eq('order_id', selectedOrderId.value)
+        .eq('product_id', selectedProductId.value)
 
-    if (error) throw error
+      if (error) throw error
 
-    // Update local state
-    userReviews.value.push({
-      order_id: selectedOrderId.value,
-      product_id: selectedProductId.value
-    })
+      Swal.fire({
+        icon: 'success',
+        title: 'Updated!',
+        text: 'Your review has been updated successfully.',
+      })
+    } else {
+      // Insert new review
+      const { error } = await supabase.from('reviews').insert({
+        user_id: auth.user.id,
+        order_id: selectedOrderId.value,
+        product_id: selectedProductId.value,
+        rating: rating.value,
+        review: reviewMessage.value
+      })
+
+      if (error) throw error
+
+      // Add to local state
+      userReviews.value.push({
+        order_id: selectedOrderId.value,
+        product_id: selectedProductId.value
+      })
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Thank you!',
+        text: 'Your review has been submitted successfully.',
+      })
+    }
 
     closeReviewModal()
-    rating.value = 5
-    reviewMessage.value = ''
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Thank you!',
-      text: 'Your review has been submitted successfully.',
-    })
   } catch (err) {
     console.error('Submit review failed:', err)
     Swal.fire('Error', 'Failed to submit review. Try again later.', 'error')
