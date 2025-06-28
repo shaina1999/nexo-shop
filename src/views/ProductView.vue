@@ -197,7 +197,7 @@
             {{ review.review }}
           </p>
           <p class="text-sm text-gray-500 mt-2">
-            Reviewed on {{ new Date(review.created_at).toLocaleString() }}
+            Reviewed on {{ formatDate(review.created_at) }}
           </p>
         </div>
 
@@ -216,6 +216,7 @@ import { supabase } from '@/supabase'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
 import Swal from 'sweetalert2'
 import { useCartStore } from '@/stores/cartStore'
+import dayjs from 'dayjs'
 
 import BaseButton from '@/components/BaseButton.vue'
 import ProductDetailsSkeleton from '@/components/ProductDetailsSkeleton.vue'
@@ -298,6 +299,10 @@ const fetchReviews = async (productId) => {
   }
 
   reviews.value = data
+}
+
+const formatDate = (dateStr) => {
+  return dayjs(dateStr).format('MMMM DD, YYYY [at] hh:mm A')
 }
 
 onMounted(async () => {
