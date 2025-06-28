@@ -86,12 +86,12 @@
                     </div>
                     <div v-if="order.status === 'completed'" class="flex flex-row sm:flex-col items-center gap-2 mt-1 shrink-0">
                       <button
-                        @click="isReviewed ? editReview(order.id, item.products?.id) : addReview(order.id, item.products?.id)"
+                        @click="hasReview(order.id, item.products?.id) ? editReview(order.id, item.products?.id) : addReview(order.id, item.products?.id)"
                         class="px-3 py-1 sm:px-4 sm:py-1.5 cursor-pointer bg-secondary-500 hover:bg-secondary-300 text-white text-sm rounded transition-colors duration-300 ease-in-out"
                       >
-                        {{ isReviewed ? 'Edit Review' : 'Add Review ' }}
+                        {{ hasReview(order.id, item.products?.id) ? 'Edit Review' : 'Add Review' }}
                       </button>
-                      <div v-if="true" class="text-green-600 text-xs font-medium bg-green-50 border border-green-200 px-3 py-1 rounded-full flex items-center gap-2">
+                      <div v-if="hasReview(order.id, item.products?.id)" class="text-green-600 text-xs font-medium bg-green-50 border border-green-200 px-3 py-1 rounded-full flex items-center gap-2">
                         <PhCheckCircle :size="18" class="text-green-600" />
                         Reviewed
                       </div>
@@ -285,6 +285,7 @@ const isReviewed = ref(false)
 const router = useRouter()
 const selectedOrderId = ref(null)
 const selectedProductId = ref(null)
+const userReviews = ref([])
 
 const statuses = ['all', 'pending', 'completed', 'cancelled']
 
@@ -358,6 +359,7 @@ const fetchOrders = async () => {
     }
 
     orders.value = data
+    userReviews.value = await fetchReviews()
   } catch (err) {
     console.error('Failed to fetch orders:', err)
 
@@ -370,7 +372,26 @@ const fetchOrders = async () => {
     loading.value = false
   }
 }
-  
+
+const fetchReviews = async () => {
+  const { data, error } = await supabase
+    .from('reviews')
+    .select('product_id, order_id')
+    .eq('user_id', auth.user.id)
+
+  if (error) throw error
+
+  return data
+}
+
+const hasReview = (orderId, productId) => {
+  return userReviews.value.some(
+    review =>
+      review.order_id === orderId &&
+      review.product_id === productId
+  )
+}
+
 const toggleAccordion = (orderId) => {
   expandedOrder.value = expandedOrder.value === orderId ? null : orderId
 }
