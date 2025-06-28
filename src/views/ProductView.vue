@@ -176,22 +176,33 @@
       <!-- Reviews List -->
       <div class="space-y-6">
         <div
+          v-for="review in reviews"
+          :key="review.id"
           class="bg-white p-5 rounded-lg shadow-sm border border-gray-200"
         >
           <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2 gap-2 sm:gap-1">
-            <p class="text-sm sm:text-base font-semibold text-black">Shaina De Guzman</p>
+            <p class="text-sm sm:text-base font-semibold text-black">
+              {{ review.user_email || 'Anonymous' }}
+            </p>
             <div class="flex items-center gap-1 text-yellow-400">
-              <PhStar class="w-4 h-4 sm:w-5 sm:h-5" weight="fill" />
-              <PhStar class="w-4 h-4 sm:w-5 sm:h-5" weight="fill" />
-              <PhStar class="w-4 h-4 sm:w-5 sm:h-5" weight="fill" />
-              <PhStar class="w-4 h-4 sm:w-5 sm:h-5" weight="fill" />
-              <PhStar class="w-4 h-4 sm:w-5 sm:h-5" />
+              <PhStar
+                v-for="n in 5"
+                :key="n"
+                class="w-4 h-4 sm:w-5 sm:h-5"
+                :weight="n <= review.rating ? 'fill' : 'regular'"
+              />
             </div>
           </div>
           <p class="text-sm sm:text-base text-black leading-relaxed mb-2">
-            Amazing quality and fast shipping!
+            {{ review.review }}
           </p>
-          <p class="text-sm text-gray-500 mt-2">Reviewed on June 01, 2024 10:01 PM</p>
+          <p class="text-sm text-gray-500 mt-2">
+            Reviewed on {{ new Date(review.created_at).toLocaleString() }}
+          </p>
+        </div>
+
+        <div v-if="reviews.length === 0" class="text-center text-gray-500 text-sm sm:text-base py-10">
+          No reviews yet. Be the first to review this product!
         </div>
       </div>
     </div>
@@ -224,7 +235,8 @@ const isAddingToCart = ref(false)
 const cart = useCartStore()
 const visible = ref(false)
 const selectedSort = ref('5 Star')
-const sortOptions = [ '5 Star', '4 Star', '3 Star', '2 Star', '1 Star']
+const sortOptions = ['5 Star', '4 Star', '3 Star', '2 Star', '1 Star']
+const reviews = ref([])
 
 const openImageViewer = () => {
   visible.value = true
@@ -273,8 +285,24 @@ const fetchProduct = async (id) => {
   }
 };
 
+const fetchReviews = async (productId) => {
+  const { data, error } = await supabase
+    .from('reviews')
+    .select('*')
+    .eq('product_id', productId)
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('Error fetching reviews:', error)
+    return
+  }
+
+  reviews.value = data
+}
+
 onMounted(async () => {
-  await fetchProduct(route.query.id);
+  await fetchProduct(route.query.id)
+  await fetchReviews(route.query.id)
 })
 </script>
 

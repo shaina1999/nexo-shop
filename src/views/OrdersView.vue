@@ -519,7 +519,8 @@ const submitReview = async () => {
         order_id: selectedOrderId.value,
         product_id: selectedProductId.value,
         rating: rating.value,
-        review: reviewMessage.value
+        review: reviewMessage.value,
+        user_email: auth.user.email,
       })
 
       if (error) throw error
