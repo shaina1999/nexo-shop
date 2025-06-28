@@ -505,6 +505,8 @@ const submitReview = async () => {
 
       if (error) throw error
 
+      await updateProductRating(selectedProductId.value)
+
       Swal.fire({
         icon: 'success',
         title: 'Updated!',
@@ -528,6 +530,8 @@ const submitReview = async () => {
         product_id: selectedProductId.value
       })
 
+      await updateProductRating(selectedProductId.value)
+
       Swal.fire({
         icon: 'success',
         title: 'Thank you!',
@@ -541,6 +545,32 @@ const submitReview = async () => {
     Swal.fire('Error', 'Failed to submit review. Try again later.', 'error')
   } finally {
     isSubmitting.value = false
+  }
+}
+
+const updateProductRating = async (productId) => {
+  const { data, error } = await supabase
+    .from('reviews')
+    .select('rating')
+    .eq('product_id', productId)
+
+  if (error) {
+    console.error('Error fetching reviews for product rating:', error)
+    return
+  }
+
+  if (data.length === 0) return
+
+  const total = data.reduce((sum, r) => sum + r.rating, 0)
+  const avg = total / data.length
+
+  const { error: updateError } = await supabase
+    .from('products')
+    .update({ rating: avg })
+    .eq('id', productId)
+
+  if (updateError) {
+    console.error('Error updating product rating:', updateError)
   }
 }
 
