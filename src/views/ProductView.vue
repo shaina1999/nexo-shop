@@ -208,10 +208,11 @@
         </div>
 
         <div v-if="reviews.length === 0" class="text-center text-gray-500 text-sm sm:text-base py-10">
-          No reviews yet. Be the first to review this product!
+          No reviews found
         </div>
       </div>
     </div>
+    <ReviewsSectionSkeleton />
   </section>
 </template>
 
@@ -228,6 +229,7 @@ import BaseButton from '@/components/BaseButton.vue'
 import ProductDetailsSkeleton from '@/components/ProductDetailsSkeleton.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
 import BaseDropdown from '@/components/BaseDropdown.vue'
+import ReviewsSectionSkeleton from '@/components/ReviewsSectionSkeleton.vue'
 
 const route = useRoute()
 const router = useRouter()
