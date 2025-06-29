@@ -81,7 +81,7 @@
                         <PhUserCircle :size="27" />
                     </button>
                     <ul 
-                        class="flex items-baseline flex-col gap-5 profile-dropdown absolute bottom-[-196px] left-[-140px] sm:bottom-[-203px] sm:left-[-153px] z-50 py-4 px-6 rounded-sm shadow-2xl bg-white text-black border-[1px] border-gray-300 w-max transition-all duration-300 ease-in-out"
+                        class="flex items-baseline flex-col gap-5 profile-dropdown absolute bottom-[-154px] left-[-140px] sm:bottom-[-160px] sm:left-[-153px] z-50 py-4 px-6 rounded-sm shadow-2xl bg-white text-black border-[1px] border-gray-300 w-max transition-all duration-300 ease-in-out"
                         :class="{
                             'opacity-100 translate-y-0 pointer-events-auto': dropdownShow,
                             'opacity-0 -translate-y-3 pointer-events-none': !dropdownShow
@@ -168,12 +168,6 @@ const profileOptions = ref([
         label: 'My Orders',
         icon: 'PhBag',
         to: '/orders',
-        type: 'link',
-    },
-    {
-        label: 'My Reviews',
-        icon: 'PhStar',
-        to: '/my-reviews',
         type: 'link',
     },
     {
