@@ -151,7 +151,8 @@
     </div>
 
     <!-- Customer Reviews Here -->
-    <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
+    <ReviewsSectionSkeleton v-if="isLoading" />
+    <div v-else class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
       <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-t border-gray-300 pt-12 mb-6">
         <div>
           <h3 class="text-lg sm:text-xl font-semibold text-muted-800 mb-2">Customer Reviews <span class="text-sm text-gray-500 font-normal">{{ `(${productObj?.reviews_count} review${productObj?.reviews_count <= 1 ? '' : 's'})` }}</span></h3>
@@ -212,7 +213,6 @@
         </div>
       </div>
     </div>
-    <ReviewsSectionSkeleton />
   </section>
 </template>
 
@@ -298,7 +298,7 @@ const fetchProduct = async (id) => {
       }
     });
   } finally {
-    isLoading.value = false;
+    // isLoading.value = false;
   }
 };
 

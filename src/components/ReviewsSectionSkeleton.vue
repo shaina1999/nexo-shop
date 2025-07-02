@@ -14,13 +14,7 @@
             <p class="text-xl sm:text-2xl text-gray-700 font-bold">4.4 out of 5</p>
           </div>
         </div>
-        <div class="skeleton-loader mt-2">
-            <BaseDropdown
-                label="Filter by Rating"
-                option-label-key="label"
-                option-value-key="value"
-            />
-        </div>
+        <div class="skeleton-loader mt-2 w-[130px] h-[38px]"></div>
       </div>
 
       <!-- Reviews List -->
