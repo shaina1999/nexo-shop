@@ -298,7 +298,7 @@ const fetchProduct = async (id) => {
       }
     });
   } finally {
-    // isLoading.value = false;
+    isLoading.value = false;
   }
 };
 
