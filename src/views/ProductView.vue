@@ -178,7 +178,7 @@
       </div>
 
       <!-- Reviews List -->
-      <div class="space-y-6">
+      <div v-if="!isFilteringReviews" class="space-y-6">
         <div
           v-for="review in reviews"
           :key="review.id"
@@ -212,9 +212,7 @@
           No reviews found
         </div>
       </div>
-      <div class="text-3xl text-red-500">
-        naghahanap pa
-      </div>
+      <ReviewsListSkeleton v-else />
     </div>
   </section>
 </template>
@@ -233,6 +231,7 @@ import ProductDetailsSkeleton from '@/components/ProductDetailsSkeleton.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
 import BaseDropdown from '@/components/BaseDropdown.vue'
 import ReviewsSectionSkeleton from '@/components/ReviewsSectionSkeleton.vue'
+import ReviewsListSkeleton from '@/components/ReviewsListSkeleton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -249,6 +248,7 @@ const visible = ref(false)
 const selectedSort = ref(null)
 const reviews = ref([])
 const isFetchingReviews = ref(false)
+const isFilteringReviews = ref(false)
 
 const sortOptions = [
   { label: 'All', value: null },
@@ -327,6 +327,10 @@ const fetchReviews = async (productId) => {
 
   reviews.value = data
   isFetchingReviews.value = false
+
+  if (isFilteringReviews.value) {
+    isFilteringReviews.value = false
+  }
 }
 
 const formatDate = (dateStr) => {
@@ -334,6 +338,7 @@ const formatDate = (dateStr) => {
 }
 
 watch(selectedSort, async () => {
+  isFilteringReviews.value = true
   await fetchReviews(route.query.id)
 })
 
