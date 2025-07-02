@@ -151,7 +151,7 @@
     </div>
 
     <!-- Customer Reviews Here -->
-    <ReviewsSectionSkeleton v-if="isLoading" />
+    <ReviewsSectionSkeleton v-if="isFetchingReviews" />
     <div v-else class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
       <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-t border-gray-300 pt-12 mb-6">
         <div>
@@ -208,9 +208,12 @@
           </p>
         </div>
 
-        <div v-if="reviews.length === 0" class="text-center text-gray-500 text-sm sm:text-base py-10">
+        <div v-if="reviews.length === 0 && !isFetchingReviews" class="text-center text-gray-500 text-sm sm:text-base py-10">
           No reviews found
         </div>
+      </div>
+      <div class="text-3xl text-red-500">
+        naghahanap pa
       </div>
     </div>
   </section>
@@ -245,6 +248,7 @@ const cart = useCartStore()
 const visible = ref(false)
 const selectedSort = ref(null)
 const reviews = ref([])
+const isFetchingReviews = ref(false)
 
 const sortOptions = [
   { label: 'All', value: null },
@@ -322,6 +326,7 @@ const fetchReviews = async (productId) => {
   }
 
   reviews.value = data
+  isFetchingReviews.value = false
 }
 
 const formatDate = (dateStr) => {
@@ -333,6 +338,7 @@ watch(selectedSort, async () => {
 })
 
 onMounted(async () => {
+  isFetchingReviews.value = true
   await fetchProduct(route.query.id)
   await fetchReviews(route.query.id)
 })
