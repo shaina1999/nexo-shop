@@ -66,6 +66,8 @@
                                 />
                             </div>
 
+                            <div class="hidden sm:block"></div>
+
                             <div>
                                 <label for="newPassword" class="block text-sm font-medium">New Password</label>
                                 <input
