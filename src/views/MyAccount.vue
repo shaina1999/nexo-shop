@@ -7,68 +7,82 @@
             >
                 <!-- Heading -->
                 <div>
-                    <h2 class="text-md sm:text-lg font-semibold text-gray-700 mb-4 sm:mb-6 w-max skeleton-loader">Welcome! <span class="text-secondary-500">Lorem, ipsum dolor.</span></h2>
+                    <h2 class="text-md sm:text-lg font-semibold text-gray-700 mb-4 sm:mb-6">Welcome! <span class="text-secondary-500">User</span></h2>
                 </div>
 
                 <!-- Grid of inputs -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
                     <div>
-                        <label class="block text-sm font-medium skeleton-loader w-[162px]">First Name</label>
+                        <label for="firstName" class="block text-sm font-medium">First Name</label>
                         <input
+                            id="firstName"
                             type="text"
-                            class="skeleton-loader text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
+                            placeholder="Md"
+                            class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
                         />
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium skeleton-loader w-[162px]">Last Name</label>
+                        <label for="lastName" class="block text-sm font-medium">Last Name</label>
                         <input
+                            id="lastName"
                             type="text"
-                            class="skeleton-loader text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
+                            placeholder="Rimel"
+                            class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
                         />
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium skeleton-loader w-[162px]">Email</label>
+                        <label for="email" class="block text-sm font-medium">Email</label>
                         <input
+                            id="email"
                             type="email"
-                            class="skeleton-loader text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
+                            placeholder="rimel111@gmail.com"
+                            class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
                         />
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium skeleton-loader w-[162px]">Address</label>
+                        <label for="address" class="block text-sm font-medium">Address</label>
                         <input
+                            id="address"
                             type="text"
-                            class="skeleton-loader text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
+                            placeholder="Kingston, 5236, United State"
+                            class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
                         />
                     </div>
 
                     <div class="md:col-span-2 space-y-2 sm:space-y-4">
-                        <h3 class="text-sm font-semibold text-gray-700 skeleton-loader w-[170px]">Password</h3>
+                        <h3 class="text-sm font-semibold text-gray-700">Password</h3>
 
                         <div class="gap-4 sm:gap-6 grid grid-cols-1 sm:grid-cols-2">
                             <div>
-                                <label class="block text-sm font-medium skeleton-loader w-[162px]">Current Password</label>
+                                <label for="currentPassword" class="block text-sm font-medium">Current Password</label>
                                 <input
+                                    id="currentPassword"
                                     type="password"
-                                    class="skeleton-loader text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
+                                    placeholder="Current Password"
+                                    class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
                                 />
                             </div>
 
                             <div>
-                                <label class="block text-sm font-medium skeleton-loader w-[162px]">New Password</label>
+                                <label for="newPassword" class="block text-sm font-medium">New Password</label>
                                 <input
+                                    id="newPassword"
                                     type="password"
-                                    class="skeleton-loader text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
+                                    placeholder="New Password"
+                                    class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
                                 />
                             </div>
 
                             <div class="col-span-1">
-                                <label class="block text-sm font-medium skeleton-loader w-[162px]">Confirm New Password</label>
+                                <label for="confirmPassword" class="block text-sm font-medium">Confirm New Password</label>
                                 <input
+                                    id="confirmPassword"
                                     type="password"
-                                    class="skeleton-loader text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
+                                    placeholder="Confirm New Password"
+                                    class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
                                 />
                             </div>
                         </div>
@@ -76,7 +90,7 @@
                 </div>
 
                 <BaseButton
-                    class="w-full sm:w-max skeleton-loader"
+                    class="w-full sm:w-max"
                 >
                     Save Changes
                 </BaseButton>
