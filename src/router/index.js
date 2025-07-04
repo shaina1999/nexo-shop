@@ -15,6 +15,7 @@ import CheckoutSuccessView from '@/views/CheckoutSuccessView.vue'
 import OrdersView from '@/views/OrdersView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 import MyAccount from '@/views/MyAccount.vue'
+import WishListView from '@/views/WishListView.vue'
 
 const routes = [
   { path: '/', name:'home', component: HomeView },
@@ -29,6 +30,7 @@ const routes = [
   { path: '/forgot-password', name:'forgot-password', component: ForgotPasswordView },
   { path: '/reset-password', name:'reset-password', component: ResetPasswordView },
   { path: '/my-account', name:'my-account', component: MyAccount },
+  { path: '/wishlist', name:'wishlist', component: WishListView },
   { path: '/:pathMatch(.*)', component: NotFoundView }
 ]
 
