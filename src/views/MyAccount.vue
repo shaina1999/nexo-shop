@@ -18,6 +18,7 @@
                     <div>
                         <label for="name" class="block text-sm font-medium">Name</label>
                         <input
+                            v-model="name"
                             id="name"
                             type="text"
                             placeholder="Md"
@@ -28,6 +29,7 @@
                     <div>
                         <label for="email" class="block text-sm font-medium">Email</label>
                         <input
+                            v-model="email"
                             id="email"
                             type="email"
                             placeholder="rimel111@gmail.com"
@@ -40,20 +42,9 @@
 
                         <div class="gap-4 sm:gap-6 grid grid-cols-1 sm:grid-cols-2">
                             <div>
-                                <label for="currentPassword" class="block text-sm font-medium">Current Password</label>
-                                <input
-                                    id="currentPassword"
-                                    type="password"
-                                    placeholder="Current Password"
-                                    class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
-                                />
-                            </div>
-
-                            <div class="hidden sm:block"></div>
-
-                            <div>
                                 <label for="newPassword" class="block text-sm font-medium">New Password</label>
                                 <input
+                                    v-model="newPassword"
                                     id="newPassword"
                                     type="password"
                                     placeholder="New Password"
@@ -64,6 +55,7 @@
                             <div class="col-span-1">
                                 <label for="confirmPassword" class="block text-sm font-medium">Confirm New Password</label>
                                 <input
+                                    v-model="confirmNewPassword"
                                     id="confirmPassword"
                                     type="password"
                                     placeholder="Confirm New Password"
@@ -94,6 +86,10 @@ import MyAccountSkeleton from '@/components/MyAccountSkeleton.vue'
 
 const isFetchingUser = ref(false)
 const userData = ref(null)
+const name = ref(null)
+const email = ref(null)
+const newPassword = ref(null)
+const confirmNewPassword = ref(null)
 
 const getUser = async () => {
     isFetchingUser.value = true
@@ -104,6 +100,10 @@ const getUser = async () => {
         if (error) throw error
 
         userData.value = data.user
+
+        // update user v-models
+        name.value = data.user?.user_metadata?.name
+        email.value = data.user?.user_metadata?.email
     } catch (error) {
         console.error('Error fetching user:', error)
     } finally {
