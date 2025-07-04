@@ -2,12 +2,15 @@
     <section class="flex items-center justify-center w-full pt-5 md:pt-10">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl pb-16 sm:pb-20 md:pb-25">
             <form
+                v-if="!isFetchingUser"
                 class="w-full"
                 @submit.prevent="saveProfile"
             >
                 <!-- Heading -->
                 <div>
-                    <h2 class="text-md sm:text-lg font-semibold text-gray-700 mb-4 sm:mb-6">Welcome! <span class="text-secondary-500">User</span></h2>
+                    <h2 class="text-md sm:text-lg font-semibold text-gray-700 mb-4 sm:mb-6">
+                        Welcome! <span class="text-secondary-500">{{ userData?.user_metadata?.name || userData?.user_metadata?.email }}</span>
+                    </h2>
                 </div>
 
                 <!-- Grid of inputs -->
@@ -97,11 +100,38 @@
                     Save Changes
                 </BaseButton>
             </form>
+            <MyAccountSkeleton v-else />
         </div>
     </section>
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue'
+import { supabase } from '@/supabase'
+
 import BaseButton from '@/components/BaseButton.vue'
 import MyAccountSkeleton from '@/components/MyAccountSkeleton.vue'
+
+const isFetchingUser = ref(false)
+const userData = ref(null)
+
+const getUser = async () => {
+    isFetchingUser.value = true
+
+    try {
+        const { data, error } = await supabase.auth.getUser()
+
+        if (error) throw error
+
+        userData.value = data.user
+    } catch (error) {
+        console.error('Error fetching user:', error)
+    } finally {
+        isFetchingUser.value = false
+    }
+}
+
+onMounted( async () => {
+    await getUser()
+})
 </script>
