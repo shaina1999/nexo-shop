@@ -137,6 +137,7 @@ const getUser = async () => {
         email.value = data.user?.user_metadata?.email
     } catch (error) {
         console.error('Error fetching user:', error)
+        Swal.fire({ icon: 'error', title: 'Something went wrong', text: error })
     } finally {
         isFetchingUser.value = false
     }
