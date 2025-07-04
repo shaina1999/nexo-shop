@@ -126,7 +126,11 @@ const getUser = async () => {
 
         if (error) throw error
 
-        userData.value = data.user
+        if(data) {
+            userData.value = data.user
+        } else {
+            Swal.fire({ icon: 'error', title: 'Something went wrong', text: 'Please try again later' })
+        }
 
         // update user v-models
         name.value = data.user?.user_metadata?.name
