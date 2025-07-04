@@ -16,21 +16,11 @@
                 <!-- Grid of inputs -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
                     <div>
-                        <label for="firstName" class="block text-sm font-medium">First Name</label>
+                        <label for="name" class="block text-sm font-medium">Name</label>
                         <input
-                            id="firstName"
+                            id="name"
                             type="text"
                             placeholder="Md"
-                            class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
-                        />
-                    </div>
-
-                    <div>
-                        <label for="lastName" class="block text-sm font-medium">Last Name</label>
-                        <input
-                            id="lastName"
-                            type="text"
-                            placeholder="Rimel"
                             class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
                         />
                     </div>
@@ -41,16 +31,6 @@
                             id="email"
                             type="email"
                             placeholder="rimel111@gmail.com"
-                            class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
-                        />
-                    </div>
-
-                    <div>
-                        <label for="address" class="block text-sm font-medium">Address</label>
-                        <input
-                            id="address"
-                            type="text"
-                            placeholder="Kingston, 5236, United State"
                             class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
                         />
                     </div>
