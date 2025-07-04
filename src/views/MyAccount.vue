@@ -43,24 +43,36 @@
                         <div class="gap-4 sm:gap-6 grid grid-cols-1 sm:grid-cols-2">
                             <div>
                                 <label for="newPassword" class="block text-sm font-medium">New Password</label>
-                                <input
-                                    v-model="newPassword"
-                                    id="newPassword"
-                                    type="password"
-                                    placeholder="New Password"
-                                    class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
-                                />
+                                <div class="flex items-center mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-within:!outline-none focus-within:!border-secondary-500 transition-colors duration-300 ease-in-out">
+                                    <input
+                                        v-model="newPassword"
+                                        id="newPassword"
+                                        :type="newPasswordType"
+                                        placeholder="New Password"
+                                        class="w-full outline-none text-sm sm:text-base placeholder:text-sm placeholder-gray-400"
+                                    />
+                                    <button class="cursor-pointer" @click.prevent="toggleNewPasswordVisibility">
+                                        <PhEye :size="22" :class="{ 'hidden' : showNewPassword, 'block' : !showNewPassword }" />
+                                        <PhEyeSlash :size="22" :class="{ 'block' : showNewPassword, 'hidden' : !showNewPassword }" />
+                                    </button>
+                                </div>
                             </div>
 
-                            <div class="col-span-1">
-                                <label for="confirmPassword" class="block text-sm font-medium">Confirm New Password</label>
-                                <input
-                                    v-model="confirmNewPassword"
-                                    id="confirmPassword"
-                                    type="password"
-                                    placeholder="Confirm New Password"
-                                    class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
-                                />
+                            <div>
+                                <label for="newPassword" class="block text-sm font-medium">Confirm New Password</label>
+                                <div class="flex items-center mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-within:!outline-none focus-within:!border-secondary-500 transition-colors duration-300 ease-in-out">
+                                    <input
+                                        v-model="confirmNewPassword"
+                                        id="confirmPassword"
+                                        :type="confirmPasswordType"
+                                        placeholder="Confirm New Password"
+                                        class="w-full outline-none text-sm sm:text-base placeholder:text-sm placeholder-gray-400"
+                                    />
+                                   <button class="cursor-pointer" @click.prevent="toggleConfirmPasswordVisibility">
+                                        <PhEye :size="22" :class="{ 'hidden' : showConfirmPassword, 'block' : !showConfirmPassword }" />
+                                        <PhEyeSlash :size="22" :class="{ 'block' : showConfirmPassword, 'hidden' : !showConfirmPassword }" />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -90,6 +102,10 @@ const name = ref(null)
 const email = ref(null)
 const newPassword = ref(null)
 const confirmNewPassword = ref(null)
+const newPasswordType = ref('password')
+const confirmPasswordType = ref('password')
+const showNewPassword = ref(false)
+const showConfirmPassword = ref(false)
 
 const getUser = async () => {
     isFetchingUser.value = true
@@ -108,6 +124,26 @@ const getUser = async () => {
         console.error('Error fetching user:', error)
     } finally {
         isFetchingUser.value = false
+    }
+}
+
+const toggleNewPasswordVisibility = () => {
+    showNewPassword.value = !showNewPassword.value
+
+    if(newPasswordType.value === 'password') {
+        newPasswordType.value = 'text'
+    } else {
+        newPasswordType.value = 'password'
+    }
+}
+
+const toggleConfirmPasswordVisibility = () => {
+    showConfirmPassword.value = !showConfirmPassword.value
+
+    if(confirmPasswordType.value === 'password') {
+        confirmPasswordType.value = 'text'
+    } else {
+        confirmPasswordType.value = 'password'
     }
 }
 
