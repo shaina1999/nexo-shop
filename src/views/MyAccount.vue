@@ -158,15 +158,31 @@ const toggleConfirmPasswordVisibility = () => {
     }
 }
 
-const saveProfile = async () => {
-    // Prevent duplicate submissions
-    if (isSubmitting.value) return
-
-    // password validation
-    if ((newPassword.value || confirmNewPassword.value) && newPassword.value !== confirmNewPassword.value) {
-        Swal.fire({ icon: 'error', title: 'Oops...', text: 'New password and confirmation do not match.' })
-        return
+const validateForm = () => {
+    if (!name.value.trim()) {
+        Swal.fire({ icon: 'error', title: 'Oops...', text: 'Name cannot be empty.' })
+        return false
     }
+
+    if (!email.value.trim()) {
+        Swal.fire({ icon: 'error', title: 'Oops...', text: 'Email cannot be empty.' })
+        return false
+    }
+
+    if (
+        (newPassword.value || confirmNewPassword.value) &&
+        newPassword.value !== confirmNewPassword.value
+    ) {
+        Swal.fire({ icon: 'error', title: 'Oops...', text: 'New password and confirmation do not match.' })
+        return false
+    }
+
+    return true
+}
+
+const saveProfile = async () => {
+    if (isSubmitting.value) return
+    if (!validateForm()) return
 
     const updates = {}
 
