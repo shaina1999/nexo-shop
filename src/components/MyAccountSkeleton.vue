@@ -25,34 +25,10 @@
                 />
             </div>
 
-            <div>
-                <label class="block text-sm font-medium skeleton-loader w-[162px]">Email</label>
-                <input
-                    type="email"
-                    class="skeleton-loader text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
-                />
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium skeleton-loader w-[162px]">Address</label>
-                <input
-                    type="text"
-                    class="skeleton-loader text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
-                />
-            </div>
-
             <div class="md:col-span-2 space-y-2 sm:space-y-4">
                 <h3 class="text-sm font-semibold text-gray-700 skeleton-loader w-[170px]">Password</h3>
 
                 <div class="gap-4 sm:gap-6 grid grid-cols-1 sm:grid-cols-2">
-                    <div>
-                        <label class="block text-sm font-medium skeleton-loader w-[162px]">Current Password</label>
-                        <input
-                            type="password"
-                            class="skeleton-loader text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
-                        />
-                    </div>
-
                     <div>
                         <label class="block text-sm font-medium skeleton-loader w-[162px]">New Password</label>
                         <input
