@@ -4,12 +4,12 @@
             <!-- Our Story Section -->
             <div class="grid md:grid-cols-2 gap-10 items-center pb-16 sm:pb-20 md:pb-25 lg:pb-35">
                 <div>
-                    <h2 class="text-3xl font-bold mb-4">Our Story</h2>
+                    <h2 class="text-xl sm:text-3xl font-bold mb-4">Our Story</h2>
                     <p class="text-sm md:text-base text-gray-600 leading-relaxed">
-                        Launched in 2015, Exclusive is South Asia’s premier online shopping marketplace with an active presence in Bangladesh. Supported by wide range of tailored marketing, data and service solutions, Exclusive has 10,500 sellers and 300 brands and serves 3 millions customers across the region.
+                        Launched as a passion project, <span class="font-medium text-black">NexoShop</span> is a modern e-commerce platform built to deliver a clean, fast, and intuitive online shopping experience. Designed with performance and user experience in mind, NexoShop caters to startups, freelancers, and small businesses looking for a ready-to-launch solution.
                     </p>
                     <p class="text-sm md:text-base text-gray-600 leading-relaxed mt-4">
-                        Exclusive has more than 1 Million products to offer, growing at a very fast rate. Exclusive offers a diverse assortment in categories ranging from consumer.
+                        With a curated collection of products, responsive design, and essential features like product filtering, sorting, and variation handling, NexoShop is built to scale and evolve. It’s not just a demo—it's a complete shopping experience created to showcase development skills and modern frontend practices.
                     </p>
                 </div>
                 <div class="w-full">
@@ -19,22 +19,14 @@
 
             <!-- Stats Section -->
             <div class="mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4 pb-16 sm:pb-20 md:pb-25 lg:pb-35 text-center">
-                <div class="bg-white shadow rounded-lg py-6 px-4">
-                    <div class="text-lg font-bold">10.5k</div>
-                    <p class="text-xs text-gray-600 mt-1">Sellers active our site</p>
-                </div>
-                <div class="bg-red-500 text-white shadow rounded-lg py-6 px-4">
-                    <div class="text-lg font-bold">33k</div>
-                    <p class="text-xs mt-1">Monthly Product Sale</p>
-                </div>
-                <div class="bg-white shadow rounded-lg py-6 px-4">
-                    <div class="text-lg font-bold">45.5k</div>
-                    <p class="text-xs text-gray-600 mt-1">Customer active in our site</p>
-                </div>
-                <div class="bg-white shadow rounded-lg py-6 px-4">
-                    <div class="text-lg font-bold">25k</div>
-                    <p class="text-xs text-gray-600 mt-1">Annual gross sale in our site</p>
-                </div>
+                <StatsCard
+                    v-for="(stat, index) in stats"
+                    :key="index"
+                    :icon="stat.icon"
+                    :value="stat.value"
+                    :label="stat.label"
+                    :highlight="stat.highlight"
+                />
             </div>
 
             <!-- Team Section -->
@@ -82,8 +74,32 @@
 
 <script setup>
 import ServiceHighlights from '@/components/ServiceHighlights.vue'
+import StatsCard from '@/components/StatsCard.vue'
 import aboutPageImage from '@/assets/img/about-section-image.png'
 import teamMember1 from '@/assets/img/team-member-1.png'
 import teamMember2 from '@/assets/img/team-member-2.png'
 import teamMember3 from '@/assets/img/team-member-3.png'
+
+const stats = [
+  {
+    icon: 'PhStorefront',
+    value: '10.5k',
+    label: 'Sellers active our site',
+  },
+  {
+    icon: 'PhShoppingBag',
+    value: '33k',
+    label: 'Monthly Product Sale',
+  },
+  {
+    icon: 'PhUsers',
+    value: '45.5k',
+    label: 'Customer active in our site',
+  },
+  {
+    icon: 'PhCurrencyDollar',
+    value: '25k',
+    label: 'Annual gross sale in our site',
+  },
+]
 </script>
