@@ -5,28 +5,40 @@
                 <div class="basis-[100%] md:basis-[45%] lg:basis-[auto]">
                     <div class="ttext-md lg:ext-lg font-semibold mb-6">Support</div>
                     <ul class="flex flex-col gap-y-4">
-                        <li>111 Bijoy sarani, Dhaka, DH 1515, Bangladesh.</li>
-                        <li>nexoshop@gmail.com</li>
-                        <li>+88015-88888-9999</li>
+                        <li>Rizal, PH</li>
+                        <li>support@nexoshop.com</li>
+                        <li>+639544005171</li>
                     </ul>
                 </div>
                 <div class="basis-[100%] md:basis-[45%] lg:basis-[auto]">
                     <div class="text-md lg:text-lg font-semibold mb-6">Account</div>
                     <ul class="flex flex-col gap-y-4">
-                        <li>My Account</li>
-                        <li>Login / Register</li>
-                        <li>Cart</li>
-                        <li>Wishlist</li>
-                        <li>Shop</li>
+                        <li v-if="auth?.user">
+                            <RouterLink to="/my-account" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">My Account</RouterLink>
+                        </li>
+                        <li v-if="auth?.user">
+                            <RouterLink to="/orders" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">My Orders</RouterLink>
+                        </li>
+                        <li v-if="!auth?.user">
+                            <RouterLink to="/login" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">Login</RouterLink>
+                        </li>
+                        <li v-if="!auth?.user">
+                            <RouterLink to="/sign-up" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">Create Account</RouterLink>
+                        </li>
                     </ul>
                 </div>
                 <div class="basis-[100%] md:basis-[45%] lg:basis-[auto]">
                     <div class="text-md lg:text-lg font-semibold mb-6">Quick Links</div>
                     <ul class="flex flex-col gap-y-4">
-                        <li>Privacy Policy</li>
-                        <li>Terms Of Use</li>
-                        <li>FAQ</li>
-                        <li>Contact</li>
+                        <li>
+                            <RouterLink to="/cart" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">My Cart</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/products" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">All Products</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/wishlist" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">Wishlist</RouterLink>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -37,6 +49,8 @@
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useAuthStore } from '@/stores/authStore'
 
-<style scoped></style>
+const auth = useAuthStore()
+</script>

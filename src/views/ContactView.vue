@@ -21,8 +21,8 @@
                         </div>
                         <div>
                             <h3 class="text-md sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Write to Us</h3>
-                            <p class="text-gray-500 text-sm">Fill out our form and we’ll contact you within 24 hours.</p>
-                            <p class="text-gray-800 font-medium mt-1 sm:mt-2">Email: support@exclusive.com</p>
+                            <p class="text-gray-500 text-sm">Fill out our form and we'll contact you within 24 hours.</p>
+                            <p class="text-gray-800 font-medium mt-1 sm:mt-2">Email: support@nexoshop.com</p>
                         </div>
                     </div>
                 </div>
