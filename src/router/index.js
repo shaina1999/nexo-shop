@@ -17,6 +17,7 @@ import NotFoundView from '@/views/NotFoundView.vue'
 import MyAccount from '@/views/MyAccount.vue'
 import WishListView from '@/views/WishListView.vue'
 import ContactView from '@/views/ContactView.vue'
+import AboutView from '@/views/AboutView.vue'
 
 const routes = [
   { path: '/', name:'home', component: HomeView },
@@ -33,6 +34,7 @@ const routes = [
   { path: '/my-account', name:'my-account', component: MyAccount },
   { path: '/wishlist', name:'wishlist', component: WishListView },
   { path: '/contact', name:'contact', component: ContactView },
+  { path: '/about', name:'about', component: AboutView },
   { path: '/:pathMatch(.*)', component: NotFoundView }
 ]
 
