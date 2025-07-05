@@ -54,6 +54,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
 
 const product = ref({
     "id": "0cbe69cd-1be6-4200-8958-33a715a338cc",
