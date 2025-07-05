@@ -36,6 +36,9 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { supabase } from '@/supabase'
+import { useAuthStore } from '@/stores/authStore'
+import Swal from 'sweetalert2'
+import { useRouter } from 'vue-router'
 
 import WishListProductCard from '@/components/WishListProductCard.vue'
 import WishListSkeleton from '@/components/WishListSkeleton.vue'
@@ -45,23 +48,38 @@ import wishlistIllustration from '@/assets/img/wishlist.png'
 const items   = ref([])
 const loading = ref(false)
 const count   = computed(() => items.value.length)
+const auth = useAuthStore()
+const router = useRouter()
 
 const getWishList = async () => {
-  loading.value = true
 
-  const { data, error } = await supabase
-    .from('wishlists')
-    .select('id, product:products(*)')
-    .order('inserted_at', { ascending: false })
+    if(!auth?.user){
+        Swal.fire({
+            toast: true,
+            timer: 4000,
+            title: 'Please Log In',
+            position: 'bottom-end',
+            html: "You need to sign in to view wishlist.",
+            icon: 'info'
+        })
+        router.push('/login')
+        return
+    }
+    loading.value = true
 
-  loading.value = false
+    const { data, error } = await supabase
+        .from('wishlists')
+        .select('id, product:products(*)')
+        .order('inserted_at', { ascending: false })
 
-  if (error) {
-    console.error('Failed to fetch wishlist:', error)
-    return
-  }
+    loading.value = false
 
-  items.value = data ?? []
+    if (error) {
+        console.error('Failed to fetch wishlist:', error)
+        return
+    }
+
+    items.value = data ?? []
 }
 
 onMounted(getWishList)
