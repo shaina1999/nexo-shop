@@ -40,13 +40,13 @@
                             id="name"
                             type="text"
                             placeholder="Your Email"
-                            class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
+                            class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
                         />
                         <input
                             id="name"
                             type="text"
                             placeholder="Your Phone"
-                            class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
+                            class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-out"
                         />
                     </div>
 
@@ -55,7 +55,7 @@
                         name="message" 
                         rows="6" 
                         placeholder="Your Message"
-                        class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 mt-1 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-ou"
+                        class="text-sm sm:text-base placeholder:text-sm placeholder-gray-400 w-full border border-gray-300 rounded-md px-2 py-1.5 sm:p-2 focus-visible:!outline-none focus-visible:!border-secondary-500 transition-colors duration-300 ease-in-ou"
                     >
                     </textarea>
 
