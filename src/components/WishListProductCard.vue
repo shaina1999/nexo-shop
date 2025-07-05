@@ -53,44 +53,25 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { supabase } from '@/supabase'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const product = ref({
-    "id": "0cbe69cd-1be6-4200-8958-33a715a338cc",
-    "name": "Mechanical Keyboard",
-    "slug": "mechanical-keyboard",
-    "description": "RGB hot-swappable mechanical keyboard with blue switches.",
-    "price": 3499,
-    "discounted_price": 99,
-    "discount": 14,
-    "is_new": true,
-    "stock": 12,
-    "images": [
-        {
-            "alt": "Mechanical Keyboard",
-            "url": "https://jquwasnrxbzlhmtwnrit.supabase.co/storage/v1/object/public/product-images//Gaming-Keyboard-PNG-Image.png"
-        }
-    ],
-    "created_at": "2025-05-16T15:42:46.870481",
-    "sales_count": 12,
-    "category_id": "f01b2a42-3035-4fa9-8844-d7fae3d99ee2",
-    "tags": [
-        "keyboard",
-        "mechanical",
-        "rgb",
-        "blue switches",
-        "gaming"
-    ],
-    "rating": 0,
-    "is_featured": false,
-    "featured_description": null,
-    "is_available": false,
-    "details": null,
-    "reviews_count": 0
-})
+const remove = async (wishlistId) => {
+  const { error } = await supabase
+    .from('wishlists')
+    .delete()
+    .eq('id', wishlistId)
+
+  if (error) {
+    console.error('Failed to remove item:', error)
+    return
+  }
+
+  await getWishList()
+}
 
 const goToProductPage = (id) => {
     router.push({ path: '/product', query: { id: id} } ); 

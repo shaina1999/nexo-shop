@@ -64,19 +64,5 @@ const getWishList = async () => {
   items.value = data ?? []
 }
 
-const remove = async (wishlistId) => {
-  const { error } = await supabase
-    .from('wishlists')
-    .delete()
-    .eq('id', wishlistId)
-
-  if (error) {
-    console.error('Failed to remove item:', error)
-    return
-  }
-
-  await getWishList()
-}
-
 onMounted(getWishList)
 </script>
