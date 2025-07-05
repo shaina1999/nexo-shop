@@ -12,11 +12,12 @@
                 </button>
             </header>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
-                <ProductCard />
+                <WishListProductCard />
             </div>
         </div>
     </section>
 </template>
 
 <script setup>
+import WishListProductCard from '@/components/WishListProductCard.vue'
 </script>
