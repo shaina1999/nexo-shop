@@ -18,7 +18,7 @@
             </div>
 
             <!-- Stats Section -->
-            <div class="mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4 pb-16 sm:pb-20 md:pb-25 lg:pb-35 text-center">
+            <div class="mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 pb-16 sm:pb-20 md:pb-25 lg:pb-35 text-center">
                 <StatsCard
                     v-for="(stat, index) in stats"
                     :key="index"
