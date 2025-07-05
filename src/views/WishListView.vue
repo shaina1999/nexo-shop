@@ -13,6 +13,8 @@
                         v-for="item in items"
                         :key="item.id"
                         :product="item.product"
+                        :item="item"
+                        @removed="handleRemoved"
                     />
                 </div>
                 <div v-else class="col-span-4 flex flex-col items-center justify-center text-center pt-8">
@@ -79,6 +81,10 @@ const getWishList = async () => {
     }
 
     items.value = data ?? []
+}
+
+const handleRemoved = (id) => {
+    items.value = items.value.filter(i => i.id !== id)
 }
 
 onMounted(getWishList)

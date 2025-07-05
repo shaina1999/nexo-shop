@@ -9,6 +9,7 @@
                     </div>
                 </div>
                 <button
+                    @click.prevent.stop="remove(item.id)"
                     class="cursor-pointer bg-white flex items-center justify-center text-secondary-500 w-10 h-10 rounded-full transition-all duration-300 ease-in-out"
                 >
                     <PhTrash :size="24" />
@@ -56,16 +57,19 @@ import { supabase } from '@/supabase'
 import { useRouter } from 'vue-router'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
 import { useCartStore } from '@/stores/cartStore'
+import Swal from 'sweetalert2'
 
 const props = defineProps({
-  product: Object
+  product: Object,
+  item: Object
 })
+
+const emit = defineEmits(['removed'])
 
 const router = useRouter()
 const { formatAmount } = useCurrencyFormat()
 const isAddingToCart = ref(false)
 const cart = useCartStore()
-const isAddingToWishlist = ref(false)
 
 const addToCart = async () => {
   isAddingToCart.value = true
@@ -75,6 +79,18 @@ const addToCart = async () => {
 }
 
 const remove = async (wishlistId) => {
+  const { isConfirmed } = await Swal.fire({
+    title: 'Remove item?',
+    text: 'Do you want to remove this product from your wishlist?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Remove',
+    cancelButtonText: 'Cancel',
+    reverseButtons: true,
+  })
+
+  if (!isConfirmed) return
+
   const { error } = await supabase
     .from('wishlists')
     .delete()
@@ -82,10 +98,22 @@ const remove = async (wishlistId) => {
 
   if (error) {
     console.error('Failed to remove item:', error)
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops…',
+      text: 'Unable to remove item. Please try again.',
+    })
     return
   }
 
-  await getWishList()
+  Swal.fire({
+    icon: 'success',
+    title: 'Removed',
+    text: 'Item removed from wishlist.',
+    timer: 1500,
+    showConfirmButton: false,
+  })
+  emit('removed', wishlistId) 
 }
 
 const goToProductPage = (id) => {
