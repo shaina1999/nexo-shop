@@ -5,14 +5,9 @@
                 <h2 class="text-md sm:text-xl font-semibold">
                     Wishlist <span class="font-normal text-gray-500">(4)</span>
                 </h2>
-                <button
-                    class="flex items-center gap-x-1.5 text-sm px-4 py-2 md:px-6 md:py-3 md:mx-0 text-center w-max bg-white rounded-sm !text-black border-[1px] border-black/50 hover:bg-gray-200 cursor-pointer"
-                >
-                    Move All To Bag
-                </button>
             </header>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
-                <WishListProductCard />
+                <WishListProductCard v-for="n in 12" :key="n" />
             </div>
         </div>
     </section>
@@ -20,4 +15,5 @@
 
 <script setup>
 import WishListProductCard from '@/components/WishListProductCard.vue'
+import WishListSkeleton from '@/components/WishListSkeleton.vue'
 </script>

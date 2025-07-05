@@ -10,7 +10,7 @@
                     <PhHeart :size="24" />
                 </button>
             </header>
-            <div class="w-full h-[100px] sm:h-[190px] flex items-center justify-center mr-auto ml-auto skeleton-loader ">
+            <div class="w-full h-[100px] sm:h-[190px] flex items-center justify-center mr-auto ml-auto skeleton-loader">
             </div>
         </div>
         <footer>
