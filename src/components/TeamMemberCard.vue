@@ -1,7 +1,12 @@
 <template>
-  <div>
-    <img :src="member.image" :alt="member.name" class="w-full rounded-lg" />
-    <h3 class="mt-3 sm:mt-4 text-lg font-semibold">{{ member.name }}</h3>
+  <div 
+    :class="[
+        'flex items-center justify-center flex-col',
+        index === 2 ? 'sm:col-span-2 md:col-span-1' : ''
+    ]"
+  >
+    <img :src="member.image" :alt="member.name" class="object-cover rounded-lg w-50 h-50 md:w-auto md:h-auto" />
+    <h3 class="mt-3 sm:mt-4 text-md sm:text-lg font-semibold">{{ member.name }}</h3>
     <p class="text-sm text-gray-600 mt-1">{{ member.role }}</p>
     <div class="flex justify-start space-x-4 mt-3 sm:mt-4 text-sm">
       <PhXLogo v-if="member.socials?.x" :size="24" />
@@ -12,14 +17,11 @@
 </template>
 
 <script setup>
-import teamMember1 from '@/assets/img/team-member-1.png'
-import teamMember2 from '@/assets/img/team-member-2.png'
-import teamMember3 from '@/assets/img/team-member-3.png'
-
 defineProps({
   member: {
     type: Object,
     required: true,
   },
+  index: Number
 })
 </script>

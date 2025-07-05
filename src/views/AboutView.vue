@@ -13,7 +13,7 @@
                     </p>
                 </div>
                 <div class="w-full">
-                    <img :src="aboutPageImage" alt="Shopping" class="mx-auto rounded-lg object-contain w-100 h-100 md:w-auto md:h-auto" />
+                    <img :src="aboutPageImage" alt="Shopping" class="mx-auto rounded-lg object-cover w-100 h-100 md:w-auto md:h-auto" />
                 </div>
             </div>
 
@@ -30,11 +30,12 @@
             </div>
 
             <!-- Team Section -->
-            <div class="mx-auto grid sm:grid-cols-2 md:grid-cols-3 gap-7.5 text-left">
+            <div class="mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7.5 text-left">
                 <TeamMemberCard
-                    v-for="member in teamMembers"
+                    v-for="(member, index) in teamMembers"
                     :key="member.id"
                     :member="member"
+                    :index="index"
                 />
             </div>
 
