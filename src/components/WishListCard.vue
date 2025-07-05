@@ -20,15 +20,17 @@
         </div>
         <footer>
             <button
+                :disabled="!product.is_available || isAddingToCart"
                 class="shadow-xl/5 bg-black text-white w-full p-1.5 transition-all duration-300 ease-in-out cursor-pointer add-to-cart mb-2 sm:mb-4 flex items-center justify-center gap-x-2 hover:!bg-black"
-            >
-                <span class="text-sm">Add To Cart</span>
+                @click.prevent.stop="addToCart">
+                <span class="text-sm">{{ isAddingToCart ? 'Adding...' : (product.is_available ? 'Add To Cart' : 'Unavailable') }}</span>
                 <PhShoppingCart :size="18" v-if="!isAddingToCart" />
                 <PhCircleNotch :size="18" v-else class="animate-spin" />
             </button>
             <div>
                 <button 
-                    class="line-clamp-2 font-semibold text-sm sm:text-base mb-1 sm:mb-2 cursor-pointer hover:text-secondary-500 transition-colors duration-300 ease-in-out text-left" 
+                class="line-clamp-2 font-semibold text-sm sm:text-base mb-1 sm:mb-2 cursor-pointer hover:text-secondary-500 transition-colors duration-300 ease-in-out text-left" 
+                @click="goToProductPage(product.id)"
                 >
                     {{ product.name }}
                 </button>
@@ -53,6 +55,7 @@ import { ref, computed, onMounted } from 'vue'
 import { supabase } from '@/supabase'
 import { useRouter } from 'vue-router'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
+import { useCartStore } from '@/stores/cartStore'
 
 const props = defineProps({
   product: Object
@@ -60,6 +63,16 @@ const props = defineProps({
 
 const router = useRouter()
 const { formatAmount } = useCurrencyFormat()
+const isAddingToCart = ref(false)
+const cart = useCartStore()
+const isAddingToWishlist = ref(false)
+
+const addToCart = async () => {
+  isAddingToCart.value = true
+  const cartItem = { product_id: props.product.id, quantity: 1, }
+  await cart.addToCart(cartItem)
+  isAddingToCart.value = false
+}
 
 const remove = async (wishlistId) => {
   const { error } = await supabase

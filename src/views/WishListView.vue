@@ -13,7 +13,6 @@
                         v-for="item in items"
                         :key="item.id"
                         :product="item.product"
-                        @click="remove(item.id)"
                     />
                 </div>
                 <div v-else class="col-span-4 flex flex-col items-center justify-center text-center pt-8">
