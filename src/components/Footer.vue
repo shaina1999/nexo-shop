@@ -13,32 +13,18 @@
                 <div class="basis-[100%] md:basis-[45%] lg:basis-[auto]">
                     <div class="text-md lg:text-lg font-semibold mb-6">Account</div>
                     <ul class="flex flex-col gap-y-4">
-                        <li v-if="auth?.user">
-                            <RouterLink to="/my-account" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">My Account</RouterLink>
-                        </li>
-                        <li v-if="auth?.user">
-                            <RouterLink to="/orders" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">My Orders</RouterLink>
-                        </li>
-                        <li v-if="!auth?.user">
-                            <RouterLink to="/login" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">Login</RouterLink>
-                        </li>
-                        <li v-if="!auth?.user">
-                            <RouterLink to="/sign-up" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">Create Account</RouterLink>
-                        </li>
+                        <FooterLinkItem v-if="auth?.user" to="/my-account" label="My Account" />
+                        <FooterLinkItem v-if="auth?.user" to="/orders" label="My Orders" />
+                        <FooterLinkItem v-if="!auth?.user" to="/login" label="Login" />
+                        <FooterLinkItem v-if="!auth?.user" to="/sign-up" label="Create Account" />
                     </ul>
                 </div>
                 <div class="basis-[100%] md:basis-[45%] lg:basis-[auto]">
                     <div class="text-md lg:text-lg font-semibold mb-6">Quick Links</div>
                     <ul class="flex flex-col gap-y-4">
-                        <li>
-                            <RouterLink to="/cart" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">My Cart</RouterLink>
-                        </li>
-                        <li>
-                            <RouterLink to="/products" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">All Products</RouterLink>
-                        </li>
-                        <li>
-                            <RouterLink to="/wishlist" class="hover:border-b-white border-b border-b-transparent transition-colors duration-300 ease-in-out">Wishlist</RouterLink>
-                        </li>
+                        <FooterLinkItem to="/cart" label="My Cart" />
+                        <FooterLinkItem to="/products" label="All Products" />
+                        <FooterLinkItem to="/wishlist" label="Wishlist" />
                     </ul>
                 </div>
             </div>
@@ -51,6 +37,8 @@
 
 <script setup>
 import { useAuthStore } from '@/stores/authStore'
+
+import FooterLinkItem from '@/components/FooterLinkItem.vue'
 
 const auth = useAuthStore()
 </script>
