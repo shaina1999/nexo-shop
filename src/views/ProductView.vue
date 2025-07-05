@@ -341,6 +341,19 @@ const fetchReviews = async (productId) => {
 
 const toggleWishlist = async () => {
   if (isAddingToWishlist.value) return
+
+  if(!auth?.user) {
+    Swal.fire({
+      toast: true,
+      timer: 4000,
+      title: 'Please Log In',
+      position: 'bottom-end',
+      html: "You need to sign in to add this product to wishlist.",
+      icon: 'info'
+    })
+    return
+  }
+  
   isAddingToWishlist.value = true
 
   try {
@@ -401,7 +414,9 @@ watch(selectedSort, async () => {
 onMounted(async () => {
   isFetchingReviews.value = true
   await fetchProduct(route.query.id)
-  checkWishlistStatus()
+  if(auth?.user) {
+    checkWishlistStatus()
+  }
   await fetchReviews(route.query.id)
 })
 </script>
