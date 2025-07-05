@@ -11,7 +11,7 @@
                         <div>
                             <h3 class="text-md sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Call to Us</h3>
                             <p class="text-gray-500 text-sm">We are available 24/7, 7 days a week.</p>
-                            <p class="text-gray-800 mt-2 font-medium">Phone: +040 012 222 222</p>
+                            <p class="text-gray-800 mt-1 sm:mt-2 font-medium">Phone: +639544005171</p>
                         </div>
                     </div>
 
@@ -22,8 +22,7 @@
                         <div>
                             <h3 class="text-md sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">Write to Us</h3>
                             <p class="text-gray-500 text-sm">Fill out our form and we’ll contact you within 24 hours.</p>
-                            <p class="text-gray-800 mt-2 font-medium">Email: customer@exclusive.com</p>
-                            <p class="text-gray-800 font-medium">Email: support@exclusive.com</p>
+                            <p class="text-gray-800 font-medium mt-1 sm:mt-2">Email: support@exclusive.com</p>
                         </div>
                     </div>
                 </div>
