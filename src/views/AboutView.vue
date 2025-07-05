@@ -2,7 +2,7 @@
     <section class="flex items-center justify-center w-full pt-5 md:pt-10">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
             <!-- Our Story Section -->
-            <div class="grid md:grid-cols-2 gap-10 items-center pb-16 sm:pb-20 md:pb-25 lg:pb-35">
+            <div class="grid md:grid-cols-2 gap-5 sm:gap-10 items-center pb-16 sm:pb-20 md:pb-25 lg:pb-35">
                 <div>
                     <h2 class="text-xl sm:text-3xl font-bold mb-4">Our Story</h2>
                     <p class="text-sm md:text-base text-gray-600 leading-relaxed">
@@ -13,7 +13,7 @@
                     </p>
                 </div>
                 <div class="w-full">
-                    <img :src="aboutPageImage" alt="Shopping" class="w-full rounded-lg object-cover" />
+                    <img :src="aboutPageImage" alt="Shopping" class="mx-auto rounded-lg object-contain w-100 h-100 md:w-auto md:h-auto" />
                 </div>
             </div>
 
