@@ -7,9 +7,9 @@
                 </h2>
             </header>
             <WishListSkeleton v-if="loading" />
-            <div v-else-if="!loading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
-                <div v-if="items.length">
-                    <WishListProductCard 
+            <div v-else>
+                <div v-if="items.length" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 md:gap-x-4 md:gap-y-6 lg:gap-x-6 lg:gap-y-8">
+                    <WishListCard 
                         v-for="item in items"
                         :key="item.id"
                         :product="item.product"
@@ -40,7 +40,7 @@ import { useAuthStore } from '@/stores/authStore'
 import Swal from 'sweetalert2'
 import { useRouter } from 'vue-router'
 
-import WishListProductCard from '@/components/WishListProductCard.vue'
+import WishListCard from '@/components/WishListCard.vue'
 import WishListSkeleton from '@/components/WishListSkeleton.vue'
 import BaseLinkButton from '@/components/BaseLinkButton.vue'
 import wishlistIllustration from '@/assets/img/wishlist.png'

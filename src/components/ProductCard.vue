@@ -2,11 +2,11 @@
   <article>
     <div @click="goToProductPage(product.id)" class="bg-gray-200 p-2.5 sm:p-4 product cursor-pointer">
       <header class="flex items-center justify-between mb-4">
-        <div v-if="!product.isNew">
-          <div class="bg-secondary-500 text-white py-1 px-2 rounded-sm text-sm">-{{ product.discount }}%</div>
-        </div>
-        <div v-else-if="product.isNew">
-          <div class="bg-green-500 text-white py-1 px-2 rounded-sm text-sm">New</div>
+        <div class="flex items-center gap-2">
+          <div class="bg-secondary-500 text-white py-1 px-2 rounded-sm text-xs">-{{ product.discount }}%</div>
+          <div v-if="product.is_new">
+            <div class="bg-green-500 text-white py-1 px-2 rounded-sm text-xs">New</div>
+          </div>
         </div>
         <button
           class="cursor-pointer bg-white flex items-center justify-center text-secondary-500 w-10 h-10 rounded-full transition-all duration-300 ease-in-out"
@@ -16,7 +16,7 @@
         </button>
       </header>
       <div class="w-full h-[100px] sm:h-[190px] flex items-center justify-center mr-auto ml-auto">
-          <img :src="product.images[0].url" :alt="product.images[0].alt" class="object-contain h-full w-[80%] lg:w-[86%] mx-auto">
+        <img :src="product.images[0].url" :alt="product.images[0].alt" class="object-contain h-[80%] w-[80%] lg:w-[86%] mx-auto">
       </div>
     </div>
     <footer>
