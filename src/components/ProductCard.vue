@@ -52,7 +52,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useCurrencyFormat } from '@/composables/currencyFormat'
 import { useCartStore } from '@/stores/cartStore'
 
