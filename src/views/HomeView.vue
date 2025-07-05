@@ -154,102 +154,6 @@
         </div>
     </section>
 
-    <!-- Best Selling Products Section -->
-    <section class="flex items-center justify-center w-full pt-16 sm:pt-20">
-        <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
-            <SectionHeader :label="'This Month'" :title="'Best-Selling Products'">
-                <template v-slot:buttons v-if="bestSellingProducts.length > 4">
-                    <div class="hidden sm:flex items-center gap-x-2">
-                        <button 
-                            :class="{ 'skeleton-loader' : bestSellingProductsLoading }"
-                            class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
-                            @click="goPrev('best-selling')"
-                        >
-                            <PhArrowLeft :size="20" />
-                        </button>
-                         <button 
-                            :class="{ 'skeleton-loader' : bestSellingProductsLoading }"
-                            class="flex items-center justify-center cursor-pointer bg-gray-200 shadow-xs rounded-full w-10 h-10 hover:bg-secondary-500 hover:text-white transition-all duration-300 ease-in-out"
-                            @click="goNext('best-selling')"
-                        >
-                            <PhArrowRight :size="20" />
-                        </button>
-                    </div>
-                </template>
-            </SectionHeader>
-            <div class="pb-7.5 md:pb-15 border-b-[1px] border-b-gray-300">
-                <div :class="{ 'mb-7.5 md:mb-15' : bestSellingProducts.length > 4, 'mb-0' : bestSellingProducts.length < 5 }">
-                    <div v-if="!bestSellingProductsLoading">
-                        <Splide 
-                            v-if="bestSellingProducts.length > 4"
-                            :ref="el => registerSplide(el, 'best-selling')"
-                            :options="{
-                                type: 'loop',
-                                perPage: 4,
-                                gap: '16px',
-                                arrows: false,
-                                speed: 1000,
-                                perMove: 1,
-                                pagination: false,
-                                breakpoints: {
-                                    640: {
-                                        perPage: 1, arrows: true
-                                    },
-                                    768: {
-                                        perPage: 2, arrows: false
-                                    },
-                                    1024: {
-                                        perPage: 3, arrows: false
-                                    },
-                                    1280: {
-                                        perPage: 4,
-                                        arrows: false
-                                    },
-                                }
-                            }"
-                        >
-                            <SplideSlide v-for="bestSellingProduct in bestSellingProducts" :key="bestSellingProduct.id">
-                                <ProductCard 
-                                    :product="bestSellingProduct"
-                                />
-                            </SplideSlide>
-                        </Splide>
-                        <div 
-                            v-else-if="bestSellingProducts.length > 0 && bestSellingProducts.length < 5"
-                            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-                        >
-                            <ProductCard 
-                                v-for="bestSellingProduct in bestSellingProducts" 
-                                :key="bestSellingProduct.id"
-                                :product="bestSellingProduct" 
-                            />
-                        </div>
-                        <div v-else class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
-                            <img :src="emptyCartIllustration" alt="Empty Cart Illustration" class="w-18 h-18 md:w-28 md:h-28 object-contain">
-                            <div>
-                                <h2 class="text-base sm:text-xl font-semibold text-gray-500">
-                                    No Best-Selling Products Yet
-                                </h2>
-                                <p class="text-sm sm:text-base mt-2 text-gray-600 max-w-md">
-                                    Our best-selling products will appear here once available. Please check back soon or explore other items in our store.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <SliderProductSkeleton v-else />
-                </div>
-                <BaseLinkButton 
-                    v-if="bestSellingProducts.length > 4" 
-                    :to="'/products?tag=best-selling'" 
-                    class="mx-auto" 
-                    :class="{ 'skeleton-loader pointer-events-none' : bestSellingProductsLoading }"
-                >
-                    <span :class="{ 'opacity-0' : bestSellingProductsLoading }">View All Products</span>
-                </BaseLinkButton>
-            </div>
-        </div>
-    </section>
-
     <!-- All Products Section -->
     <section class="flex items-center justify-center w-full pt-16 sm:pt-20">
         <div class="px-4 md:px-8 lg:px-16 xl:px-34 w-full max-w-7xl">
@@ -402,11 +306,9 @@ const isDomLoaded = ref(false)
 const splideInstances = ref({})
 const featuredProducts = ref([])
 const categories = ref([])
-const bestSellingProducts = ref([])
 const products = ref([])
 const featuredProductsLoading = ref(false)
 const categoriesLoading = ref(false)
-const bestSellingProductsLoading = ref(false)
 const productsLoading = ref(false)
 
 const registerSplide = (el, key) => {
@@ -444,14 +346,6 @@ const getCategories = async () => {
     categoriesLoading.value = false
 }
 
-// Best Selling Products
-const getBestSellingProducts = async () => {
-    bestSellingProductsLoading.value = true
-    let { data: products, error } = await supabase.from('products').select('*').gt('sales_count', 100).order('sales_count', { ascending: false })
-    bestSellingProducts.value = products
-    bestSellingProductsLoading.value = false
-}
-
 // All Products
 const getProducts = async () => {
     productsLoading.value = true
@@ -463,7 +357,6 @@ const getProducts = async () => {
 onMounted(async () => {
     getFeaturedProducts()
     getCategories()
-    getBestSellingProducts()
     getProducts()
 })
 </script>
