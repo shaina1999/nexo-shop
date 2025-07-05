@@ -3,7 +3,7 @@
         <div @click="goToProductPage(product.id)" class="bg-gray-200 p-2.5 sm:p-4 product cursor-pointer">
             <header class="flex items-center justify-between mb-4">
                 <div v-if="!product.isNew">
-                    <div class="bg-secondary-500 text-white py-1 px-2 rounded-sm text-sm">{{ product.discount }}%</div>
+                    <div class="bg-secondary-500 text-white py-1 px-2 rounded-sm text-sm">-{{ product.discount }}%</div>
                 </div>
                 <div v-else-if="product.isNew">
                     <div class="bg-green-500 text-white py-1 px-2 rounded-sm text-sm">New</div>
