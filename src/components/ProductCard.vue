@@ -10,7 +10,9 @@
         </div>
         <button
           class="cursor-pointer bg-white flex items-center justify-center text-secondary-500 w-10 h-10 rounded-full transition-all duration-300 ease-in-out"
-          @click.prevent.stop="toggleWishlist">
+          :class="{ 'skeleton-loader' : isWishlistLoading }"
+          @click.prevent.stop="toggleWishlist"
+        >
           <PhHeart v-if="!isAddingToWishlist" :weight="isInWishlist ? 'fill' : 'regular'" :size="24" />
           <PhCircleNotch :size="24" v-else class="animate-spin" />
         </button>
@@ -67,6 +69,7 @@ const isAddingToCart = ref(false)
 const isAddingToWishlist = ref(false)
 const auth = useAuthStore()
 const isInWishlist = ref(false)
+const isWishlistLoading = ref(true)
 
 const props = defineProps({
   product: Object
@@ -137,6 +140,7 @@ const checkWishlistStatus = async () => {
     .maybeSingle()
 
   isInWishlist.value = !!data
+  isWishlistLoading.value = false
 }
 
 const addToCart = async () => {
@@ -147,8 +151,10 @@ const addToCart = async () => {
 }
 
 onMounted(() => {
-  if(auth?.user) {
+  if (auth?.user) {
     checkWishlistStatus()
+  } else {
+    isWishlistLoading.value = false
   }
 })
 </script>

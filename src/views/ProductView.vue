@@ -140,6 +140,7 @@
               </BaseButton>
               <BaseButton 
                 @click="toggleWishlist"
+                :class="{ 'skeleton-loader' : isWishlistLoading }"
                 class="w-full sm:w-max text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5 bg-white text-secondary-500! border-[1px] border-secondary-500 hover:!bg-secondary-100"
               >
                 <span>{{ isInWishlist ? 'Remove from wishlist' : 'Add to wishlist' }}</span>
@@ -255,6 +256,7 @@ const isFilteringReviews = ref(false)
 const auth = useAuthStore()
 const isInWishlist = ref(false)
 const isAddingToWishlist = ref(false)
+const isWishlistLoading = ref(true)
 
 const sortOptions = [
   { label: 'All', value: null },
@@ -400,6 +402,7 @@ const checkWishlistStatus = async () => {
     .maybeSingle()
 
   isInWishlist.value = !!data
+  isWishlistLoading.value = false
 }
 
 const formatDate = (dateStr) => {
@@ -416,6 +419,8 @@ onMounted(async () => {
   await fetchProduct(route.query.id)
   if(auth?.user) {
     checkWishlistStatus()
+  } else {
+    isWishlistLoading.value = false
   }
   await fetchReviews(route.query.id)
 })
