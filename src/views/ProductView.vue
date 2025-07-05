@@ -128,21 +128,23 @@
               />
             </div>
 
-            <div class="flex items-center gap-3 flex-col sm:flex-row">
+            <div class="flex items-center sm:items-baseline sm:flex-row lg:flex-row gap-3 flex-col">
               <BaseButton 
                 :disabled="!productObj?.is_available || isAddingToCart" 
-                class="w-full text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5"
+                class="w-full sm:w-max text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5"
                 @click="addToCart"
               >
                 <span>{{ isAddingToCart ? 'Adding...' : (productObj?.is_available ? 'Add To Cart' : 'Unavailable') }}</span>
-                <PhShoppingCart class="text-xl" v-if="!isAddingToCart" />
-                <PhCircleNotch class="text-xl animate-spin" v-else />
+                <PhShoppingCart :size="20" v-if="!isAddingToCart" />
+                <PhCircleNotch :size="20" class="animate-spin" v-else />
               </BaseButton>
               <BaseButton 
-                class="w-full text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5 bg-white text-secondary-500! border-[1px] border-secondary-500 hover:!bg-secondary-100"
+                @click="toggleWishlist"
+                class="w-full sm:w-max text-sm md:text-base py-3! px-2.5! md:!py-3.5 md:!px-4 flex items-center justify-center font-medium gap-x-1.5 bg-white text-secondary-500! border-[1px] border-secondary-500 hover:!bg-secondary-100"
               >
-                <span>Add to wishlist</span>
-                <PhHeart class="text-xl" />
+                <span>{{ isInWishlist ? 'Remove from wishlist' : 'Add to wishlist' }}</span>
+                <PhHeart v-if="!isAddingToWishlist" :size="20" :weight="isInWishlist ? 'fill' : 'regular'" />
+                <PhCircleNotch :size="20" v-else class="animate-spin" />
               </BaseButton>
             </div>
           </section>
@@ -225,6 +227,7 @@ import { useCurrencyFormat } from '@/composables/currencyFormat'
 import Swal from 'sweetalert2'
 import { useCartStore } from '@/stores/cartStore'
 import dayjs from 'dayjs'
+import { useAuthStore } from '@/stores/authStore'
 
 import BaseButton from '@/components/BaseButton.vue'
 import ProductDetailsSkeleton from '@/components/ProductDetailsSkeleton.vue'
@@ -249,6 +252,9 @@ const selectedSort = ref(null)
 const reviews = ref([])
 const isFetchingReviews = ref(false)
 const isFilteringReviews = ref(false)
+const auth = useAuthStore()
+const isInWishlist = ref(false)
+const isAddingToWishlist = ref(false)
 
 const sortOptions = [
   { label: 'All', value: null },
@@ -333,6 +339,56 @@ const fetchReviews = async (productId) => {
   }
 }
 
+const toggleWishlist = async () => {
+  if (isAddingToWishlist.value) return
+  isAddingToWishlist.value = true
+
+  try {
+    if (isInWishlist.value) {
+      // remove from wishlist
+      const { error } = await supabase
+        .from('wishlists')
+        .delete()
+        .eq('user_id', auth?.user?.id)
+        .eq('product_id', productObj?.value?.id)
+
+      if (error) throw error
+      isInWishlist.value = false
+    } else {
+      // add to wishlist
+      const { error } = await supabase
+        .from('wishlists')
+        .insert({
+          user_id: auth?.user?.id,
+          product_id: productObj?.value?.id
+        })
+
+      if (error) throw error
+      isInWishlist.value = true
+    }
+  } catch (err) {
+    console.error('Wishlist error:', err)
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: err?.message || 'Unable to update wishlist.'
+    })
+  } finally {
+    isAddingToWishlist.value = false
+  }
+}
+
+const checkWishlistStatus = async () => {
+  const { data, error } = await supabase
+    .from('wishlists')
+    .select('id')
+    .eq('user_id', auth?.user?.id)
+    .eq('product_id', productObj?.value?.id)
+    .maybeSingle()
+
+  isInWishlist.value = !!data
+}
+
 const formatDate = (dateStr) => {
   return dayjs(dateStr).format('MMMM DD, YYYY [at] hh:mm A')
 }
@@ -345,6 +401,7 @@ watch(selectedSort, async () => {
 onMounted(async () => {
   isFetchingReviews.value = true
   await fetchProduct(route.query.id)
+  checkWishlistStatus()
   await fetchReviews(route.query.id)
 })
 </script>
