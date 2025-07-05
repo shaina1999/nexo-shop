@@ -30,40 +30,12 @@
             </div>
 
             <!-- Team Section -->
-            <div class="mx-auto grid sm:grid-cols-2 md:grid-cols-3 gap-8 text-center">
-                <!-- Person -->
-                <div>
-                    <img :src="teamMember1" alt="Tom Cruise" class="w-full rounded-lg" />
-                    <h3 class="mt-4 text-lg font-semibold">Tom Cruise</h3>
-                    <p class="text-sm text-gray-600">Founder & Chairman</p>
-                    <div class="flex justify-center space-x-4 mt-2 text-gray-500 text-sm">
-                        <i class="fab fa-instagram"></i>
-                        <i class="fab fa-twitter"></i>
-                        <i class="fab fa-linkedin"></i>
-                    </div>
-                </div>
-                <!-- Person -->
-                <div>
-                    <img :src="teamMember2" alt="Emma Watson" class="w-full rounded-lg" />
-                    <h3 class="mt-4 text-lg font-semibold">Emma Watson</h3>
-                    <p class="text-sm text-gray-600">Managing Director</p>
-                    <div class="flex justify-center space-x-4 mt-2 text-gray-500 text-sm">
-                        <i class="fab fa-instagram"></i>
-                        <i class="fab fa-twitter"></i>
-                        <i class="fab fa-linkedin"></i>
-                    </div>
-                </div>
-                <!-- Person -->
-                <div>
-                    <img :src="teamMember3" alt="Will Smith" class="w-full rounded-lg" />
-                    <h3 class="mt-4 text-lg font-semibold">Will Smith</h3>
-                    <p class="text-sm text-gray-600">Product Designer</p>
-                    <div class="flex justify-center space-x-4 mt-2 text-gray-500 text-sm">
-                        <i class="fab fa-instagram"></i>
-                        <i class="fab fa-twitter"></i>
-                        <i class="fab fa-linkedin"></i>
-                    </div>
-                </div>
+            <div class="mx-auto grid sm:grid-cols-2 md:grid-cols-3 gap-7.5 text-left">
+                <TeamMemberCard
+                    v-for="member in teamMembers"
+                    :key="member.id"
+                    :member="member"
+                />
             </div>
 
             <!-- Service Highlights Section -->
@@ -75,6 +47,7 @@
 <script setup>
 import ServiceHighlights from '@/components/ServiceHighlights.vue'
 import StatsCard from '@/components/StatsCard.vue'
+import TeamMemberCard from '@/components/TeamMemberCard.vue'
 import aboutPageImage from '@/assets/img/about-section-image.png'
 import teamMember1 from '@/assets/img/team-member-1.png'
 import teamMember2 from '@/assets/img/team-member-2.png'
@@ -102,4 +75,40 @@ const stats = [
     label: 'Annual gross sale in our site',
   },
 ]
+
+const teamMembers = [
+  {
+    id: 1,
+    name: "Tom Cruise",
+    role: "Founder & Chairman",
+    image: teamMember1,
+    socials: {
+      x: true,
+      instagram: true,
+      linkedin: true,
+    },
+  },
+  {
+    id: 2,
+    name: "Emma Watson",
+    role: "Chief Marketing Officer",
+    image: teamMember2,
+    socials: {
+      x: true,
+      instagram: true,
+      linkedin: true,
+    },
+  },
+  {
+    id: 3,
+    name: "Robert Downey Jr.",
+    role: "Head of Operations",
+    image: teamMember3,
+    socials: {
+      x: true,
+      instagram: true,
+      linkedin: true,
+    },
+  },
+];
 </script>
