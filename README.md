@@ -9,9 +9,12 @@ Nexo Shop is a modern and responsive e-commerce website built with **Vue 3**. Th
 - **Search Functionality**: Search products by name or category.
 - **Product Filtering**: Filter products by categories, price range, and other attributes to help users find exactly what they're looking for.
 - **Shopping Cart**: Add products to a cart and review the selected items before checkout.
-- **Checkout Process**: Streamlined checkout process with basic form validation (e.g., address, payment options).
-- **User Authentication**: Sign up, login, and user profile management.
+- **Checkout Process**: Streamlined checkout process with form validation (e.g., address, payment options).
+- **User Authentication**: Sign up, login, and manage user profiles with Supabase Auth.
+- **Contact Section**: A simple contact form for inquiries.
+- **About Section**: Introduces the website and its purpose.
 - **State Management**: Uses Vue's **Composition API** and **[Pinia](https://pinia.vuejs.org/)** for managing application state.
+- **Supabase Backend**: Used for database, authentication, and real-time functionality.
 - **Figma Design Integration**: The UI is based on a **Figma** template that provides an attractive, user-friendly interface.
 
 ## Tools and Technologies Used
@@ -20,6 +23,7 @@ Nexo Shop is a modern and responsive e-commerce website built with **Vue 3**. Th
 - **Vite**: Fast build tool optimized for Vue.
 - **Figma**: Design tool from which the project design was adapted.
 - **Tailwind CSS**: Utility-first CSS framework for styling components.
+- **Supabase** - Backend-as-a-Service for auth, database, and storage
 
 ## 🖌️ Design Credit
 
