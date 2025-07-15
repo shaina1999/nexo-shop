@@ -31,7 +31,7 @@ This project's design is adapted from [**Full E-commerce Website UI/UX Design**]
 
 ## Live Demo
 
-You can **[view the live demo](https://nexo-shop.netlify.app/)** of the site here.
+Check out the **[live demo](https://nexo-shop.netlify.app/)** of the site.
 
 ## License
 
